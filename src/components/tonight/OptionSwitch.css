@@ -1,0 +1,36 @@
+/* SWITCH */
+
+.switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.switch > span:first-child {
+  color: var(--mist);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.options {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: var(--track);
+}
+
+.options button {
+  min-height: 40px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--mist);
+  font: 700 0.95rem var(--font-body);
+}
+
+.options button[aria-pressed="true"] {
+  background: var(--frost);
+  color: var(--ink);
+}

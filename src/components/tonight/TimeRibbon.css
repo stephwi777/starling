@@ -1,0 +1,253 @@
+/* TIME */
+
+.time {
+  position: sticky;
+  top: var(--header-height, 0px);
+  z-index: 5;
+  padding: 14px 18px 12px;
+}
+
+.time-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.time-head h2 {
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+
+.time-head output {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--moon);
+}
+
+.step {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.step button {
+  min-width: 44px;
+  min-height: 40px;
+  padding: 4px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--track);
+  color: var(--frost);
+  font: 700 1rem var(--font-body);
+}
+
+
+
+/* RIBBON */
+
+.ribbon {
+  position: relative;
+  margin-top: 10px;
+}
+
+.sky-band {
+  position: relative;
+  height: 46px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sky-band .clouds {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  gap: 2px;
+  height: 14px;
+}
+
+.sky-band .clouds span {
+  flex: 1;
+  background: color-mix(in srgb, var(--mist) calc(var(--cover) * 0.9%), transparent);
+}
+
+.sky-band .moon-up {
+  position: absolute;
+  top: 6px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--moon);
+}
+
+.sky-band .best {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-inline: 2px solid var(--beak);
+}
+
+.ribbon input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 46px;
+  margin: 0;
+  background: none;
+  appearance: none;
+  cursor: ew-resize;
+}
+
+.ribbon input::-webkit-slider-runnable-track {
+  height: 46px;
+  background: none;
+}
+
+.ribbon input::-webkit-slider-thumb {
+  appearance: none;
+  width: 6px;
+  height: 46px;
+  border-radius: 3px;
+  background: var(--frost);
+  box-shadow: 0 0 0 2px var(--zenith);
+}
+
+.ribbon input::-moz-range-thumb {
+  width: 6px;
+  height: 46px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--frost);
+  box-shadow: 0 0 0 2px var(--zenith);
+}
+
+.ribbon input:focus-visible {
+  outline-offset: 3px;
+}
+
+
+
+/* HOURS */
+
+.hours {
+  position: relative;
+  height: 22px;
+  margin-top: 4px;
+  color: var(--mist);
+  font-size: 0.82rem;
+}
+
+.hours span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+
+
+/* KEY */
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 4px;
+  color: var(--mist);
+  font-size: 0.85rem;
+}
+
+.key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.key i {
+  display: inline-block;
+  width: 16px;
+  height: 6px;
+  border-radius: 2px;
+}
+
+.key-sky {
+  background: linear-gradient(90deg, var(--sky-day), var(--sky-night));
+}
+
+.key-moon {
+  background: var(--moon);
+}
+
+.key-clouds {
+  background: var(--mist);
+}
+
+.key .key-best {
+  width: 10px;
+  height: 12px;
+  border-inline: 2px solid var(--beak);
+  border-radius: 0;
+}
+
+
+
+/* MEDIUM SCREENS */
+
+@media (max-width: 1100px) {
+  .hours span:nth-child(even) {
+    display: none;
+  }
+}
+
+
+
+/* SMALL SCREENS */
+
+@media (max-width: 720px) {
+  .time {
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 10px 14px 6px;
+    border-inline: 0;
+    border-radius: 0;
+  }
+
+  .time-head {
+    flex-wrap: nowrap;
+  }
+
+  .time-head h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .time-head output {
+    font-size: 1.25rem;
+    white-space: nowrap;
+  }
+
+  .step button {
+    min-width: 42px;
+    padding: 4px 8px;
+    font-size: 0.92rem;
+  }
+
+  .sky-band,
+  .ribbon input,
+  .ribbon input::-webkit-slider-runnable-track,
+  .ribbon input::-webkit-slider-thumb {
+    height: 40px;
+  }
+
+  .hours span:nth-child(even) {
+    display: block;
+  }
+
+  .hours span:not(:nth-child(3n + 1)) {
+    display: none;
+  }
+
+  .key {
+    display: none;
+  }
+}

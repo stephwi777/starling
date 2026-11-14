@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { buildNight, observerFor } from './night.js'
 import { trackObject } from './tracks.js'
 import { activeShowers } from './meteors.js'
@@ -26,9 +26,7 @@ function nowIndexFor(night, now) {
 
 // HOOK
 
-export function useNight(place, index, weather) {
-  const [now] = useState(() => new Date())
-
+export function useNight(place, index, weather, now) {
   const sky = useMemo(() => {
     const night = buildNight(place, index, now)
     const observer = observerFor(place)

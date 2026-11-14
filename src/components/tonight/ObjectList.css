@@ -1,0 +1,286 @@
+/* TOOLBAR */
+
+.list {
+  padding: 0;
+  overflow: clip;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--panel-raised);
+}
+
+.search {
+  display: grid;
+  flex: 1 1 200px;
+  gap: 2px;
+}
+
+.search label {
+  color: var(--mist);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.search input {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--track);
+  color: var(--frost);
+  font: inherit;
+}
+
+
+
+/* CATEGORIES */
+
+.category {
+  padding: 0;
+}
+
+.category + .category {
+  border-top: 1px solid var(--rule);
+}
+
+.category > header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 18px 16px 8px;
+}
+
+.category h2 {
+  font-size: 1.3rem;
+}
+
+.category > header p {
+  color: var(--mist);
+  font-size: 0.92rem;
+}
+
+.missing {
+  padding: 10px 16px 18px;
+  color: var(--mist);
+  font-size: 0.95rem;
+}
+
+.missing strong {
+  color: var(--frost);
+}
+
+.missing a {
+  color: var(--beak);
+  font-weight: 700;
+}
+
+
+
+/* ROWS */
+
+.rows {
+  --columns: 30px minmax(150px, 1.4fr) minmax(130px, 1fr) minmax(150px, 1.1fr) 76px;
+}
+
+[data-mode="advanced"] .rows {
+  --columns: 30px minmax(140px, 1.3fr) minmax(120px, 0.9fr) minmax(130px, 1fr) 76px 54px 70px 54px 112px;
+}
+
+.rows > li {
+  display: grid;
+  grid-template-columns: var(--columns);
+  align-items: center;
+  gap: 0 14px;
+  padding: 10px 16px;
+  border-top: 1px solid color-mix(in srgb, var(--rule) 70%, transparent);
+}
+
+.rows > li.columns {
+  padding-block: 6px;
+  border-top: 0;
+  color: var(--mist);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.rows > li.down {
+  color: var(--mist);
+}
+
+.rows > li.down .object-icon {
+  opacity: 0.5;
+}
+
+.rows > li[aria-current="true"] {
+  background: var(--panel-raised);
+  box-shadow: inset 4px 0 0 var(--beak);
+}
+
+.name button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: 800 1rem var(--font-body);
+  text-align: left;
+  text-decoration: underline 1px transparent;
+  text-underline-offset: 4px;
+}
+
+.name button:hover {
+  text-decoration-color: currentColor;
+}
+
+.name small {
+  display: block;
+  color: var(--mist);
+  font-size: 0.88rem;
+}
+
+.status strong {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.status span {
+  color: var(--mist);
+  font-size: 0.88rem;
+}
+
+.num {
+  font-size: 0.92rem;
+  text-align: right;
+}
+
+
+
+/* STRIP */
+
+.strip {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  height: 14px;
+}
+
+.strip span {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--track);
+}
+
+.strip .s1 {
+  background: color-mix(in srgb, var(--c) 40%, var(--track));
+}
+
+.strip .s2 {
+  background: color-mix(in srgb, var(--c) 70%, var(--track));
+}
+
+.strip .s3 {
+  background: var(--c);
+}
+
+.strip .twilight {
+  background-image: repeating-linear-gradient(135deg, transparent 0 3px, var(--panel) 3px 5px);
+}
+
+.strip i {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: calc(var(--t) * 100%);
+  width: 2px;
+  border-radius: 1px;
+  background: var(--frost);
+}
+
+
+
+/* SUN */
+
+.sun-times {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  margin: 4px 16px 18px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  background: var(--rule);
+  overflow: hidden;
+}
+
+.sun-times div {
+  padding: 10px 12px;
+  background: var(--panel);
+}
+
+.sun-times dt {
+  color: var(--mist);
+  font-size: 0.88rem;
+}
+
+.sun-times dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+
+
+/* MEDIUM SCREENS */
+
+@media (max-width: 1100px) {
+  [data-mode="advanced"] .rows {
+    --columns: 30px minmax(140px, 1.3fr) minmax(120px, 1fr) minmax(120px, 1fr) 76px;
+  }
+
+  [data-mode="advanced"] .rows .num {
+    display: none;
+  }
+}
+
+
+
+/* SMALL SCREENS */
+
+@media (max-width: 720px) {
+  .rows,
+  [data-mode="advanced"] .rows {
+    --columns: 30px 1fr;
+  }
+
+  .rows > li {
+    row-gap: 6px;
+    padding: 12px 14px;
+  }
+
+  .rows > li.columns,
+  .rows .gear {
+    display: none;
+  }
+
+  .rows .object-icon {
+    align-self: start;
+  }
+
+  .rows .status,
+  .rows .strip {
+    grid-column: 2;
+  }
+
+  .rows .strip {
+    margin-top: 4px;
+  }
+
+  .sun-times {
+    grid-template-columns: 1fr 1fr;
+  }
+}

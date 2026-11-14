@@ -15,11 +15,70 @@
   --beak: #f5cf4f;
   --moon: #f6ead0;
   --berry: #6e1645;
+  --moon-dark: #2e2a66;
+
+  --panel: #121641;
+  --panel-raised: #181d50;
+  --rule: #272c68;
+  --track: #0b0d2b;
+
+  --sky-day: #5b58b4;
+  --sky-civil: #3d3994;
+  --sky-nautical: #262466;
+  --sky-astro: #161944;
+  --sky-night: #090b26;
+
+  --mercury: #bdb6cf;
+  --venus: #f4e3b2;
+  --mars: #e8875f;
+  --jupiter: #e7c79a;
+  --saturn: #ead18a;
+  --uranus: #8fd6d0;
+  --neptune: #7f9cf0;
+  --pluto: #c9a99a;
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Nunito Sans', system-ui, sans-serif;
 
   --gutter: clamp(20px, 6vw, 96px);
+}
+
+:root[data-light="red"] {
+  --zenith: #0b0202;
+  --high: #1a0504;
+  --horizon: #260806;
+  --far-hills: #340b08;
+  --snow: #d8503a;
+  --snow-shade: #b8402c;
+  --ink: #0b0202;
+  --frost: #ff6a50;
+  --mist: #e8553c;
+  --teal: #f0583e;
+  --bronze: #e0603e;
+  --beak: #ff7a5c;
+  --moon: #ff8a6c;
+  --berry: #4f1610;
+  --moon-dark: #3a0c08;
+
+  --panel: #170504;
+  --panel-raised: #200705;
+  --rule: #3c0f0a;
+  --track: #0b0202;
+
+  --sky-day: #5a160f;
+  --sky-civil: #43110b;
+  --sky-nautical: #2c0b07;
+  --sky-astro: #1a0604;
+  --sky-night: #0d0302;
+
+  --mercury: #d8503a;
+  --venus: #ff8a6c;
+  --mars: #e8553c;
+  --jupiter: #ff7a5c;
+  --saturn: #ff8a6c;
+  --uranus: #d8503a;
+  --neptune: #c0402c;
+  --pluto: #b8402c;
 }
 
 
