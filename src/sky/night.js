@@ -127,3 +127,23 @@ export function buildNight(place, index, now) {
     moonLit: Astronomy.Illumination('Moon', middle).phase_fraction,
   }
 }
+
+
+
+// UPCOMING NIGHTS
+
+export function upcomingNights(place, now, count) {
+  const first = nightStart(place, now)
+  const date = new Intl.DateTimeFormat('en-CA', { timeZone: place.timeZone })
+
+  return Array.from({ length: count }, (_, index) => {
+    const noon = new Date(first.getTime() + index * DAY)
+
+    return {
+      index,
+      noon,
+      date: date.format(noon),
+      moonAngle: Astronomy.MoonPhase(new Date(noon.getTime() + 9 * HOUR)),
+    }
+  })
+}

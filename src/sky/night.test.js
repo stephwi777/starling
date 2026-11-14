@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { SAMPLE_PLACE } from '../place/placeStorage.js'
-import { buildNight } from './night.js'
+import { buildNight, upcomingNights } from './night.js'
 
 
 
@@ -57,4 +57,12 @@ test('a far-north summer night has no full darkness and does not break', () => {
   expect(night.astroDusk).toBeNull()
   expect(night.nauticalDusk).toBeNull()
   expect(night.times.length).toBeGreaterThan(0)
+})
+
+test('upcoming nights list seven evenings with Moon phases', () => {
+  const nights = upcomingNights(SAMPLE_PLACE, NOW, 7)
+  expect(nights.length).toBe(7)
+  expect(nights[0]).toMatchObject({ index: 0, date: '2026-11-13' })
+  expect(nights[6].date).toBe('2026-11-19')
+  expect(nights[1].moonAngle).toBeGreaterThan(nights[0].moonAngle)
 })
