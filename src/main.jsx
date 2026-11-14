@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router'
 import './styles/reset.css'
 import './styles/theme.css'
 import { PlaceProvider } from './place/PlaceContext.jsx'
+import { SettingsProvider } from './settings/SettingsContext.jsx'
 import App from './App.jsx'
 
 
@@ -12,7 +13,9 @@ import App from './App.jsx'
 createRoot(document.getElementById('root')).render(
   <BrowserRouter basename={import.meta.env.BASE_URL}>
     <PlaceProvider>
-      <App />
+      <SettingsProvider>
+        <App />
+      </SettingsProvider>
     </PlaceProvider>
   </BrowserRouter>
 )
