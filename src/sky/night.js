@@ -40,9 +40,9 @@ function localParts(date, timeZone) {
 function localNoon(year, month, day, timeZone) {
   const guess = Date.UTC(year, month - 1, day, 12)
   const shown = localParts(new Date(guess), timeZone)
-  const shift = (shown.hour - 12) * HOUR + shown.minute * 60000
+  const offset = Date.UTC(shown.year, shown.month - 1, shown.day, shown.hour, shown.minute) - guess
 
-  return new Date(guess - shift)
+  return new Date(guess - offset)
 }
 
 function floorHour(date, timeZone) {
@@ -105,7 +105,7 @@ export function buildNight(place, index, now) {
     times.push(new Date(time))
   }
 
-  const twilight = (direction, altitude) => search(Astronomy.SearchAltitude('Sun', observer, direction, from, 1, altitude))
+  const twilight = (direction, altitude) => search(Astronomy.SearchAltitude('Sun', observer, direction, sunset ?? noon, 1, altitude))
   const middle = new Date(start.getTime() + 4 * HOUR)
 
   return {

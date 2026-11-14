@@ -66,3 +66,18 @@ test('upcoming nights list seven evenings with Moon phases', () => {
   expect(nights[6].date).toBe('2026-11-19')
   expect(nights[1].moonAngle).toBeGreaterThan(nights[0].moonAngle)
 })
+
+test('3am in Auckland still belongs to the night before', () => {
+  const auckland = { ...SAMPLE_PLACE, name: 'Auckland', latitude: -36.85, longitude: 174.76, timeZone: 'Pacific/Auckland' }
+  expect(upcomingNights(auckland, new Date('2026-11-13T14:00:00Z'), 1)[0].date).toBe('2026-11-13')
+})
+
+test('a polar night finds this evening’s darkness, not tomorrow’s', () => {
+  const tromso = { ...SAMPLE_PLACE, name: 'Tromsø', latitude: 69.65, longitude: 18.96, timeZone: 'Europe/Oslo' }
+  const night = buildNight(tromso, 0, new Date('2026-12-15T11:00:00Z'))
+  const hours = (night.astroDawn - night.astroDusk) / 3600000
+  expect(night.sunset).toBeNull()
+  expect(night.astroDusk.toISOString().slice(0, 10)).toBe('2026-12-15')
+  expect(hours).toBeGreaterThan(10)
+  expect(hours).toBeLessThan(16)
+})

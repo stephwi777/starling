@@ -57,6 +57,8 @@ function brightestPlanet(planets, best) {
 export function verdict({ night, clouds, best, planets, timeZone }) {
   if (!night.astroDusk) return 'It doesn’t get fully dark tonight.'
 
+  if (!best && !clouds) return 'Not dark for long tonight. Check the sky for clouds.'
+
   if (!best) {
     const known = (clouds ?? []).filter(value => value !== null)
     const average = known.reduce((sum, value) => sum + value, 0) / (known.length || 1)

@@ -86,3 +86,15 @@ test('a failed response throws so the page can show the fallback', async () => {
   const fetcher = async () => ({ ok: false, status: 500 })
   await expect(fetchWeather(SAMPLE_PLACE, undefined, fetcher)).rejects.toThrow()
 })
+
+test('a forecast full of gaps gives no readings instead of made-up ones', () => {
+  const gaps = fakeForecast({
+    cloud_cover: Array(48).fill(null),
+    temperature_2m: Array(48).fill(null),
+    wind_speed_10m: Array(48).fill(null),
+    relative_humidity_2m: Array(48).fill(null),
+    visibility: Array(48).fill(null),
+    wind_speed_250hPa: Array(48).fill(null),
+  })
+  expect(nightWeather(gaps, night, SAMPLE_PLACE.timeZone)).toEqual({ clouds: null, temp: null, wind: null, seeing: null, transparency: null })
+})

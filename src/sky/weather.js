@@ -98,14 +98,20 @@ export function nightWeather(raw, night, timeZone) {
 
   if (rows.every(row => row === -1)) return null
 
-  const pick = field => rows.map(row => (row === -1 ? null : hourly[field][row] ?? null))
+  const pick = field => rows.map(row => (row === -1 ? null : hourly[field]?.[row] ?? null))
   const evening = rows.find((row, h) => h >= 4 && row !== -1) ?? rows.find(row => row !== -1)
+  const clouds = pick('cloud_cover')
+  const temp = hourly.temperature_2m?.[evening] ?? null
+  const wind = hourly.wind_speed_10m?.[evening] ?? null
+  const jet = average(pick('wind_speed_250hPa'))
+  const humidity = average(pick('relative_humidity_2m'))
+  const visibility = average(pick('visibility'))
 
   return {
-    clouds: pick('cloud_cover'),
-    temp: `${Math.round(hourly.temperature_2m[evening])}${units.temperature_2m}`,
-    wind: windWords(hourly.wind_speed_10m[evening], units.wind_speed_10m),
-    seeing: seeingScore(average(pick('wind_speed_250hPa')), units.wind_speed_10m),
-    transparency: transparencyScore(average(pick('relative_humidity_2m')), average(pick('visibility')), units.visibility),
+    clouds: clouds.some(value => value !== null) ? clouds : null,
+    temp: temp === null ? null : `${Math.round(temp)}${units.temperature_2m}`,
+    wind: wind === null ? null : windWords(wind, units.wind_speed_10m),
+    seeing: jet === null ? null : seeingScore(jet, units.wind_speed_10m),
+    transparency: humidity === null ? null : transparencyScore(humidity, visibility ?? Infinity, units.visibility),
   }
 }

@@ -60,26 +60,26 @@ function Glance({ sky, status, timeZone }) {
 
       <div>
         <h2>Seeing</h2>
-        <strong>{weather ? SCALE[weather.seeing] : '—'}</strong>
+        <strong>{weather?.seeing ? SCALE[weather.seeing] : '—'}</strong>
         <p>
           <span className="hob">How steady the stars are</span>
-          <span className="adv">{weather ? `${weather.seeing} of 5, estimate` : 'No forecast'}</span>
+          <span className="adv">{weather?.seeing ? `${weather.seeing} of 5, estimate` : 'No forecast'}</span>
         </p>
       </div>
 
       <div>
         <h2>Transparency</h2>
-        <strong>{weather ? SCALE[weather.transparency] : '—'}</strong>
+        <strong>{weather?.transparency ? SCALE[weather.transparency] : '—'}</strong>
         <p>
           <span className="hob">How clear the air is</span>
-          <span className="adv">{weather ? `${weather.transparency} of 5, estimate` : 'No forecast'}</span>
+          <span className="adv">{weather?.transparency ? `${weather.transparency} of 5, estimate` : 'No forecast'}</span>
         </p>
       </div>
 
       <div>
         <h2>Outside</h2>
-        <strong>{weather ? weather.temp : '—'}</strong>
-        <p>{weather ? weather.wind : 'No forecast'}</p>
+        <strong>{weather?.temp ?? '—'}</strong>
+        <p>{weather?.wind ?? 'No forecast'}</p>
       </div>
     </section>
   )

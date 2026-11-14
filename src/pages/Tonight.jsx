@@ -149,7 +149,7 @@ function Tonight() {
         <section className="sky-view box" aria-labelledby="dome-title">
           <h2 id="dome-title">Looking up</h2>
           <SkyDome sky={sky} at={at} gear={gear} picked={picked} timeZone={timeZone} />
-          <div className="picked" aria-live="polite">
+          <div className="picked">
             <PickedObject object={chosen} sky={sky} at={at} timeZone={timeZone} />
           </div>
           <p className="tip">Hold this above your head with N toward north. East and west swap, just like the real sky.</p>

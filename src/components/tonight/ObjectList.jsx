@@ -56,7 +56,9 @@ function Category({ title, note, list, filters, empty, rowProps }) {
         </ul>
       )}
 
-      {shown.length === 0 && (empty ?? <p className="missing">Nothing matches right now. Try <strong>Everything</strong> or another time.</p>)}
+      {shown.length === 0 && list.length === 0 && empty}
+
+      {shown.length === 0 && list.length > 0 && <p className="missing">Nothing matches right now. Try <strong>Everything</strong> or another time.</p>}
 
       {shown.length > 0 && hidden.length > 0 && (
         <p className="missing">

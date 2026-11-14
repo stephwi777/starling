@@ -21,7 +21,7 @@ function SunTimes({ night, timeZone }) {
     <section className="category" aria-labelledby="sun-title">
       <header>
         <h2 id="sun-title">Sun and twilight</h2>
-        <p>{hours ? `Fully dark for ${hours} hours` : 'It doesn’t get fully dark tonight'}</p>
+        <p>{hours > 0 ? `Fully dark for ${hours} hours` : 'It doesn’t get fully dark tonight'}</p>
       </header>
 
       <dl className="sun-times">

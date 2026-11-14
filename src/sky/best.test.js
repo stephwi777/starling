@@ -74,3 +74,10 @@ test('a night that never gets fully dark says so', () => {
   expect(bestWindow(night, null)).toBeNull()
   expect(say(night, null)).toBe('It doesn’t get fully dark tonight.')
 })
+
+test('a short dark spell with no weather says to check for clouds', () => {
+  const sun = Array(24).fill(-10)
+  sun[5] = -20
+  sun[6] = -20
+  expect(say(makeNight(sun), null)).toBe('Not dark for long tonight. Check the sky for clouds.')
+})
