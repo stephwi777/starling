@@ -1,9 +1,10 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { usePlace } from '../place/usePlace.js'
 import { longName } from '../place/placeNames.js'
 import { useSettings } from '../settings/useSettings.js'
-import { upcomingNights } from '../sky/night.js'
+import { buildNight, upcomingNights } from '../sky/night.js'
+import { fetchWeather, nightWeather, skyWord } from '../sky/weather.js'
 import { useNight } from '../sky/useNight.js'
 import OptionSwitch from '../components/tonight/OptionSwitch.jsx'
 import NightPicker from '../components/tonight/NightPicker.jsx'
@@ -57,7 +58,10 @@ function Tonight() {
   const nights = useMemo(() => upcomingNights(place, now, 7), [place, now])
   const found = nights.findIndex(night => night.date === params.get('night'))
   const index = found === -1 ? 0 : found
-  const sky = useNight(place, index, null, now)
+  const placeKey = `${place.latitude} ${place.longitude}`
+  const [forecast, setForecast] = useState({ key: '', raw: null, status: 'loading' })
+  const current = forecast.key === placeKey ? forecast : { raw: null, status: 'loading' }
+  const sky = useNight(place, index, current.raw, now)
   const timeZone = place.timeZone
   const key = `${index} ${place.latitude} ${place.longitude}`
   const [time, setTime] = useState({ key, at: null })
@@ -65,6 +69,27 @@ function Tonight() {
   const [picked, setPicked] = useState('Saturn')
   const everything = [sky.moon, ...sky.planets, ...sky.stars, ...sky.shapes, ...sky.deep, ...sky.showers]
   const chosen = everything.find(object => object.name === picked)
+
+  const words = useMemo(() => {
+    if (!current.raw) return {}
+
+    return Object.fromEntries(nights.map(night => {
+      const weather = nightWeather(current.raw, buildNight(place, night.index, now), place.timeZone)
+      return [night.index, weather ? skyWord(weather.clouds) : null]
+    }))
+  }, [current.raw, nights, place, now])
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    fetchWeather(place, controller.signal)
+      .then(raw => setForecast({ key: placeKey, raw, status: 'ready' }))
+      .catch(() => {
+        if (!controller.signal.aborted) setForecast({ key: placeKey, raw: null, status: 'failed' })
+      })
+
+    return () => controller.abort()
+  }, [place, placeKey])
 
   const moveTo = next => setTime({ key, at: Math.max(0, Math.min(sky.night.times.length - 1, next)) })
 
@@ -102,13 +127,13 @@ function Tonight() {
 
       {/* NIGHTS */}
 
-      <NightPicker nights={nights} index={index} words={{}} timeZone={timeZone} onPick={pickNight} />
+      <NightPicker nights={nights} index={index} words={words} timeZone={timeZone} onPick={pickNight} />
 
 
 
       {/* GLANCE */}
 
-      <Glance sky={sky} status="failed" timeZone={timeZone} />
+      <Glance sky={sky} status={current.status} timeZone={timeZone} />
 
 
 

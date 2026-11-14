@@ -3,6 +3,7 @@ import { buildNight, observerFor } from './night.js'
 import { trackObject } from './tracks.js'
 import { activeShowers } from './meteors.js'
 import { bestWindow, verdict } from './best.js'
+import { nightWeather } from './weather.js'
 import { MOON, PLANETS } from './catalog/planets.js'
 import { STARS } from './catalog/stars.js'
 import { CONSTELLATIONS } from './catalog/constellations.js'
@@ -26,7 +27,7 @@ function nowIndexFor(night, now) {
 
 // HOOK
 
-export function useNight(place, index, weather, now) {
+export function useNight(place, index, forecast, now) {
   const sky = useMemo(() => {
     const night = buildNight(place, index, now)
     const observer = observerFor(place)
@@ -46,6 +47,7 @@ export function useNight(place, index, weather, now) {
   }, [place, index, now])
 
   return useMemo(() => {
+    const weather = forecast ? nightWeather(forecast, sky.night, place.timeZone) : null
     const clouds = weather?.clouds ?? null
     const best = bestWindow(sky.night, clouds)
 
@@ -56,5 +58,5 @@ export function useNight(place, index, weather, now) {
       best,
       verdict: verdict({ night: sky.night, clouds, best, planets: sky.planets, timeZone: place.timeZone }),
     }
-  }, [sky, weather, place.timeZone])
+  }, [sky, forecast, place.timeZone])
 }
