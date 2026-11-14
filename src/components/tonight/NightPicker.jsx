@@ -9,7 +9,7 @@ function NightPicker({ nights, index, words, timeZone, onPick }) {
   const day = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'short' })
 
   return (
-    <nav className="nights box" aria-label="Choose a night">
+    <div className="nights box" role="group" aria-label="Choose a night">
       {nights.map(night => (
         <button
           key={night.date}
@@ -22,7 +22,7 @@ function NightPicker({ nights, index, words, timeZone, onPick }) {
           <span>{words[night.index] ?? ''}</span>
         </button>
       ))}
-    </nav>
+    </div>
   )
 }
 

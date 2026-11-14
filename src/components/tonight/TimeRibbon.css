@@ -142,6 +142,14 @@
   white-space: nowrap;
 }
 
+.hours span:first-child {
+  transform: none;
+}
+
+.hours span:last-child {
+  transform: translateX(-100%);
+}
+
 
 
 /* KEY */
