@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en" data-surface="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: tonight almanac</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0b0d2b;
+      --frost: #eef0ff;
+      --mist: #b3b5e0;
+      --snow: #b8a9ea;
+      --ink: #1a1645;
+      --teal: #4cc3b0;
+      --bronze: #dba862;
+      --beak: #f5cf4f;
+      --moon: #f6ead0;
+      --moon-dark: #2e2a66;
+
+      --panel: #121641;
+      --panel-raised: #181d50;
+      --rule: #272c68;
+      --track: #0b0d2b;
+
+      --sky-day: #5b58b4;
+      --sky-civil: #3d3994;
+      --sky-nautical: #262466;
+      --sky-astro: #161944;
+      --sky-night: #090b26;
+
+      --sun: #f5cf4f;
+      --mercury: #bdb6cf;
+      --venus: #f4e3b2;
+      --mars: #e8875f;
+      --jupiter: #e7c79a;
+      --saturn: #ead18a;
+      --uranus: #8fd6d0;
+      --neptune: #7f9cf0;
+      --pluto: #c9a99a;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Nunito Sans', system-ui, sans-serif;
+
+      --gutter: clamp(16px, 4vw, 48px);
+      --radius: 12px;
+    }
+
+    :root[data-surface="slate"] {
+      --panel: #2a2e66;
+      --panel-raised: #343979;
+      --rule: #474c95;
+      --track: #1b1f52;
+      --mist: #cfd1f3;
+      --sky-night: #141844;
+      --radius: 16px;
+    }
+
+    :root[data-light="red"] {
+      --zenith: #0b0202;
+      --frost: #ff6a50;
+      --mist: #e8553c;
+      --snow: #d8503a;
+      --ink: #0b0202;
+      --teal: #f0583e;
+      --bronze: #e0603e;
+      --beak: #ff7a5c;
+      --moon: #ff8a6c;
+      --moon-dark: #3a0c08;
+      --panel: #170504;
+      --panel-raised: #200705;
+      --rule: #3c0f0a;
+      --track: #0b0202;
+      --sky-day: #5a160f;
+      --sky-civil: #43110b;
+      --sky-nautical: #2c0b07;
+      --sky-astro: #1a0604;
+      --sky-night: #0d0302;
+      --sun: #ff7a5c;
+      --mercury: #d8503a;
+      --venus: #ff8a6c;
+      --mars: #e8553c;
+      --jupiter: #ff7a5c;
+      --saturn: #ff8a6c;
+      --uranus: #d8503a;
+      --neptune: #c0402c;
+      --pluto: #b8402c;
+    }
+
+    :root[data-light="red"][data-surface="slate"] {
+      --panel: #2a0a07;
+      --panel-raised: #340d09;
+      --rule: #4f1610;
+      --track: #160403;
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.5;
+      font-variant-numeric: tabular-nums;
+    }
+
+    h1, h2, h3 {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    ul, ol {
+      padding: 0;
+      list-style: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--beak);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    .hidden-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    [data-mode="hobbyist"] .adv,
+    [data-mode="advanced"] .hob {
+      display: none;
+    }
+
+
+
+    /* MOCKUP BAR */
+
+    .mockup-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px 16px;
+      padding: 10px var(--gutter);
+      background: #f5cf4f;
+      color: #1a1645;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .mockup-bar button {
+      min-height: 36px;
+      padding: 4px 14px;
+      border: 2px solid #1a1645;
+      border-radius: 999px;
+      background: none;
+      color: #1a1645;
+      font-weight: 700;
+    }
+
+    .mockup-bar button[aria-pressed="true"] {
+      background: #1a1645;
+      color: #f5cf4f;
+    }
+
+
+
+    /* HEADER */
+
+    .site {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 28px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 18px var(--gutter);
+    }
+
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--snow);
+    }
+
+    .site nav {
+      display: flex;
+      gap: 20px;
+      color: var(--mist);
+    }
+
+    .site nav [aria-current] {
+      color: var(--frost);
+      text-decoration: underline 3px var(--beak);
+      text-underline-offset: 8px;
+    }
+
+    .site .place {
+      margin-left: auto;
+      min-height: 44px;
+      padding: 8px 18px;
+      border: 2px solid var(--rule);
+      border-radius: 999px;
+      background: none;
+      font-weight: 700;
+    }
+
+
+
+    /* PAGE */
+
+    main {
+      display: grid;
+      gap: 16px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 8px var(--gutter) 80px;
+    }
+
+    .box {
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+
+
+    /* INTRO */
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px 32px;
+      align-items: end;
+    }
+
+    .intro h1 {
+      font-size: 1.05rem;
+      color: var(--mist);
+    }
+
+    .verdict {
+      margin-top: 6px;
+      max-width: 52ch;
+      font-family: var(--font-display);
+      font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--moon);
+    }
+
+    .settings {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px 20px;
+    }
+
+
+
+    /* SWITCHES */
+
+    .switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .switch > span {
+      color: var(--mist);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .options {
+      display: inline-flex;
+      padding: 3px;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      background: var(--track);
+    }
+
+    .options button {
+      min-height: 40px;
+      padding: 6px 14px;
+      border: 0;
+      border-radius: 7px;
+      background: none;
+      color: var(--mist);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .options button[aria-pressed="true"] {
+      background: var(--frost);
+      color: var(--ink);
+    }
+
+
+
+    /* NIGHTS */
+
+    .nights {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      overflow: hidden;
+    }
+
+    .nights button {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 2px 10px;
+      min-height: 56px;
+      padding: 10px 14px;
+      border: 0;
+      border-left: 1px solid var(--rule);
+      background: none;
+      text-align: left;
+    }
+
+    .nights button:first-child {
+      border-left: 0;
+    }
+
+    .nights button[aria-pressed="true"] {
+      background: var(--panel-raised);
+      box-shadow: inset 0 -3px 0 var(--beak);
+    }
+
+    .nights svg {
+      grid-row: span 2;
+      width: 24px;
+    }
+
+    .nights strong {
+      font-size: 0.95rem;
+    }
+
+    .nights span {
+      color: var(--mist);
+      font-size: 0.85rem;
+    }
+
+
+
+    /* TILES */
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+    }
+
+    .tiles > div {
+      display: grid;
+      align-content: start;
+      gap: 2px;
+      padding: 14px 18px;
+      border-left: 1px solid var(--rule);
+    }
+
+    .tiles > div:first-child {
+      border-left: 0;
+    }
+
+    .tiles h2 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--mist);
+      font-weight: 600;
+    }
+
+    .tiles h2 svg {
+      width: 18px;
+    }
+
+    .tiles strong {
+      font-size: 1.15rem;
+    }
+
+    .tiles p {
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+
+
+    /* TIME */
+
+    .time {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      padding: 14px 18px 12px;
+    }
+
+    .time-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 16px;
+    }
+
+    .time-head h2 {
+      font-size: 1rem;
+    }
+
+    .time-head output {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--moon);
+    }
+
+    .time-head .step {
+      display: flex;
+      gap: 6px;
+      margin-left: auto;
+    }
+
+    .step button {
+      min-width: 44px;
+      min-height: 40px;
+      padding: 4px 12px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--track);
+      font-weight: 700;
+    }
+
+    .ribbon {
+      position: relative;
+      margin-top: 10px;
+    }
+
+    .sky-band {
+      position: relative;
+      height: 46px;
+      border-radius: 8px;
+      background: var(--sky-night);
+      overflow: hidden;
+    }
+
+    .sky-band .clouds {
+      position: absolute;
+      inset: auto 0 0;
+      display: flex;
+      gap: 2px;
+      height: 14px;
+    }
+
+    .sky-band .clouds span {
+      flex: 1;
+      background: color-mix(in srgb, var(--mist) calc(var(--cover) * 0.9%), transparent);
+    }
+
+    .sky-band .moon-up {
+      position: absolute;
+      top: 6px;
+      height: 4px;
+      border-radius: 999px;
+      background: var(--moon);
+    }
+
+    .sky-band .best {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-inline: 2px solid var(--beak);
+    }
+
+    .ribbon input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 46px;
+      margin: 0;
+      background: none;
+      appearance: none;
+      cursor: ew-resize;
+    }
+
+    .ribbon input::-webkit-slider-runnable-track {
+      height: 46px;
+      background: none;
+    }
+
+    .ribbon input::-webkit-slider-thumb {
+      appearance: none;
+      width: 6px;
+      height: 46px;
+      border-radius: 3px;
+      background: var(--frost);
+      box-shadow: 0 0 0 2px var(--zenith);
+    }
+
+    .ribbon input::-moz-range-thumb {
+      width: 6px;
+      height: 46px;
+      border: 0;
+      border-radius: 3px;
+      background: var(--frost);
+      box-shadow: 0 0 0 2px var(--zenith);
+    }
+
+    .ribbon input:focus-visible {
+      outline-offset: 3px;
+    }
+
+    .hours {
+      position: relative;
+      height: 22px;
+      margin-top: 4px;
+      color: var(--mist);
+      font-size: 0.82rem;
+    }
+
+    .hours span {
+      position: absolute;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    .hours span:first-child {
+      transform: none;
+    }
+
+    .hours span:last-child {
+      transform: translateX(-100%);
+    }
+
+    .key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 18px;
+      margin-top: 4px;
+      color: var(--mist);
+      font-size: 0.85rem;
+    }
+
+    .key span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .key i {
+      display: inline-block;
+      width: 16px;
+      height: 6px;
+      border-radius: 2px;
+    }
+
+
+
+    /* WORK AREA */
+
+    .work {
+      display: grid;
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .sky-view {
+      position: sticky;
+      top: 170px;
+      padding: 16px;
+    }
+
+    .sky-view h2 {
+      font-size: 1rem;
+    }
+
+    .dome {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      margin: 8px auto 0;
+    }
+
+    .dome text {
+      font-family: var(--font-body);
+    }
+
+    .sky-view .tip {
+      margin-top: 8px;
+      color: var(--mist);
+      font-size: 0.9rem;
+    }
+
+    .picked {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .picked h3 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--moon);
+    }
+
+    .picked p + p {
+      margin-top: 4px;
+    }
+
+
+
+    /* TOOLBAR */
+
+    .list {
+      overflow: clip;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 18px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--rule);
+      background: var(--panel-raised);
+    }
+
+    .search {
+      display: grid;
+      gap: 2px;
+      flex: 1 1 200px;
+    }
+
+    .search label {
+      color: var(--mist);
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .search input {
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--track);
+    }
+
+
+
+    /* CATEGORIES */
+
+    .category + .category {
+      border-top: 1px solid var(--rule);
+    }
+
+    .category > header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px 16px;
+      padding: 18px 16px 8px;
+    }
+
+    .category h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .category > header p {
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+    .rows {
+      display: grid;
+      grid-template-columns: 30px minmax(150px, 1.4fr) minmax(130px, 1fr) minmax(150px, 1.1fr) 76px;
+    }
+
+    [data-mode="advanced"] .rows {
+      grid-template-columns: 30px minmax(140px, 1.3fr) minmax(120px, 0.9fr) minmax(130px, 1fr) 76px 54px 70px 54px 96px;
+    }
+
+    .rows > li {
+      display: grid;
+      grid-template-columns: subgrid;
+      grid-column: 1 / -1;
+      align-items: center;
+      gap: 0 14px;
+      padding: 10px 16px;
+      border-top: 1px solid color-mix(in srgb, var(--rule) 70%, transparent);
+    }
+
+    .rows > li.head {
+      padding-block: 6px;
+      border-top: 0;
+      color: var(--mist);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .rows > li.down {
+      color: var(--mist);
+    }
+
+    .rows > li.down .icon {
+      opacity: 0.5;
+    }
+
+    .rows > li[aria-current="true"] {
+      background: var(--panel-raised);
+      box-shadow: inset 4px 0 0 var(--beak);
+    }
+
+    .icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    .name button {
+      padding: 0;
+      border: 0;
+      background: none;
+      font-weight: 800;
+      text-align: left;
+      text-decoration: underline 1px transparent;
+      text-underline-offset: 4px;
+    }
+
+    .name button:hover {
+      text-decoration-color: currentColor;
+    }
+
+    .name small {
+      display: block;
+      color: var(--mist);
+      font-size: 0.88rem;
+    }
+
+    .status strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .status span {
+      color: var(--mist);
+      font-size: 0.88rem;
+    }
+
+    .num {
+      text-align: right;
+      font-size: 0.92rem;
+    }
+
+    .gear {
+      display: flex;
+      gap: 4px;
+      color: var(--mist);
+    }
+
+    .gear svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .gear .on {
+      color: var(--frost);
+    }
+
+    .gear .off {
+      opacity: 0.3;
+    }
+
+    .strip {
+      position: relative;
+      display: flex;
+      gap: 2px;
+      height: 14px;
+    }
+
+    .strip span {
+      flex: 1;
+      border-radius: 2px;
+      background: var(--track);
+    }
+
+    .strip .s1 {
+      background: color-mix(in srgb, var(--c) 40%, var(--track));
+    }
+
+    .strip .s2 {
+      background: color-mix(in srgb, var(--c) 70%, var(--track));
+    }
+
+    .strip .s3 {
+      background: var(--c);
+    }
+
+    .strip .twilight {
+      background-image: repeating-linear-gradient(135deg, transparent 0 3px, var(--panel) 3px 5px);
+    }
+
+    .strip .mark {
+      position: absolute;
+      top: -4px;
+      bottom: -4px;
+      left: calc(var(--t) * 100%);
+      width: 2px;
+      border-radius: 1px;
+      background: var(--frost);
+    }
+
+    .missing {
+      padding: 10px 16px 18px;
+      color: var(--mist);
+      font-size: 0.95rem;
+    }
+
+    .missing strong {
+      color: var(--frost);
+    }
+
+    .missing a {
+      color: var(--beak);
+      font-weight: 700;
+    }
+
+
+
+    /* SUN */
+
+    .sun-times {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      margin: 4px 16px 18px;
+      border: 1px solid var(--rule);
+      border-radius: 8px;
+      background: var(--rule);
+      overflow: hidden;
+    }
+
+    .sun-times div {
+      padding: 10px 12px;
+      background: var(--panel);
+    }
+
+    .sun-times dt {
+      color: var(--mist);
+      font-size: 0.88rem;
+    }
+
+    .sun-times dd {
+      margin: 0;
+      font-weight: 800;
+    }
+
+
+
+    /* MEDIUM SCREENS */
+
+    @media (max-width: 1100px) {
+      .tiles {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .tiles > div:nth-child(4) {
+        border-left: 0;
+      }
+
+      .tiles > div:nth-child(n + 4) {
+        border-top: 1px solid var(--rule);
+      }
+
+      .work {
+        grid-template-columns: 1fr;
+      }
+
+      .sky-view {
+        position: static;
+        display: grid;
+        grid-template-columns: minmax(220px, 320px) 1fr;
+        gap: 4px 24px;
+        align-items: start;
+      }
+
+      .sky-view h2,
+      .sky-view > .tip {
+        grid-column: 1 / -1;
+      }
+
+      .picked {
+        align-self: center;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: 0;
+      }
+
+      [data-mode="advanced"] .rows {
+        grid-template-columns: 30px minmax(140px, 1.3fr) minmax(120px, 1fr) minmax(120px, 1fr) 76px;
+      }
+
+      [data-mode="advanced"] .rows .num {
+        display: none;
+      }
+    }
+
+
+
+    /* SMALL SCREENS */
+
+    @media (max-width: 720px) {
+      .site nav {
+        order: 3;
+        width: 100%;
+      }
+
+      .intro {
+        grid-template-columns: 1fr;
+      }
+
+      .settings {
+        justify-content: flex-start;
+      }
+
+      .nights button {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        padding: 8px 2px;
+        text-align: center;
+      }
+
+      .nights svg {
+        grid-row: auto;
+        width: 20px;
+      }
+
+      .nights strong {
+        font-size: 0.8rem;
+      }
+
+      .nights span {
+        font-size: 0.72rem;
+      }
+
+      .tiles {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tiles > div {
+        padding: 12px 14px;
+      }
+
+      .tiles > div:nth-child(odd) {
+        border-left: 0;
+      }
+
+      .tiles > div:nth-child(4) {
+        border-left: 1px solid var(--rule);
+      }
+
+      .tiles > div:nth-child(n + 3) {
+        border-top: 1px solid var(--rule);
+      }
+
+      .time {
+        margin-inline: calc(var(--gutter) * -1);
+        border-inline: 0;
+        border-radius: 0;
+      }
+
+      .time {
+        padding: 10px 14px 6px;
+      }
+
+      .time-head {
+        flex-wrap: nowrap;
+      }
+
+      .time-head h2 {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+      }
+
+      .time-head output {
+        font-size: 1.25rem;
+        white-space: nowrap;
+      }
+
+      .step button {
+        min-width: 42px;
+        padding: 4px 8px;
+        font-size: 0.92rem;
+      }
+
+      .ribbon {
+        margin-top: 8px;
+      }
+
+      .sky-band,
+      .ribbon input {
+        height: 40px;
+      }
+
+      .ribbon input::-webkit-slider-runnable-track,
+      .ribbon input::-webkit-slider-thumb {
+        height: 40px;
+      }
+
+      .key {
+        display: none;
+      }
+
+      .sky-view {
+        grid-template-columns: 1fr;
+      }
+
+      .picked {
+        padding-top: 12px;
+        border-top: 1px solid var(--rule);
+      }
+
+      .rows,
+      [data-mode="advanced"] .rows {
+        grid-template-columns: 30px 1fr;
+      }
+
+      .rows > li {
+        row-gap: 6px;
+        padding: 12px 14px;
+      }
+
+      .rows > li.head {
+        display: none;
+      }
+
+      .rows .icon {
+        align-self: start;
+      }
+
+      .rows .status,
+      .rows .strip {
+        grid-column: 2;
+      }
+
+      .rows .strip {
+        margin-top: 4px;
+      }
+
+      .rows .gear {
+        display: none;
+      }
+
+      [data-mode="advanced"] .rows .num {
+        display: none;
+      }
+
+      .sun-times {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body data-mode="hobbyist">
+
+
+
+  <!-- MOCKUP BAR -->
+
+  <div class="mockup-bar" role="group" aria-label="Mockup surface">
+    Mockup surface:
+    <button aria-pressed="true" data-surface="dark">Dark contained</button>
+    <button aria-pressed="false" data-surface="slate">Lifted slate</button>
+  </div>
+
+
+
+  <!-- HEADER -->
+
+  <header class="site">
+    <span class="logo">Starling</span>
+    <nav aria-label="Main">
+      <span aria-current="page">Tonight</span>
+      <span>Calendar</span>
+      <span>Map</span>
+      <span>Learn</span>
+    </nav>
+    <button class="place">Kansas City, MO</button>
+  </header>
+
+
+
+  <main>
+
+
+
+    <!-- INTRO -->
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">Tonight, <span id="night-date"></span> · Kansas City, Missouri</h1>
+        <p class="verdict" id="verdict" aria-live="polite"></p>
+      </div>
+
+      <div class="settings">
+        <div class="switch" role="group" aria-labelledby="mode-label">
+          <span id="mode-label">Detail</span>
+          <span class="options" id="mode">
+            <button aria-pressed="true" data-value="hobbyist">Hobbyist</button>
+            <button aria-pressed="false" data-value="advanced">Advanced</button>
+          </span>
+        </div>
+
+        <div class="switch" role="group" aria-labelledby="light-label">
+          <span id="light-label">Screen</span>
+          <span class="options" id="light">
+            <button aria-pressed="true" data-value="normal">Normal</button>
+            <button aria-pressed="false" data-value="red">Red light</button>
+          </span>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- NIGHTS -->
+
+    <nav class="nights box" id="nights" aria-label="Choose a night"></nav>
+
+
+
+    <!-- AT A GLANCE -->
+
+    <section class="tiles box" id="tiles" aria-label="Tonight at a glance"></section>
+
+
+
+    <!-- TIME -->
+
+    <section class="time box" aria-labelledby="time-title">
+      <div class="time-head">
+        <h2 id="time-title">Sky at</h2>
+        <output id="time-out" for="time-input"></output>
+        <div class="step">
+          <button id="back" aria-label="One hour earlier">−1h</button>
+          <button id="now">Now</button>
+          <button id="best">Best</button>
+          <button id="ahead" aria-label="One hour later">+1h</button>
+        </div>
+      </div>
+
+      <div class="ribbon">
+        <div class="sky-band" id="sky-band" aria-hidden="true"></div>
+        <input id="time-input" type="range" min="0" max="100" step="1" aria-label="Time of night">
+      </div>
+
+      <div class="hours" id="hours" aria-hidden="true"></div>
+
+      <p class="key" aria-hidden="true">
+        <span><i style="background: linear-gradient(90deg, var(--sky-day), var(--sky-night))"></i>Sky going dark</span>
+        <span><i style="background: var(--moon)"></i>Moon up</span>
+        <span><i style="background: var(--mist)"></i>Clouds</span>
+        <span><i style="background: none; border-inline: 2px solid var(--beak); height: 12px"></i>Best window</span>
+      </p>
+    </section>
+
+
+
+    <!-- WORK AREA -->
+
+    <div class="work">
+
+
+
+      <!-- SKY VIEW -->
+
+      <section class="sky-view box" aria-labelledby="dome-title">
+        <h2 id="dome-title">Looking up</h2>
+        <svg class="dome" id="dome" viewBox="-175 -175 350 350" role="img"></svg>
+        <div class="picked" id="picked" aria-live="polite"></div>
+        <p class="tip">Hold this above your head with N toward north. East and west swap, just like the real sky.</p>
+      </section>
+
+
+
+      <!-- OBJECTS -->
+
+      <section class="list box" aria-labelledby="list-title">
+        <h2 id="list-title" class="hidden-text">Everything in the sky tonight</h2>
+
+        <div class="toolbar">
+          <div class="search">
+            <label for="find">Find an object</label>
+            <input id="find" type="search" placeholder="Saturn, M31, Orion…" autocomplete="off">
+          </div>
+
+          <div class="switch" role="group" aria-labelledby="show-label">
+            <span id="show-label">Show</span>
+            <span class="options" id="show">
+              <button aria-pressed="false" data-value="now">Up now</button>
+              <button aria-pressed="true" data-value="tonight">Tonight</button>
+              <button aria-pressed="false" data-value="all">Everything</button>
+            </span>
+          </div>
+
+          <div class="switch" role="group" aria-labelledby="gear-label">
+            <span id="gear-label">I'm using</span>
+            <span class="options" id="gear">
+              <button aria-pressed="true" data-value="3">Anything</button>
+              <button aria-pressed="false" data-value="1">Eyes</button>
+              <button aria-pressed="false" data-value="2">Binoculars</button>
+            </span>
+          </div>
+        </div>
+
+        <div id="categories"></div>
+      </section>
+    </div>
+  </main>
+
+
+
+  <script>
+    // PLACE
+
+    const A = Astronomy
+    const TZ = 'America/Chicago'
+    const observer = new A.Observer(39.1, -94.58, 270)
+    const STEP = 10 * 60 * 1000
+
+
+
+    // SAMPLE WEATHER
+
+    const weather = [
+      { clouds: [0, 0, 5, 5, 0, 0, 10, 20, 45, 70, 50, 20, 5, 0, 0, 0], seeing: 3, transparency: 4, temp: '38°F', wind: 'Light wind' },
+      { clouds: [0, 0, 0, 0, 0, 0, 0, 5, 5, 5, 0, 0, 0, 0, 0, 0], seeing: 4, transparency: 4, temp: '41°F', wind: 'Calm' },
+      { clouds: [60, 70, 60, 50, 40, 30, 20, 10, 10, 20, 30, 30, 20, 10, 10, 10], seeing: 2, transparency: 3, temp: '45°F', wind: 'Breezy' },
+      { clouds: [95, 95, 100, 100, 100, 95, 90, 95, 100, 100, 95, 90, 90, 95, 95, 95], seeing: 2, transparency: 1, temp: '48°F', wind: 'Rain possible' },
+      { clouds: [80, 80, 70, 70, 60, 50, 35, 20, 10, 5, 5, 0, 0, 0, 0, 0], seeing: 3, transparency: 3, temp: '36°F', wind: 'Calm' },
+      { clouds: [0, 0, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 5, 5, 5], seeing: 4, transparency: 5, temp: '34°F', wind: 'Calm' },
+      { clouds: [10, 10, 5, 0, 0, 0, 0, 5, 10, 10, 5, 0, 0, 0, 0, 0], seeing: 3, transparency: 4, temp: '39°F', wind: 'Light wind' },
+    ]
+
+    const words5 = ['', 'Bad', 'Poor', 'Average', 'Good', 'Excellent']
+
+
+
+    // OBJECTS
+
+    const planets = [
+      { name: 'Mercury', body: 'Mercury', color: '--mercury', gear: 1, hint: 'Hard to catch, always low near sunrise or sunset.' },
+      { name: 'Venus', body: 'Venus', color: '--venus', gear: 1, hint: 'The brightest point in the sky after the Moon.' },
+      { name: 'Mars', body: 'Mars', color: '--mars', gear: 1, hint: 'A steady orange-red dot.' },
+      { name: 'Jupiter', body: 'Jupiter', color: '--jupiter', gear: 1, hint: 'Very bright and steady. Binoculars show its moons.' },
+      { name: 'Saturn', body: 'Saturn', color: '--saturn', gear: 1, hint: 'A steady golden dot. A small telescope shows the rings.' },
+      { name: 'Uranus', body: 'Uranus', color: '--uranus', gear: 2, hint: 'A faint blue-green dot, just visible from a dark site.' },
+      { name: 'Neptune', body: 'Neptune', color: '--neptune', gear: 3, hint: 'A tiny blue dot in a telescope.' },
+      { name: 'Pluto', body: 'Pluto', color: '--pluto', gear: 3, hint: 'Needs a large telescope and a finder chart.' },
+    ]
+
+    const stars = [
+      { name: 'Sirius', ra: 6.752, dec: -16.72, mag: -1.46, con: 'Canis Major', hint: 'The brightest star. It twinkles in many colors when low.' },
+      { name: 'Capella', ra: 5.278, dec: 46.0, mag: 0.08, con: 'Auriga', hint: 'A bright yellow star high in the northeast.' },
+      { name: 'Vega', ra: 18.616, dec: 38.78, mag: 0.03, con: 'Lyra', hint: 'A bright blue-white star, low in the west by late evening.' },
+      { name: 'Arcturus', ra: 14.261, dec: 19.18, mag: -0.05, con: 'Boötes', hint: 'An orange star of the morning sky.' },
+      { name: 'Rigel', ra: 5.242, dec: -8.2, mag: 0.13, con: 'Orion', hint: 'Orion’s blue-white foot.' },
+      { name: 'Betelgeuse', ra: 5.919, dec: 7.41, mag: 0.5, con: 'Orion', hint: 'Orion’s orange-red shoulder.' },
+      { name: 'Aldebaran', ra: 4.599, dec: 16.51, mag: 0.85, con: 'Taurus', hint: 'The orange eye of Taurus the bull.' },
+      { name: 'Altair', ra: 19.846, dec: 8.87, mag: 0.77, con: 'Aquila', hint: 'Part of the Summer Triangle, setting in the west.' },
+      { name: 'Deneb', ra: 20.69, dec: 45.28, mag: 1.25, con: 'Cygnus', hint: 'The tail of Cygnus the swan.' },
+      { name: 'Fomalhaut', ra: 22.961, dec: -29.62, mag: 1.16, con: 'Piscis Austrinus', hint: 'A lonely bright star low in the south.' },
+      { name: 'Procyon', ra: 7.655, dec: 5.22, mag: 0.34, con: 'Canis Minor', hint: 'Rises before Sirius in the east.' },
+      { name: 'Pollux', ra: 7.755, dec: 28.03, mag: 1.14, con: 'Gemini', hint: 'The brighter twin of Gemini.' },
+      { name: 'Castor', ra: 7.577, dec: 31.89, mag: 1.58, con: 'Gemini', hint: 'The other twin, just above Pollux.' },
+      { name: 'Regulus', ra: 10.139, dec: 11.97, mag: 1.35, con: 'Leo', hint: 'The heart of Leo the lion.' },
+      { name: 'Polaris', ra: 2.53, dec: 89.26, mag: 1.98, con: 'Ursa Minor', hint: 'The North Star. It stays put while the sky turns.' },
+      { name: 'Spica', ra: 13.42, dec: -11.16, mag: 0.98, con: 'Virgo', hint: 'A blue-white star of spring evenings.' },
+      { name: 'Antares', ra: 16.49, dec: -26.43, mag: 1.06, con: 'Scorpius', hint: 'The red heart of the scorpion.' },
+    ]
+
+    const figures = {
+      Cassiopeia: [[[0.153, 59.15], [0.675, 56.54], [0.945, 60.72], [1.43, 60.24], [1.907, 63.67]]],
+      Orion: [[[5.919, 7.41], [5.419, 6.35], [5.533, -0.3], [5.242, -8.2]], [[5.919, 7.41], [5.679, -1.94], [5.796, -9.67]], [[5.679, -1.94], [5.604, -1.2], [5.533, -0.3]]],
+      'Big Dipper': [[[11.062, 61.75], [11.031, 56.38], [11.897, 53.69], [12.257, 57.03], [11.062, 61.75]], [[12.257, 57.03], [12.9, 55.96], [13.399, 54.93], [13.792, 49.31]]],
+      Cygnus: [[[20.69, 45.28], [20.37, 40.26], [19.512, 27.96]], [[19.75, 45.13], [20.37, 40.26], [20.77, 33.97]]],
+      'Great Square': [[[23.079, 15.21], [23.063, 28.08], [0.14, 29.09], [0.221, 15.18], [23.079, 15.21]]],
+      Andromeda: [[[0.14, 29.09], [1.162, 35.62], [2.065, 42.33]]],
+      Taurus: [[[5.438, 28.61], [4.477, 19.18], [4.33, 15.63], [4.599, 16.51], [5.627, 21.14]]],
+      Gemini: [[[7.577, 31.89], [7.755, 28.03]]],
+      Leo: [[[10.139, 11.97], [10.333, 19.84], [11.235, 20.52], [11.818, 14.57], [10.139, 11.97]]],
+      Scorpius: [[[16.49, -26.43], [16.0, -22.62], [16.836, -34.29]]],
+    }
+
+    const shapes = [
+      { name: 'Cassiopeia', hint: 'A big W or M, high in the north.' },
+      { name: 'Orion', hint: 'Three stars in a row make the hunter’s belt.' },
+      { name: 'Big Dipper', hint: 'A ladle low in the north. Its end points to Polaris.' },
+      { name: 'Cygnus', hint: 'The Northern Cross, sinking in the west.' },
+      { name: 'Great Square', hint: 'Four stars making a giant square, high in the south.' },
+      { name: 'Andromeda', hint: 'A line of stars leading to the Andromeda Galaxy.' },
+      { name: 'Taurus', hint: 'A V of stars with orange Aldebaran.' },
+      { name: 'Gemini', hint: 'Two bright stars side by side, the twins.' },
+      { name: 'Leo', hint: 'A backward question mark, rising after midnight.' },
+      { name: 'Scorpius', hint: 'A curling scorpion of summer.' },
+    ].map((shape) => {
+      const points = figures[shape.name].flat()
+      return { ...shape, ra: points.reduce((sum, p) => sum + p[0], 0) / points.length, dec: points.reduce((sum, p) => sum + p[1], 0) / points.length, mag: 1.5 }
+    })
+
+    shapes.find((shape) => shape.name === 'Cassiopeia').ra = 0.95
+    shapes.find((shape) => shape.name === 'Great Square').ra = 23.6
+
+    const deep = [
+      { name: 'Pleiades', id: 'M45', kind: 'cluster', ra: 3.783, dec: 24.12, mag: 1.6, gear: 1, size: '110′', hint: 'A tiny misty dipper of six stars. Binoculars show dozens.' },
+      { name: 'Andromeda Galaxy', id: 'M31', kind: 'galaxy', ra: 0.712, dec: 41.27, mag: 3.4, gear: 1, size: '3°', hint: 'A faint oval smudge. Look just beside it, not straight at it.' },
+      { name: 'Orion Nebula', id: 'M42', kind: 'nebula', ra: 5.588, dec: -5.39, mag: 4.0, gear: 1, size: '65′', hint: 'The fuzzy middle star of Orion’s sword.' },
+      { name: 'Double Cluster', id: 'C14', kind: 'cluster', ra: 2.333, dec: 57.13, mag: 3.7, gear: 2, size: '60′', hint: 'Two sparkling clusters side by side.' },
+      { name: 'Beehive Cluster', id: 'M44', kind: 'cluster', ra: 8.667, dec: 19.98, mag: 3.7, gear: 2, size: '95′', hint: 'A swarm of stars in Cancer, up after midnight.' },
+      { name: 'Triangulum Galaxy', id: 'M33', kind: 'galaxy', ra: 1.564, dec: 30.66, mag: 5.7, gear: 2, size: '70′', hint: 'A large, very faint glow. Needs dark skies.' },
+      { name: 'Hercules Cluster', id: 'M13', kind: 'globular', ra: 16.695, dec: 36.46, mag: 5.8, gear: 2, size: '20′', hint: 'A fuzzy ball of old stars, low in the northwest.' },
+      { name: 'Dumbbell Nebula', id: 'M27', kind: 'planetary', ra: 19.993, dec: 22.72, mag: 7.5, gear: 2, size: '8′', hint: 'A small gray apple-core shape.' },
+      { name: 'Auriga clusters', id: 'M37', kind: 'cluster', ra: 5.873, dec: 32.55, mag: 6.2, gear: 2, size: '24′', hint: 'Three soft clusters in a row in Auriga.' },
+      { name: 'M35', id: 'M35', kind: 'cluster', ra: 6.149, dec: 24.33, mag: 5.3, gear: 2, size: '28′', hint: 'A rich cluster at the feet of Gemini.' },
+      { name: 'Pegasus Cluster', id: 'M15', kind: 'globular', ra: 21.5, dec: 12.17, mag: 6.2, gear: 2, size: '18′', hint: 'A bright fuzzy star west of the Great Square.' },
+      { name: 'Ring Nebula', id: 'M57', kind: 'planetary', ra: 18.893, dec: 33.03, mag: 8.8, gear: 3, size: '1.4′', hint: 'A small gray smoke ring. Use medium power.' },
+      { name: 'Crab Nebula', id: 'M1', kind: 'nebula', ra: 5.575, dec: 22.01, mag: 8.4, gear: 3, size: '6′', hint: 'A faint ghostly patch near the bull’s horn.' },
+      { name: 'Bode’s Galaxy', id: 'M81', kind: 'galaxy', ra: 9.926, dec: 69.07, mag: 6.9, gear: 3, size: '26′', hint: 'Pairs with the Cigar Galaxy in one view.' },
+      { name: 'Cigar Galaxy', id: 'M82', kind: 'galaxy', ra: 9.931, dec: 69.68, mag: 8.4, gear: 3, size: '11′', hint: 'A thin bright sliver next to M81.' },
+      { name: 'Whirlpool Galaxy', id: 'M51', kind: 'galaxy', ra: 13.498, dec: 47.2, mag: 8.4, gear: 3, size: '11′', hint: 'Two round glows touching. Best in spring.' },
+      { name: 'Albireo', id: 'β Cyg', kind: 'double', ra: 19.512, dec: 27.96, mag: 3.1, gear: 3, size: '35″', hint: 'A gold and blue pair of stars.' },
+      { name: 'Veil Nebula', id: 'C33', kind: 'nebula', ra: 20.94, dec: 31.7, mag: 7.0, gear: 3, size: '3°', hint: 'Faint wisps. Needs a nebula filter.' },
+      { name: 'Lagoon Nebula', id: 'M8', kind: 'nebula', ra: 18.06, dec: -24.38, mag: 6.0, gear: 2, size: '90′', hint: 'A summer nebula, very low in the southwest at dusk.' },
+      { name: 'Omega Centauri', id: 'C80', kind: 'globular', ra: 13.447, dec: -47.48, mag: 3.9, gear: 1, size: '36′', hint: 'Too far south to see from here.' },
+    ]
+
+    const showers = [
+      { name: 'Leonids', ra: 10.13, dec: 21.6, rate: '~5 an hour', zhr: 15, peak: 'Peaks Tue, Nov 17', speed: '71 km/s', hint: 'Fast, bright streaks. Best before dawn.' },
+      { name: 'Northern Taurids', ra: 3.9, dec: 22.6, rate: '~3 an hour', zhr: 5, peak: 'Peaked Nov 12', speed: '29 km/s', hint: 'Slow, sometimes bright fireballs.' },
+    ]
+
+    const satellites = [
+      { name: 'Space Station', passes: [[1.8, 'Bright, 5 min, W to NE'], [3.4, 'Faint, 2 min, low SW']], mag: -3.4, hint: 'A steady bright star moving fast, no blinking.' },
+      { name: 'Tiangong', passes: [[2.25, 'Fair, 3 min, SW to E']], mag: -1.2, hint: 'China’s space station, a little fainter than the ISS.' },
+      { name: 'Hubble', passes: [], mag: 1.5, hint: 'Only passes over places closer to the equator.' },
+    ]
+
+
+
+    // TIME WORDS
+
+    const timeFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' })
+    const hourFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric' })
+    const dayFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'short' })
+    const dateFormat = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'long', month: 'long', day: 'numeric' })
+
+    function clock(date) {
+      return timeFormat.format(date).replace(':00', '').replace(' PM', 'pm').replace(' AM', 'am')
+    }
+
+    function hourLabel(date) {
+      return hourFormat.format(date).replace(' PM', 'pm').replace(' AM', 'am')
+    }
+
+    const points = ['north', 'north-northeast', 'northeast', 'east-northeast', 'east', 'east-southeast', 'southeast', 'south-southeast', 'south', 'south-southwest', 'southwest', 'west-southwest', 'west', 'west-northwest', 'northwest', 'north-northwest']
+    const shortPoints = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+
+    function compass(az) {
+      return points[Math.round(az / 22.5) % 16]
+    }
+
+    function height(alt) {
+      if (alt < 10) return 'on the horizon'
+      if (alt < 25) return 'low'
+      if (alt < 55) return 'halfway up'
+      if (alt < 75) return 'high'
+      return 'nearly overhead'
+    }
+
+    function fists(alt) {
+      const count = Math.max(1, Math.round(alt / 10))
+      return count === 1 ? '1 fist up' : `${count} fists up`
+    }
+
+    function where(alt, az) {
+      if (alt >= 75) return 'Nearly overhead'
+      const word = height(alt)
+      return `${word[0].toUpperCase()}${word.slice(1)} in the ${compass(az)}`
+    }
+
+
+
+    // NIGHT
+
+    let night = null
+    let at = 0
+    let picked = 'Saturn'
+    let show = 'tonight'
+    let gear = 3
+
+    function buildNight(index) {
+      const noon = new Date(Date.UTC(2026, 10, 13 + index, 18))
+      const sunset = A.SearchRiseSet('Sun', observer, -1, noon, 1).date
+      const sunrise = A.SearchRiseSet('Sun', observer, 1, sunset, 1).date
+      const start = new Date(Math.floor(sunset / 3600000) * 3600000)
+      const end = new Date(Math.ceil(sunrise / 3600000) * 3600000)
+      const times = []
+
+      for (let t = start.getTime(); t <= end.getTime(); t += STEP) times.push(new Date(t))
+
+      const twilight = (alt, dir, from) => A.SearchAltitude('Sun', observer, dir, from, 1, alt)?.date
+      const sun = times.map((t) => altAz({ body: 'Sun' }, t).alt)
+      const hours = Math.round((end - start) / 3600000)
+      const clouds = weather[index].clouds.slice(0, hours)
+
+      const result = {
+        index, start, end, times, sun, hours, clouds, weather: weather[index],
+        sunset, sunrise,
+        civilDusk: twilight(-6, -1, sunset), nauticalDusk: twilight(-12, -1, sunset), astroDusk: twilight(-18, -1, sunset),
+        astroDawn: twilight(-18, 1, sunset), nauticalDawn: twilight(-12, 1, sunset), civilDawn: twilight(-6, 1, sunset),
+      }
+
+      result.moon = describe({ name: 'Moon', body: 'Moon', color: '--moon', gear: 1, kind: 'moon', hint: 'Binoculars show craters along the edge of the shadow.' }, result)
+      result.planets = planets.map((p) => describe({ ...p, kind: 'planet' }, result))
+      result.stars = stars.map((s) => describe({ ...s, kind: 'star', gear: 1, color: '--frost' }, result))
+      result.shapes = shapes.map((s) => describe({ ...s, kind: 'shape', gear: 1, color: '--snow' }, result))
+      result.deep = deep.map((d) => describe({ ...d, color: '--snow' }, result))
+      result.showers = showers.map((s) => describe({ ...s, kind: 'shower', gear: 1, color: '--bronze', mag: 0 }, result))
+      result.best = bestWindow(result)
+
+      const moonMid = new Date(start.getTime() + 4 * 3600000)
+      result.moonLit = A.Illumination('Moon', moonMid).phase_fraction
+      result.moonAngle = A.MoonPhase(moonMid)
+
+      return result
+    }
+
+    function altAz(obj, date) {
+      if (obj.body) {
+        const eq = A.Equator(obj.body, date, observer, true, true)
+        const hor = A.Horizon(date, observer, eq.ra, eq.dec, 'normal')
+        return { alt: hor.altitude, az: hor.azimuth, ra: eq.ra, dec: eq.dec }
+      }
+      const hor = A.Horizon(date, observer, obj.ra, obj.dec, 'normal')
+      return { alt: hor.altitude, az: hor.azimuth, ra: obj.ra, dec: obj.dec }
+    }
+
+    function describe(obj, n) {
+      const track = n.times.map((t) => altAz(obj, t))
+      const dark = n.sun.map((alt) => alt < -12)
+      const usable = track.map((p, i) => p.alt > (obj.gear === 3 ? 15 : 8) && n.sun[i] < -8)
+      const visible = usable.some(Boolean)
+      let bestIndex = 0
+
+      track.forEach((p, i) => {
+        if (n.sun[i] < -8 && p.alt > track[bestIndex].alt) bestIndex = i
+        if (n.sun[bestIndex] >= -8 && n.sun[i] < -8) bestIndex = i
+      })
+
+      let rise = null
+      let set = null
+
+      for (let i = 1; i < track.length; i++) {
+        if (rise === null && track[i - 1].alt <= 0 && track[i].alt > 0) rise = i
+        if (set === null && track[i - 1].alt > 0 && track[i].alt <= 0) set = i
+      }
+
+      let reason = ''
+      if (!visible) {
+        if (track.every((p) => p.alt <= 0)) reason = 'below the horizon all night'
+        else if (obj.body && A.AngleFromSun(obj.body, n.times[0]) < 20) reason = 'too close to the Sun'
+        else reason = 'only up in twilight'
+      }
+
+      const cells = []
+      for (let h = 0; h < n.hours; h++) {
+        const slice = track.slice(h * 6, h * 6 + 6)
+        const top = Math.max(...slice.map((p) => p.alt))
+        const level = top <= 0 ? 0 : top < 20 ? 1 : top < 50 ? 2 : 3
+        cells.push({ level, twilight: !dark[Math.min(h * 6 + 3, dark.length - 1)] })
+      }
+
+      const transit = track.reduce((best, p, i) => (p.alt > track[best].alt ? i : best), 0)
+      const mag = obj.body ? A.Illumination(obj.body, n.times[bestIndex]).mag : obj.mag
+
+      return { ...obj, track, visible, reason, bestIndex, rise, set, transit, cells, mag }
+    }
+
+    function bestWindow(n) {
+      let best = null
+      let run = null
+
+      n.times.forEach((t, i) => {
+        const hour = Math.min(Math.floor(i / 6), n.clouds.length - 1)
+        const good = n.sun[i] < -18 && n.clouds[hour] < 40
+        if (good && !run) run = { from: i, to: i }
+        if (good) run.to = i
+        if ((!good || i === n.times.length - 1) && run) {
+          if (!best || run.to - run.from > best.to - best.from) best = run
+          run = null
+        }
+      })
+
+      return best && best.to - best.from >= 3 ? best : null
+    }
+
+
+
+    // VERDICT
+
+    function verdict(n) {
+      if (!n.best) {
+        const average = n.clouds.reduce((sum, c) => sum + c, 0) / n.clouds.length
+        if (average > 70) return 'Cloudy all night. A good night to plan instead.'
+        return 'Clouds come and go all night. Watch for clear breaks.'
+      }
+
+      const startsAtDark = n.sun[n.best.from - 1] >= -18
+      const endsAtDawn = n.sun[n.best.to + 1] >= -18
+      const from = clock(startsAtDark ? n.astroDusk : n.times[n.best.from])
+      const to = endsAtDawn ? 'dawn' : clock(n.times[n.best.to])
+      const mid = Math.round((n.best.from + n.best.to) / 2)
+      const star = [...n.planets].filter((p) => p.gear === 1 && p.track[mid].alt > 15).sort((a, b) => a.mag - b.mag)[0]
+      const extra = star ? ` ${star.name} is the brightest planet up.` : ''
+
+      if (n.moonLit > 0.6) return `Clear and dark from ${from} to ${to}, but the Moon is bright.${extra}`
+      return `Clear and dark from ${from} to ${to}.${extra}`
+    }
+
+
+
+    // ICONS
+
+    function moonIcon(angle, r) {
+      const lit = (1 - Math.cos((angle * Math.PI) / 180)) / 2
+      const waxing = angle < 180
+      const rx = r * Math.abs(1 - 2 * lit)
+      const inner = lit < 0.5 ? (waxing ? 0 : 1) : (waxing ? 1 : 0)
+      const outer = waxing ? 1 : 0
+      return `<circle r="${r}" fill="var(--moon-dark)" /><path d="M0 ${-r} A${r} ${r} 0 0 ${outer} 0 ${r} A${rx} ${r} 0 0 ${inner} 0 ${-r} Z" fill="var(--moon)" />`
+    }
+
+    function icon(obj) {
+      const c = `var(${obj.color})`
+      const kinds = {
+        planet: obj.name === 'Saturn'
+          ? `<ellipse rx="11" ry="3.5" fill="none" stroke="${c}" stroke-width="2" transform="rotate(-18)" /><circle r="6" fill="${c}" />`
+          : obj.name === 'Jupiter'
+            ? `<circle r="8" fill="${c}" /><path d="M-7.5 -2.5 H7.5 M-7.5 2.5 H7.5" stroke="var(--panel)" stroke-width="1.5" />`
+            : `<circle r="${obj.gear === 3 ? 4 : 7}" fill="${c}" />`,
+        star: `<path d="M0 -9 Q1.5 -1.5 9 0 Q1.5 1.5 0 9 Q-1.5 1.5 -9 0 Q-1.5 -1.5 0 -9 Z" fill="var(--frost)" />`,
+        shape: `<path d="M-9 -5 L-3 4 L2 -3 L9 5" fill="none" stroke="var(--snow)" stroke-width="1.5" /><circle cx="-9" cy="-5" r="2.2" fill="var(--frost)" /><circle cx="-3" cy="4" r="2.2" fill="var(--frost)" /><circle cx="2" cy="-3" r="2.2" fill="var(--frost)" /><circle cx="9" cy="5" r="2.2" fill="var(--frost)" />`,
+        cluster: `<circle cx="-4" cy="-3" r="2.2" fill="var(--frost)" /><circle cx="3" cy="-5" r="1.8" fill="var(--frost)" /><circle cx="5" cy="2" r="2.2" fill="var(--frost)" /><circle cx="-2" cy="5" r="1.8" fill="var(--frost)" /><circle cx="-7" cy="3" r="1.4" fill="var(--frost)" />`,
+        galaxy: `<ellipse rx="10" ry="4" fill="var(--snow)" opacity="0.55" transform="rotate(-25)" /><ellipse rx="4" ry="2" fill="var(--frost)" transform="rotate(-25)" />`,
+        nebula: `<circle r="8" fill="var(--snow)" opacity="0.35" /><circle cx="2" cy="-1" r="4.5" fill="var(--snow)" opacity="0.6" />`,
+        planetary: `<circle r="6.5" fill="none" stroke="var(--teal)" stroke-width="3" />`,
+        globular: `<circle r="7.5" fill="var(--snow)" opacity="0.35" /><circle r="3.5" fill="var(--frost)" />`,
+        double: `<circle cx="-4" r="3.5" fill="var(--bronze)" /><circle cx="5" r="2.5" fill="var(--neptune)" />`,
+        shower: `<path d="M-9 -9 L6 6" stroke="var(--bronze)" stroke-width="2.5" stroke-linecap="round" /><circle cx="7" cy="7" r="2.5" fill="var(--frost)" />`,
+        satellite: `<rect x="-3" y="-3" width="6" height="6" fill="var(--frost)" /><rect x="-11" y="-2" width="6" height="4" fill="var(--teal)" /><rect x="5" y="-2" width="6" height="4" fill="var(--teal)" />`,
+      }
+      const body = obj.kind === 'moon' ? moonIcon(night.moonAngle, 9) : kinds[obj.kind]
+      return `<svg class="icon" viewBox="-13 -13 26 26" aria-hidden="true">${body}</svg>`
+    }
+
+    const gearIcons = [
+      '<svg viewBox="0 0 18 18"><path d="M1.5 9 Q9 2 16.5 9 Q9 16 1.5 9 Z" fill="none" stroke="currentColor" stroke-width="1.6" /><circle cx="9" cy="9" r="2.6" fill="currentColor" /></svg>',
+      '<svg viewBox="0 0 18 18"><circle cx="5" cy="11.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6" /><circle cx="13" cy="11.5" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6" /><path d="M3.5 8 V3.5 H6.5 V8 M11.5 8 V3.5 H14.5 V8 M8.6 10 H9.4" stroke="currentColor" stroke-width="1.6" fill="none" /></svg>',
+      '<svg viewBox="0 0 18 18"><path d="M2 10 L13 4.5 L14.6 7.6 L3.6 13 Z" fill="currentColor" /><path d="M9 10.5 L6 16.5 M9 10.5 L12 16.5" stroke="currentColor" stroke-width="1.6" /></svg>',
+    ]
+    const gearNames = ['eyes', 'binoculars', 'a telescope']
+
+    function gearCell(level) {
+      const names = `Visible with ${gearNames[level - 1]}`
+      return `<span class="gear" title="${names}"><span class="hidden-text">${names}</span>${gearIcons.map((svg, i) => `<span class="${i + 1 >= level ? 'on' : 'off'}" aria-hidden="true">${svg}</span>`).join('')}</span>`
+    }
+
+
+
+    // ROWS
+
+    function statusAt(obj, i) {
+      const p = obj.track[i]
+      if (p.alt > 0) {
+        if (night.sun[i] > -6) return { title: 'Up, sky still bright', detail: where(p.alt, p.az) }
+        return { title: `Up, ${fists(p.alt)}`, detail: where(p.alt, p.az) }
+      }
+      if (obj.rise !== null && obj.rise > i) return { title: `Rises ${clock(night.times[obj.rise])}`, detail: `in the ${compass(obj.track[obj.rise].az)}` }
+      if (obj.set !== null && obj.set <= i) return { title: `Set at ${clock(night.times[obj.set])}`, detail: `in the ${compass(obj.track[obj.set].az)}` }
+      return { title: 'Below the horizon', detail: obj.visible ? '' : obj.reason }
+    }
+
+    function strip(obj) {
+      const t = at / (night.times.length - 1)
+      return `<span class="strip" style="--c: var(${obj.color})" aria-hidden="true">${obj.cells.map((cell) => `<span class="s${cell.level}${cell.level && cell.twilight ? ' twilight' : ''}"></span>`).join('')}<i class="mark" style="--t: ${t}"></i></span>`
+    }
+
+    function row(obj, extra = '') {
+      const status = statusAt(obj, at)
+      const p = obj.track[at]
+      const up = p.alt > 0
+      const best = obj.visible ? `Best ${clock(night.times[obj.bestIndex])}` : `Not visible: ${obj.reason}`
+      const sub = obj.id ? `${obj.id}, ${best.toLowerCase()}` : best
+      const riseSet = `${obj.rise !== null ? `↑${clock(night.times[obj.rise])}` : ''} ${obj.set !== null ? `↓${clock(night.times[obj.set])}` : ''}`.trim() || (up ? 'Up all night' : '—')
+
+      return `
+        <li class="${up ? '' : 'down'}" aria-current="${picked === obj.name}">
+          ${icon(obj)}
+          <span class="name">
+            <button data-pick="${obj.name}">${obj.name}</button>
+            <small class="hob">${obj.hint}</small>
+            <small class="adv">${sub}${extra}</small>
+          </span>
+          <span class="status"><strong>${status.title}</strong><span>${status.detail}</span></span>
+          ${strip(obj)}
+          ${gearCell(obj.gear)}
+          <span class="num adv">${up ? `${Math.round(p.alt)}°` : '—'}</span>
+          <span class="num adv">${up ? `${Math.round(p.az)}° ${shortPoints[Math.round(p.az / 22.5) % 16]}` : '—'}</span>
+          <span class="num adv">${obj.mag ? obj.mag.toFixed(1) : '—'}</span>
+          <span class="num adv">${riseSet}</span>
+        </li>`
+    }
+
+    function head() {
+      return `
+        <li class="head" aria-hidden="true">
+          <span></span><span>Object</span><span>Right now</span><span>Tonight</span><span>Gear</span>
+          <span class="num adv">Alt</span><span class="num adv">Az</span><span class="num adv">Mag</span><span class="num adv">Rise, set</span>
+        </li>`
+    }
+
+    function matches(obj) {
+      const query = document.getElementById('find').value.trim().toLowerCase()
+      if (query && !`${obj.name} ${obj.id || ''} ${obj.con || ''}`.toLowerCase().includes(query)) return false
+      if (obj.gear > gear) return false
+      if (show === 'now') return obj.track[at].alt > 0 && night.sun[at] < -6
+      if (show === 'tonight') return obj.visible
+      return true
+    }
+
+    function sorted(list) {
+      return [...list].sort((a, b) => (a.gear - b.gear) * 4 + (a.mag - b.mag) - (a.track[a.bestIndex].alt - b.track[b.bestIndex].alt) / 40)
+    }
+
+    function category(title, list, options = {}) {
+      const shown = sorted(list.filter(matches))
+      const hidden = list.filter((obj) => !obj.visible && show !== 'all')
+      const visibleCount = list.filter((obj) => obj.visible).length
+      const note = options.note || `${visibleCount} of ${list.length} visible tonight`
+
+      let body = ''
+      if (shown.length) body = `<ul class="rows">${head()}${shown.map((obj) => row(obj, options.extra ? options.extra(obj) : '')).join('')}</ul>`
+      else if (options.empty) body = `<p class="missing">${options.empty}</p>`
+      else body = `<p class="missing">Nothing matches right now. Try <strong>Everything</strong> or a different time.</p>`
+
+      const missing = hidden.length && shown.length
+        ? `<p class="missing"><strong>Not visible tonight:</strong> ${hidden.map((obj) => `${obj.name} (${obj.reason})`).join(', ')}.</p>`
+        : ''
+
+      return `<section class="category" aria-label="${title}"><header><h2>${title}</h2><p>${note}</p></header>${body}${missing}</section>`
+    }
+
+    function sunSection() {
+      const items = [
+        ['Sunset', night.sunset], ['Civil dusk', night.civilDusk], ['Nautical dusk', night.nauticalDusk], ['Fully dark', night.astroDusk],
+        ['Dark ends', night.astroDawn], ['Nautical dawn', night.nauticalDawn], ['Civil dawn', night.civilDawn], ['Sunrise', night.sunrise],
+      ]
+      return `
+        <section class="category" aria-label="Sun and twilight">
+          <header><h2>Sun and twilight</h2><p>Fully dark for ${Math.round((night.astroDawn - night.astroDusk) / 360000) / 10} hours</p></header>
+          <dl class="sun-times">${items.map(([label, date]) => `<div><dt>${label}</dt><dd>${date ? clock(date) : 'Not tonight'}</dd></div>`).join('')}</dl>
+        </section>`
+    }
+
+    function satelliteSection() {
+      const list = satellites.map((s) => {
+        const cells = []
+        for (let h = 0; h < night.hours; h++) cells.push({ level: s.passes.some(([hour]) => Math.floor(hour) === h) ? 3 : 0, twilight: false })
+        const track = night.times.map((t, i) => ({ alt: s.passes.some(([hour]) => Math.abs(i / 6 - hour) < 0.1) ? 40 : -10, az: 250 }))
+        const next = s.passes.find(([hour]) => hour * 6 >= at)
+        return {
+          name: s.name, kind: 'satellite', color: '--teal', gear: 1, mag: s.mag, hint: s.hint, cells, track, visible: s.passes.length > 0,
+          reason: 'no passes over Kansas City tonight', bestIndex: s.passes.length ? Math.round(s.passes[0][0] * 6) : 0, rise: null, set: null,
+          passes: s.passes, next,
+        }
+      })
+
+      const shown = list.filter((s) => s.visible || show === 'all').filter((s) => !document.getElementById('find').value || s.name.toLowerCase().includes(document.getElementById('find').value.toLowerCase()))
+      const hidden = list.filter((s) => !s.visible && show !== 'all')
+
+      return `
+        <section class="category" aria-label="Space stations and satellites">
+          <header><h2>Space stations and satellites</h2><p>Sample times in this mockup</p></header>
+          <ul class="rows">${head()}${shown.map((s) => {
+            const passText = s.passes.map(([hour, text]) => `${clock(new Date(night.start.getTime() + hour * 3600000))}, ${text}`).join('<br>') || 'No passes tonight'
+            return `
+              <li aria-current="${picked === s.name}">
+                ${icon(s)}
+                <span class="name"><button data-pick="${s.name}">${s.name}</button><small>${s.hint}</small></span>
+                <span class="status"><strong>${s.next ? `Next ${clock(new Date(night.start.getTime() + s.next[0] * 3600000))}` : 'No more passes'}</strong><span>${passText}</span></span>
+                ${strip(s)}
+                ${gearCell(1)}
+                <span class="num adv">—</span><span class="num adv">—</span><span class="num adv">${s.mag.toFixed(1)}</span><span class="num adv">—</span>
+              </li>`
+          }).join('')}</ul>
+          ${hidden.length ? `<p class="missing"><strong>Not visible tonight:</strong> ${hidden.map((s) => `${s.name} (${s.reason})`).join(', ')}.</p>` : ''}
+        </section>`
+    }
+
+
+
+    // RENDER LIST
+
+    function renderList() {
+      const html = [
+        sunSection(),
+        category('Moon', [night.moon], { note: `${Math.round(night.moonLit * 100)}% lit, ${phaseName(night.moonAngle).toLowerCase()}` }),
+        category('Planets', night.planets),
+        satelliteSection(),
+        category('Meteor showers', night.showers, {
+          note: `${night.showers.length} active`,
+          extra: (s) => `, ZHR ${s.zhr}, ${s.speed}`,
+          empty: 'No meteor showers are active tonight. <a href="#">See upcoming showers in the Calendar</a>.',
+        }),
+        category('Comets', [], { note: 'None bright enough tonight', empty: 'No comets are bright enough to see tonight. <a href="#">See upcoming comets in the Calendar</a>.' }),
+        category('Bright stars', night.stars),
+        category('Constellations', night.shapes),
+        category('Deep sky', night.deep, { extra: (d) => `, ${d.size}` }),
+      ].join('')
+
+      document.getElementById('categories').innerHTML = html
+    }
+
+    function phaseName(angle) {
+      if (angle < 10 || angle > 350) return 'New moon'
+      if (angle < 80) return 'Waxing crescent'
+      if (angle < 100) return 'First quarter'
+      if (angle < 170) return 'Waxing gibbous'
+      if (angle < 190) return 'Full moon'
+      if (angle < 260) return 'Waning gibbous'
+      if (angle < 280) return 'Last quarter'
+      return 'Waning crescent'
+    }
+
+
+
+    // RENDER TOP
+
+    function renderNights() {
+      const html = weather.map((w, i) => {
+        const date = new Date(Date.UTC(2026, 10, 13 + i, 18))
+        const angle = A.MoonPhase(new Date(date.getTime() + 8 * 3600000))
+        const average = w.clouds.slice(1, 12).reduce((sum, c) => sum + c, 0) / 11
+        const sky = average < 20 ? 'Clear' : average < 60 ? 'Patchy' : 'Cloudy'
+        return `
+          <button aria-pressed="${i === night.index}" data-night="${i}">
+            <svg viewBox="-12 -12 24 24" aria-hidden="true">${moonIcon(angle, 10)}</svg>
+            <strong>${i === 0 ? 'Tonight' : dayFormat.format(date)}</strong>
+            <span>${sky}</span>
+          </button>`
+      }).join('')
+      document.getElementById('nights').innerHTML = html
+    }
+
+    function renderTiles() {
+      const n = night
+      const moon = n.moon
+      const moonText = moon.set !== null ? `Sets ${clock(n.times[moon.set])}` : moon.rise !== null ? `Rises ${clock(n.times[moon.rise])}` : moon.visible ? 'Up all night' : 'Not up tonight'
+      const clear = n.clouds.findIndex((c) => c >= 40)
+      const cloudText = clear === -1 ? 'Clear all night' : clear === 0 ? 'Cloudy at dusk' : `Clear until ${clock(new Date(n.start.getTime() + clear * 3600000))}`
+
+      document.getElementById('tiles').innerHTML = `
+        <div><h2><svg viewBox="-12 -12 24 24" aria-hidden="true">${moonIcon(n.moonAngle, 10)}</svg>Moon</h2><strong>${Math.round(n.moonLit * 100)}% lit</strong><p>${moonText}</p></div>
+        <div><h2>Fully dark</h2><strong>${clock(n.astroDusk)}</strong><p>until ${clock(n.astroDawn)}</p></div>
+        <div><h2>Clouds</h2><strong>${cloudText}</strong><p>Peak ${Math.max(...n.clouds)}%</p></div>
+        <div><h2>Seeing</h2><strong>${words5[n.weather.seeing]}</strong><p><span class="hob">How steady the stars are</span><span class="adv">${n.weather.seeing} of 5, 7Timer</span></p></div>
+        <div><h2>Transparency</h2><strong>${words5[n.weather.transparency]}</strong><p><span class="hob">How clear the air is</span><span class="adv">${n.weather.transparency} of 5, 7Timer</span></p></div>
+        <div><h2>Outside</h2><strong>${n.weather.temp}</strong><p>${n.weather.wind}</p></div>`
+    }
+
+    function skyColor(alt) {
+      if (alt > 0) return 'var(--sky-day)'
+      if (alt > -6) return 'var(--sky-civil)'
+      if (alt > -12) return 'var(--sky-nautical)'
+      if (alt > -18) return 'var(--sky-astro)'
+      return 'var(--sky-night)'
+    }
+
+    function renderRibbon() {
+      const n = night
+      const last = n.times.length - 1
+      const stops = n.sun.map((alt, i) => `${skyColor(alt)} ${((i / last) * 100).toFixed(2)}%`).join(', ')
+      const moonRuns = []
+      let from = null
+
+      n.moon.track.forEach((p, i) => {
+        if (p.alt > 0 && from === null) from = i
+        if ((p.alt <= 0 || i === last) && from !== null) {
+          moonRuns.push([from, i])
+          from = null
+        }
+      })
+
+      const band = document.getElementById('sky-band')
+      band.style.background = `linear-gradient(90deg, ${stops})`
+      band.innerHTML = `
+        <div class="clouds">${n.clouds.map((c) => `<span style="--cover: ${c}"></span>`).join('')}</div>
+        ${moonRuns.map(([a, b]) => `<span class="moon-up" style="left: ${(a / last) * 100}%; width: ${((b - a) / last) * 100}%"></span>`).join('')}
+        ${n.best ? `<span class="best" style="left: ${(n.best.from / last) * 100}%; width: ${((n.best.to - n.best.from) / last) * 100}%"></span>` : ''}`
+
+      const labels = []
+      for (let h = 0; h <= n.hours; h++) {
+        if (window.innerWidth < 720 && h % 3) continue
+        if (window.innerWidth >= 720 && window.innerWidth < 1100 && h % 2) continue
+        labels.push(`<span style="left: ${(h / n.hours) * 100}%">${hourLabel(new Date(n.start.getTime() + h * 3600000))}</span>`)
+      }
+      document.getElementById('hours').innerHTML = labels.join('')
+
+      const input = document.getElementById('time-input')
+      input.max = last
+      input.value = at
+    }
+
+    function renderTime() {
+      const date = night.times[at]
+      const out = document.getElementById('time-out')
+      out.textContent = clock(date)
+      document.getElementById('time-input').setAttribute('aria-valuetext', `${clock(date)}, ${skyWord(night.sun[at])}`)
+    }
+
+    function skyWord(alt) {
+      if (alt > 0) return 'the Sun is up'
+      if (alt > -6) return 'twilight, still bright'
+      if (alt > -12) return 'getting dark'
+      if (alt > -18) return 'almost fully dark'
+      return 'fully dark'
+    }
+
+
+
+    // SKY VIEW
+
+    function project(alt, az) {
+      const r = ((90 - alt) / 90) * 150
+      const a = (az * Math.PI) / 180
+      return [-r * Math.sin(a), -r * Math.cos(a)]
+    }
+
+    function renderDome() {
+      const n = night
+      const i = at
+      const date = n.times[i]
+      let svg = `<circle r="150" fill="${skyColor(n.sun[i])}" stroke="var(--rule)" stroke-width="2" />`
+      svg += `<circle r="100" fill="none" stroke="var(--rule)" stroke-dasharray="2 5" /><circle r="50" fill="none" stroke="var(--rule)" stroke-dasharray="2 5" />`
+
+      ;[['N', 0], ['E', 90], ['S', 180], ['W', 270]].forEach(([label, az]) => {
+        const [x, y] = project(-9, az)
+        svg += `<text x="${x}" y="${y + 5}" text-anchor="middle" font-size="15" font-weight="800" fill="var(--mist)">${label}</text>`
+      })
+
+      Object.values(figures).forEach((lines) => {
+        lines.forEach((line) => {
+          const pts = line.map(([ra, dec]) => altAz({ ra, dec }, date))
+          for (let k = 1; k < pts.length; k++) {
+            if (pts[k - 1].alt < 0 || pts[k].alt < 0) continue
+            const [x1, y1] = project(pts[k - 1].alt, pts[k - 1].az)
+            const [x2, y2] = project(pts[k].alt, pts[k].az)
+            svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--snow)" stroke-opacity="0.45" stroke-width="1.2" />`
+          }
+        })
+      })
+
+      n.stars.forEach((s) => {
+        const p = s.track[i]
+        if (p.alt <= 0) return
+        const [x, y] = project(p.alt, p.az)
+        svg += `<circle cx="${x}" cy="${y}" r="${Math.max(1.2, 3 - s.mag)}" fill="var(--frost)" />`
+      })
+
+      n.deep.forEach((d) => {
+        const p = d.track[i]
+        if (p.alt <= 0 || d.gear > gear) return
+        const [x, y] = project(p.alt, p.az)
+        svg += `<circle cx="${x}" cy="${y}" r="3.5" fill="none" stroke="var(--snow)" stroke-opacity="0.7" stroke-width="1.2" />`
+      })
+
+      const labelled = [...n.planets.filter((p) => p.gear <= gear), n.moon]
+      const placed = []
+      labelled.sort((a, b) => a.mag - b.mag).forEach((obj) => {
+        const p = obj.track[i]
+        if (p.alt <= 0) return
+        const [x, y] = project(p.alt, p.az)
+        const mark = obj.kind === 'moon'
+          ? `<g transform="translate(${x} ${y})">${moonIcon(n.moonAngle, 8)}</g>`
+          : `<circle cx="${x}" cy="${y}" r="${obj.gear === 1 ? 5 : 3.5}" fill="var(${obj.color})" />`
+        const left = x > 60
+        const width = obj.name.length * 7
+        let ly = y + 4
+        while (placed.some((box) => Math.abs(box.y - ly) < 14 && Math.abs(box.x - x) < width + 20)) ly += 14
+        placed.push({ x, y: ly })
+        svg += `${mark}<text x="${left ? x - 10 : x + 10}" y="${ly}" text-anchor="${left ? 'end' : 'start'}" font-size="12" font-weight="700" fill="var(--frost)">${obj.name}</text>`
+      })
+
+      const all = [n.moon, ...n.planets, ...n.stars, ...n.shapes, ...n.deep, ...n.showers]
+      const chosen = all.find((obj) => obj.name === picked)
+      if (chosen && chosen.track[i].alt > 0) {
+        const [x, y] = project(chosen.track[i].alt, chosen.track[i].az)
+        svg += `<circle cx="${x}" cy="${y}" r="11" fill="none" stroke="var(--beak)" stroke-width="2.5" />`
+        if (!labelled.includes(chosen)) svg += `<text x="${x + 14}" y="${y - 8}" font-size="12" font-weight="800" fill="var(--beak)">${chosen.name}</text>`
+      }
+
+      const dome = document.getElementById('dome')
+      dome.innerHTML = svg
+      const upNames = labelled.filter((obj) => obj.track[i].alt > 0).map((obj) => `${obj.name} ${height(obj.track[i].alt)} in the ${compass(obj.track[i].az)}`)
+      dome.setAttribute('aria-label', `Sky map at ${clock(date)}. ${upNames.length ? upNames.join('. ') : 'No planets or Moon up'}.`)
+
+      renderPicked(chosen)
+    }
+
+    function renderPicked(obj) {
+      const box = document.getElementById('picked')
+      if (!obj) {
+        box.innerHTML = '<p class="tip">Pick any object in the list to find it here.</p>'
+        return
+      }
+      const p = obj.track[at]
+      const lines = p.alt > 0
+        ? `<p><strong>${where(p.alt, p.az)}</strong>, about ${fists(p.alt)}.</p>`
+        : `<p><strong>${statusAt(obj, at).title}</strong> ${statusAt(obj, at).detail}.</p>`
+      const best = obj.visible ? `<p>Best at ${clock(night.times[obj.bestIndex])}, ${height(obj.track[obj.bestIndex].alt)} in the ${compass(obj.track[obj.bestIndex].az)}.</p>` : `<p>Not visible tonight: ${obj.reason}.</p>`
+      box.innerHTML = `<h3>${obj.name}</h3>${lines}${best}<p class="adv tip">Alt ${Math.round(p.alt)}°, az ${Math.round(p.az)}°, RA ${p.ra.toFixed(2)}h, Dec ${p.dec.toFixed(1)}°${obj.mag ? `, mag ${obj.mag.toFixed(1)}` : ''}</p>`
+    }
+
+
+
+    // UPDATE
+
+    function setNight(index) {
+      night = buildNight(index)
+      at = night.best ? night.best.from + 12 : Math.round(night.times.length / 3)
+      at = Math.min(at, night.times.length - 1)
+      document.getElementById('night-date').textContent = dateFormat.format(new Date(night.start.getTime() + 3600000))
+      document.getElementById('verdict').textContent = verdict(night)
+      renderNights()
+      renderTiles()
+      renderRibbon()
+      renderTime()
+      renderDome()
+      renderList()
+    }
+
+    function setTime(index) {
+      at = Math.max(0, Math.min(night.times.length - 1, index))
+      document.getElementById('time-input').value = at
+      renderTime()
+      renderDome()
+      renderList()
+    }
+
+
+
+    // CONTROLS
+
+    function connect(id, onChange) {
+      const buttons = document.querySelectorAll(`#${id} button`)
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          buttons.forEach((other) => other.setAttribute('aria-pressed', other === button))
+          onChange(button.dataset.value)
+        })
+      })
+    }
+
+    connect('mode', (value) => { document.body.dataset.mode = value })
+    connect('light', (value) => { document.documentElement.dataset.light = value })
+    connect('show', (value) => { show = value; renderList() })
+    connect('gear', (value) => { gear = Number(value); renderList(); renderDome() })
+
+    document.querySelectorAll('.mockup-bar button').forEach((button) => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.mockup-bar button').forEach((other) => other.setAttribute('aria-pressed', other === button))
+        document.documentElement.dataset.surface = button.dataset.surface
+      })
+    })
+
+    document.getElementById('time-input').addEventListener('input', (event) => setTime(Number(event.target.value)))
+    document.getElementById('back').addEventListener('click', () => setTime(at - 6))
+    document.getElementById('ahead').addEventListener('click', () => setTime(at + 6))
+    document.getElementById('best').addEventListener('click', () => setTime(night.best ? night.best.from + 6 : at))
+    document.getElementById('now').addEventListener('click', () => {
+      const now = Date.now()
+      const index = Math.round((now - night.start) / STEP)
+      setTime(index >= 0 && index < night.times.length ? index : Math.round((Date.UTC(2026, 10, 14, 3, 15) - night.start) / STEP))
+    })
+    document.getElementById('find').addEventListener('input', renderList)
+
+    document.getElementById('nights').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-night]')
+      if (button) setNight(Number(button.dataset.night))
+    })
+
+    document.getElementById('categories').addEventListener('click', (event) => {
+      const button = event.target.closest('[data-pick]')
+      if (!button) return
+      picked = button.dataset.pick
+      renderDome()
+      renderList()
+      document.querySelector(`[data-pick="${CSS.escape(picked)}"]`)?.focus()
+    })
+
+    window.addEventListener('resize', () => renderRibbon())
+
+
+
+    // START
+
+    setNight(0)
+  </script>
+</body>
+</html>
