@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { comingUp } from './comingUp.js'
+import { comingUp, eventDay } from './comingUp.js'
 
 
 
@@ -39,4 +39,22 @@ test('nothing past 30 days, so the Geminids peak is left out', () => {
 
 test('a short window can be empty without crashing', () => {
   expect(comingUp(new Date('2026-11-26T00:00:00Z'), { days: 1 })).toEqual([])
+})
+
+test('a shower peak is a calendar day that reads the same in every time zone', () => {
+  const leonids = comingUp(NOW, { count: 10 }).find(event => event.name === 'Leonids peak')
+  expect(leonids.allDay).toBe(true)
+  expect(eventDay(leonids, 'America/Los_Angeles')).toBe('Nov 17')
+  expect(eventDay(leonids, 'Pacific/Honolulu')).toBe('Nov 17')
+  expect(eventDay(leonids, 'Pacific/Auckland')).toBe('Nov 17')
+})
+
+test('a shower stays listed through its whole peak day', () => {
+  const lateOnPeakDay = new Date('2026-11-17T20:00:00Z')
+  expect(comingUp(lateOnPeakDay, { count: 10 }).some(event => event.name === 'Leonids peak')).toBe(true)
+})
+
+test('Moon phases are shown in the place time zone', () => {
+  const full = comingUp(NOW, { count: 10 }).find(event => event.kind === 'full-moon')
+  expect(eventDay(full, 'America/Chicago')).toBe('Nov 24')
 })

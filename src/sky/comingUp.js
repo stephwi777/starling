@@ -41,10 +41,18 @@ function showerPeaks(now, end) {
     const [month, day] = shower.peak.split('-').map(Number)
 
     return [year, year + 1]
-      .map(y => new Date(Date.UTC(y, month - 1, day, 6)))
-      .filter(date => date > now && date <= end)
-      .map(date => ({ date, kind: 'shower', name: `${shower.name} peak`, note: `Up to ${shower.zhr} meteors an hour` }))
+      .map(y => new Date(Date.UTC(y, month - 1, day)))
+      .filter(date => date.getTime() + DAY > now.getTime() && date <= end)
+      .map(date => ({ date, allDay: true, kind: 'shower', name: `${shower.name} peak`, note: `Up to ${shower.zhr} meteors an hour` }))
   })
+}
+
+
+
+// DAY LABEL
+
+export function eventDay(event, timeZone) {
+  return new Intl.DateTimeFormat('en-US', { timeZone: event.allDay ? 'UTC' : timeZone, month: 'short', day: 'numeric' }).format(event.date)
 }
 
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { comingUp } from '../../sky/comingUp.js'
+import { comingUp, eventDay } from '../../sky/comingUp.js'
 import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
 import { CalendarIcon, FullMoonIcon, HalfMoonIcon, MeteorIcon, NewMoonIcon } from '../ui/icons.jsx'
@@ -22,7 +22,6 @@ const ICONS = {
 
 function ComingUpCard({ now, timeZone }) {
   const events = comingUp(now)
-  const day = new Intl.DateTimeFormat('en-US', { timeZone, month: 'short', day: 'numeric' })
 
   return (
     <Card labelledBy="home-coming">
@@ -46,7 +45,7 @@ function ComingUpCard({ now, timeZone }) {
                   <strong>{event.name}</strong>
                   <small>{event.note}</small>
                 </span>
-                <time dateTime={event.date.toISOString()}>{day.format(event.date)}</time>
+                <time dateTime={event.date.toISOString()}>{eventDay(event, timeZone)}</time>
               </li>
             )
           })}
