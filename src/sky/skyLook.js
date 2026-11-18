@@ -1,19 +1,15 @@
 // LOOKS
 
-const COLORS = {
-  clear: { top: '#070920', middle: '#0f1230', low: '#262158' },
-  moonlit: { top: '#1a2152', middle: '#263070', low: '#3d3f86' },
-  patchy: { top: '#080a22', middle: '#121535', low: '#29235c' },
-  overcast: { top: '#1b1d3c', middle: '#23264a', low: '#2e2c58' },
-  dusk: { top: '#121543', middle: '#3a3480', low: '#a0729e' },
-  day: { top: '#2b3d86', middle: '#4459a3', low: '#7d8fca' },
-}
+const COLORS = Object.fromEntries(['clear', 'moonlit', 'patchy', 'overcast', 'dusk', 'day'].map(name => [
+  name,
+  { top: `var(--${name}-top)`, middle: `var(--${name}-middle)`, low: `var(--${name}-low)` },
+]))
 
 const SNOW = {
-  moonlit: '#c9bff0',
-  overcast: '#9d94c4',
-  dusk: '#c2b3e2',
-  day: '#c6bcec',
+  moonlit: 'var(--snow-moonlit)',
+  overcast: 'var(--snow-overcast)',
+  dusk: 'var(--snow-dusk)',
+  day: 'var(--snow-day)',
 }
 
 export const PRESETS = {

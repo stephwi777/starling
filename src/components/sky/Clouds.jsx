@@ -21,8 +21,8 @@ const LAYOUTS = {
   ],
 }
 
-const NIGHT_SHADES = ['#2c2a5e', '#332f68', '#2a2759', '#3a3966']
-const DAY_SHADES = ['#556aae', '#5d72b4', '#4f63a6', '#6478b8']
+const NIGHT_SHADES = ['var(--cloud-1)', 'var(--cloud-2)', 'var(--cloud-3)', 'var(--cloud-4)']
+const DAY_SHADES = ['var(--day-cloud-1)', 'var(--day-cloud-2)', 'var(--day-cloud-3)', 'var(--day-cloud-4)']
 
 
 
