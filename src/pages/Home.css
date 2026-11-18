@@ -92,8 +92,20 @@
 }
 
 .tonight-card .facts {
-  margin-block: auto;
-  padding-top: 18px;
+  flex: 1;
+}
+
+.tonight-card .facts div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 18px;
+}
+
+.tonight-card .facts dd {
+  font-size: 1.6rem;
+  line-height: 1.1;
 }
 
 .card-verdict {
@@ -254,7 +266,8 @@
     gap: 8px;
   }
 
-  .facts div {
+  .facts div,
+  .tonight-card .facts div {
     padding: 10px;
   }
 
@@ -262,7 +275,8 @@
     font-size: 0.8rem;
   }
 
-  .facts dd {
+  .facts dd,
+  .tonight-card .facts dd {
     font-size: 1rem;
   }
 
