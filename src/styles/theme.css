@@ -1,26 +1,32 @@
 /* COLORS */
 
 :root {
-  --zenith: #0b0d2b;
-  --high: #131744;
-  --horizon: #221c58;
-  --far-hills: #2e2570;
-  --snow: #b8a9ea;
-  --snow-shade: #9f8edc;
+  --zenith: #0d0f28;
+  --high: #171a40;
+  --raised: #1f2350;
+  --horizon: #241f53;
+  --far-hills: #31296a;
+  --snow: #b9ade4;
+  --snow-shade: #a093d4;
   --ink: #1a1645;
-  --frost: #eef0ff;
-  --mist: #b3b5e0;
-  --teal: #4cc3b0;
-  --bronze: #dba862;
-  --beak: #f5cf4f;
+  --frost: #eef0fb;
+  --mist: #b4b6dc;
+  --teal: #55bcab;
+  --bronze: #d6a866;
+  --beak: #f1cd57;
   --moon: #f6ead0;
   --berry: #6e1645;
-  --moon-dark: #2e2a66;
+  --moon-dark: #302c60;
 
-  --panel: #121641;
-  --panel-raised: #181d50;
-  --rule: #272c68;
-  --track: #0b0d2b;
+  --panel: var(--high);
+  --panel-raised: var(--raised);
+  --rule: var(--raised);
+  --track: var(--zenith);
+
+  --radius-card: 30px;
+  --radius-tile: 26px;
+  --radius-well: 18px;
+  --radius-button: 18px;
 
   --sky-day: #5b58b4;
   --sky-civil: #3d3994;
@@ -38,7 +44,7 @@
   --pluto: #c9a99a;
 
   --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Nunito Sans', system-ui, sans-serif;
+  --font-body: 'Nunito', system-ui, sans-serif;
 
   --gutter: clamp(20px, 6vw, 96px);
 }
@@ -46,6 +52,7 @@
 :root[data-light="red"] {
   --zenith: #0b0202;
   --high: #1a0504;
+  --raised: #200705;
   --horizon: #260806;
   --far-hills: #340b08;
   --snow: #d8503a;
@@ -94,6 +101,7 @@ body {
   background: var(--zenith);
   color: var(--frost);
   font-family: var(--font-body);
+  font-variation-settings: 'SOFT' 100;
   font-size: 1.125rem;
   line-height: 1.6;
 }
