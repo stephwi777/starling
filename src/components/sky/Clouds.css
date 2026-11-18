@@ -23,6 +23,17 @@
 
 
 
+/* SMALL SCREENS */
+
+@media (max-width: 700px) {
+  .tall .clouds.level-1,
+  .tall .clouds.level-2 {
+    top: 52%;
+  }
+}
+
+
+
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {

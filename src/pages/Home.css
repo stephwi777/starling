@@ -1,0 +1,212 @@
+/* HERO */
+
+.hero {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: clamp(150px, 20vh, 200px) var(--gutter) calc(clamp(170px, 26vw, 280px) + 32px);
+}
+
+.hero h1 {
+  max-width: 12ch;
+  font-size: clamp(2.8rem, 6.5vw, 4.6rem);
+  color: var(--moon);
+}
+
+.hero p {
+  max-width: 32ch;
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  color: var(--mist);
+}
+
+.hero .daytime,
+.day .hero p {
+  color: var(--frost);
+}
+
+.hero .press {
+  margin-top: 26px;
+}
+
+
+
+/* BELOW */
+
+.home-below {
+  display: grid;
+  gap: 18px;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 36px var(--gutter) 80px;
+}
+
+.home-cards {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 18px;
+}
+
+.home-cards > * {
+  min-width: 0;
+}
+
+
+
+/* CARDS */
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-head h2 {
+  font-size: 1.4rem;
+}
+
+.card-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+  color: var(--beak);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.card-verdict {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.3;
+  color: var(--moon);
+}
+
+.card-note {
+  margin-top: 8px;
+  color: var(--mist);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 18px 0 26px;
+}
+
+.facts div {
+  padding: 12px 14px;
+  border-radius: var(--radius-well);
+  background: var(--raised);
+}
+
+.facts dt {
+  color: var(--mist);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.facts dd {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+
+
+/* ROWS */
+
+.events li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+}
+
+.events li + li {
+  border-top: 2px solid var(--raised);
+}
+
+.row-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.row-text strong {
+  display: block;
+  font-weight: 800;
+}
+
+.row-text small {
+  color: var(--mist);
+  font-size: 0.92rem;
+}
+
+.events time {
+  color: var(--bronze);
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+
+
+/* DOORS */
+
+.doors {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.door {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 88px;
+  padding: 18px 20px;
+  border-radius: var(--radius-tile);
+  background: var(--high);
+  color: var(--frost);
+  text-decoration: none;
+}
+
+.door:hover {
+  background: var(--raised);
+}
+
+.door strong {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.door small {
+  color: var(--mist);
+}
+
+
+
+/* MEDIUM SCREENS */
+
+@media (max-width: 980px) {
+  .home-cards,
+  .doors {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* SMALL SCREENS */
+
+@media (max-width: 700px) {
+  .facts {
+    grid-template-columns: 1fr;
+  }
+}

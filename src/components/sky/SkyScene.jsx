@@ -27,7 +27,7 @@ function SkyScene({ look, size, children }) {
 
   return (
     <section
-      className={`sky-scene ${size}`}
+      className={`sky-scene ${size} ${look.phase}`}
       style={{ '--sky-top': look.colors.top, '--sky-middle': look.colors.middle, '--sky-low': look.colors.low }}
     >
       <Stars amount={look.stars} />

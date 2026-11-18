@@ -214,6 +214,8 @@ nav a.active {
 
   nav {
     order: 3;
+    flex-wrap: wrap;
+    gap: 8px 20px;
     width: 100%;
     margin-left: 0;
   }
@@ -221,6 +223,13 @@ nav a.active {
   .location {
     margin-left: auto;
     padding: 10px 18px;
+  }
+}
+
+@media (max-width: 440px) {
+  nav {
+    gap: 8px 14px;
+    font-size: 1rem;
   }
 }
 
