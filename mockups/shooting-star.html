@@ -387,9 +387,29 @@
       top: -3px;
       width: 210px;
       height: 6px;
-      background: linear-gradient(to right, transparent, var(--tail) 45%, color-mix(in srgb, var(--tail) 50%, white) 78%, var(--head));
+      background: linear-gradient(to right, transparent, var(--tail) 40%, color-mix(in srgb, var(--tail) 40%, white) 70%, white 90%, color-mix(in srgb, white 75%, var(--tail)));
       clip-path: polygon(0 50%, 74% 0, 100% 50%, 74% 100%);
-      filter: drop-shadow(0 0 3px var(--tail));
+    }
+
+    .needle.spindle .needle-flight {
+      filter: drop-shadow(0 0 2px var(--tail));
+    }
+
+    .needle.spindle .needle-head {
+      display: none;
+    }
+
+    .needle-flare {
+      position: absolute;
+      right: -4px;
+      top: -6px;
+      width: 80px;
+      height: 12px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 78% 50%, white, color-mix(in srgb, var(--tail) 55%, transparent) 40%, transparent 72%);
+      filter: blur(1.5px);
+      transform-origin: right;
+      animation: follow var(--duration) linear forwards;
     }
 
 
@@ -517,7 +537,7 @@
       <div class="option-head">
         <div>
           <h2>D · Rare: wide streak</h2>
-          <p>The shape you saw: a long, stretched diamond, thin at both ends and widest near the front, glowing a little whiter where it's widest.</p>
+          <p>The shape you saw: a long, stretched diamond, thin at both ends and widest near the front. No round head; the front part burns white-hot and glows.</p>
         </div>
         <button type="button">Launch</button>
       </div>
@@ -621,7 +641,7 @@
       meteor.style.cssText = `top:${trip.top}%;left:${trip.left}%;--head:${colors.head};--tail:${colors.tail}`
       meteor.innerHTML = style === 'today'
         ? '<span class="flight"><span class="tail"></span><span class="head"></span></span>'
-        : '<span class="needle-flight"><span class="needle-tail"></span><span class="needle-head"></span></span>'
+        : `<span class="needle-flight"><span class="needle-tail"></span>${style.startsWith('spindle') ? '<span class="needle-flare"></span>' : ''}<span class="needle-head"></span></span>`
 
       if (style.endsWith('burst')) {
         SPARKS.forEach(spark => meteor.insertAdjacentHTML('beforeend', `<span class="spark" style="--x:${spark.x}px;--y:${spark.y}px"></span>`))
