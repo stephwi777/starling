@@ -92,23 +92,23 @@
 
 /* NAV */
 
-nav {
+.header nav {
   display: flex;
   gap: 28px;
   margin-left: auto;
 }
 
-nav a {
+.header nav a {
   color: var(--mist);
   font-weight: 600;
   text-decoration: none;
 }
 
-nav a:hover {
+.header nav a:hover {
   color: var(--frost);
 }
 
-nav a.active {
+.header nav a.active {
   color: var(--frost);
   text-decoration: underline;
   text-decoration-color: var(--beak);
@@ -212,7 +212,7 @@ nav a.active {
     gap: 16px;
   }
 
-  nav {
+  .header nav {
     order: 3;
     flex-wrap: wrap;
     gap: 8px 20px;
@@ -227,7 +227,7 @@ nav a.active {
 }
 
 @media (max-width: 440px) {
-  nav {
+  .header nav {
     gap: 8px 14px;
     font-size: 1rem;
   }
