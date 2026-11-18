@@ -59,3 +59,25 @@ export function savePlace(place, storage) {
     return
   }
 }
+
+
+
+// FIRST VISIT
+
+const ASKED_KEY = 'starling.asked'
+
+export function wasAsked(storage) {
+  try {
+    return (storage ?? globalThis.localStorage).getItem(ASKED_KEY) === 'yes'
+  } catch {
+    return true
+  }
+}
+
+export function rememberAsked(storage) {
+  try {
+    (storage ?? globalThis.localStorage).setItem(ASKED_KEY, 'yes')
+  } catch {
+    return
+  }
+}

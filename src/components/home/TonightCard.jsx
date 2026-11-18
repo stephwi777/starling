@@ -28,7 +28,7 @@ function TonightCard({ sky, place, status }) {
         <div><dt>Outside</dt><dd>{outside}</dd></div>
       </dl>
 
-      <PressButton to="/tonight">Open Tonight</PressButton>
+      <PressButton to="/tonight" quiet>Open Tonight</PressButton>
     </Card>
   )
 }

@@ -4,8 +4,8 @@
   width: min(420px, 100vw - 32px);
   max-height: calc(100dvh - 32px);
   padding: 0;
-  border: 2px solid var(--far-hills);
-  border-radius: 18px;
+  border: 0;
+  border-radius: var(--radius-card);
   background: var(--high);
   color: var(--frost);
 }
@@ -102,6 +102,16 @@
   color: var(--ink);
   font: inherit;
   font-size: max(1rem, 1em);
+}
+
+.place-dialog input:focus-visible {
+  border-radius: 14px;
+  outline: 3px solid var(--beak);
+  outline-offset: 3px;
+}
+
+.place-dialog form + p {
+  margin-top: 14px;
 }
 
 

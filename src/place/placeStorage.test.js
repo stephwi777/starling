@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { SAMPLE_PLACE, loadPlace, roundCoordinate, savePlace } from './placeStorage.js'
+import { SAMPLE_PLACE, loadPlace, rememberAsked, roundCoordinate, savePlace, wasAsked } from './placeStorage.js'
 
 
 
@@ -77,4 +77,16 @@ test('a browser that blocks storage completely still gets the sample', () => {
     if (original) Object.defineProperty(globalThis, 'localStorage', original)
     else delete globalThis.localStorage
   }
+})
+
+test('asking for location is remembered', () => {
+  const storage = fakeStorage()
+  expect(wasAsked(storage)).toBe(false)
+  rememberAsked(storage)
+  expect(wasAsked(storage)).toBe(true)
+})
+
+test('blocked storage counts as already asked, so it never nags', () => {
+  expect(wasAsked(throwingStorage())).toBe(true)
+  expect(() => rememberAsked(throwingStorage())).not.toThrow()
 })

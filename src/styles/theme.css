@@ -17,10 +17,10 @@
   --moon: #f6ead0;
   --berry: #6e1645;
   --moon-dark: #302c60;
-  --star-blue: #dce4ff;
-  --star-warm: #ffefd2;
-  --star-teal: #d2fbf2;
-  --star-rose: #ffdfe9;
+  --star-blue: #c9d6ff;
+  --star-warm: #ffe4bc;
+  --star-teal: #c2f5ea;
+  --star-rose: #ffd2e2;
 
   --panel: var(--high);
   --panel-raised: var(--raised);

@@ -34,6 +34,8 @@ Success looks like:
 | Finch touches | Illustrated icons in soft rounded wells, pressable buttons with a darker bottom edge, grouped lists with chevrons. |
 | Apple Weather touches | Tiles with a big value, one plain line, one small picture, opening into details; a one-sentence summary above the hours; key moments inside the hourly row; range bars for upcoming nights. Sentence-case labels, not ALL CAPS. |
 | Level badges | Only where difficulty really matters (for example deep-sky objects), never on everything. |
+| Location on first visit | Changed 2026-11-18 at the user's request: on the first visit Starling asks for the device location once (browser prompt). If allowed, the place is set; if declined or unavailable, the sample stays and Starling remembers it asked (`starling.asked`). The location window stays for changing it. |
+| Location pill | One calm style before and after choosing: raised violet pill, yellow pin, "Set location" or the place name. No yellow fill, no sparkles. Only one yellow button per screen. |
 | Row dividers | Soft solid lines in `--raised`, as in the approved directions mockup. |
 | Removed ideas | The "tonight strip" at the top of every page, and wavy section dividers. |
 

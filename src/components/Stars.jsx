@@ -6,7 +6,7 @@ import './Stars.css'
 
 // STARS
 
-const tints = ['var(--frost)', 'var(--frost)', 'var(--frost)', 'var(--star-blue)', 'var(--star-blue)', 'var(--star-warm)']
+const tints = ['var(--frost)', 'var(--frost)', 'var(--frost)', 'var(--star-blue)', 'var(--star-blue)', 'var(--star-warm)', 'var(--star-teal)', 'var(--star-rose)']
 
 const stars = Array.from({ length: 640 }, (_, i) => {
   const bright = i % 16 === 0
@@ -15,12 +15,12 @@ const stars = Array.from({ length: 640 }, (_, i) => {
     id: i,
     top: Math.pow(Math.random(), 1.4) * 100,
     left: Math.random() * 100,
-    size: bright ? Math.random() * 0.8 + 2.4 : Math.pow(Math.random(), 2.2) * 2 + 0.8,
+    size: bright ? Math.random() * 0.9 + 2.9 : Math.pow(Math.random(), 2) * 2.3 + 0.9,
     opacity: bright ? 1 : Math.pow(Math.random(), 1.5) * 0.6 + 0.35,
     color: tints[Math.floor(Math.random() * tints.length)],
     bright,
     twinkle: bright || Math.random() < 0.3,
-    shimmer: Math.random() < 0.1,
+    shimmer: Math.random() < 0.15,
     duration: Math.random() * 6 + 5,
     shimmerDuration: Math.random() * 3 + 3,
     delay: Math.random() * 8,

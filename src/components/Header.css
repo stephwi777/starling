@@ -124,73 +124,29 @@
 /* LOCATION */
 
 .location {
-  position: relative;
+  display: inline-flex;
   flex: none;
-  white-space: nowrap;
+  align-items: center;
+  gap: 8px;
   min-height: 44px;
-  padding: 10px 22px;
+  padding: 10px 20px;
   border: 0;
   border-radius: 999px;
-  background: var(--beak);
-  color: var(--ink);
+  background: color-mix(in srgb, var(--raised) 80%, transparent);
+  color: var(--frost);
   font-weight: 800;
   font-size: 1rem;
-  box-shadow: 0 4px 0 color-mix(in srgb, var(--beak) 72%, #000);
-  transition: scale 0.25s ease-out;
+  white-space: nowrap;
+  transition: background 0.2s;
 }
 
 .location:hover {
-  scale: 1.04;
+  background: var(--far-hills);
 }
 
-.location.placed {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: color-mix(in srgb, var(--raised) 80%, transparent);
-  color: var(--frost);
-  box-shadow: none;
-}
-
-.location.placed svg {
+.location svg {
   width: 12px;
   fill: var(--beak);
-}
-
-
-
-/* SPARKLES */
-
-.sparkles svg {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--size);
-  fill: var(--color);
-  pointer-events: none;
-  opacity: 0;
-  translate: -50% -50%;
-}
-
-.location:hover .sparkles svg,
-.location:focus-visible .sparkles svg {
-  animation: glimmer var(--duration) ease-in-out infinite;
-  animation-delay: var(--delay);
-}
-
-@keyframes glimmer {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  30% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  60% {
-    opacity: 1;
-    transform: scale(0.9);
-  }
 }
 
 

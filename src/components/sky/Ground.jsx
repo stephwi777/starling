@@ -3,20 +3,32 @@
 const PINES = {
   tall: [
     { left: 15, bottom: 30, height: 22 },
+    { left: 18.2, bottom: 32, height: 15, shape: 'icon' },
     { left: 73.4, bottom: 34, height: 20 },
     { left: 76, bottom: 31, height: 28 },
-    { left: 78.7, bottom: 33, height: 17 },
+    { left: 78.7, bottom: 33, height: 17, shape: 'icon' },
   ],
   band: [
     { left: 10.5, bottom: 26, height: 32 },
-    { left: 82, bottom: 30, height: 30 },
+    { left: 82, bottom: 30, height: 30, shape: 'icon' },
     { left: 84.4, bottom: 27, height: 40 },
   ],
 }
 
-function Pine({ left, bottom, height }) {
+function Pine({ left, bottom, height, shape }) {
+  const style = { left: `${left}%`, bottom: `${bottom}%`, height: `${height}%` }
+
+  if (shape === 'icon') {
+    return (
+      <svg className="pine" viewBox="-11 -12 22 26" style={style}>
+        <path d="M0 -11 L8 4 L-8 4 Z M0 -4 L9 10 L-9 10 Z" fill="var(--ink)" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round" />
+        <rect x="-1.5" y="10" width="3" height="3.5" fill="var(--ink)" />
+      </svg>
+    )
+  }
+
   return (
-    <svg className="pine" viewBox="0 -2 60 88" style={{ left: `${left}%`, bottom: `${bottom}%`, height: `${height}%` }}>
+    <svg className="pine" viewBox="0 -2 60 88" style={style}>
       <path
         d="M30 0 L42 22 L36 22 L48 44 L40 44 L54 70 L34 70 L34 84 L26 84 L26 70 L6 70 L20 44 L12 44 L24 22 L18 22 Z"
         fill="var(--ink)"
