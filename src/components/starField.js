@@ -1,6 +1,6 @@
 // SETTINGS
 
-const MOST_STARS = 140
+const MOST_STARS = 320
 const WIDE = 1425
 const PADDING = 14
 

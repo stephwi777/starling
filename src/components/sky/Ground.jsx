@@ -1,38 +1,53 @@
-// TALL GROUND
+// PINES
 
-function TallGround({ snow }) {
+const PINES = {
+  tall: [
+    { left: 15, bottom: 40, height: 20 },
+    { left: 73.4, bottom: 44, height: 18 },
+    { left: 76, bottom: 42, height: 26 },
+    { left: 78.7, bottom: 43, height: 15 },
+  ],
+  band: [
+    { left: 10.5, bottom: 36, height: 30 },
+    { left: 82, bottom: 40, height: 28 },
+    { left: 84.4, bottom: 37, height: 38 },
+  ],
+}
+
+function Pine({ left, bottom, height }) {
   return (
-    <svg className="ground" viewBox="0 0 1440 280" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M0 120 C 160 70, 300 90, 430 110 S 700 60, 860 96 S 1180 70, 1440 104 L 1440 280 L 0 280 Z" fill="var(--far-hills)" />
-      <path d="M0 178 C 220 140, 420 150, 640 172 S 1040 140, 1440 160 L 1440 280 L 0 280 Z" fill="var(--snow-shade)" />
-      <path d="M0 214 C 260 190, 560 196, 820 210 S 1240 196, 1440 204 L 1440 280 L 0 280 Z" fill={snow} />
-      <g fill="var(--horizon)">
-        <path d="M1060 150 l14 -40 l14 40 Z M1066 132 l8 -24 l8 24 Z" />
-        <path d="M1092 158 l18 -54 l18 54 Z M1099 132 l11 -32 l11 32 Z" />
-        <path d="M1130 156 l12 -34 l12 34 Z" />
-        <path d="M210 168 l15 -44 l15 44 Z M216 146 l9 -28 l9 28 Z" />
-        <rect x="1108" y="158" width="4" height="8" />
-        <rect x="223" y="168" width="4" height="7" />
-      </g>
-      <path d="M1104 106 q4 -6 10 -4 l5 -2 l-4 4 q-2 5 -8 5 q-3 0 -3 -3 Z" fill="var(--ink)" />
+    <svg className="pine" viewBox="0 -2 60 88" style={{ left: `${left}%`, bottom: `${bottom}%`, height: `${height}%` }}>
+      <path
+        d="M30 0 L42 22 L36 22 L48 44 L40 44 L54 70 L34 70 L34 84 L26 84 L26 70 L6 70 L20 44 L12 44 L24 22 L18 22 Z"
+        fill="var(--ink)"
+        stroke="var(--ink)"
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <path d="M30 4 L38 20 L33 20 Z M33 26 L44 42 L38 42 Z M38 48 L50 67 L42 67 Z" fill="var(--horizon)" />
     </svg>
   )
 }
 
 
 
-// BAND GROUND
+// HILLS
 
-function BandGround({ snow }) {
+function TallHills({ snow }) {
   return (
-    <svg className="ground" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+    <svg className="hills" viewBox="0 0 1440 280" preserveAspectRatio="none">
+      <path d="M0 120 C 160 70, 300 90, 430 110 S 700 60, 860 96 S 1180 70, 1440 104 L 1440 280 L 0 280 Z" fill="var(--far-hills)" />
+      <path d="M0 178 C 220 140, 420 150, 640 172 S 1040 140, 1440 160 L 1440 280 L 0 280 Z" fill="var(--snow-shade)" />
+      <path d="M0 214 C 260 190, 560 196, 820 210 S 1240 196, 1440 204 L 1440 280 L 0 280 Z" fill={snow} />
+    </svg>
+  )
+}
+
+function BandHills({ snow }) {
+  return (
+    <svg className="hills" viewBox="0 0 1440 130" preserveAspectRatio="none">
       <path d="M0 52 C 200 20, 420 40, 640 46 S 1100 22, 1440 44 L 1440 130 L 0 130 Z" fill="var(--far-hills)" />
       <path d="M0 92 C 300 70, 700 80, 1000 88 S 1300 76, 1440 82 L 1440 130 L 0 130 Z" fill={snow} />
-      <g fill="var(--horizon)">
-        <path d="M1180 76 l11 -34 l11 34 Z M1184 62 l7 -20 l7 20 Z" />
-        <path d="M1204 80 l14 -44 l14 44 Z" />
-        <path d="M150 82 l12 -36 l12 36 Z" />
-      </g>
     </svg>
   )
 }
@@ -42,7 +57,12 @@ function BandGround({ snow }) {
 // GROUND
 
 function Ground({ size, snow }) {
-  return size === 'tall' ? <TallGround snow={snow} /> : <BandGround snow={snow} />
+  return (
+    <div className="ground" aria-hidden="true">
+      {size === 'tall' ? <TallHills snow={snow} /> : <BandHills snow={snow} />}
+      {PINES[size].map(pine => <Pine key={pine.left} {...pine} />)}
+    </div>
+  )
 }
 
 export default Ground

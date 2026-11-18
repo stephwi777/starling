@@ -6,24 +6,24 @@ import './Stars.css'
 
 // STARS
 
-const tints = ['var(--frost)', 'var(--frost)', 'var(--frost)', 'var(--snow)', 'var(--bronze)', 'var(--teal)']
+const tints = ['var(--frost)', 'var(--frost)', 'var(--frost)', 'var(--star-blue)', 'var(--star-blue)', 'var(--star-warm)']
 
-const stars = Array.from({ length: 300 }, (_, i) => ({
-  id: i,
-  top: Math.pow(Math.random(), 1.5) * 100,
-  left: Math.random() * 100,
-  size: Math.random() * 2 + 1,
-  color: tints[Math.floor(Math.random() * tints.length)],
-  duration: Math.random() * 4 + 4,
-  delay: Math.random() * 6,
-}))
+const stars = Array.from({ length: 640 }, (_, i) => {
+  const bright = i % 16 === 0
 
-const sparkles = [
-  { id: 0, left: 8, top: 22 },
-  { id: 1, left: 46, top: 6 },
-  { id: 2, left: 62, top: 38 },
-  { id: 3, left: 90, top: 14 },
-]
+  return {
+    id: i,
+    top: Math.pow(Math.random(), 1.4) * 100,
+    left: Math.random() * 100,
+    size: bright ? Math.random() * 0.8 + 1.8 : Math.pow(Math.random(), 3) * 1.6 + 0.5,
+    opacity: bright ? 1 : Math.pow(Math.random(), 1.5) * 0.6 + 0.3,
+    color: tints[Math.floor(Math.random() * tints.length)],
+    bright,
+    twinkle: bright || Math.random() < 0.3,
+    duration: Math.random() * 6 + 5,
+    delay: Math.random() * 8,
+  }
+})
 
 
 
@@ -63,7 +63,7 @@ function measure(field) {
 
 function Stars({ amount = 1 }) {
   const ref = useRef(null)
-  const [shown, setShown] = useState({ stars: [], sparkles: [] })
+  const [shown, setShown] = useState([])
 
   useEffect(() => {
     const field = ref.current
@@ -74,7 +74,7 @@ function Stars({ amount = 1 }) {
 
       const { size, boxes } = measure(field)
 
-      setShown({ stars: visibleStars(stars, size, boxes, amount), sparkles: visibleStars(sparkles, size, boxes, amount) })
+      setShown(visibleStars(stars, size, boxes, amount))
     }
 
     const observer = new ResizeObserver(update)
@@ -89,35 +89,21 @@ function Stars({ amount = 1 }) {
 
   return (
     <div ref={ref} className="stars" aria-hidden="true">
-      {shown.stars.map(star => (
+      {shown.map(star => (
         <span
           key={star.id}
-          className="star"
+          className={`star${star.bright ? ' bright' : ''}${star.twinkle ? ' twinkle' : ''}`}
           style={{
             top: `${star.top}%`,
             left: `${star.left}%`,
             width: `${star.size}px`,
             height: `${star.size}px`,
-            background: star.color,
+            color: star.color,
+            opacity: star.opacity,
             animationDuration: `${star.duration}s`,
             animationDelay: `${star.delay}s`,
           }}
         />
-      ))}
-
-      {shown.sparkles.map(sparkle => (
-        <svg
-          key={sparkle.id}
-          className="sparkle"
-          viewBox="0 0 14 14"
-          style={{
-            left: `${sparkle.left}%`,
-            top: `${sparkle.top}%`,
-            animationDelay: `${sparkle.id * 1.7}s`,
-          }}
-        >
-          <path d="M7 0 Q8 6 14 7 Q8 8 7 14 Q6 8 0 7 Q6 6 7 0 Z" fill="var(--moon)" />
-        </svg>
       ))}
     </div>
   )

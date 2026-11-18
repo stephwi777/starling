@@ -17,6 +17,8 @@
   --moon: #f6ead0;
   --berry: #6e1645;
   --moon-dark: #302c60;
+  --star-blue: #dce4ff;
+  --star-warm: #ffefd2;
 
   --panel: var(--high);
   --panel-raised: var(--raised);
@@ -133,6 +135,8 @@
   --moon: #ff8a6c;
   --berry: #4f1610;
   --moon-dark: #3a0c08;
+  --star-blue: #ff6a50;
+  --star-warm: #e8553c;
 
   --panel: #170504;
   --panel-raised: #200705;

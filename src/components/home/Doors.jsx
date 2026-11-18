@@ -16,7 +16,7 @@ function Doors() {
   return (
     <nav className="doors" aria-label="Explore Starling">
       {DOORS.map(({ to, Icon, title, note }) => (
-        <Link key={to} className="door" to={to}>
+        <Link key={to} className="home-door" to={to}>
           <IconWell><Icon /></IconWell>
           <span>
             <strong>{title}</strong>

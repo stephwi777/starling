@@ -60,7 +60,19 @@
 .sky-scene .ground {
   position: absolute;
   inset: auto 0 -1px;
+}
+
+.ground .hills {
+  position: absolute;
+  inset: 0;
   width: 100%;
+  height: 100%;
+}
+
+.ground .pine {
+  position: absolute;
+  overflow: visible;
+  translate: -50% 0;
 }
 
 .tall .ground {
@@ -79,9 +91,9 @@
   .tall .moon,
   .tall .sun {
     top: auto;
-    bottom: 34%;
-    right: 10%;
-    width: 70px;
+    bottom: calc(clamp(170px, 26vw, 280px) + 24px);
+    right: 12%;
+    width: 64px;
   }
 
   .tall .moon.pale {

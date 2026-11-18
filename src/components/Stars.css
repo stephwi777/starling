@@ -9,18 +9,20 @@
 .star {
   position: absolute;
   border-radius: 50%;
-  animation: twinkle ease-in-out infinite;
+  background: currentColor;
 }
 
-.sparkle {
-  position: absolute;
-  width: 14px;
-  animation: twinkle 7s ease-in-out infinite;
+.star.bright {
+  box-shadow: 0 0 5px 1px color-mix(in srgb, currentColor 55%, transparent);
+}
+
+.star.twinkle {
+  animation: twinkle ease-in-out infinite;
 }
 
 @keyframes twinkle {
   50% {
-    opacity: 0.35;
+    opacity: 0.3;
   }
 }
 
@@ -29,8 +31,7 @@
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
-  .star,
-  .sparkle {
+  .star.twinkle {
     animation: none;
   }
 }
