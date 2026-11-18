@@ -9,8 +9,8 @@
 }
 
 .meteor {
-  --duration: 1.3s;
-  --distance: 320px;
+  --duration: 1.5s;
+  --distance: 400px;
   position: absolute;
   transform: rotate(155deg);
 }
@@ -28,9 +28,9 @@
 .tail {
   position: absolute;
   right: 0;
-  top: -1px;
-  width: 140px;
-  height: 2px;
+  top: -1.5px;
+  width: 190px;
+  height: 3px;
   border-radius: 999px;
   background: linear-gradient(to right, transparent, var(--tail) 55%, var(--head));
   transform-origin: right;
@@ -39,10 +39,10 @@
 
 .head {
   position: absolute;
-  top: -2.5px;
-  left: -2.5px;
-  width: 5px;
-  height: 5px;
+  top: -3.5px;
+  left: -3.5px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--head);
   animation: flicker 0.25s ease-in-out infinite alternate;
@@ -79,7 +79,7 @@
 
 @keyframes flicker {
   to {
-    box-shadow: 0 0 8px 2px var(--head);
+    box-shadow: 0 0 10px 3px var(--head);
   }
 }
 
@@ -89,10 +89,10 @@
 
 .spark {
   position: absolute;
-  top: -2px;
+  top: -2.5px;
   left: calc(var(--distance) * 0.78);
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--head);
   opacity: 0;
@@ -116,8 +116,8 @@
 /* COMET */
 
 .comet {
-  --duration: 3.4s;
-  --distance: 360px;
+  --duration: 3.6s;
+  --distance: 460px;
 }
 
 .comet .flight {
@@ -125,24 +125,24 @@
 }
 
 .comet .tail {
-  width: 240px;
-  height: 3px;
-  top: -1.5px;
+  width: 300px;
+  height: 4px;
+  top: -2px;
 }
 
 .comet .head {
-  top: -3.5px;
-  left: -3.5px;
-  width: 7px;
-  height: 7px;
+  top: -4.5px;
+  left: -4.5px;
+  width: 9px;
+  height: 9px;
 }
 
 .glitter {
   position: absolute;
-  top: -1.5px;
+  top: -2px;
   left: calc(var(--distance) * var(--when) - 30px);
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--head);
   opacity: 0;
