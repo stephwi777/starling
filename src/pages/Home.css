@@ -122,9 +122,56 @@
 }
 
 .facts dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: var(--mist);
   font-size: 0.85rem;
   font-weight: 700;
+}
+
+.facts dt svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+
+
+/* SIGHTS */
+
+.sights {
+  margin-top: 18px;
+}
+
+.sights h3 {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--mist);
+}
+
+.sights ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.sights li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 999px;
+  background: var(--raised);
+  font-weight: 800;
+}
+
+.sights .object-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .facts dd {
@@ -251,7 +298,22 @@
 
 @media (max-width: 700px) {
   .facts {
-    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .facts div {
+    padding: 10px;
+  }
+
+  .facts dt {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    font-size: 0.8rem;
+  }
+
+  .facts dd {
+    font-size: 1rem;
   }
 
   .card-verdict {
