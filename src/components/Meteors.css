@@ -45,7 +45,9 @@
   height: 7px;
   border-radius: 50%;
   background: var(--head);
-  animation: flicker 0.25s ease-in-out infinite alternate;
+  animation:
+    flicker 0.25s ease-in-out infinite alternate,
+    burn-out calc(var(--duration) * 0.3) ease-in calc(var(--duration) * 0.7) forwards;
 }
 
 @keyframes fly {
@@ -56,11 +58,8 @@
   12% {
     opacity: 1;
   }
-  80% {
-    opacity: 1;
-  }
   100% {
-    opacity: 0;
+    opacity: 1;
     transform: translateX(var(--distance));
   }
 }
@@ -72,14 +71,31 @@
   50% {
     transform: scaleX(1);
   }
+  75% {
+    transform: scaleX(0.8);
+  }
   100% {
-    transform: scaleX(0.35);
+    transform: scaleX(0);
   }
 }
 
 @keyframes flicker {
   to {
     box-shadow: 0 0 10px 3px var(--head);
+  }
+}
+
+@keyframes burn-out {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.7);
+    box-shadow: 0 0 16px 6px var(--head);
+  }
+  100% {
+    transform: scale(0);
+    box-shadow: 0 0 4px 1px var(--head);
   }
 }
 
