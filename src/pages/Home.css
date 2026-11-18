@@ -92,12 +92,8 @@
 }
 
 .tonight-card .facts {
-  margin-top: auto;
+  margin-block: auto;
   padding-top: 18px;
-}
-
-.tonight-card .sights + .facts {
-  margin-top: 0;
 }
 
 .card-verdict {
@@ -129,41 +125,6 @@
   color: var(--mist);
   font-size: 0.85rem;
   font-weight: 700;
-}
-
-
-
-/* SIGHTS */
-
-.sights {
-  margin-block: auto;
-  padding-top: 18px;
-}
-
-.sights h3 {
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--mist);
-}
-
-.sights ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 24px;
-  margin-top: 6px;
-}
-
-.sights li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 800;
-}
-
-.sights .object-icon {
-  width: 24px;
-  height: 24px;
 }
 
 .facts dd {

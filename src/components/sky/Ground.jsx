@@ -72,6 +72,13 @@ function Ground({ size, snow }) {
     <div className="ground" aria-hidden="true">
       {size === 'tall' ? <TallHills snow={snow} /> : <BandHills snow={snow} />}
       {PINES[size].map(pine => <Pine key={`${pine.anchor}${pine.offset}`} {...pine} />)}
+      {size === 'tall' && (
+        <div className="steps">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      )}
     </div>
   )
 }

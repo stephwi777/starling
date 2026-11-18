@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: home options</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --horizon: #241f53;
+      --far-hills: #31296a;
+      --snow: #b9ade4;
+      --snow-shade: #a093d4;
+      --ink: #1a1645;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --bronze: #d6a866;
+      --beak: #f1cd57;
+      --moon: #f6ead0;
+      --moon-dark: #302c60;
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-variation-settings: 'SOFT' 100;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px clamp(16px, 4vw, 48px) 80px;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: var(--moon);
+    }
+
+    .lead {
+      margin-top: 6px;
+      color: var(--mist);
+    }
+
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .option > h2 {
+      margin-bottom: 10px;
+      font-size: 1.15rem;
+    }
+
+    .option > p {
+      margin-top: 10px;
+      color: var(--mist);
+      font-size: 0.95rem;
+    }
+
+    section + section {
+      margin-top: 72px;
+    }
+
+
+
+    /* EDGE PREVIEW */
+
+    .edge {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: var(--zenith);
+    }
+
+    .edge .hills {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 150px;
+      background: #141638;
+    }
+
+    .edge .hills svg {
+      position: absolute;
+      inset: auto 0 0;
+      width: 100%;
+      height: 120px;
+    }
+
+    .edge .card {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      top: 190px;
+      height: 160px;
+      padding: 16px;
+      border-radius: 22px;
+      background: var(--high);
+    }
+
+    .edge .card strong {
+      font-family: 'Fraunces', serif;
+      font-size: 1.05rem;
+    }
+
+    .fade .hills::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 -70px;
+      height: 70px;
+      background: linear-gradient(var(--snow), var(--zenith));
+    }
+
+    .rest .card {
+      top: 120px;
+    }
+
+    .rest .hills {
+      height: 170px;
+    }
+
+
+
+    /* CARDS */
+
+    .pair {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .pair.natural {
+      align-items: start;
+    }
+
+    .box {
+      display: flex;
+      flex-direction: column;
+      padding: 18px;
+      border-radius: 24px;
+      background: var(--high);
+      font-size: 0.88rem;
+    }
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .well {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 13px;
+      background: var(--raised);
+    }
+
+    .well svg {
+      width: 22px;
+    }
+
+    .head h3 {
+      font-size: 1.05rem;
+    }
+
+    .head a {
+      margin-left: auto;
+      color: var(--beak);
+      font-weight: 800;
+      text-decoration: underline 2px;
+      text-underline-offset: 4px;
+    }
+
+    .verdict {
+      font-weight: 700;
+      color: var(--moon);
+    }
+
+    .look {
+      margin-block: auto;
+      padding-block: 12px;
+    }
+
+    .look small,
+    .facts dt {
+      color: var(--mist);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .look ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 16px;
+      margin-top: 2px;
+      font-weight: 800;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 12px;
+    }
+
+    .facts.four {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .facts.tight {
+      margin-top: 12px;
+      padding-top: 0;
+    }
+
+    .facts div {
+      padding: 8px 10px;
+      border-radius: 13px;
+      background: var(--raised);
+    }
+
+    .facts dd {
+      margin: 0;
+      font-weight: 900;
+    }
+
+    .events li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+    }
+
+    .events li + li {
+      border-top: 2px solid var(--raised);
+    }
+
+    .events span {
+      flex: 1;
+    }
+
+    .events strong {
+      display: block;
+    }
+
+    .events small {
+      color: var(--mist);
+    }
+
+    .events time {
+      color: var(--bronze);
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Home page options</h1>
+    <p class="lead">Two questions: how the hills meet the page, and whether the Tonight card keeps "Look for".</p>
+
+
+
+    <!-- EDGES -->
+
+    <section>
+      <h1 style="font-size: 1.5rem">The edge below the hills</h1>
+      <div class="options" id="edges"></div>
+    </section>
+
+
+
+    <!-- CARDS -->
+
+    <section>
+      <h1 style="font-size: 1.5rem">The Tonight card</h1>
+      <div class="options" id="cards"></div>
+    </section>
+  </main>
+
+
+
+  <script>
+    // SHAPES
+
+    const HILLS = `
+      <path d="M0 30 C 120 6, 240 20, 360 24 S 560 8, 640 18 L 640 120 L 0 120 Z" fill="var(--far-hills)" />
+      <path d="M0 58 C 160 42, 330 50, 470 56 S 600 50, 640 52 L 640 120 L 0 120 Z" fill="var(--snow-shade)" />
+      <path d="M0 80 C 180 70, 380 74, 640 72 L 640 120 L 0 120 Z" fill="var(--snow)" />
+      <g fill="var(--ink)"><path d="M90 58 l9 -26 l9 26 Z M94 46 l5 -14 l5 14 Z" /><path d="M500 58 l11 -32 l11 32 Z" /></g>`
+
+    const BANK = `
+      <path d="M0 30 C 120 6, 240 20, 360 24 S 560 8, 640 18 L 640 104 C 520 120, 380 98, 260 112 S 60 104, 0 116 Z" fill="var(--far-hills)" />
+      <path d="M0 58 C 160 42, 330 50, 470 56 S 600 50, 640 52 L 640 104 C 520 120, 380 98, 260 112 S 60 104, 0 116 Z" fill="var(--snow-shade)" />
+      <path d="M0 80 C 180 70, 380 74, 640 72 L 640 98 C 520 112, 380 92, 260 104 S 60 98, 0 108 Z" fill="var(--snow)" />
+      <g fill="var(--ink)"><path d="M90 58 l9 -26 l9 26 Z M94 46 l5 -14 l5 14 Z" /><path d="M500 58 l11 -32 l11 32 Z" /></g>`
+
+    const BANDS = HILLS + `
+      <rect y="100" width="640" height="7" fill="var(--snow-shade)" />
+      <rect y="107" width="640" height="6" fill="var(--far-hills)" />
+      <rect y="113" width="640" height="7" fill="var(--horizon)" />`
+
+    const SHADOW = `
+      <path d="M0 30 C 120 6, 240 20, 360 24 S 560 8, 640 18 L 640 120 L 0 120 Z" fill="var(--far-hills)" />
+      <path d="M0 58 C 160 42, 330 50, 470 56 S 600 50, 640 52 L 640 120 L 0 120 Z" fill="var(--snow-shade)" />
+      <path d="M0 80 C 180 70, 380 74, 640 72 L 640 120 L 0 120 Z" fill="var(--snow)" />
+      <path d="M0 104 C 160 94, 340 102, 480 96 S 600 98, 640 94 L 640 120 L 0 120 Z" fill="var(--snow-shade)" />
+      <g fill="var(--ink)"><path d="M90 58 l9 -26 l9 26 Z M94 46 l5 -14 l5 14 Z" /><path d="M500 58 l11 -32 l11 32 Z" /></g>`
+
+    const edges = [
+      ['A. Hard edge (now)', '', HILLS, 'The snow stops in a straight line.'],
+      ['B. Fade into night', 'fade', HILLS, 'The snow softly darkens into the page. Uses one gentle gradient.'],
+      ['C. Snowbank', '', BANK, 'The bottom of the snow curves like a drift, so the edge feels drawn, not cut.'],
+      ['D. Cards rest on the snow', 'rest', HILLS, 'The first cards overlap the snow, so there is no visible line at all.'],
+      ['E. Stepped bands', '', BANDS, 'Thin flat bands step from snow down to night, like the sky bands in reverse.'],
+      ['F. Shadowed snow', '', SHADOW, 'A soft shaded wave at the bottom of the snow, as if in shadow, then night.'],
+    ]
+
+    document.getElementById('edges').innerHTML = edges.map(([title, kind, shapes, note]) => `
+      <div class="option">
+        <h2>${title}</h2>
+        <div class="edge ${kind}">
+          <div class="hills"><svg viewBox="0 0 640 120" preserveAspectRatio="none" aria-hidden="true">${shapes}</svg></div>
+          <div class="card"><strong>Tonight in Kansas City</strong></div>
+        </div>
+        <p>${note}</p>
+      </div>`).join('')
+
+
+
+    // CARDS
+
+    const moonWell = '<span class="well"><svg viewBox="-13 -13 26 26"><path d="M0 -10 A10 10 0 1 0 8 6 A8 8 0 1 1 0 -10 Z" fill="var(--moon)" /></svg></span>'
+    const calWell = '<span class="well"><svg viewBox="-13 -13 26 26"><rect x="-10" y="-8" width="20" height="18" rx="4" fill="var(--snow)" /><rect x="-10" y="-8" width="20" height="6" rx="3" fill="var(--bronze)" /></svg></span>'
+    const head = `<div class="head">${moonWell}<h3>Tonight in Kansas City</h3><a href="#">Tonight</a></div><p class="verdict">Clear and dark from 6:34pm to 5:32am.</p>`
+    const look = '<div class="look"><small>Look for</small><ul><li>● Venus</li><li>⋰ Auriga</li><li>∴ Pleiades</li></ul></div>'
+    const facts = (extra = '', cls = '') => `<dl class="facts ${cls}"><div><dt>Moon</dt><dd>66% lit</dd></div><div><dt>Fully dark</dt><dd>6:34pm</dd></div><div><dt>Outside</dt><dd>56°F</dd></div>${extra}</dl>`
+    const events = n => `<div class="box"><div class="head">${calWell}<h3>Coming up</h3><a href="#">Calendar</a></div><ul class="events">${[['Full moon', 'Rises around sunset', 'Nov 24'], ['Last quarter Moon', 'Half lit, rises after midnight', 'Dec 1'], ['New moon', 'The darkest skies of the month', 'Dec 8']].slice(0, n).map(([a, b, c]) => `<li><span><strong>${a}</strong><small>${b}</small></span><time>${c}</time></li>`).join('')}</ul></div>`
+
+    const cards = [
+      ['1. Look for, centered (now)', '', `<div class="box">${head}${look}${facts()}</div>${events(3)}`, 'Answers when, what and the basics. The busiest of the four.'],
+      ['2. No Look for, natural heights', 'natural', `<div class="box">${head}${facts('', 'tight')}</div>${events(3)}`, 'Calmest Tonight card, but the two cards end at different heights.'],
+      ['3. No Look for, two events', '', `<div class="box">${head}${facts('', 'tight')}</div>${events(2)}`, 'Calm and even: Coming up shows the next two events; the Calendar has the rest.'],
+      ['4. Best sight as a fourth fact', '', `<div class="box">${head}${facts('<div><dt>Best sight</dt><dd>Saturn</dd></div>', 'four tight')}</div>${events(2)}`, 'Keeps one sight to look for, without an extra row.'],
+    ]
+
+    document.getElementById('cards').innerHTML = cards.map(([title, kind, inner, note]) => `
+      <div class="option" style="grid-column: span ${window.innerWidth > 900 ? 2 : 1}">
+        <h2>${title}</h2>
+        <div class="pair ${kind}">${inner}</div>
+        <p>${note}</p>
+      </div>`).join('')
+  </script>
+</body>
+</html>
