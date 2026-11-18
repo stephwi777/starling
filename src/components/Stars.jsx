@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { visibleStars } from './starField.js'
+import { moonDimming, visibleStars } from './starField.js'
 import './Stars.css'
 
 
@@ -57,7 +57,17 @@ function measure(field) {
     area.querySelectorAll(CONTROLS).forEach(element => add(element.getBoundingClientRect()))
   })
 
-  return { size: { width: origin.width, height: origin.height }, boxes }
+  const moon = field.parentElement.querySelector('.moon')?.getBoundingClientRect()
+
+  return {
+    size: { width: origin.width, height: origin.height },
+    boxes,
+    moon: moon && {
+      x: moon.left + moon.width / 2 - origin.left,
+      y: moon.top + moon.height / 2 - origin.top,
+      radius: moon.width / 2,
+    },
+  }
 }
 
 
@@ -75,9 +85,12 @@ function Stars({ amount = 1 }) {
     const update = () => {
       if (!active) return
 
-      const { size, boxes } = measure(field)
+      const { size, boxes, moon } = measure(field)
 
-      setShown(visibleStars(stars, size, boxes, amount))
+      setShown(visibleStars(stars, size, boxes, amount).map(star => ({
+        ...star,
+        opacity: star.opacity * moonDimming((star.left / 100) * size.width, (star.top / 100) * size.height, moon),
+      })))
     }
 
     const observer = new ResizeObserver(update)

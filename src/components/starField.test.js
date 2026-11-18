@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { visibleStars } from './starField.js'
+import { moonDimming, visibleStars } from './starField.js'
 
 
 
@@ -47,4 +47,23 @@ test('a skipped star is replaced by the next clear one', () => {
 test('the amount scales the star count for moonlight and clouds', () => {
   expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0.5).length).toBe(160)
   expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0).length).toBe(0)
+})
+
+test('stars are not dimmed when there is no Moon', () => {
+  expect(moonDimming(100, 100, null)).toBe(1)
+})
+
+test('a star at the center of the Moon is dimmed by 30 percent', () => {
+  expect(moonDimming(500, 500, { x: 500, y: 500, radius: 60 })).toBeCloseTo(0.7)
+})
+
+test('dimming fades out with distance from the Moon', () => {
+  const moon = { x: 500, y: 500, radius: 60 }
+  const near = moonDimming(560, 500, moon)
+  const middle = moonDimming(660, 500, moon)
+
+  expect(near).toBeLessThan(middle)
+  expect(middle).toBeLessThan(1)
+  expect(moonDimming(500 + 60 * 4.5, 500, moon)).toBe(1)
+  expect(moonDimming(1400, 900, moon)).toBe(1)
 })

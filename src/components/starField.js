@@ -3,6 +3,8 @@
 const MOST_STARS = 320
 const WIDE = 1425
 const PADDING = 14
+const MOON_DIM = 0.3
+const MOON_REACH = 4.5
 
 
 
@@ -27,4 +29,17 @@ export function visibleStars(stars, field, boxes, amount = 1) {
   return stars
     .filter(star => isClear((star.left / 100) * field.width, (star.top / 100) * field.height, boxes))
     .slice(0, count)
+}
+
+
+
+// MOONLIGHT
+
+export function moonDimming(x, y, moon) {
+  if (!moon) return 1
+
+  const distance = Math.hypot(x - moon.x, y - moon.y) / moon.radius
+  const near = Math.max(0, 1 - distance / MOON_REACH)
+
+  return 1 - MOON_DIM * near
 }
