@@ -19,7 +19,8 @@ const stars = Array.from({ length: 640 }, (_, i) => {
     opacity: bright ? 1 : Math.pow(Math.random(), 1.5) * 0.6 + 0.35,
     color: tints[Math.floor(Math.random() * tints.length)],
     bright,
-    twinkle: !bright && Math.random() < 0.3,
+    twinkle: !bright && Math.random() < 0.12,
+    glow: bright && Math.random() < 0.5,
     shimmer: Math.random() < 0.15,
     duration: Math.random() * 4 + 4,
     shimmerDuration: Math.random() * 3 + 3,
@@ -94,7 +95,7 @@ function Stars({ amount = 1 }) {
       {shown.map(star => (
         <span
           key={star.id}
-          className={`star${star.bright ? ' bright glow' : ''}${star.twinkle ? ' twinkle' : ''}${star.shimmer ? ' shimmer' : ''}`}
+          className={`star${star.bright ? ' bright' : ''}${star.glow ? ' glow' : ''}${star.twinkle ? ' twinkle' : ''}${star.shimmer ? ' shimmer' : ''}`}
           style={{
             top: `${star.top}%`,
             left: `${star.left}%`,
