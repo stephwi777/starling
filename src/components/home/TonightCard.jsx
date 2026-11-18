@@ -25,7 +25,7 @@ function TonightCard({ sky, place, status }) {
 
       <dl className="facts">
         <div><dt>Moon</dt><dd>{Math.round(night.moonLit * 100)}% lit</dd></div>
-        <div><dt>Fully dark</dt><dd>{night.astroDusk ? clock(night.astroDusk, place.timeZone) : 'Not tonight'}</dd></div>
+        <div><dt>Night falls</dt><dd>{night.astroDusk ? clock(night.astroDusk, place.timeZone) : 'Not tonight'}</dd></div>
         <div><dt>Outside</dt><dd>{outside}</dd></div>
       </dl>
     </Card>
