@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: Tonight card</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --horizon: #241f53;
+      --far-hills: #31296a;
+      --snow: #b9ade4;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --teal: #55bcab;
+      --bronze: #d6a866;
+      --beak: #f1cd57;
+      --moon: #f6ead0;
+      --moon-dark: #302c60;
+      --cloud: #3a3e70;
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px clamp(16px, 4vw, 48px) 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    h1 {
+      color: var(--moon);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+    }
+
+    .intro p {
+      max-width: 64ch;
+      margin-top: 10px;
+      color: var(--mist);
+    }
+
+    .option-title {
+      margin: 44px 0 6px;
+      font-size: 1.5rem;
+      color: var(--moon);
+    }
+
+    .option-note {
+      max-width: 70ch;
+      margin-bottom: 16px;
+      color: var(--mist);
+    }
+
+
+
+    /* CARDS */
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 18px;
+    }
+
+    .card {
+      padding: 26px;
+      border-radius: 30px;
+      background: var(--high);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-head h2 {
+      font-size: 1.4rem;
+    }
+
+    .well {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: var(--raised);
+    }
+
+    .well svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin-left: auto;
+      color: var(--beak);
+      font-weight: 800;
+      text-decoration: underline 2px;
+      text-underline-offset: 5px;
+    }
+
+    .tonight-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-verdict {
+      font-size: 1.2rem;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--moon);
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .facts div {
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: var(--raised);
+    }
+
+    .facts dt {
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .facts dd {
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .coming-list {
+      list-style: none;
+    }
+
+    .coming-list li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .coming-list li + li {
+      border-top: 2px solid var(--raised);
+    }
+
+    .row-text {
+      flex: 1;
+    }
+
+    .row-text strong {
+      display: block;
+      font-weight: 800;
+    }
+
+    .row-text small {
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+    .coming-list time {
+      color: var(--bronze);
+      font-weight: 800;
+    }
+
+
+
+    /* TODAY */
+
+    .today .facts {
+      margin-block: auto;
+      padding-top: 18px;
+    }
+
+
+
+    /* TALL TILES */
+
+    .tiles .facts {
+      flex: 1;
+      margin-top: 18px;
+      padding-top: 0;
+    }
+
+    .tiles .facts div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 18px;
+    }
+
+    .tiles .facts dd {
+      font-size: 1.6rem;
+      line-height: 1.1;
+    }
+
+
+
+    /* ROWS */
+
+    .rows .facts {
+      display: block;
+      margin-top: auto;
+    }
+
+    .rows .facts div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-radius: 0;
+      background: none;
+    }
+
+    .rows .facts div + div {
+      border-top: 2px solid var(--raised);
+    }
+
+    .rows .facts dt {
+      font-size: 1rem;
+    }
+
+    .rows .facts dd {
+      font-size: 1.15rem;
+    }
+
+
+
+    /* OWN HEIGHT */
+
+    .own {
+      align-items: start;
+    }
+
+    .own .facts {
+      margin-top: 22px;
+    }
+
+
+
+  </style>
+</head>
+<body>
+  <main>
+
+
+
+    <!-- INTRO -->
+
+    <section class="intro">
+      <h1>Tonight card</h1>
+      <p>Nothing added, nothing taken away. Each version only rearranges the same sentence and three facts so the card no longer has an empty middle.</p>
+    </section>
+
+
+    <!-- TODAY -->
+
+    <h2 class="option-title">A · Today</h2>
+    <p class="option-note">The facts float in the middle of the stretched card, with empty space above and below.</p>
+
+    <div class="row today">
+      <section class="card tonight-card">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
+          <h2>Tonight in Saint Louis County</h2>
+          <a class="card-link" href="#">Tonight</a>
+        </div>
+        <p class="card-verdict">Clear and dark between clouds, 9pm to 1am.</p>
+
+        <dl class="facts">
+          <div><dt>Moon</dt><dd>66% lit</dd></div>
+          <div><dt>Night falls</dt><dd>6:18pm</dd></div>
+          <div><dt>Outside</dt><dd>54°F</dd></div>
+        </dl>
+      </section>
+
+      <section class="card coming">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="19" rx="5" fill="#b9ade4" /><rect x="5" y="7" width="22" height="6" rx="3" fill="#d6a866" /></svg></div>
+          <h2>Coming up</h2>
+          <a class="card-link" href="#">Calendar</a>
+        </div>
+        <ul class="coming-list">
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Full Moon</strong><small>Rises around sunset</small></div><time>Nov 24</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" /><path d="M16 7a9 9 0 0 1 0 18Z" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Last quarter Moon</strong><small>Half lit, rises after midnight</small></div><time>Dec 1</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" stroke="#b4b6dc" stroke-width="1.5" /></svg></div><div class="row-text"><strong>New Moon</strong><small>The darkest skies of the month</small></div><time>Dec 8</time></li>
+        </ul>
+      </section>
+    </div>
+
+
+    <!-- TILES -->
+
+    <h2 class="option-title">B · Taller tiles</h2>
+    <p class="option-note">The three facts grow to fill the space, with bigger numbers, like Apple Weather tiles. The card has no empty space.</p>
+
+    <div class="row tiles">
+      <section class="card tonight-card">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
+          <h2>Tonight in Saint Louis County</h2>
+          <a class="card-link" href="#">Tonight</a>
+        </div>
+        <p class="card-verdict">Clear and dark between clouds, 9pm to 1am.</p>
+
+        <dl class="facts">
+          <div><dt>Moon</dt><dd>66% lit</dd></div>
+          <div><dt>Night falls</dt><dd>6:18pm</dd></div>
+          <div><dt>Outside</dt><dd>54°F</dd></div>
+        </dl>
+      </section>
+
+      <section class="card coming">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="19" rx="5" fill="#b9ade4" /><rect x="5" y="7" width="22" height="6" rx="3" fill="#d6a866" /></svg></div>
+          <h2>Coming up</h2>
+          <a class="card-link" href="#">Calendar</a>
+        </div>
+        <ul class="coming-list">
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Full Moon</strong><small>Rises around sunset</small></div><time>Nov 24</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" /><path d="M16 7a9 9 0 0 1 0 18Z" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Last quarter Moon</strong><small>Half lit, rises after midnight</small></div><time>Dec 1</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" stroke="#b4b6dc" stroke-width="1.5" /></svg></div><div class="row-text"><strong>New Moon</strong><small>The darkest skies of the month</small></div><time>Dec 8</time></li>
+        </ul>
+      </section>
+    </div>
+
+
+    <!-- ROWS -->
+
+    <h2 class="option-title">C · Rows like Coming up</h2>
+    <p class="option-note">The facts become rows with soft dividers and sit at the bottom, matching the Coming up card. The spare space sits under the sentence.</p>
+
+    <div class="row rows">
+      <section class="card tonight-card">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
+          <h2>Tonight in Saint Louis County</h2>
+          <a class="card-link" href="#">Tonight</a>
+        </div>
+        <p class="card-verdict">Clear and dark between clouds, 9pm to 1am.</p>
+
+        <dl class="facts">
+          <div><dt>Moon</dt><dd>66% lit</dd></div>
+          <div><dt>Night falls</dt><dd>6:18pm</dd></div>
+          <div><dt>Outside</dt><dd>54°F</dd></div>
+        </dl>
+      </section>
+
+      <section class="card coming">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="19" rx="5" fill="#b9ade4" /><rect x="5" y="7" width="22" height="6" rx="3" fill="#d6a866" /></svg></div>
+          <h2>Coming up</h2>
+          <a class="card-link" href="#">Calendar</a>
+        </div>
+        <ul class="coming-list">
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Full Moon</strong><small>Rises around sunset</small></div><time>Nov 24</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" /><path d="M16 7a9 9 0 0 1 0 18Z" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Last quarter Moon</strong><small>Half lit, rises after midnight</small></div><time>Dec 1</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" stroke="#b4b6dc" stroke-width="1.5" /></svg></div><div class="row-text"><strong>New Moon</strong><small>The darkest skies of the month</small></div><time>Dec 8</time></li>
+        </ul>
+      </section>
+    </div>
+
+
+    <!-- OWN -->
+
+    <h2 class="option-title">D · Each card its own height</h2>
+    <p class="option-note">Cards stop stretching to match. The Tonight card ends right after its facts, so it is shorter than Coming up.</p>
+
+    <div class="row own">
+      <section class="card tonight-card">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
+          <h2>Tonight in Saint Louis County</h2>
+          <a class="card-link" href="#">Tonight</a>
+        </div>
+        <p class="card-verdict">Clear and dark between clouds, 9pm to 1am.</p>
+
+        <dl class="facts">
+          <div><dt>Moon</dt><dd>66% lit</dd></div>
+          <div><dt>Night falls</dt><dd>6:18pm</dd></div>
+          <div><dt>Outside</dt><dd>54°F</dd></div>
+        </dl>
+      </section>
+
+      <section class="card coming">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="19" rx="5" fill="#b9ade4" /><rect x="5" y="7" width="22" height="6" rx="3" fill="#d6a866" /></svg></div>
+          <h2>Coming up</h2>
+          <a class="card-link" href="#">Calendar</a>
+        </div>
+        <ul class="coming-list">
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Full Moon</strong><small>Rises around sunset</small></div><time>Nov 24</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" /><path d="M16 7a9 9 0 0 1 0 18Z" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Last quarter Moon</strong><small>Half lit, rises after midnight</small></div><time>Dec 1</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" stroke="#b4b6dc" stroke-width="1.5" /></svg></div><div class="row-text"><strong>New Moon</strong><small>The darkest skies of the month</small></div><time>Dec 8</time></li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
