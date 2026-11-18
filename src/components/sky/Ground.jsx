@@ -76,7 +76,6 @@ function Ground({ size, snow }) {
         <div className="steps">
           <span></span>
           <span></span>
-          <span></span>
         </div>
       )}
     </div>

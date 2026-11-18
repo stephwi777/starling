@@ -74,7 +74,7 @@
 }
 
 .ground .steps span {
-  height: 8px;
+  height: clamp(14px, 2vw, 24px);
 }
 
 .ground .steps span:nth-child(1) {
@@ -83,10 +83,6 @@
 
 .ground .steps span:nth-child(2) {
   background: var(--far-hills);
-}
-
-.ground .steps span:nth-child(3) {
-  background: var(--horizon);
 }
 
 .ground .pine {
