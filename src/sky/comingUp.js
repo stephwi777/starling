@@ -66,3 +66,13 @@ export function comingUp(now, { days = 30, count = 3 } = {}) {
     .sort((a, b) => a.date - b.date)
     .slice(0, count)
 }
+
+
+
+// LIT SIDE
+
+export function litSide(kind, south) {
+  const right = kind === 'first-quarter'
+
+  return right !== south ? 'right' : 'left'
+}

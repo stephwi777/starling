@@ -55,6 +55,11 @@ test('every preset gives its own look', () => {
 test('the home page always shows a clear night sky with a glowing Moon', () => {
   const look = nightLook({ moonAngle: 120, moonLit: 0.75 })
   expect(look).toMatchObject({ phase: 'night', name: 'clear', clouds: 0, sun: false, stars: 1 })
-  expect(look.moon).toEqual({ angle: 120, lit: 0.75, halo: true })
+  expect(look.moon).toEqual({ angle: 120, lit: 0.75, halo: true, south: false })
   expect(nightLook({ moonAngle: 30, moonLit: 0.1 }).moon.halo).toBe(true)
+})
+
+test('the home Moon is mirrored for places south of the equator', () => {
+  expect(nightLook({ moonAngle: 90, moonLit: 0.5 }).moon.south).toBe(false)
+  expect(nightLook({ moonAngle: 90, moonLit: 0.5, south: true }).moon.south).toBe(true)
 })

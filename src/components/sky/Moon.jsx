@@ -5,7 +5,7 @@ import { MoonShape } from '../tonight/Icons.jsx'
 
 // MOON
 
-function Moon({ angle, halo, pale, className }) {
+function Moon({ angle, halo, pale, south, className }) {
   const glow = useId()
 
   return (
@@ -21,7 +21,7 @@ function Moon({ angle, halo, pale, className }) {
           <circle r="110" fill={`url(#${glow})`} />
         </>
       )}
-      <g opacity={pale ? 0.65 : 1}>
+      <g opacity={pale ? 0.65 : 1} transform={south ? 'scale(-1 1)' : undefined}>
         <MoonShape angle={angle} r={56} />
       </g>
     </svg>

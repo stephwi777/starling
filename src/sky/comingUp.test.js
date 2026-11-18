@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { comingUp, eventDay } from './comingUp.js'
+import { comingUp, eventDay, litSide } from './comingUp.js'
 
 
 
@@ -57,4 +57,11 @@ test('a shower stays listed through its whole peak day', () => {
 test('Moon phases are shown in the place time zone', () => {
   const full = comingUp(NOW, { count: 10 }).find(event => event.kind === 'full-moon')
   expect(eventDay(full, 'America/Chicago')).toBe('Nov 24')
+})
+
+test('quarter Moons are lit on the side seen from each hemisphere', () => {
+  expect(litSide('first-quarter', false)).toBe('right')
+  expect(litSide('last-quarter', false)).toBe('left')
+  expect(litSide('first-quarter', true)).toBe('left')
+  expect(litSide('last-quarter', true)).toBe('right')
 })

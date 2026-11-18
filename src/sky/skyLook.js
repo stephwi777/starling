@@ -81,9 +81,9 @@ export function skyLook({ sunAlt, moonAlt, moonLit, moonAngle, cloudCover, isHom
 
 // HOME NIGHT
 
-export function nightLook({ moonAngle, moonLit }) {
+export function nightLook({ moonAngle, moonLit, south = false }) {
   return {
     ...skyLook({ sunAlt: -30, moonAlt: 30, moonLit: 0, moonAngle, cloudCover: null, isHome: true }),
-    moon: { angle: moonAngle, lit: moonLit, halo: true },
+    moon: { angle: moonAngle, lit: moonLit, halo: true, south },
   }
 }

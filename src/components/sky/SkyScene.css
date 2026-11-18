@@ -72,3 +72,13 @@
   overflow: visible;
   translate: -50% 0;
 }
+
+
+
+/* SMALL SCREENS */
+
+@media (max-width: 480px) {
+  .tall .moon {
+    translate: 0 -16px;
+  }
+}

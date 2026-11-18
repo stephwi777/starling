@@ -24,8 +24,8 @@ export function NewMoonIcon() {
   return <Icon><circle r="10" fill="var(--moon-dark)" /><circle r="10" fill="none" stroke="var(--moon)" strokeWidth="1.5" opacity="0.6" /></Icon>
 }
 
-export function HalfMoonIcon() {
-  return <Icon><circle r="10" fill="var(--moon-dark)" /><path d="M0 -10 A10 10 0 0 1 0 10 Z" fill="var(--moon)" /></Icon>
+export function HalfMoonIcon({ side = 'right' }) {
+  return <Icon><circle r="10" fill="var(--moon-dark)" /><path d={`M0 -10 A10 10 0 0 ${side === 'right' ? 1 : 0} 0 10 Z`} fill="var(--moon)" /></Icon>
 }
 
 export function MeteorIcon() {
