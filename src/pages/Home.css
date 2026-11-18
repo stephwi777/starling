@@ -12,7 +12,7 @@
   box-sizing: content-box;
   max-width: 1120px;
   margin: 0 auto;
-  padding: clamp(150px, 20vh, 200px) var(--gutter) calc(clamp(170px, 26vw, 280px) + 32px);
+  padding: clamp(160px, 30vh, 320px) var(--gutter) calc(clamp(170px, 26vw, 280px) + 32px);
 }
 
 .hero h1 {
@@ -241,5 +241,9 @@
 @media (max-width: 700px) {
   .facts {
     grid-template-columns: 1fr;
+  }
+
+  .card-verdict {
+    font-size: clamp(0.95rem, 4.3vw, 1.2rem);
   }
 }

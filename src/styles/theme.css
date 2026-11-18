@@ -19,6 +19,8 @@
   --moon-dark: #302c60;
   --star-blue: #dce4ff;
   --star-warm: #ffefd2;
+  --star-teal: #d2fbf2;
+  --star-rose: #ffdfe9;
 
   --panel: var(--high);
   --panel-raised: var(--raised);
@@ -137,6 +139,8 @@
   --moon-dark: #3a0c08;
   --star-blue: #ff6a50;
   --star-warm: #e8553c;
+  --star-teal: #ff6a50;
+  --star-rose: #e8553c;
 
   --panel: #170504;
   --panel-raised: #200705;

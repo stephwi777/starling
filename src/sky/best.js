@@ -78,3 +78,24 @@ export function verdict({ night, clouds, best, planets, timeZone }) {
 
   return `Clear and dark from ${from} to ${to}${moon}.${extra}`
 }
+
+
+
+// SHORT VERDICT
+
+export function shortVerdict({ night, clouds, best, timeZone }) {
+  if (!night.astroDusk) return 'No full darkness tonight.'
+
+  if (!best) {
+    if (!clouds) return 'Not dark for long tonight.'
+
+    const known = clouds.filter(value => value !== null)
+    const average = known.reduce((sum, value) => sum + value, 0) / (known.length || 1)
+
+    return average > 70 ? 'Cloudy all night.' : 'Patchy clouds all night.'
+  }
+
+  const { from, to } = windowTimes(night, best, timeZone)
+
+  return clouds ? `Clear and dark from ${from} to ${to}.` : `Dark from ${from} to ${to}.`
+}

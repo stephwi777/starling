@@ -19,7 +19,7 @@ function TonightCard({ sky, place, status }) {
         <h2 id="home-tonight">Tonight in {place.name}</h2>
       </div>
 
-      <p className="card-verdict">{sky.verdict}</p>
+      <p className="card-verdict">{sky.summary}</p>
       {status === 'failed' && <p className="card-note">The forecast is unavailable right now, so clouds aren't included.</p>}
 
       <dl className="facts">

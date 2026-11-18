@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { bestWindow, verdict } from './best.js'
+import { bestWindow, shortVerdict, verdict } from './best.js'
 
 
 
@@ -80,4 +80,13 @@ test('a short dark spell with no weather says to check for clouds', () => {
   sun[5] = -20
   sun[6] = -20
   expect(say(makeNight(sun), null)).toBe('Not dark for long tonight. Check the sky for clouds.')
+})
+
+test('the short verdict is one brief line', () => {
+  const short = night => shortVerdict({ night, clouds: [0, 0, 0, 0], best: bestWindow(night, [0, 0, 0, 0]), timeZone: ZONE })
+  expect(short(makeNight(undefined, { moonLit: 0.8 }))).toBe('Clear and dark from 6pm to 10pm.')
+  expect(shortVerdict({ night: makeNight(), clouds: null, best: bestWindow(makeNight(), null), timeZone: ZONE })).toBe('Dark from 6pm to 10pm.')
+  expect(shortVerdict({ night: makeNight(), clouds: [90, 90, 90, 90], best: null, timeZone: ZONE })).toBe('Cloudy all night.')
+  expect(shortVerdict({ night: makeNight(), clouds: [50, 45, 50, 45], best: null, timeZone: ZONE })).toBe('Patchy clouds all night.')
+  expect(shortVerdict({ night: makeNight(Array(24).fill(-10), { astroDusk: null, astroDawn: null }), clouds: null, best: null, timeZone: ZONE })).toBe('No full darkness tonight.')
 })

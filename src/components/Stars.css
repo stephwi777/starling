@@ -13,11 +13,25 @@
 }
 
 .star.bright {
-  box-shadow: 0 0 5px 1px color-mix(in srgb, currentColor 55%, transparent);
+  box-shadow: 0 0 6px 1px color-mix(in srgb, currentColor 55%, transparent);
 }
 
+
+
+/* TWINKLE */
+
 .star.twinkle {
-  animation: twinkle ease-in-out infinite;
+  animation: twinkle var(--twinkle) ease-in-out var(--delay) infinite;
+}
+
+.star.shimmer {
+  animation: shimmer var(--shimmer) linear var(--delay) infinite;
+}
+
+.star.twinkle.shimmer {
+  animation:
+    twinkle var(--twinkle) ease-in-out var(--delay) infinite,
+    shimmer var(--shimmer) linear var(--delay) infinite;
 }
 
 @keyframes twinkle {
@@ -26,12 +40,31 @@
   }
 }
 
+@keyframes shimmer {
+  0%, 100% {
+    color: var(--frost);
+  }
+
+  25% {
+    color: var(--star-teal);
+  }
+
+  50% {
+    color: var(--star-blue);
+  }
+
+  75% {
+    color: var(--star-rose);
+  }
+}
+
 
 
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
-  .star.twinkle {
+  .star.twinkle,
+  .star.shimmer {
     animation: none;
   }
 }

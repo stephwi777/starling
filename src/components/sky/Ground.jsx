@@ -2,15 +2,15 @@
 
 const PINES = {
   tall: [
-    { left: 15, bottom: 40, height: 20 },
-    { left: 73.4, bottom: 44, height: 18 },
-    { left: 76, bottom: 42, height: 26 },
-    { left: 78.7, bottom: 43, height: 15 },
+    { left: 15, bottom: 30, height: 22 },
+    { left: 73.4, bottom: 34, height: 20 },
+    { left: 76, bottom: 31, height: 28 },
+    { left: 78.7, bottom: 33, height: 17 },
   ],
   band: [
-    { left: 10.5, bottom: 36, height: 30 },
-    { left: 82, bottom: 40, height: 28 },
-    { left: 84.4, bottom: 37, height: 38 },
+    { left: 10.5, bottom: 26, height: 32 },
+    { left: 82, bottom: 30, height: 30 },
+    { left: 84.4, bottom: 27, height: 40 },
   ],
 }
 
@@ -24,7 +24,6 @@ function Pine({ left, bottom, height }) {
         strokeWidth="3"
         strokeLinejoin="round"
       />
-      <path d="M30 4 L38 20 L33 20 Z M33 26 L44 42 L38 42 Z M38 48 L50 67 L42 67 Z" fill="var(--horizon)" />
     </svg>
   )
 }
