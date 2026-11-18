@@ -10,7 +10,7 @@ import { MoonIcon } from '../ui/icons.jsx'
 
 function TonightCard({ sky, place, status }) {
   const { night, weather } = sky
-  const outside = weather?.temp ?? (status === 'loading' ? 'Loading…' : '—')
+  const outside = weather?.temp ?? (status === 'loading' ? 'Loading…' : <><span aria-hidden="true">—</span><span className="visually-hidden">Not available</span></>)
 
   return (
     <Card labelledBy="home-tonight" className="tonight-card">
