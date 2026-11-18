@@ -25,12 +25,12 @@ Success looks like:
 | Body font | **Nunito** (rounded), replacing Nunito Sans. |
 | Heading font | **Fraunces** with `font-variation-settings: 'SOFT' 100` for headings, verdicts and the wordmark. |
 | Sky band | **Only the home page and Tonight.** Every other page focuses on its own content (new palette and fonts only). |
-| Home sky | Tall, the most decorative part of the site: sky, layered hills, pines, a tiny starling. Shows the sky **right now**, including daytime. |
+| Home sky | Tall, the most decorative part of the site: a regular clear night sky (stars, twinkles, rare meteors, the Moon in tonight's phase with its soft glow), layered hills, pines, a tiny starling. **Always night; it does not change with conditions** (changed 2026-11-18 after review of the build). |
 | Tonight sky | A shorter band showing **tonight** at the chosen time, never daytime. |
 | Sky conditions now | Time of night (twilight colors), clouds (flat, Finch-style, drifting slowly), moonlight (sky lifts, faint stars fade). |
 | Sky conditions later | Haze and light pollution (with a user toggle so city users still see a full sky), the Milky Way for very dark places, auroras when visible (Phase 4, reusing `Aurora`), meteors during active showers (reusing `Meteors`). |
 | Labels in the sky | None. No planet dots or names. The sky is a picture; information lives in the cards below. |
-| Daytime | Home only: a deep, soft blue (never light mode), the Sun, a pale Moon when it's up, and a line pointing to tonight ("The Sun sets at 5:04pm. Tonight looks clear!"). |
+| Daytime | Not shown on any page for now. Only Tonight's band changes with conditions, and it always shows tonight. |
 | Finch touches | Illustrated icons in soft rounded wells, pressable buttons with a darker bottom edge, grouped lists with chevrons. |
 | Apple Weather touches | Tiles with a big value, one plain line, one small picture, opening into details; a one-sentence summary above the hours; key moments inside the hourly row; range bars for upcoming nights. Sentence-case labels, not ALL CAPS. |
 | Level badges | Only where difficulty really matters (for example deep-sky objects), never on everything. |

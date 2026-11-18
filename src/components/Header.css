@@ -12,7 +12,7 @@
 .bar {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 40px;
   max-width: 1120px;
   margin: 0 auto;
   padding: 20px var(--gutter);
@@ -26,16 +26,17 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
+  flex: none;
+  gap: 10px;
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: var(--snow);
   text-decoration: none;
 }
 
 .logo svg {
-  width: 48px;
+  width: 38px;
   overflow: visible;
 }
 
@@ -100,7 +101,9 @@
 
 .header nav a {
   color: var(--mist);
+  font-size: 1.0625rem;
   font-weight: 600;
+  white-space: nowrap;
   text-decoration: none;
 }
 
@@ -122,6 +125,8 @@
 
 .location {
   position: relative;
+  flex: none;
+  white-space: nowrap;
   min-height: 44px;
   padding: 10px 22px;
   border: 0;
@@ -236,11 +241,11 @@
 @media (max-width: 480px) {
   .logo {
     gap: 8px;
-    font-size: 1.6rem;
+    font-size: 1.45rem;
   }
 
   .logo svg {
-    width: 40px;
+    width: 34px;
   }
 }
 

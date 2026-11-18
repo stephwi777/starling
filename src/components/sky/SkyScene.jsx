@@ -22,7 +22,7 @@ function Sun() {
 
 // SKY SCENE
 
-function SkyScene({ look, size, children }) {
+function SkyScene({ look, size, decor, children }) {
   const day = look.phase === 'day'
 
   return (
@@ -31,6 +31,7 @@ function SkyScene({ look, size, children }) {
       style={{ '--sky-top': look.colors.top, '--sky-middle': look.colors.middle, '--sky-low': look.colors.low }}
     >
       <Stars amount={look.stars} />
+      {decor}
       {look.sun && <Sun />}
       {look.moon && <Moon className={day ? 'moon pale' : 'moon'} angle={look.moon.angle} halo={look.moon.halo && !day} pale={day} />}
       <Clouds level={look.clouds} day={day} />

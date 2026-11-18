@@ -1,13 +1,21 @@
+/* HOME */
+
+.home {
+  font-size: 1.0625rem;
+}
+
+
+
 /* HERO */
 
 .hero {
-  max-width: 1160px;
+  box-sizing: content-box;
+  max-width: 1120px;
   margin: 0 auto;
   padding: clamp(150px, 20vh, 200px) var(--gutter) calc(clamp(170px, 26vw, 280px) + 32px);
 }
 
 .hero h1 {
-  max-width: 12ch;
   font-size: clamp(2.8rem, 6.5vw, 4.6rem);
   color: var(--moon);
 }
@@ -18,11 +26,6 @@
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 2vw, 1.35rem);
   color: var(--mist);
-}
-
-.hero .daytime,
-.day .hero p {
-  color: var(--frost);
 }
 
 .hero .press {
@@ -36,7 +39,8 @@
 .home-below {
   display: grid;
   gap: 18px;
-  max-width: 1160px;
+  box-sizing: content-box;
+  max-width: 1120px;
   margin: 0 auto;
   padding: 36px var(--gutter) 80px;
 }
@@ -122,14 +126,14 @@
 
 /* ROWS */
 
-.events li {
+.coming-list li {
   display: flex;
   align-items: center;
   gap: 14px;
   padding: 12px 0;
 }
 
-.events li + li {
+.coming-list li + li {
   border-top: 2px solid var(--raised);
 }
 
@@ -148,7 +152,7 @@
   font-size: 0.92rem;
 }
 
-.events time {
+.coming-list time {
   color: var(--bronze);
   font-weight: 800;
   white-space: nowrap;

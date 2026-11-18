@@ -34,7 +34,7 @@ function ComingUpCard({ now, timeZone }) {
       {events.length === 0 ? (
         <p className="card-note">Nothing big in the next month. Clear skies are still worth a look!</p>
       ) : (
-        <ul className="events">
+        <ul className="coming-list">
           {events.map(event => {
             const Icon = ICONS[event.kind]
 

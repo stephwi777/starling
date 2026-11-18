@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { PRESETS, skyLook } from './skyLook.js'
+import { PRESETS, nightLook, skyLook } from './skyLook.js'
 
 
 
@@ -50,4 +50,11 @@ test('every preset gives its own look', () => {
     expect(skyLook(PRESETS[name]).name).toBe(name)
   }
   expect(Object.keys(PRESETS).sort()).toEqual(['clear', 'day', 'dusk', 'moonlit', 'overcast', 'patchy'])
+})
+
+test('the home page always shows a clear night sky with a glowing Moon', () => {
+  const look = nightLook({ moonAngle: 120, moonLit: 0.75 })
+  expect(look).toMatchObject({ phase: 'night', name: 'clear', clouds: 0, sun: false, stars: 1 })
+  expect(look.moon).toEqual({ angle: 120, lit: 0.75, halo: true })
+  expect(nightLook({ moonAngle: 30, moonLit: 0.1 }).moon.halo).toBe(true)
 })
