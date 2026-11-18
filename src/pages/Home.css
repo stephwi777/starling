@@ -96,6 +96,10 @@
   padding-top: 18px;
 }
 
+.tonight-card .sights + .facts {
+  margin-top: 0;
+}
+
 .card-verdict {
   font-size: 1.2rem;
   font-weight: 700;
@@ -122,18 +126,9 @@
 }
 
 .facts dt {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   color: var(--mist);
   font-size: 0.85rem;
   font-weight: 700;
-}
-
-.facts dt svg {
-  flex: none;
-  width: 18px;
-  height: 18px;
 }
 
 
@@ -141,7 +136,8 @@
 /* SIGHTS */
 
 .sights {
-  margin-top: 18px;
+  margin-block: auto;
+  padding-top: 18px;
 }
 
 .sights h3 {
@@ -306,9 +302,6 @@
   }
 
   .facts dt {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
     font-size: 0.8rem;
   }
 

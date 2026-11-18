@@ -78,26 +78,3 @@ export function TelescopeIcon() {
     </Icon>
   )
 }
-
-export function DarkSkyIcon() {
-  return (
-    <Icon>
-      <circle r="10" fill="var(--zenith)" />
-      <circle cx="-4" cy="-3" r="1.4" fill="var(--frost)" />
-      <circle cx="4" cy="-5" r="1" fill="var(--frost)" />
-      <circle cx="3" cy="4" r="1.6" fill="var(--star-warm)" />
-      <circle cx="-3" cy="5" r="0.9" fill="var(--frost)" />
-    </Icon>
-  )
-}
-
-export function ThermometerIcon() {
-  return (
-    <Icon>
-      <rect x="-3" y="-11" width="6" height="15" rx="3" fill="var(--snow)" />
-      <circle cy="6" r="5" fill="var(--snow)" />
-      <circle cy="6" r="3" fill="var(--bronze)" />
-      <rect x="-1.2" y="-4" width="2.4" height="9" rx="1.2" fill="var(--bronze)" />
-    </Icon>
-  )
-}

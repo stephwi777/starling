@@ -3,8 +3,8 @@ import { clock } from '../../sky/words.js'
 import { sortEasiest } from '../../sky/listing.js'
 import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
-import { DarkSkyIcon, MoonIcon, ThermometerIcon } from '../ui/icons.jsx'
-import { MoonIcon as PhaseIcon, ObjectIcon } from '../tonight/Icons.jsx'
+import { MoonIcon } from '../ui/icons.jsx'
+import { ObjectIcon } from '../tonight/Icons.jsx'
 
 
 
@@ -51,18 +51,9 @@ function TonightCard({ sky, place, status }) {
       )}
 
       <dl className="facts">
-        <div>
-          <dt><PhaseIcon angle={night.moonAngle} />Moon</dt>
-          <dd>{Math.round(night.moonLit * 100)}% lit</dd>
-        </div>
-        <div>
-          <dt><DarkSkyIcon />Fully dark</dt>
-          <dd>{night.astroDusk ? clock(night.astroDusk, place.timeZone) : 'Not tonight'}</dd>
-        </div>
-        <div>
-          <dt><ThermometerIcon />Outside</dt>
-          <dd>{outside}</dd>
-        </div>
+        <div><dt>Moon</dt><dd>{Math.round(night.moonLit * 100)}% lit</dd></div>
+        <div><dt>Fully dark</dt><dd>{night.astroDusk ? clock(night.astroDusk, place.timeZone) : 'Not tonight'}</dd></div>
+        <div><dt>Outside</dt><dd>{outside}</dd></div>
       </dl>
     </Card>
   )
