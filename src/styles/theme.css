@@ -21,6 +21,10 @@
   --star-warm: #ffe4bc;
   --star-teal: #c2f5ea;
   --star-rose: #ffd2e2;
+  --meteor-teal: #86d8c7;
+  --meteor-rose: #f0a8c6;
+  --meteor-lilac: #c3a8f0;
+  --meteor-gold: #f2c98e;
 
   --panel: var(--high);
   --panel-raised: var(--raised);
@@ -141,6 +145,10 @@
   --star-warm: #e8553c;
   --star-teal: #ff6a50;
   --star-rose: #e8553c;
+  --meteor-teal: #ff6a50;
+  --meteor-rose: #e8553c;
+  --meteor-lilac: #ff6a50;
+  --meteor-gold: #e8553c;
 
   --panel: #170504;
   --panel-raised: #200705;

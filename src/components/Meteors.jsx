@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
+import { meteorKind } from './meteorKind.js'
 import './Meteors.css'
 
 
 
 // COLORS
 
-const palettes = [
-  { head: 'var(--teal)', tail: '#8f86d6' },
-  { head: 'var(--beak)', tail: 'var(--bronze)' },
-  { head: 'var(--snow)', tail: 'var(--teal)' },
-  { head: 'var(--moon)', tail: 'var(--snow)' },
+const tints = [
+  { head: 'var(--frost)', tail: 'var(--meteor-teal)' },
+  { head: 'var(--frost)', tail: 'var(--meteor-rose)' },
+  { head: 'var(--frost)', tail: 'var(--meteor-lilac)' },
+  { head: 'var(--moon)', tail: 'var(--meteor-gold)' },
 ]
 
 const sparks = [
@@ -20,22 +21,17 @@ const sparks = [
   { x: 34, y: -4 },
 ]
 
-const glitter = [0.15, 0.3, 0.45, 0.6, 0.75]
-
 
 
 // METEOR
 
 function makeMeteor(id) {
-  const comet = Math.random() < 0.15
-
   return {
     id,
-    comet,
-    burst: !comet && Math.random() < 0.4,
+    kind: meteorKind(Math.random()),
     top: Math.random() * 45,
     left: 25 + Math.random() * 70,
-    ...palettes[Math.floor(Math.random() * palettes.length)],
+    ...tints[Math.floor(Math.random() * tints.length)],
   }
 }
 
@@ -75,7 +71,7 @@ function Meteors() {
       {meteor && (
         <span
           key={meteor.id}
-          className={meteor.comet ? 'meteor comet' : 'meteor'}
+          className={`meteor ${meteor.kind}`}
           style={{
             top: `${meteor.top}%`,
             left: `${meteor.left}%`,
@@ -85,15 +81,11 @@ function Meteors() {
         >
           <span className="flight">
             <span className="tail"></span>
-            <span className="head"></span>
+            {meteor.kind === 'streak' ? <span className="head"></span> : <span className="flare"></span>}
           </span>
 
-          {meteor.burst && sparks.map((spark, i) => (
+          {meteor.kind === 'fireball burst' && sparks.map((spark, i) => (
             <span key={i} className="spark" style={{ '--x': `${spark.x}px`, '--y': `${spark.y}px` }}></span>
-          ))}
-
-          {meteor.comet && glitter.map(when => (
-            <span key={when} className="glitter" style={{ '--when': when }}></span>
           ))}
         </span>
       )}

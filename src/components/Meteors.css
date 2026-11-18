@@ -9,15 +9,15 @@
 }
 
 .meteor {
-  --duration: 1.5s;
-  --distance: 400px;
+  --duration: 2s;
+  --distance: min(520px, 80vw);
   position: absolute;
   transform: rotate(155deg);
 }
 
 
 
-/* FLIGHT */
+/* STREAK */
 
 .flight {
   position: absolute;
@@ -29,23 +29,25 @@
   position: absolute;
   right: 0;
   top: -1.5px;
-  width: 190px;
+  width: 230px;
   height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(to right, transparent, var(--tail) 55%, var(--head));
+  background: linear-gradient(to right, transparent, var(--tail) 65%, var(--head));
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
   transform-origin: right;
-  animation: stretch var(--duration) ease-out forwards;
+  animation: follow var(--duration) linear forwards;
 }
 
 .head {
   position: absolute;
-  top: -3.5px;
-  left: -3.5px;
-  width: 7px;
-  height: 7px;
+  top: -2.75px;
+  left: -2.75px;
+  width: 5.5px;
+  height: 5.5px;
   border-radius: 50%;
   background: var(--head);
-  animation: flicker 0.25s ease-in-out infinite alternate;
+  box-shadow:
+    0 0 7px 2px var(--head),
+    0 0 18px 6px color-mix(in srgb, var(--tail) 50%, transparent);
 }
 
 @keyframes fly {
@@ -65,39 +67,66 @@
   }
 }
 
-@keyframes stretch {
+@keyframes follow {
   0% {
     transform: scaleX(0);
   }
-  50% {
+  35% {
+    transform: scaleX(0.3);
+  }
+  70% {
     transform: scaleX(1);
   }
   100% {
-    transform: scaleX(0.35);
-  }
-}
-
-@keyframes flicker {
-  to {
-    box-shadow: 0 0 10px 3px var(--head);
+    transform: scaleX(0.15);
   }
 }
 
 
 
-/* SPARKS */
+/* FIREBALL */
+
+.fireball .flight {
+  filter: drop-shadow(0 0 2px var(--tail));
+}
+
+.fireball .tail {
+  top: -3px;
+  width: 210px;
+  height: 6px;
+  background: linear-gradient(to right, transparent, var(--tail) 40%, color-mix(in srgb, var(--tail) 40%, white) 70%, white 90%, color-mix(in srgb, white 75%, var(--tail)));
+  clip-path: polygon(0 50%, 74% 0, 100% 50%, 74% 100%);
+}
+
+.flare {
+  position: absolute;
+  right: -4px;
+  top: -6px;
+  width: 80px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 78% 50%, white, color-mix(in srgb, var(--tail) 55%, transparent) 40%, transparent 72%);
+  filter: blur(1.5px);
+  transform-origin: right;
+  animation: follow var(--duration) linear forwards;
+}
+
+
+
+/* BURST */
 
 .spark {
   position: absolute;
   top: -2.5px;
-  left: calc(var(--distance) * 0.78);
+  left: calc(var(--distance) * 0.81);
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--head);
+  background: var(--tail);
+  box-shadow: 0 0 4px var(--tail);
   opacity: 0;
   animation: burst 0.8s ease-out forwards;
-  animation-delay: calc(var(--duration) * 0.85);
+  animation-delay: calc(var(--duration) * 0.88);
 }
 
 @keyframes burst {
@@ -108,55 +137,6 @@
   100% {
     opacity: 0;
     transform: translate(var(--x), var(--y)) scale(0.4);
-  }
-}
-
-
-
-/* COMET */
-
-.comet {
-  --duration: 3.6s;
-  --distance: 460px;
-}
-
-.comet .flight {
-  animation-timing-function: linear;
-}
-
-.comet .tail {
-  width: 300px;
-  height: 4px;
-  top: -2px;
-}
-
-.comet .head {
-  top: -4.5px;
-  left: -4.5px;
-  width: 9px;
-  height: 9px;
-}
-
-.glitter {
-  position: absolute;
-  top: -2px;
-  left: calc(var(--distance) * var(--when) - 30px);
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--head);
-  opacity: 0;
-  animation: glitter 1.8s ease-out forwards;
-  animation-delay: calc(var(--duration) * var(--when));
-}
-
-@keyframes glitter {
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(8px);
   }
 }
 
