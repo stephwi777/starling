@@ -1,0 +1,32 @@
+/* CLOUDS */
+
+.clouds {
+  position: absolute;
+  inset: 0 0 18%;
+  pointer-events: none;
+}
+
+.clouds svg {
+  position: absolute;
+  animation: drift linear infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: translateX(-30px);
+  }
+
+  to {
+    transform: translateX(30px);
+  }
+}
+
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .clouds svg {
+    animation: none;
+  }
+}
