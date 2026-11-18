@@ -67,24 +67,6 @@
   height: 100%;
 }
 
-.ground .steps {
-  position: absolute;
-  inset: auto 0 0;
-  display: grid;
-}
-
-.ground .steps span {
-  height: clamp(14px, 2vw, 24px);
-}
-
-.ground .steps span:nth-child(1) {
-  background: var(--snow-shade);
-}
-
-.ground .steps span:nth-child(2) {
-  background: var(--far-hills);
-}
-
 .ground .pine {
   position: absolute;
   overflow: visible;
