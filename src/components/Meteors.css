@@ -9,15 +9,15 @@
 }
 
 .meteor {
-  --duration: 2s;
-  --distance: min(520px, 80vw);
+  --duration: 1.5s;
+  --distance: 400px;
   position: absolute;
   transform: rotate(155deg);
 }
 
 
 
-/* STREAK */
+/* FLIGHT */
 
 .flight {
   position: absolute;
@@ -29,25 +29,23 @@
   position: absolute;
   right: 0;
   top: -1.5px;
-  width: 230px;
+  width: 190px;
   height: 3px;
-  background: linear-gradient(to right, transparent, var(--tail) 65%, var(--head));
-  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  border-radius: 999px;
+  background: linear-gradient(to right, transparent, var(--tail) 55%, var(--head));
   transform-origin: right;
-  animation: follow var(--duration) linear forwards;
+  animation: stretch var(--duration) ease-out forwards;
 }
 
 .head {
   position: absolute;
-  top: -2.75px;
-  left: -2.75px;
-  width: 5.5px;
-  height: 5.5px;
+  top: -3.5px;
+  left: -3.5px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: var(--head);
-  box-shadow:
-    0 0 7px 2px var(--head),
-    0 0 18px 6px color-mix(in srgb, var(--tail) 50%, transparent);
+  animation: flicker 0.25s ease-in-out infinite alternate;
 }
 
 @keyframes fly {
@@ -67,24 +65,60 @@
   }
 }
 
-@keyframes follow {
+@keyframes stretch {
   0% {
     transform: scaleX(0);
   }
-  35% {
-    transform: scaleX(0.3);
-  }
-  70% {
+  50% {
     transform: scaleX(1);
   }
   100% {
-    transform: scaleX(0.15);
+    transform: scaleX(0.35);
+  }
+}
+
+@keyframes flicker {
+  to {
+    box-shadow: 0 0 10px 3px var(--head);
+  }
+}
+
+
+
+/* SPARKS */
+
+.spark {
+  position: absolute;
+  top: -2.5px;
+  left: calc(var(--distance) * 0.78);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--head);
+  opacity: 0;
+  animation: burst 0.8s ease-out forwards;
+  animation-delay: calc(var(--duration) * 0.85);
+}
+
+@keyframes burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--x), var(--y)) scale(0.4);
   }
 }
 
 
 
 /* FIREBALL */
+
+.meteor.fireball {
+  --duration: 2s;
+  --distance: min(520px, 80vw);
+}
 
 .fireball .flight {
   filter: drop-shadow(0 0 2px var(--tail));
@@ -94,8 +128,10 @@
   top: -3px;
   width: 210px;
   height: 6px;
+  border-radius: 0;
   background: linear-gradient(to right, transparent, var(--tail) 40%, color-mix(in srgb, var(--tail) 40%, white) 70%, white 90%, color-mix(in srgb, white 75%, var(--tail)));
   clip-path: polygon(0 50%, 74% 0, 100% 50%, 74% 100%);
+  animation: follow var(--duration) linear forwards;
 }
 
 .flare {
@@ -111,32 +147,25 @@
   animation: follow var(--duration) linear forwards;
 }
 
-
-
-/* BURST */
-
-.spark {
-  position: absolute;
-  top: -2.5px;
+.fireball .spark {
   left: calc(var(--distance) * 0.81);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
   background: var(--tail);
   box-shadow: 0 0 4px var(--tail);
-  opacity: 0;
-  animation: burst 0.8s ease-out forwards;
   animation-delay: calc(var(--duration) * 0.88);
 }
 
-@keyframes burst {
+@keyframes follow {
   0% {
-    opacity: 1;
-    transform: translate(0, 0);
+    transform: scaleX(0);
+  }
+  35% {
+    transform: scaleX(0.3);
+  }
+  70% {
+    transform: scaleX(1);
   }
   100% {
-    opacity: 0;
-    transform: translate(var(--x), var(--y)) scale(0.4);
+    transform: scaleX(0.15);
   }
 }
 

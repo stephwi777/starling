@@ -6,6 +6,13 @@ import './Meteors.css'
 
 // COLORS
 
+const palettes = [
+  { head: 'var(--teal)', tail: '#8f86d6' },
+  { head: 'var(--beak)', tail: 'var(--bronze)' },
+  { head: 'var(--snow)', tail: 'var(--teal)' },
+  { head: 'var(--moon)', tail: 'var(--snow)' },
+]
+
 const tints = [
   { head: 'var(--frost)', tail: 'var(--meteor-teal)' },
   { head: 'var(--frost)', tail: 'var(--meteor-rose)' },
@@ -26,12 +33,16 @@ const sparks = [
 // METEOR
 
 function makeMeteor(id) {
+  const kind = meteorKind(Math.random())
+  const colors = kind.startsWith('fireball') ? tints : palettes
+
   return {
     id,
-    kind: meteorKind(Math.random()),
+    fireball: kind.startsWith('fireball'),
+    burst: kind.endsWith('burst'),
     top: Math.random() * 45,
     left: 25 + Math.random() * 70,
-    ...tints[Math.floor(Math.random() * tints.length)],
+    ...colors[Math.floor(Math.random() * colors.length)],
   }
 }
 
@@ -71,7 +82,7 @@ function Meteors() {
       {meteor && (
         <span
           key={meteor.id}
-          className={`meteor ${meteor.kind}`}
+          className={meteor.fireball ? 'meteor fireball' : 'meteor'}
           style={{
             top: `${meteor.top}%`,
             left: `${meteor.left}%`,
@@ -81,10 +92,10 @@ function Meteors() {
         >
           <span className="flight">
             <span className="tail"></span>
-            {meteor.kind === 'streak' ? <span className="head"></span> : <span className="flare"></span>}
+            {meteor.fireball ? <span className="flare"></span> : <span className="head"></span>}
           </span>
 
-          {meteor.kind === 'fireball burst' && sparks.map((spark, i) => (
+          {meteor.burst && sparks.map((spark, i) => (
             <span key={i} className="spark" style={{ '--x': `${spark.x}px`, '--y': `${spark.y}px` }}></span>
           ))}
         </span>
