@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router'
 import { usePlace } from '../place/usePlace.js'
 import { longName } from '../place/placeNames.js'
 import { useSettings } from '../settings/useSettings.js'
 import { buildNight, upcomingNights } from '../sky/night.js'
-import { fetchWeather, nightWeather, skyWord } from '../sky/weather.js'
+import { nightWeather, skyWord } from '../sky/weather.js'
+import { useForecast } from '../sky/useForecast.js'
 import { useNight } from '../sky/useNight.js'
 import OptionSwitch from '../components/tonight/OptionSwitch.jsx'
 import NightPicker from '../components/tonight/NightPicker.jsx'
@@ -58,9 +59,7 @@ function Tonight() {
   const nights = useMemo(() => upcomingNights(place, now, 7), [place, now])
   const found = nights.findIndex(night => night.date === params.get('night'))
   const index = found === -1 ? 0 : found
-  const placeKey = `${place.latitude} ${place.longitude}`
-  const [forecast, setForecast] = useState({ key: '', raw: null, status: 'loading' })
-  const current = forecast.key === placeKey ? forecast : { raw: null, status: 'loading' }
+  const current = useForecast(place)
   const sky = useNight(place, index, current.raw, now)
   const timeZone = place.timeZone
   const key = `${index} ${place.latitude} ${place.longitude}`
@@ -78,18 +77,6 @@ function Tonight() {
       return [night.index, weather ? skyWord(weather.clouds) : null]
     }))
   }, [current.raw, nights, place, now])
-
-  useEffect(() => {
-    const controller = new AbortController()
-
-    fetchWeather(place, controller.signal)
-      .then(raw => setForecast({ key: placeKey, raw, status: 'ready' }))
-      .catch(() => {
-        if (!controller.signal.aborted) setForecast({ key: placeKey, raw: null, status: 'failed' })
-      })
-
-    return () => controller.abort()
-  }, [place, placeKey])
 
   const moveTo = next => setTime({ key, at: Math.max(0, Math.min(sky.night.times.length - 1, next)) })
 

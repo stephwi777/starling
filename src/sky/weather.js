@@ -31,7 +31,7 @@ export async function fetchWeather(place, signal, fetcher = fetch) {
 
 // LOCAL HOURS
 
-function hourKey(date, timeZone) {
+export function hourKey(date, timeZone) {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone,
     hourCycle: 'h23',
