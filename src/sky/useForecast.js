@@ -5,7 +5,7 @@ import { fetchWeather } from './weather.js'
 
 // HOOK
 
-export function useForecast(place) {
+export function useForecast(place, refresh = 0) {
   const key = `${place.latitude} ${place.longitude}`
   const [forecast, setForecast] = useState({ key: '', raw: null, status: 'loading' })
 
@@ -19,7 +19,7 @@ export function useForecast(place) {
       })
 
     return () => controller.abort()
-  }, [place, key])
+  }, [place, key, refresh])
 
   return forecast.key === key ? forecast : { raw: null, status: 'loading' }
 }

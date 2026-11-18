@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import { usePlace } from '../place/usePlace.js'
 import { useForecast } from '../sky/useForecast.js'
 import { useNight } from '../sky/useNight.js'
+import { useNow } from '../sky/useNow.js'
 import { nightLook } from '../sky/skyLook.js'
 import SkyScene from '../components/sky/SkyScene.jsx'
 import Meteors from '../components/Meteors.jsx'
@@ -13,14 +13,20 @@ import './Home.css'
 
 
 
+// TIMING
+
+const HOUR = 60 * 60 * 1000
+
+
+
 // HOME
 
 function Home() {
-  const { place } = usePlace()
-  const [now] = useState(() => new Date())
-  const forecast = useForecast(place)
+  const { place, isSample } = usePlace()
+  const now = useNow()
+  const forecast = useForecast(place, Math.floor(now.getTime() / HOUR))
   const sky = useNight(place, 0, forecast.raw, now)
-  const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit })
+  const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
   return (
     <main className="home">
@@ -43,8 +49,8 @@ function Home() {
 
       <div className="home-below">
         <div className="home-cards">
-          <TonightCard sky={sky} place={place} status={forecast.status} />
-          <ComingUpCard now={now} timeZone={place.timeZone} />
+          <TonightCard sky={sky} place={place} isSample={isSample} status={forecast.status} />
+          <ComingUpCard now={now} timeZone={place.timeZone} south={place.latitude < 0} />
         </div>
 
         <Doors now={now} place={place} />
