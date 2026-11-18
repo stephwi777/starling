@@ -239,6 +239,24 @@
 
 
 
+    /* CENTERED TILES */
+
+    .centered .facts div {
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .centered .facts dd {
+      align-self: center;
+    }
+
+    .grouped .facts div {
+      justify-content: center;
+      gap: 4px;
+    }
+
+
+
     /* ROWS */
 
     .rows .facts {
@@ -338,6 +356,78 @@
     <p class="option-note">The three facts grow to fill the space, with bigger numbers, like Apple Weather tiles. The card has no empty space.</p>
 
     <div class="row tiles">
+      <section class="card tonight-card">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
+          <h2>Tonight in Saint Louis County</h2>
+          <a class="card-link" href="#">Tonight</a>
+        </div>
+        <p class="card-verdict">Clear and dark between clouds, 9pm to 1am.</p>
+
+        <dl class="facts">
+          <div><dt>Moon</dt><dd>66% lit</dd></div>
+          <div><dt>Night falls</dt><dd>6:18pm</dd></div>
+          <div><dt>Outside</dt><dd>54°F</dd></div>
+        </dl>
+      </section>
+
+      <section class="card coming">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="19" rx="5" fill="#b9ade4" /><rect x="5" y="7" width="22" height="6" rx="3" fill="#d6a866" /></svg></div>
+          <h2>Coming up</h2>
+          <a class="card-link" href="#">Calendar</a>
+        </div>
+        <ul class="coming-list">
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Full Moon</strong><small>Rises around sunset</small></div><time>Nov 24</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" /><path d="M16 7a9 9 0 0 1 0 18Z" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Last quarter Moon</strong><small>Half lit, rises after midnight</small></div><time>Dec 1</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" stroke="#b4b6dc" stroke-width="1.5" /></svg></div><div class="row-text"><strong>New Moon</strong><small>The darkest skies of the month</small></div><time>Dec 8</time></li>
+        </ul>
+      </section>
+    </div>
+
+
+    <!-- TILES CENTERED -->
+
+    <h2 class="option-title">B2 · Taller tiles, number centered</h2>
+    <p class="option-note">Same tall tiles. The label stays at the top and the number sits in the middle of the space below it.</p>
+
+    <div class="row tiles centered">
+      <section class="card tonight-card">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
+          <h2>Tonight in Saint Louis County</h2>
+          <a class="card-link" href="#">Tonight</a>
+        </div>
+        <p class="card-verdict">Clear and dark between clouds, 9pm to 1am.</p>
+
+        <dl class="facts">
+          <div><dt>Moon</dt><dd>66% lit</dd></div>
+          <div><dt>Night falls</dt><dd>6:18pm</dd></div>
+          <div><dt>Outside</dt><dd>54°F</dd></div>
+        </dl>
+      </section>
+
+      <section class="card coming">
+        <div class="card-head">
+          <div class="well"><svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="19" rx="5" fill="#b9ade4" /><rect x="5" y="7" width="22" height="6" rx="3" fill="#d6a866" /></svg></div>
+          <h2>Coming up</h2>
+          <a class="card-link" href="#">Calendar</a>
+        </div>
+        <ul class="coming-list">
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Full Moon</strong><small>Rises around sunset</small></div><time>Nov 24</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" /><path d="M16 7a9 9 0 0 1 0 18Z" fill="#f6ead0" /></svg></div><div class="row-text"><strong>Last quarter Moon</strong><small>Half lit, rises after midnight</small></div><time>Dec 1</time></li>
+          <li><div class="well"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="9" fill="#302c60" stroke="#b4b6dc" stroke-width="1.5" /></svg></div><div class="row-text"><strong>New Moon</strong><small>The darkest skies of the month</small></div><time>Dec 8</time></li>
+        </ul>
+      </section>
+    </div>
+
+
+    <!-- TILES GROUPED -->
+
+    <h2 class="option-title">B3 · Taller tiles, all centered</h2>
+    <p class="option-note">Same tall tiles, with the label and number kept together in the middle of each tile.</p>
+
+    <div class="row tiles grouped">
       <section class="card tonight-card">
         <div class="card-head">
           <div class="well"><svg viewBox="0 0 32 32"><path d="M21 5a11 11 0 1 0 6 15A9 9 0 0 1 21 5Z" fill="#f6ead0" /></svg></div>
