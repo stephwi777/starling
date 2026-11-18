@@ -21,7 +21,7 @@ const stars = Array.from({ length: 640 }, (_, i) => {
     bright,
     twinkle: !bright && Math.random() < 0.3,
     shimmer: Math.random() < 0.15,
-    duration: Math.random() * 3 + 3,
+    duration: Math.random() * 4 + 4,
     shimmerDuration: Math.random() * 3 + 3,
     delay: Math.random() * 8,
   }
@@ -103,6 +103,7 @@ function Stars({ amount = 1 }) {
             color: star.color,
             '--tint': star.color,
             opacity: star.opacity,
+            '--base': star.opacity,
             '--twinkle': `${star.duration}s`,
             '--shimmer': `${star.shimmerDuration}s`,
             '--delay': `${star.delay}s`,
