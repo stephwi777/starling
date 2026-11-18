@@ -90,3 +90,10 @@ test('the short verdict is one brief line', () => {
   expect(shortVerdict({ night: makeNight(), clouds: [50, 45, 50, 45], best: null, timeZone: ZONE })).toBe('Patchy clouds all night.')
   expect(shortVerdict({ night: makeNight(Array(24).fill(-10), { astroDusk: null, astroDawn: null }), clouds: null, best: null, timeZone: ZONE })).toBe('No full darkness tonight.')
 })
+
+test('the short verdict says when clouds shape the clear window', () => {
+  const short = clouds => shortVerdict({ night: makeNight(), clouds, best: bestWindow(makeNight(), clouds), timeZone: ZONE })
+  expect(short([80, 0, 0, 0])).toBe('Clouds clear by 7pm, then dark until 10pm.')
+  expect(short([0, 0, 0, 80])).toBe('Clear and dark from 6pm until clouds return at 9pm.')
+  expect(short([80, 0, 0, 80])).toBe('Clear and dark between clouds, 7pm to 9pm.')
+})

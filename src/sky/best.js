@@ -43,7 +43,7 @@ function windowTimes(night, best, timeZone) {
   const from = atDusk ? night.astroDusk : night.times[best.from]
   const to = atDawn ? night.astroDawn : night.times[best.to + 1]
 
-  return { from: clock(from, timeZone), to: clock(to, timeZone) }
+  return { from: clock(from, timeZone), to: clock(to, timeZone), atDusk, atDawn }
 }
 
 function brightestPlanet(planets, best) {
@@ -95,7 +95,12 @@ export function shortVerdict({ night, clouds, best, timeZone }) {
     return average > 70 ? 'Cloudy all night.' : 'Patchy clouds all night.'
   }
 
-  const { from, to } = windowTimes(night, best, timeZone)
+  const { from, to, atDusk, atDawn } = windowTimes(night, best, timeZone)
 
-  return clouds ? `Clear and dark from ${from} to ${to}.` : `Dark from ${from} to ${to}.`
+  if (!clouds) return `Dark from ${from} to ${to}.`
+  if (!atDusk && !atDawn) return `Clear and dark between clouds, ${from} to ${to}.`
+  if (!atDusk) return `Clouds clear by ${from}, then dark until ${to}.`
+  if (!atDawn) return `Clear and dark from ${from} until clouds return at ${to}.`
+
+  return `Clear and dark from ${from} to ${to}.`
 }
