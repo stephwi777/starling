@@ -357,6 +357,41 @@
 
 
 
+    /* NEEDLE THAT FADES */
+
+    .needle.fades .needle-flight {
+      animation: glide-fade var(--duration) ease-in forwards;
+    }
+
+    .needle.fades .needle-tail {
+      opacity: 1;
+      animation: stretch var(--duration) ease-out forwards;
+    }
+
+    .needle.fades .needle-head {
+      opacity: 1;
+      animation: none;
+    }
+
+    @keyframes glide-fade {
+      0% {
+        opacity: 0;
+        transform: translateX(0);
+      }
+      12% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(var(--distance));
+      }
+    }
+
+
+
     /* SLOW MOTION */
 
     .slow .meteor {
@@ -418,7 +453,7 @@
       <div class="option-head">
         <div>
           <h2>C · Needle, Starling tints</h2>
-          <p>The same shape and motion, with our soft star tints in the trail: teal, rose, lavender or warm gold.</p>
+          <p>The needle shape with our soft star tints in the trail (teal, rose, lavender or warm gold), ending like A: the trail shrinks back as the whole streak fades, with no lingering wake.</p>
         </div>
         <button type="button">Launch</button>
       </div>
@@ -484,7 +519,7 @@
       const colors = style === 'needle' ? COOL : (style === 'tinted' ? TINTS : TODAY)[Math.floor(trip.pick * 4)]
       const meteor = document.createElement('span')
 
-      meteor.className = needle ? 'needle' : 'meteor'
+      meteor.className = needle ? (style === 'tinted' ? 'needle fades' : 'needle') : 'meteor'
       meteor.style.cssText = `top:${trip.top}%;left:${trip.left}%;--head:${colors.head};--tail:${colors.tail}`
       meteor.innerHTML = needle
         ? '<span class="needle-flight"><span class="needle-tail"></span><span class="needle-head"></span></span>'
