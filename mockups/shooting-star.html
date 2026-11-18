@@ -364,13 +364,29 @@
     }
 
     .needle.fades .needle-tail {
+      width: 230px;
       opacity: 1;
-      animation: stretch var(--duration) ease-out forwards;
+      animation: follow var(--duration) linear forwards;
     }
 
     .needle.fades .needle-head {
       opacity: 1;
       animation: none;
+    }
+
+    @keyframes follow {
+      0% {
+        transform: scaleX(0);
+      }
+      35% {
+        transform: scaleX(0.3);
+      }
+      70% {
+        transform: scaleX(1);
+      }
+      100% {
+        transform: scaleX(0.15);
+      }
     }
 
     @keyframes glide-fade {
@@ -453,7 +469,7 @@
       <div class="option-head">
         <div>
           <h2>C · Needle, Starling tints</h2>
-          <p>The needle shape with our soft star tints in the trail (teal, rose, lavender or warm gold), ending like A: the trail shrinks back as the whole streak fades, with no lingering wake.</p>
+          <p>The needle shape with our soft star tints in the trail (teal, rose, lavender or warm gold), ending like A. The trail grows only as far as the meteor has flown, then pulls in to a short stub as the streak fades.</p>
         </div>
         <button type="button">Launch</button>
       </div>
