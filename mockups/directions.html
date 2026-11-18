@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: directions A and C</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700;6..12,800;6..12,900&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --horizon: #241f53;
+      --far-hills: #31296a;
+      --snow: #b9ade4;
+      --snow-shade: #a093d4;
+      --ink: #1a1645;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --teal: #55bcab;
+      --bronze: #d6a866;
+      --beak: #f1cd57;
+      --moon: #f6ead0;
+      --moon-dark: #302c60;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Nunito Sans', system-ui, sans-serif;
+      --gutter: clamp(16px, 5vw, 64px);
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: var(--font-body);
+      font-size: 1.0625rem;
+      line-height: 1.55;
+      font-variant-numeric: tabular-nums;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--font-display);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    ul {
+      padding: 0;
+      list-style: none;
+    }
+
+    button {
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--beak);
+      outline-offset: 3px;
+      border-radius: 10px;
+    }
+
+    .wrap {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding-inline: var(--gutter);
+    }
+
+    h1, h2, h3, .verdict, .logo, .hero p {
+      font-variation-settings: 'SOFT' var(--soft, 0);
+    }
+
+    [data-soft="100"] {
+      --soft: 100;
+    }
+
+    [data-font="rounded"] {
+      --font-body: 'Nunito', system-ui, sans-serif;
+    }
+
+    [data-page="home"] #tonight,
+    [data-page="tonight"] #home,
+    [data-direction="a"] .only-c,
+    [data-direction="c"] .only-a {
+      display: none;
+    }
+
+
+
+    /* MOCKUP BAR */
+
+    .mockup-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 6px 10px;
+      padding: 8px 12px;
+      background: #f5cf4f;
+      color: #1a1645;
+      font: 800 0.9rem 'Nunito Sans', sans-serif;
+    }
+
+    .mockup-bar span {
+      margin-left: 8px;
+    }
+
+    .mockup-bar button {
+      min-height: 34px;
+      padding: 3px 12px;
+      border: 2px solid #1a1645;
+      border-radius: 999px;
+      background: none;
+      color: #1a1645;
+      font-weight: 800;
+    }
+
+    .mockup-bar button[aria-pressed="true"] {
+      background: #1a1645;
+      color: #f5cf4f;
+    }
+
+
+
+    /* HEADER */
+
+    .site {
+      position: absolute;
+      inset: auto 0;
+      z-index: 5;
+    }
+
+    .site .wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 28px;
+      padding-block: 18px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--snow);
+    }
+
+    .logo svg {
+      width: 36px;
+    }
+
+    .site nav {
+      display: flex;
+      gap: 22px;
+      margin-left: auto;
+      color: var(--mist);
+      font-weight: 600;
+    }
+
+    .site nav button {
+      padding: 0;
+      border: 0;
+      background: none;
+      color: inherit;
+      font-weight: 600;
+    }
+
+    .site nav [aria-current="page"] {
+      color: var(--frost);
+      text-decoration: underline 3px var(--beak);
+      text-underline-offset: 8px;
+    }
+
+    .place {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 6px 16px;
+      border: 0;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--zenith) 55%, transparent);
+      font-weight: 800;
+    }
+
+    .place svg {
+      width: 11px;
+      fill: var(--beak);
+    }
+
+
+
+    /* SCENES */
+
+    .scene {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #090b20 0%, var(--zenith) 35%, #1a1a48 78%, #2c2560 100%);
+    }
+
+    .sky {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--frost);
+    }
+
+    .land {
+      position: absolute;
+      inset: auto 0 -1px;
+      width: 100%;
+    }
+
+    .scene .moon {
+      position: absolute;
+    }
+
+    [data-phase] {
+      overflow: visible;
+    }
+
+    .hero {
+      height: clamp(620px, 88vh, 760px);
+    }
+
+    .hero .moon {
+      top: 120px;
+      right: 14%;
+      width: clamp(80px, 11vw, 130px);
+    }
+
+    .hero .land {
+      height: clamp(170px, 26vw, 280px);
+    }
+
+    .hero-text {
+      position: relative;
+      padding-top: clamp(150px, 20vh, 200px);
+    }
+
+    .hero h1 {
+      max-width: 12ch;
+      font-size: clamp(2.8rem, 6.5vw, 4.6rem);
+      color: var(--moon);
+    }
+
+    .hero p {
+      max-width: 32ch;
+      margin-top: 14px;
+      font-family: var(--font-display);
+      font-size: clamp(1.15rem, 2vw, 1.35rem);
+      color: var(--mist);
+    }
+
+    .band {
+      height: clamp(330px, 46vw, 420px);
+    }
+
+    .band .moon {
+      top: 96px;
+      right: 22%;
+      width: 54px;
+    }
+
+    .band .land {
+      height: clamp(90px, 13vw, 130px);
+    }
+
+    .band .planet {
+      position: absolute;
+      top: 232px;
+      right: 30%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .band .planet::before {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--bronze);
+      box-shadow: 0 0 10px 2px color-mix(in srgb, var(--bronze) 50%, transparent);
+    }
+
+    .band-text {
+      position: relative;
+      padding-top: 104px;
+    }
+
+    .dateline {
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .verdict {
+      max-width: 26ch;
+      margin-top: 6px;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+      line-height: 1.2;
+      color: var(--moon);
+    }
+
+    .plain-head {
+      padding-top: 104px;
+      padding-bottom: 8px;
+    }
+
+
+
+    /* BUTTONS */
+
+    .press {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 50px;
+      margin-top: 26px;
+      padding: 10px 24px;
+      border: 0;
+      border-radius: 18px;
+      background: var(--beak);
+      color: var(--ink);
+      font-weight: 900;
+      box-shadow: 0 5px 0 #b8952f;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .press:active {
+      transform: translateY(4px);
+      box-shadow: 0 1px 0 #b8952f;
+    }
+
+    .press.quiet {
+      background: var(--raised);
+      color: var(--frost);
+      box-shadow: 0 5px 0 #121433;
+    }
+
+
+
+    /* CARDS */
+
+    .below {
+      display: grid;
+      gap: 18px;
+      padding-block: 36px 80px;
+    }
+
+    .below > *,
+    .home-grid > *,
+    .tonight-grid > * {
+      min-width: 0;
+    }
+
+    .card {
+      padding: clamp(18px, 2.4vw, 26px);
+      border-radius: 30px;
+      background: var(--high);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .card-head h2 {
+      font-size: 1.4rem;
+    }
+
+    .card-head a {
+      margin-left: auto;
+      color: var(--beak);
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .well {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: var(--raised);
+    }
+
+    .well svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .tiles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .tile {
+      display: grid;
+      align-content: start;
+      gap: 4px;
+      min-height: 200px;
+      padding: 18px 20px;
+      border: 0;
+      border-radius: 26px;
+      background: var(--high);
+      text-align: left;
+    }
+
+    .tile h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--mist);
+    }
+
+    .tile h3::after {
+      content: '›';
+      margin-left: auto;
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    .tile strong {
+      font-size: 1.7rem;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .tile p {
+      color: var(--mist);
+      font-size: 0.95rem;
+    }
+
+    .tile svg {
+      margin-block: 6px;
+    }
+
+
+
+    /* HOME BELOW */
+
+    .home-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 18px;
+    }
+
+    .mini {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .mini div {
+      padding: 12px 14px;
+      border-radius: 18px;
+      background: var(--raised);
+    }
+
+    .mini span {
+      display: block;
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .mini strong {
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .rows li {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .rows li + li {
+      border-top: 2px solid var(--raised);
+    }
+
+    .rows .text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .rows strong {
+      display: block;
+      font-weight: 800;
+    }
+
+    .rows small {
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+    .rows .when {
+      color: var(--bronze);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .rows .when::after,
+    .rows .go::after {
+      content: ' ›';
+      color: var(--mist);
+    }
+
+    .level {
+      margin-left: 6px;
+      padding: 1px 9px;
+      border-radius: 999px;
+      background: var(--far-hills);
+      color: var(--snow);
+      font-size: 0.75rem;
+      font-weight: 800;
+      vertical-align: 2px;
+    }
+
+    .doors {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .door {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 20px;
+      border-radius: 26px;
+      background: var(--high);
+      text-decoration: none;
+    }
+
+    .door strong {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 900;
+    }
+
+    .door small {
+      color: var(--mist);
+    }
+
+
+
+    /* HOURLY */
+
+    .summary p {
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--raised);
+      font-weight: 700;
+    }
+
+    .hours {
+      display: flex;
+      gap: 6px;
+      margin-top: 14px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--raised) transparent;
+      padding-bottom: 6px;
+    }
+
+    .hours li {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      min-width: 74px;
+      padding: 10px 6px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    .hours li.moment {
+      background: var(--raised);
+    }
+
+    .hours time {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .hours svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .hours span {
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+
+
+    /* NIGHTS */
+
+    .tonight-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .nights li {
+      display: grid;
+      grid-template-columns: 74px 28px 1fr 96px;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 0;
+    }
+
+    .nights li + li {
+      border-top: 2px solid var(--raised);
+    }
+
+    .nights strong {
+      font-weight: 900;
+    }
+
+    .nights .track {
+      position: relative;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--zenith);
+    }
+
+    .nights .track i {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      border-radius: 999px;
+      background: var(--teal);
+    }
+
+    .nights .track i.short {
+      background: var(--bronze);
+    }
+
+    .nights .span {
+      color: var(--mist);
+      font-size: 0.9rem;
+      text-align: right;
+    }
+
+    .nights .none {
+      color: var(--mist);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+
+
+    /* FOOTER */
+
+    footer {
+      padding-block: 28px 40px;
+      color: var(--mist);
+      font-size: 0.9rem;
+    }
+
+
+
+    /* MEDIUM SCREENS */
+
+    @media (max-width: 980px) {
+      .tiles {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .home-grid,
+      .tonight-grid,
+      .doors {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+
+    /* SMALL SCREENS */
+
+    @media (max-width: 700px) {
+      .site nav {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        overflow-x: auto;
+      }
+
+      .site .wrap {
+        gap: 10px 12px;
+      }
+
+      .logo {
+        font-size: 1.35rem;
+      }
+
+      .logo svg {
+        width: 30px;
+      }
+
+      .place {
+        margin-left: auto;
+        min-height: 40px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+      }
+
+      .hero .moon {
+        top: auto;
+        bottom: 34%;
+        right: 10%;
+        width: 70px;
+      }
+
+      .hero-text {
+        padding-top: 150px;
+      }
+
+      .band-text,
+      .plain-head {
+        padding-top: 128px;
+      }
+
+      .band {
+        height: 470px;
+      }
+
+      .band .moon {
+        top: 330px;
+        right: 12%;
+        width: 40px;
+      }
+
+      .band .planet {
+        top: 350px;
+        right: 48%;
+      }
+
+      .tiles {
+        gap: 12px;
+      }
+
+      .tile {
+        min-height: 180px;
+        padding: 16px;
+      }
+
+      .tile strong {
+        font-size: 1.35rem;
+      }
+
+      .mini {
+        grid-template-columns: 1fr;
+      }
+
+      .nights li {
+        grid-template-columns: 52px 24px 1fr;
+      }
+
+      .nights .span {
+        grid-column: 2 / -1;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body data-direction="c" data-page="home" data-font="rounded" data-soft="100">
+
+
+
+  <!-- MOCKUP BAR -->
+
+  <div class="mockup-bar">
+    <span>Direction:</span>
+    <button data-direction="a" aria-pressed="false">A. Scene on home only</button>
+    <button data-direction="c" aria-pressed="true">C. Your sky, every page</button>
+    <span>Page:</span>
+    <button data-page="home" aria-pressed="true">Home</button>
+    <button data-page="tonight" aria-pressed="false">Tonight</button>
+    <span>Font:</span>
+    <button data-font="sans" aria-pressed="false">Nunito Sans</button>
+    <button data-font="rounded" aria-pressed="true">Nunito (rounded)</button>
+    <span>Headings:</span>
+    <button data-soft="0" aria-pressed="false">Fraunces</button>
+    <button data-soft="100" aria-pressed="true">Fraunces soft</button>
+  </div>
+
+
+
+  <!-- HEADER -->
+
+  <header class="site">
+    <div class="wrap">
+      <span class="logo">
+        <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="var(--far-hills)" /><path d="M10 25 Q14 15 23 15 Q29 15 31 19 L36 18 L31 22 Q28 28 19 28 Q13 28 10 25 Z" fill="var(--ink)" /><circle cx="26" cy="19" r="1.4" fill="var(--frost)" /><circle cx="17" cy="23" r="0.9" fill="var(--frost)" /><circle cx="20" cy="25" r="0.8" fill="var(--frost)" /><path d="M31 6 Q31.6 9.4 35 10 Q31.6 10.6 31 14 Q30.4 10.6 27 10 Q30.4 9.4 31 6 Z" fill="var(--beak)" /></svg>
+        Starling
+      </span>
+      <nav aria-label="Main">
+        <button data-go="tonight">Tonight</button>
+        <button>Calendar</button>
+        <button>Map</button>
+        <button>Learn</button>
+        <button>Tools</button>
+      </nav>
+      <button class="place"><svg viewBox="0 0 12 16" aria-hidden="true"><path d="M6 0C2.7 0 0 2.6 0 5.9 0 10.3 6 16 6 16s6-5.7 6-10.1C12 2.6 9.3 0 6 0Zm0 8.2A2.3 2.3 0 1 1 6 3.6a2.3 2.3 0 0 1 0 4.6Z" /></svg>Kansas City, MO</button>
+    </div>
+  </header>
+
+
+
+  <!-- HOME -->
+
+  <main id="home">
+    <section class="scene hero" aria-labelledby="home-title">
+      <div class="sky" data-stars="150"></div>
+      <svg class="moon" viewBox="-60 -60 120 120" aria-hidden="true" data-phase="0.53"></svg>
+
+      <div class="wrap hero-text">
+        <h1 id="home-title">Meet tonight's sky</h1>
+        <p>See what’s up there tonight, right where you’re standing. Just look up!</p>
+        <button class="press" data-go="tonight">See tonight's sky</button>
+      </div>
+
+      <svg class="land" viewBox="0 0 1440 280" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 120 C 160 70, 300 90, 430 110 S 700 60, 860 96 S 1180 70, 1440 104 L 1440 280 L 0 280 Z" fill="var(--far-hills)" />
+        <path d="M0 178 C 220 140, 420 150, 640 172 S 1040 140, 1440 160 L 1440 280 L 0 280 Z" fill="var(--snow-shade)" />
+        <path d="M0 214 C 260 190, 560 196, 820 210 S 1240 196, 1440 204 L 1440 280 L 0 280 Z" fill="var(--snow)" />
+        <g fill="var(--horizon)">
+          <path d="M1060 150 l14 -40 l14 40 Z M1066 132 l8 -24 l8 24 Z" />
+          <path d="M1092 158 l18 -54 l18 54 Z M1099 132 l11 -32 l11 32 Z" />
+          <path d="M1130 156 l12 -34 l12 34 Z" />
+          <path d="M210 168 l15 -44 l15 44 Z M216 146 l9 -28 l9 28 Z" />
+          <rect x="1108" y="158" width="4" height="8" />
+          <rect x="223" y="168" width="4" height="7" />
+        </g>
+        <path d="M1104 106 q4 -6 10 -4 l5 -2 l-4 4 q-2 5 -8 5 q-3 0 -3 -3 Z" fill="var(--ink)" />
+      </svg>
+    </section>
+
+    <div class="wrap below">
+      <div class="home-grid">
+        <section class="card" aria-labelledby="home-tonight">
+          <div class="card-head">
+            <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M0 -10 A10 10 0 1 0 8 6 A8 8 0 1 1 0 -10 Z" fill="var(--moon)" /></svg></span>
+            <h2 id="home-tonight">Tonight in Kansas City</h2>
+          </div>
+          <p class="verdict" style="font-size: 1.35rem; max-width: none">Clear and dark from 6:36pm to 1am. Saturn is the brightest planet up.</p>
+          <div class="mini">
+            <div><span>Moon</span><strong>53% lit</strong></div>
+            <div><span>Fully dark</span><strong>6:36pm</strong></div>
+            <div><span>Outside</span><strong>34°F</strong></div>
+          </div>
+          <button class="press" data-go="tonight">Open Tonight</button>
+        </section>
+
+        <section class="card" aria-labelledby="home-coming">
+          <div class="card-head">
+            <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><rect x="-10" y="-8" width="20" height="18" rx="4" fill="var(--snow)" /><rect x="-10" y="-8" width="20" height="6" rx="3" fill="var(--bronze)" /><circle cx="-4" cy="3" r="1.6" fill="var(--ink)" /><circle cx="1" cy="3" r="1.6" fill="var(--ink)" /><circle cx="6" cy="3" r="1.6" fill="var(--ink)" /></svg></span>
+            <h2 id="home-coming">Coming up</h2>
+            <a href="#">Calendar</a>
+          </div>
+          <ul class="rows">
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M-10 -10 L5 5" stroke="var(--bronze)" stroke-width="3" stroke-linecap="round" /><path d="M-3 -11 L6 -2" stroke="var(--snow)" stroke-width="2" stroke-linecap="round" /><circle cx="7" cy="7" r="3" fill="var(--frost)" /></svg></span>
+              <span class="text"><strong>Leonid meteor shower</strong><small>Peaks tonight, about 15 an hour</small></span>
+              <span class="when">Tonight</span>
+            </li>
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><circle r="10" fill="var(--moon)" /></svg></span>
+              <span class="text"><strong>Full moon</strong><small>The Beaver Moon rises at sunset</small></span>
+              <span class="when">Nov 24</span>
+            </li>
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M-2 -10 A7 7 0 1 0 4 2 A5.5 5.5 0 1 1 -2 -10 Z" fill="var(--moon)" /><circle cx="7" cy="6" r="3.5" fill="var(--bronze)" /></svg></span>
+              <span class="text"><strong>Moon meets Jupiter</strong><small>A close pair low in the east</small></span>
+              <span class="when">Nov 28</span>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="doors">
+        <a class="door" href="#">
+          <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M0 -11 L8 4 L-8 4 Z" fill="var(--teal)" /><path d="M0 -4 L9 10 L-9 10 Z" fill="var(--teal)" /><rect x="-1.5" y="10" width="3" height="3" fill="var(--bronze)" /></svg></span>
+          <span><strong>Find dark skies</strong><small>Parks and observatories near you</small></span>
+        </a>
+        <a class="door" href="#">
+          <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M-11 -4 L-5 6 L0 -2 L5 6 L11 -5" fill="none" stroke="var(--snow)" stroke-width="1.6" /><circle cx="-11" cy="-4" r="2.4" fill="var(--frost)" /><circle cx="-5" cy="6" r="2.4" fill="var(--beak)" /><circle cx="0" cy="-2" r="2.4" fill="var(--frost)" /><circle cx="5" cy="6" r="2.4" fill="var(--frost)" /><circle cx="11" cy="-5" r="2.4" fill="var(--frost)" /></svg></span>
+          <span><strong>Find Cassiopeia</strong><small>This month's constellation</small></span>
+        </a>
+        <a class="door" href="#">
+          <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M-11 2 L6 -7 L8.5 -2 L-8.5 7 Z" fill="var(--snow)" /><path d="M-1 3 L-5 12 M-1 3 L3 12" stroke="var(--bronze)" stroke-width="2" stroke-linecap="round" /><circle cx="9" cy="-9" r="2" fill="var(--beak)" /></svg></span>
+          <span><strong>Sky tools</strong><small>Moon phases, sky map and more</small></span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- TONIGHT -->
+
+  <main id="tonight">
+    <section class="scene band only-c" aria-labelledby="tonight-title-c">
+      <div class="sky" data-stars="110"></div>
+      <svg class="moon" viewBox="-60 -60 120 120" aria-hidden="true" data-phase="0.53"></svg>
+
+      <div class="wrap band-text">
+        <p class="dateline" id="tonight-title-c">Tonight, Tuesday, November 17 · Kansas City</p>
+        <p class="verdict">Clear and dark from 6:36pm to 1am. Saturn is the brightest planet up.</p>
+      </div>
+
+      <svg class="land" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 52 C 200 20, 420 40, 640 46 S 1100 22, 1440 44 L 1440 130 L 0 130 Z" fill="var(--far-hills)" />
+        <path d="M0 92 C 300 70, 700 80, 1000 88 S 1300 76, 1440 82 L 1440 130 L 0 130 Z" fill="var(--snow)" />
+        <g fill="var(--horizon)">
+          <path d="M1180 76 l11 -34 l11 34 Z M1184 62 l7 -20 l7 20 Z" />
+          <path d="M1204 80 l14 -44 l14 44 Z" />
+          <path d="M150 82 l12 -36 l12 36 Z" />
+        </g>
+      </svg>
+    </section>
+
+    <div class="wrap plain-head only-a">
+      <p class="dateline">Tonight, Tuesday, November 17 · Kansas City</p>
+      <p class="verdict">Clear and dark from 6:36pm to 1am. Saturn is the brightest planet up.</p>
+    </div>
+
+    <div class="wrap below">
+      <section class="card summary" aria-label="Hour by hour">
+        <p>Patchy clouds roll in around 1am. Leonid meteors are best after the Moon sets at 12:40am.</p>
+        <ul class="hours" id="hours"></ul>
+      </section>
+
+      <div class="tiles">
+        <button class="tile">
+          <h3>Moon</h3>
+          <svg viewBox="-60 -60 120 120" width="64" height="64" aria-hidden="true" data-phase="0.53"></svg>
+          <strong>53% lit</strong>
+          <p>First quarter. Sets at 12:40am.</p>
+        </button>
+
+        <button class="tile">
+          <h3>Darkness</h3>
+          <svg viewBox="0 0 160 56" width="100%" height="56" aria-hidden="true">
+            <path d="M4 14 Q 80 92 156 14" fill="none" stroke="var(--raised)" stroke-width="4" stroke-linecap="round" />
+            <path d="M34 39 Q 80 70 126 39" fill="none" stroke="var(--teal)" stroke-width="4" stroke-linecap="round" />
+            <line x1="0" y1="14" x2="160" y2="14" stroke="var(--mist)" stroke-width="1.5" stroke-dasharray="3 5" />
+            <circle cx="62" cy="52" r="5" fill="var(--frost)" />
+          </svg>
+          <strong>6:36pm</strong>
+          <p>Fully dark until 5:29am.</p>
+        </button>
+
+        <button class="tile">
+          <h3>Clouds</h3>
+          <svg viewBox="0 0 160 40" width="100%" height="40" aria-hidden="true" id="cloud-bars"></svg>
+          <strong>Clear till 1am</strong>
+          <p>Then patchy until dawn.</p>
+        </button>
+
+        <button class="tile">
+          <h3>Seeing</h3>
+          <svg viewBox="0 0 160 30" width="100%" height="30" aria-hidden="true">
+            <circle cx="12" cy="15" r="9" fill="var(--teal)" /><circle cx="44" cy="15" r="9" fill="var(--teal)" /><circle cx="76" cy="15" r="9" fill="var(--teal)" /><circle cx="108" cy="15" r="9" fill="var(--raised)" /><circle cx="140" cy="15" r="9" fill="var(--raised)" />
+          </svg>
+          <strong>Average</strong>
+          <p>Stars will twinkle a little.</p>
+        </button>
+      </div>
+
+      <div class="tonight-grid">
+        <section class="card" aria-labelledby="nights-title">
+          <div class="card-head">
+            <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><rect x="-10" y="-8" width="20" height="18" rx="4" fill="var(--snow)" /><rect x="-10" y="-8" width="20" height="6" rx="3" fill="var(--teal)" /></svg></span>
+            <h2 id="nights-title">Next 7 nights</h2>
+          </div>
+          <ul class="nights" id="nights"></ul>
+        </section>
+
+        <section class="card" aria-labelledby="up-title">
+          <div class="card-head">
+            <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z" fill="var(--beak)" /></svg></span>
+            <h2 id="up-title">Up tonight</h2>
+            <a href="#">See all 64</a>
+          </div>
+          <ul class="rows">
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><ellipse rx="11" ry="3.5" fill="none" stroke="var(--bronze)" stroke-width="2" transform="rotate(-18)" /><circle r="6" fill="var(--bronze)" /></svg></span>
+              <span class="text"><strong>Saturn</strong><small>4 fists up in the south</small></span>
+              <span class="go"></span>
+            </li>
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><circle cx="-4" cy="-3" r="2.3" fill="var(--frost)" /><circle cx="3" cy="-5" r="1.9" fill="var(--frost)" /><circle cx="5" cy="2" r="2.3" fill="var(--frost)" /><circle cx="-2" cy="5" r="1.9" fill="var(--frost)" /><circle cx="-7" cy="3" r="1.5" fill="var(--frost)" /></svg></span>
+              <span class="text"><strong>Pleiades</strong><small>Halfway up in the east</small></span>
+              <span class="go"></span>
+            </li>
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><ellipse rx="11" ry="4.5" fill="var(--snow)" opacity="0.55" transform="rotate(-25)" /><ellipse rx="4" ry="2" fill="var(--frost)" transform="rotate(-25)" /></svg></span>
+              <span class="text"><strong>Andromeda Galaxy <span class="level">Level 2</span></strong><small>High in the northeast. Needs a dark sky.</small></span>
+              <span class="go"></span>
+            </li>
+            <li>
+              <span class="well"><svg viewBox="-13 -13 26 26" aria-hidden="true"><path d="M-10 -10 L5 5" stroke="var(--bronze)" stroke-width="3" stroke-linecap="round" /><circle cx="7" cy="7" r="3" fill="var(--frost)" /></svg></span>
+              <span class="text"><strong>Leonid meteors</strong><small>About 15 an hour after midnight</small></span>
+              <span class="go"></span>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- FOOTER -->
+
+  <footer class="wrap">© 2026 Starling. A friendly guide to the night sky.</footer>
+
+
+
+  <script>
+    // MOON
+
+    function moonShape(svg) {
+      const lit = Number(svg.dataset.phase)
+      const r = 56
+      const rx = r * Math.abs(1 - 2 * lit)
+      const inner = lit < 0.5 ? 0 : 1
+      svg.innerHTML = `<circle r="${r + 14}" fill="var(--moon)" opacity="0.08" /><circle r="${r}" fill="var(--moon-dark)" /><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${Math.max(rx, 0.1)} ${r} 0 0 ${inner} 0 ${-r} Z" fill="var(--moon)" />`
+    }
+
+    document.querySelectorAll('[data-phase]').forEach(moonShape)
+
+
+
+    // STARS
+
+    function fillSky(sky) {
+      const scene = sky.parentElement
+      const box = scene.getBoundingClientRect()
+      const blocked = [...scene.querySelectorAll('h1, p, button, .planet, .moon')].map(element => element.getBoundingClientRect())
+      const header = document.querySelector('.site').getBoundingClientRect()
+      blocked.push(header)
+      sky.innerHTML = ''
+
+      let placed = 0
+      let tries = 0
+      const wanted = Math.round(Number(sky.dataset.stars) * Math.min(1, box.width / 1400))
+
+      while (placed < wanted && tries < wanted * 6) {
+        tries++
+        const x = Math.random() * box.width
+        const y = Math.pow(Math.random(), 1.3) * box.height * 0.82
+        const hit = blocked.some(r => x + box.left > r.left - 12 && x + box.left < r.right + 12 && y + box.top > r.top - 12 && y + box.top < r.bottom + 12)
+        if (hit) continue
+
+        const star = document.createElement('span')
+        const size = Math.random() < 0.08 ? 2.6 : Math.random() * 1.6 + 0.8
+        star.className = 'star'
+        star.style.left = `${x}px`
+        star.style.top = `${y}px`
+        star.style.width = `${size}px`
+        star.style.height = `${size}px`
+        star.style.opacity = (Math.random() * 0.55 + 0.35).toFixed(2)
+        if (Math.random() < 0.12) star.style.background = 'var(--bronze)'
+        if (Math.random() < 0.08) star.style.background = 'var(--snow)'
+        sky.append(star)
+        placed++
+      }
+    }
+
+    function fillAllSkies() {
+      document.querySelectorAll('.sky').forEach(sky => {
+        if (sky.offsetParent !== null) fillSky(sky)
+      })
+    }
+
+
+
+    // HOURS
+
+    const icons = {
+      sunset: '<path d="M-11 6 H11" stroke="var(--mist)" stroke-width="2" stroke-linecap="round" /><path d="M-7 6 A7 7 0 0 1 7 6 Z" fill="var(--bronze)" />',
+      twilight: '<circle r="8" fill="var(--snow-shade)" opacity="0.5" /><path d="M-2 -8 A8 8 0 1 0 8 3 A6.5 6.5 0 1 1 -2 -8 Z" fill="var(--snow)" />',
+      dark: '<path d="M0 -10 Q1.6 -1.6 10 0 Q1.6 1.6 0 10 Q-1.6 1.6 -10 0 Q-1.6 -1.6 0 -10 Z" fill="var(--beak)" />',
+      clear: '<circle cx="-5" cy="-4" r="1.8" fill="var(--frost)" /><circle cx="4" cy="-7" r="1.3" fill="var(--frost)" /><circle cx="6" cy="4" r="2" fill="var(--frost)" /><circle cx="-4" cy="6" r="1.2" fill="var(--frost)" />',
+      moonset: '<path d="M-11 6 H11" stroke="var(--mist)" stroke-width="2" stroke-linecap="round" /><path d="M-6 6 A6 6 0 0 1 6 6 Z" fill="var(--moon)" /><path d="M0 -10 V-2 M-3 -5 L0 -2 L3 -5" stroke="var(--mist)" stroke-width="1.8" fill="none" stroke-linecap="round" />',
+      cloud: '<path d="M-9 6 Q-12 0 -6 -1 Q-5 -8 2 -7 Q8 -7 8 -1 Q12 0 10 6 Z" fill="var(--mist)" />',
+      dawn: '<path d="M-11 6 H11" stroke="var(--mist)" stroke-width="2" stroke-linecap="round" /><path d="M-7 6 A7 7 0 0 1 7 6 Z" fill="var(--snow)" opacity="0.7" />',
+    }
+
+    const hours = [
+      ['5:04pm', 'sunset', 'Sunset', true],
+      ['6pm', 'twilight', 'Twilight'],
+      ['6:36pm', 'dark', 'Fully dark', true],
+      ['7pm', 'clear', 'Clear'],
+      ['8pm', 'clear', 'Clear'],
+      ['9pm', 'clear', 'Clear'],
+      ['10pm', 'clear', 'Clear'],
+      ['11pm', 'clear', 'Clear'],
+      ['12am', 'clear', 'Clear'],
+      ['12:40am', 'moonset', 'Moonset', true],
+      ['1am', 'cloud', 'Patchy'],
+      ['2am', 'cloud', 'Patchy'],
+      ['3am', 'cloud', 'Patchy'],
+      ['4am', 'clear', 'Clear'],
+      ['5:29am', 'dawn', 'Dawn', true],
+    ]
+
+    document.getElementById('hours').innerHTML = hours.map(([time, icon, word, moment]) => `
+      <li class="${moment ? 'moment' : ''}">
+        <time>${time}</time>
+        <svg viewBox="-13 -13 26 26" aria-hidden="true">${icons[icon]}</svg>
+        <span>${word}</span>
+      </li>`).join('')
+
+
+
+    // CLOUD BARS
+
+    const cover = [0, 0, 5, 5, 0, 10, 20, 50, 70, 55, 30, 10]
+    document.getElementById('cloud-bars').innerHTML = cover.map((value, i) => {
+      const height = 6 + value * 0.3
+      return `<rect x="${i * 13.5}" y="${40 - height}" width="10" height="${height}" rx="4" fill="${value >= 40 ? 'var(--mist)' : 'var(--raised)'}" />`
+    }).join('')
+
+
+
+    // NIGHTS
+
+    const nights = [
+      ['Tonight', 0.53, 0.11, 0.57, '6:36pm–1am'],
+      ['Wed', 0.63, 0.11, 0.86, '6:36pm–5am'],
+      ['Thu', 0.72, 0.42, 0.86, '10pm–5am'],
+      ['Fri', 0.81, null, null, 'Cloudy all night'],
+      ['Sat', 0.89, 0.64, 0.86, '2am–5am'],
+      ['Sun', 0.95, 0.11, 0.86, '6:37pm–5am'],
+      ['Mon', 0.99, 0.11, 0.86, '6:37pm–5am'],
+    ]
+
+    document.getElementById('nights').innerHTML = nights.map(([day, lit, from, to, words]) => `
+      <li>
+        <strong>${day}</strong>
+        <svg viewBox="-60 -60 120 120" width="24" height="24" aria-hidden="true" data-phase="${lit}"></svg>
+        ${from === null ? '<span class="none">No clear hours</span>' : `<span class="track" aria-hidden="true"><i class="${to - from < 0.3 ? 'short' : ''}" style="left: ${from * 100}%; width: ${(to - from) * 100}%"></i></span>`}
+        <span class="span">${words}</span>
+      </li>`).join('')
+
+    document.querySelectorAll('#nights [data-phase]').forEach(moonShape)
+
+
+
+    // SWITCHES
+
+    function setAll(attribute, value) {
+      document.body.dataset[attribute] = value
+      document.querySelectorAll(`.mockup-bar [data-${attribute}]`).forEach(button => {
+        button.setAttribute('aria-pressed', button.dataset[attribute] === value)
+      })
+      document.querySelectorAll('.site nav button').forEach(button => {
+        button.toggleAttribute('aria-current', button.dataset.go === document.body.dataset.page)
+        if (button.hasAttribute('aria-current')) button.setAttribute('aria-current', 'page')
+      })
+      scrollTo({ top: 0, behavior: 'instant' })
+      requestAnimationFrame(fillAllSkies)
+    }
+
+    document.querySelectorAll('.mockup-bar [data-direction]').forEach(button => {
+      button.addEventListener('click', () => setAll('direction', button.dataset.direction))
+    })
+
+    document.querySelectorAll('.mockup-bar [data-page]').forEach(button => {
+      button.addEventListener('click', () => setAll('page', button.dataset.page))
+    })
+
+    document.querySelectorAll('.mockup-bar [data-font]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.body.dataset.font = button.dataset.font
+        document.querySelectorAll('.mockup-bar [data-font]').forEach(other => other.setAttribute('aria-pressed', other === button))
+      })
+    })
+
+    document.querySelectorAll('.mockup-bar [data-soft]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.body.dataset.soft = button.dataset.soft
+        document.querySelectorAll('.mockup-bar [data-soft]').forEach(other => other.setAttribute('aria-pressed', other === button))
+      })
+    })
+
+    document.querySelectorAll('[data-go]').forEach(button => {
+      button.addEventListener('click', () => setAll('page', button.dataset.go))
+    })
+
+    document.fonts.ready.then(fillAllSkies)
+    addEventListener('resize', fillAllSkies)
+  </script>
+</body>
+</html>

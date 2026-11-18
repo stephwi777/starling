@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: living sky</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800&display=swap" rel="stylesheet">
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --horizon: #241f53;
+      --far-hills: #31296a;
+      --snow: #b9ade4;
+      --snow-shade: #a093d4;
+      --ink: #1a1645;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --teal: #55bcab;
+      --bronze: #d6a866;
+      --beak: #f1cd57;
+      --moon: #f6ead0;
+      --moon-dark: #302c60;
+
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-body: 'Nunito Sans', system-ui, sans-serif;
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: var(--font-body);
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px clamp(16px, 4vw, 48px) 80px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 600;
+      color: var(--moon);
+    }
+
+    .lead {
+      max-width: 60ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+
+
+    /* GRID */
+
+    .states {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 22px;
+      margin-top: 32px;
+    }
+
+    .state {
+      overflow: hidden;
+      border-radius: 28px;
+      background: var(--high);
+    }
+
+    .state figcaption {
+      padding: 16px 20px 20px;
+    }
+
+    .state h2 {
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .state p {
+      margin-top: 4px;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--moon);
+    }
+
+    .state small {
+      display: block;
+      margin-top: 6px;
+      color: var(--mist);
+      font-size: 0.9rem;
+    }
+
+
+
+    /* BAND */
+
+    .band {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--top), var(--mid) 55%, var(--low));
+    }
+
+    .band .star {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--frost);
+    }
+
+    .band .body {
+      position: absolute;
+      overflow: visible;
+    }
+
+    .band .land {
+      position: absolute;
+      inset: auto 0 -1px;
+      width: 100%;
+      height: 92px;
+    }
+
+    .cloud {
+      position: absolute;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      from { transform: translateX(-30px); }
+      to { transform: translateX(30px); }
+    }
+
+    .label {
+      position: absolute;
+      color: var(--mist);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+
+
+    /* SKIES */
+
+    .clear {
+      --top: #070920;
+      --mid: #0f1230;
+      --low: #262158;
+    }
+
+    .moonlit {
+      --top: #1a2152;
+      --mid: #263070;
+      --low: #3d3f86;
+    }
+
+    .patchy {
+      --top: #080a22;
+      --mid: #121535;
+      --low: #29235c;
+    }
+
+    .overcast {
+      --top: #1b1d3c;
+      --mid: #23264a;
+      --low: #2e2c58;
+    }
+
+    .dusk {
+      --top: #121543;
+      --mid: #3a3480;
+      --low: #a0729e;
+    }
+
+    .day {
+      --top: #2b3d86;
+      --mid: #4459a3;
+      --low: #7d8fca;
+    }
+
+
+
+    /* REDUCED MOTION */
+
+    @media (prefers-reduced-motion: reduce) {
+      .cloud {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>A sky that shows tonight</h1>
+    <p class="lead">The same sky band in six conditions. Each one is always said in words too, shown under the picture, so the sky is never the only way to know.</p>
+
+    <div class="states" id="states"></div>
+  </main>
+
+
+
+  <script>
+    // LAND
+
+    function land(snow, hills) {
+      return `<svg class="land" viewBox="0 0 400 92" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 38 C 60 18, 120 30, 190 34 S 320 16, 400 30 L 400 92 L 0 92 Z" fill="${hills}" />
+        <path d="M0 64 C 90 50, 200 56, 290 62 S 370 54, 400 58 L 400 92 L 0 92 Z" fill="${snow}" />
+        <g fill="var(--horizon)">
+          <path d="M300 56 l8 -26 l8 26 Z M303 44 l5 -16 l5 16 Z" />
+          <path d="M318 60 l10 -32 l10 32 Z" />
+          <path d="M60 60 l8 -24 l8 24 Z" />
+        </g>
+      </svg>`
+    }
+
+
+
+    // MOON AND SUN
+
+    function moon(lit, size, x, y, glow) {
+      const r = 56
+      const rx = r * Math.abs(1 - 2 * lit)
+      const inner = lit < 0.5 ? 0 : 1
+      const halo = glow ? `<circle r="${r * 2.6}" fill="var(--moon)" opacity="0.07" /><circle r="${r * 1.6}" fill="var(--moon)" opacity="0.1" />` : ''
+      return `<svg class="body" viewBox="-60 -60 120 120" style="left: ${x}%; top: ${y}px; width: ${size}px" aria-hidden="true">${halo}<circle r="${r}" fill="var(--moon-dark)" opacity="${glow ? 0.6 : 1}" /><path d="M0 ${-r} A${r} ${r} 0 0 1 0 ${r} A${Math.max(rx, 0.1)} ${r} 0 0 ${inner} 0 ${-r} Z" fill="var(--moon)" /></svg>`
+    }
+
+    function sun(x, y) {
+      return `<svg class="body" viewBox="-60 -60 120 120" style="left: ${x}%; top: ${y}px; width: 70px" aria-hidden="true"><circle r="110" fill="var(--beak)" opacity="0.08" /><circle r="80" fill="var(--beak)" opacity="0.12" /><circle r="44" fill="var(--beak)" /></svg>`
+    }
+
+    function paleMoon(x, y) {
+      return `<svg class="body" viewBox="-60 -60 120 120" style="left: ${x}%; top: ${y}px; width: 30px" aria-hidden="true"><circle r="56" fill="#ffffff" opacity="0.18" /><path d="M0 -56 A56 56 0 0 1 0 56 A20 56 0 0 1 0 -56 Z" fill="#ffffff" opacity="0.7" /></svg>`
+    }
+
+
+
+    // CLOUDS
+
+    function cloud(x, y, width, color, opacity, speed) {
+      return `<svg class="cloud" viewBox="0 0 200 70" style="left: ${x}%; top: ${y}px; width: ${width}px; animation-duration: ${speed}s; animation-direction: alternate" aria-hidden="true">
+        <path d="M18 62 Q2 62 4 48 Q6 36 22 38 Q24 18 48 18 Q62 2 86 10 Q104 -2 124 14 Q148 8 158 28 Q184 26 190 44 Q198 62 176 62 Z" fill="${color}" opacity="${opacity}" />
+      </svg>`
+    }
+
+
+
+    // STARS
+
+    function stars(count, maxSize, dim) {
+      let html = ''
+      for (let i = 0; i < count; i++) {
+        const size = Math.random() < 0.08 ? maxSize : Math.random() * (maxSize - 1) + 0.8
+        const tint = Math.random() < 0.1 ? 'var(--bronze)' : Math.random() < 0.08 ? 'var(--snow)' : 'var(--frost)'
+        html += `<span class="star" style="left: ${Math.random() * 100}%; top: ${Math.pow(Math.random(), 1.2) * 150}px; width: ${size}px; height: ${size}px; opacity: ${(Math.random() * 0.5 + 0.4) * dim}; background: ${tint}"></span>`
+      }
+      return html
+    }
+
+
+
+    // STATES
+
+    const states = [
+      {
+        name: 'Clear and dark',
+        sky: 'clear',
+        art: () => stars(150, 2.8, 1) + moon(0.08, 22, 78, 34, false) + '<span class="label" style="left: 52%; top: 104px">● Saturn</span>',
+        words: 'Clear and dark all night. A perfect night for faint galaxies!',
+        note: 'Many stars, a thin Moon, deep sky.',
+        snow: 'var(--snow)',
+      },
+      {
+        name: 'Bright Moon',
+        sky: 'moonlit',
+        art: () => stars(30, 2.6, 0.9) + moon(0.93, 46, 70, 26, true),
+        words: 'Clear, but a bright Moon until 4am. Planets and the Moon itself shine.',
+        note: 'The sky lifts, faint stars fade, the snow glows.',
+        snow: '#c9bff0',
+      },
+      {
+        name: 'Patchy clouds',
+        sky: 'patchy',
+        art: () => stars(110, 2.6, 1) + moon(0.3, 26, 20, 40, false) + cloud(-6, 22, 210, '#2c2a5e', 1, 38) + cloud(52, 70, 180, '#332f68', 1, 46) + cloud(26, 118, 150, '#2a2759', 1, 52),
+        words: 'Clouds come and go. Watch for clear breaks after 11pm.',
+        note: 'A few flat clouds drift very slowly.',
+        snow: 'var(--snow)',
+      },
+      {
+        name: 'Overcast',
+        sky: 'overcast',
+        art: () => cloud(-20, -10, 320, '#2c2d55', 1, 60) + cloud(30, 20, 340, '#34345f', 1, 70) + cloud(-10, 70, 300, '#3a3966', 1, 64) + cloud(45, 96, 280, '#403e6c', 1, 58),
+        words: 'Cloudy all night. A good night to plan instead.',
+        note: 'Layered clouds, no stars, a muted ground.',
+        snow: '#9d94c4',
+      },
+      {
+        name: 'Dusk',
+        sky: 'dusk',
+        art: () => stars(14, 2.4, 0.8) + '<span class="label" style="left: 30%; top: 70px">● Saturn</span>' + moon(0.35, 24, 72, 30, false),
+        words: 'Getting dark. Saturn is already out in the south.',
+        note: 'A violet glow at the horizon, first stars appear.',
+        snow: '#c2b3e2',
+      },
+      {
+        name: 'Daytime, home page only',
+        sky: 'day',
+        art: () => sun(10, 30) + paleMoon(78, 40) + cloud(40, 30, 120, '#8a9bd3', 0.5, 50),
+        words: 'The Sun sets at 5:04pm. Tonight looks clear!',
+        note: 'Deep soft blue, the Sun, a pale Moon if it’s up.',
+        snow: '#c6bcec',
+      },
+    ]
+
+    document.getElementById('states').innerHTML = states.map(state => `
+      <figure class="state">
+        <div class="band ${state.sky}" role="img" aria-label="${state.name} sky">
+          ${state.art()}
+          ${land(state.snow, 'var(--far-hills)')}
+        </div>
+        <figcaption>
+          <h2>${state.name}</h2>
+          <p>${state.words}</p>
+          <small>${state.note}</small>
+        </figcaption>
+      </figure>`).join('')
+  </script>
+</body>
+</html>
