@@ -8,7 +8,7 @@ import { MoonIcon } from '../ui/icons.jsx'
 
 // TONIGHT CARD
 
-function TonightCard({ sky, place, status }) {
+function TonightCard({ sky, place, isSample, status }) {
   const { night, weather } = sky
   const outside = weather?.temp ?? (status === 'loading' ? 'Loading…' : <><span aria-hidden="true">—</span><span className="visually-hidden">Not available</span></>)
 
@@ -16,7 +16,7 @@ function TonightCard({ sky, place, status }) {
     <Card labelledBy="home-tonight" className="tonight-card">
       <div className="card-head">
         <IconWell><MoonIcon /></IconWell>
-        <h2 id="home-tonight">Tonight in {place.name}</h2>
+        <h2 id="home-tonight">Tonight in {place.name}{isSample && <span className="card-sample"> (sample)</span>}</h2>
         <Link className="card-link" to="/tonight">Tonight</Link>
       </div>
 
