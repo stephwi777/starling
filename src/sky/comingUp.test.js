@@ -22,12 +22,12 @@ test('three events, in date order, within 30 days', () => {
   })
 })
 
-test('the Leonids peak and the full moon are coming up', () => {
+test('the Leonids peak and the Full Moon are coming up', () => {
   const events = comingUp(NOW, { count: 10 })
   const leonids = events.find(event => event.name === 'Leonids peak')
   const full = events.find(event => event.kind === 'full-moon')
   expect(leonids.note).toBe('Up to 15 meteors an hour')
-  expect(full.name).toBe('Full moon')
+  expect(full.name).toBe('Full Moon')
   expect(full.date.toISOString().slice(0, 10)).toBe('2026-11-24')
 })
 

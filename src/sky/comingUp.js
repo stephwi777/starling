@@ -8,9 +8,9 @@ import { SHOWERS } from './catalog/showers.js'
 const DAY = 24 * 60 * 60 * 1000
 
 const QUARTERS = [
-  { kind: 'new-moon', name: 'New moon', note: 'The darkest skies of the month' },
+  { kind: 'new-moon', name: 'New Moon', note: 'The darkest skies of the month' },
   { kind: 'first-quarter', name: 'First quarter Moon', note: 'Half lit, high in the evening' },
-  { kind: 'full-moon', name: 'Full moon', note: 'Rises around sunset' },
+  { kind: 'full-moon', name: 'Full Moon', note: 'Rises around sunset' },
   { kind: 'last-quarter', name: 'Last quarter Moon', note: 'Half lit, rises after midnight' },
 ]
 
