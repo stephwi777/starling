@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: shooting star</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --far-hills: #31296a;
+      --snow: #b9ade4;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --teal: #55bcab;
+      --bronze: #d6a866;
+      --beak: #f1cd57;
+      --moon: #f6ead0;
+      --star-blue: #c9d6ff;
+      --star-warm: #ffe4bc;
+      --star-teal: #c2f5ea;
+      --star-rose: #ffd2e2;
+      --clear-top: #070920;
+      --clear-middle: #0f1230;
+      --clear-low: #262158;
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px clamp(16px, 4vw, 48px) 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    h1 {
+      color: var(--moon);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+    }
+
+    .intro p {
+      max-width: 64ch;
+      margin-top: 10px;
+      color: var(--mist);
+    }
+
+
+
+    /* CONTROLS */
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 28px;
+      margin-top: 22px;
+    }
+
+    .controls label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      font-weight: 700;
+    }
+
+    .controls input {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--beak);
+    }
+
+    button {
+      flex: none;
+      min-height: 44px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 18px;
+      background: var(--raised);
+      color: var(--frost);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--far-hills);
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--beak);
+      outline-offset: 3px;
+    }
+
+    .all {
+      background: var(--beak);
+      color: #1a1645;
+      box-shadow: 0 5px 0 color-mix(in srgb, var(--beak) 72%, #000);
+    }
+
+    .all:hover {
+      background: var(--beak);
+    }
+
+    .all:active {
+      translate: 0 4px;
+      box-shadow: 0 1px 0 color-mix(in srgb, var(--beak) 72%, #000);
+    }
+
+
+
+    /* OPTIONS */
+
+    .option {
+      margin-top: 28px;
+      padding: 22px;
+      border-radius: 30px;
+      background: var(--high);
+    }
+
+    .option-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .option-head div {
+      flex: 1;
+    }
+
+    .option-head h2 {
+      font-size: 1.35rem;
+    }
+
+    .option-head p {
+      margin-top: 4px;
+      color: var(--mist);
+      font-size: 0.95rem;
+    }
+
+
+
+    /* SKY */
+
+    .sky {
+      position: relative;
+      height: 320px;
+      margin-top: 16px;
+      overflow: hidden;
+      border-radius: 22px;
+      background: linear-gradient(var(--clear-top), var(--clear-middle) 55%, var(--clear-low));
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .ground {
+      position: absolute;
+      inset: auto 0 -1px;
+      width: 100%;
+      height: 70px;
+    }
+
+
+
+    /* TODAY */
+
+    .meteor {
+      --duration: 1.5s;
+      --distance: 400px;
+      position: absolute;
+      transform: rotate(155deg);
+    }
+
+    .flight {
+      position: absolute;
+      opacity: 0;
+      animation: fly var(--duration) ease-in forwards;
+    }
+
+    .tail {
+      position: absolute;
+      right: 0;
+      top: -1.5px;
+      width: 190px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(to right, transparent, var(--tail) 55%, var(--head));
+      transform-origin: right;
+      animation: stretch var(--duration) ease-out forwards;
+    }
+
+    .head {
+      position: absolute;
+      top: -3.5px;
+      left: -3.5px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--head);
+      animation: flicker 0.25s ease-in-out infinite alternate;
+    }
+
+    @keyframes fly {
+      0% {
+        opacity: 0;
+        transform: translateX(0);
+      }
+      12% {
+        opacity: 1;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(var(--distance));
+      }
+    }
+
+    @keyframes stretch {
+      0% {
+        transform: scaleX(0);
+      }
+      50% {
+        transform: scaleX(1);
+      }
+      100% {
+        transform: scaleX(0.35);
+      }
+    }
+
+    @keyframes flicker {
+      to {
+        box-shadow: 0 0 10px 3px var(--head);
+      }
+    }
+
+
+
+    /* NEEDLE */
+
+    .needle {
+      --duration: 2s;
+      --distance: 520px;
+      position: absolute;
+      transform: rotate(155deg);
+    }
+
+    .needle-flight {
+      position: absolute;
+      animation: glide var(--duration) cubic-bezier(0.3, 0.1, 0.6, 1) forwards;
+    }
+
+    .needle-tail {
+      position: absolute;
+      right: 0;
+      top: -1.5px;
+      width: 320px;
+      height: 3px;
+      background: linear-gradient(to right, transparent, var(--tail) 65%, var(--head));
+      clip-path: polygon(0 50%, 100% 0, 100% 100%);
+      transform-origin: right;
+      opacity: 0;
+      animation: wake calc(var(--duration) * 1.45) linear forwards;
+    }
+
+    .needle-head {
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--head);
+      box-shadow: 0 0 6px 2px var(--head), 0 0 16px 5px color-mix(in srgb, var(--tail) 45%, transparent);
+      opacity: 0;
+      animation: shine var(--duration) linear forwards;
+    }
+
+    @keyframes glide {
+      from {
+        transform: translateX(0);
+      }
+      to {
+        transform: translateX(var(--distance));
+      }
+    }
+
+    @keyframes shine {
+      0% {
+        opacity: 0;
+      }
+      12% {
+        opacity: 1;
+      }
+      78% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+
+    @keyframes wake {
+      0% {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      8% {
+        opacity: 1;
+      }
+      40% {
+        transform: scaleX(1);
+      }
+      62% {
+        opacity: 0.9;
+      }
+      100% {
+        opacity: 0;
+        transform: scaleX(0.75);
+      }
+    }
+
+
+
+    /* SLOW MOTION */
+
+    .slow .meteor {
+      --duration: 4.5s;
+    }
+
+    .slow .needle {
+      --duration: 6s;
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+
+
+    <!-- INTRO -->
+
+    <section class="intro">
+      <h1>Shooting star</h1>
+      <p>Today's meteor next to two versions in the style of the shadcn.io shooting star: a long, needle-thin trail that tapers to nothing, a small bright head with a soft glow, a slower glide, and a faint wake that lingers after the head is gone.</p>
+
+      <div class="controls">
+        <button type="button" class="all">Launch in every sky</button>
+        <label>
+          <input type="checkbox" id="slow">
+          Slow motion
+        </label>
+      </div>
+    </section>
+
+
+
+    <!-- OPTIONS -->
+
+    <section class="option" data-style="today">
+      <div class="option-head">
+        <div>
+          <h2>A · Today</h2>
+          <p>Our meteor now: a 3px two-tone tail and a flickering head, 1.5 seconds.</p>
+        </div>
+        <button type="button">Launch</button>
+      </div>
+      <div class="sky"></div>
+    </section>
+
+    <section class="option" data-style="needle">
+      <div class="option-head">
+        <div>
+          <h2>B · Needle, cool white</h2>
+          <p>Close to the reference: white head, pale blue trail, about 2 seconds, with a lingering wake.</p>
+        </div>
+        <button type="button">Launch</button>
+      </div>
+      <div class="sky"></div>
+    </section>
+
+    <section class="option" data-style="tinted">
+      <div class="option-head">
+        <div>
+          <h2>C · Needle, Starling tints</h2>
+          <p>The same shape and motion, with our soft star tints in the trail: teal, rose, lavender or warm gold.</p>
+        </div>
+        <button type="button">Launch</button>
+      </div>
+      <div class="sky"></div>
+    </section>
+  </main>
+
+
+
+  <script>
+    // COLORS
+
+    const TODAY = [
+      { head: 'var(--teal)', tail: '#8f86d6' },
+      { head: 'var(--beak)', tail: 'var(--bronze)' },
+      { head: 'var(--snow)', tail: 'var(--teal)' },
+      { head: 'var(--moon)', tail: 'var(--snow)' },
+    ]
+
+    const TINTS = [
+      { head: 'var(--frost)', tail: '#86d8c7' },
+      { head: 'var(--frost)', tail: '#f0a8c6' },
+      { head: 'var(--frost)', tail: '#c3a8f0' },
+      { head: 'var(--moon)', tail: '#f2c98e' },
+    ]
+
+    const COOL = { head: '#f4f7ff', tail: '#9cc8ff' }
+
+    const STAR_TINTS = ['var(--frost)', 'var(--star-blue)', 'var(--star-warm)', 'var(--star-teal)', 'var(--star-rose)']
+
+
+
+    // STARS
+
+    function fillStars(sky) {
+      for (let i = 0; i < 80; i += 1) {
+        const star = document.createElement('span')
+        const bright = i % 12 === 0
+        const size = bright ? 2.8 + Math.random() : Math.pow(Math.random(), 2) * 2 + 0.9
+        const color = STAR_TINTS[i % STAR_TINTS.length]
+
+        star.className = 'star'
+        star.style.cssText = `top:${Math.random() * 70}%;left:${Math.random() * 100}%;width:${size}px;height:${size}px;background:${color};opacity:${bright ? 1 : 0.5 + Math.random() * 0.4}`
+        if (bright) star.style.boxShadow = `0 0 6px 1px ${color}`
+        sky.append(star)
+      }
+
+      sky.insertAdjacentHTML('beforeend', `
+        <svg class="ground" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 40 C 220 10, 420 20, 640 34 S 1040 10, 1440 26 L 1440 120 L 0 120 Z" fill="var(--far-hills)" />
+          <path d="M0 74 C 260 54, 560 60, 820 70 S 1240 58, 1440 64 L 1440 120 L 0 120 Z" fill="var(--snow)" />
+        </svg>
+      `)
+    }
+
+
+
+    // LAUNCH
+
+    function launch(section, trip) {
+      const style = section.dataset.style
+      const needle = style !== 'today'
+      const colors = style === 'needle' ? COOL : (style === 'tinted' ? TINTS : TODAY)[Math.floor(trip.pick * 4)]
+      const meteor = document.createElement('span')
+
+      meteor.className = needle ? 'needle' : 'meteor'
+      meteor.style.cssText = `top:${trip.top}%;left:${trip.left}%;--head:${colors.head};--tail:${colors.tail}`
+      meteor.innerHTML = needle
+        ? '<span class="needle-flight"><span class="needle-tail"></span><span class="needle-head"></span></span>'
+        : '<span class="flight"><span class="tail"></span><span class="head"></span></span>'
+      section.querySelector('.sky').append(meteor)
+      setTimeout(() => meteor.remove(), 10000)
+    }
+
+    function plan() {
+      return { top: 5 + Math.random() * 18, left: 62 + Math.random() * 30, pick: Math.random() }
+    }
+
+
+
+    // CONTROLS
+
+    const sections = [...document.querySelectorAll('.option')]
+
+    sections.forEach(section => {
+      fillStars(section.querySelector('.sky'))
+      section.querySelector('button').addEventListener('click', () => launch(section, plan()))
+    })
+
+    document.querySelector('.all').addEventListener('click', () => {
+      const trip = plan()
+      sections.forEach(section => launch(section, trip))
+    })
+
+    document.querySelector('#slow').addEventListener('change', event => {
+      document.querySelector('main').classList.toggle('slow', event.target.checked)
+    })
+  </script>
+</body>
+</html>
