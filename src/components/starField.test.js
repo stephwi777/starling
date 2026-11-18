@@ -16,13 +16,14 @@ const box = { left: 90, top: 90, right: 110, bottom: 110 }
 
 // TESTS
 
-test('a wide field never shows more than 320 stars', () => {
-  expect(visibleStars(pool, { width: 1425, height: 1293 }, []).length).toBe(320)
+test('a wide field never shows more than 290 stars', () => {
+  expect(visibleStars(pool, { width: 1425, height: 1293 }, []).length).toBe(290)
+  expect(visibleStars(pool, { width: 2400, height: 1293 }, []).length).toBe(290)
 })
 
 test('narrower fields get fewer stars in step with their width', () => {
   expect(visibleStars(pool, { width: 390, height: 1500 }, []).length).toBe(88)
-  expect(visibleStars(pool, { width: 2000, height: 1500 }, []).length).toBe(320)
+  expect(visibleStars(pool, { width: 1000, height: 1500 }, []).length).toBe(225)
 })
 
 test('text never lowers the star count while clear stars remain', () => {
@@ -45,7 +46,7 @@ test('a skipped star is replaced by the next clear one', () => {
 })
 
 test('the amount scales the star count for moonlight and clouds', () => {
-  expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0.5).length).toBe(160)
+  expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0.5).length).toBe(145)
   expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0).length).toBe(0)
 })
 
