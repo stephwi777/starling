@@ -38,11 +38,16 @@ function Header() {
           <NavLink to="/tools">Tools</NavLink>
         </nav>
 
-        <button className="location" aria-haspopup="dialog" onClick={openPicker}>
+        <button
+          className="location"
+          aria-haspopup="dialog"
+          title={isSample ? undefined : `${shortName(place)}. Change location`}
+          onClick={openPicker}
+        >
           <svg viewBox="0 0 12 16" aria-hidden="true">
             <path d="M6 0C2.7 0 0 2.6 0 5.9 0 10.3 6 16 6 16s6-5.7 6-10.1C12 2.6 9.3 0 6 0Zm0 8.2A2.3 2.3 0 1 1 6 3.6a2.3 2.3 0 0 1 0 4.6Z" />
           </svg>
-          {isSample ? 'Set location' : shortName(place)}
+          <span>{isSample ? 'Set location' : shortName(place)}</span>
         </button>
       </div>
     </header>

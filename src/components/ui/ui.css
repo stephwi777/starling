@@ -52,9 +52,9 @@
 }
 
 .press.quiet {
-  --press-edge: color-mix(in srgb, var(--raised) 55%, #000);
-  background: var(--raised);
-  color: var(--frost);
+  --press-edge: color-mix(in srgb, var(--snow-shade) 72%, #000);
+  background: var(--snow);
+  color: var(--ink);
   box-shadow: 0 5px 0 var(--press-edge);
 }
 

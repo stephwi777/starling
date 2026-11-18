@@ -8,11 +8,13 @@
 }
 
 .sky-scene.tall {
+  --ground: clamp(170px, 26vw, 280px);
   min-height: max(620px, 100vh);
   min-height: max(620px, 100svh);
 }
 
 .sky-scene.band {
+  --ground: clamp(90px, 13vw, 130px);
   min-height: clamp(330px, 46vw, 420px);
 }
 
@@ -31,21 +33,9 @@
 }
 
 .tall .moon {
-  top: 120px;
-  right: 14%;
-  width: clamp(80px, 11vw, 130px);
-}
-
-.tall .sun {
-  top: 110px;
-  right: 14%;
-  width: clamp(70px, 9vw, 110px);
-}
-
-.tall .moon.pale {
-  top: 150px;
-  right: 38%;
-  width: clamp(28px, 3.4vw, 42px);
+  bottom: calc(var(--ground) + clamp(24px, 40vw - 280px, 320px));
+  right: clamp(8%, 4vw + 4%, 14%);
+  width: clamp(64px, 9vw, 130px);
 }
 
 .band .moon {
@@ -61,6 +51,7 @@
 .sky-scene .ground {
   position: absolute;
   inset: auto 0 -1px;
+  height: var(--ground);
 }
 
 .ground .hills {
@@ -74,32 +65,4 @@
   position: absolute;
   overflow: visible;
   translate: -50% 0;
-}
-
-.tall .ground {
-  height: clamp(170px, 26vw, 280px);
-}
-
-.band .ground {
-  height: clamp(90px, 13vw, 130px);
-}
-
-
-
-/* SMALL SCREENS */
-
-@media (max-width: 700px) {
-  .tall .moon,
-  .tall .sun {
-    top: auto;
-    bottom: calc(clamp(170px, 26vw, 280px) + 24px);
-    right: 12%;
-    width: 64px;
-  }
-
-  .tall .moon.pale {
-    bottom: 46%;
-    right: 40%;
-    width: 30px;
-  }
 }

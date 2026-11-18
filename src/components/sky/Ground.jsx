@@ -2,21 +2,21 @@
 
 const PINES = {
   tall: [
-    { left: 15, bottom: 30, height: 22 },
-    { left: 18.2, bottom: 32, height: 15, shape: 'icon' },
-    { left: 73.4, bottom: 34, height: 20 },
-    { left: 76, bottom: 31, height: 28 },
-    { left: 78.7, bottom: 33, height: 17, shape: 'icon' },
+    { anchor: 15, offset: 0, bottom: 30, height: 22 },
+    { anchor: 15, offset: 0.17, bottom: 32, height: 15, shape: 'icon' },
+    { anchor: 76, offset: -0.16, bottom: 34, height: 20 },
+    { anchor: 76, offset: 0, bottom: 31, height: 28 },
+    { anchor: 76, offset: 0.17, bottom: 33, height: 17, shape: 'icon' },
   ],
   band: [
-    { left: 10.5, bottom: 26, height: 32 },
-    { left: 82, bottom: 30, height: 30, shape: 'icon' },
-    { left: 84.4, bottom: 27, height: 40 },
+    { anchor: 10.5, offset: 0, bottom: 26, height: 32 },
+    { anchor: 83, offset: -0.18, bottom: 30, height: 30, shape: 'icon' },
+    { anchor: 83, offset: 0.08, bottom: 27, height: 40 },
   ],
 }
 
-function Pine({ left, bottom, height, shape }) {
-  const style = { left: `${left}%`, bottom: `${bottom}%`, height: `${height}%` }
+function Pine({ anchor, offset, bottom, height, shape }) {
+  const style = { left: `calc(${anchor}% + ${offset} * var(--ground))`, bottom: `${bottom}%`, height: `${height}%` }
 
   if (shape === 'icon') {
     return (
@@ -71,7 +71,7 @@ function Ground({ size, snow }) {
   return (
     <div className="ground" aria-hidden="true">
       {size === 'tall' ? <TallHills snow={snow} /> : <BandHills snow={snow} />}
-      {PINES[size].map(pine => <Pine key={pine.left} {...pine} />)}
+      {PINES[size].map(pine => <Pine key={`${pine.anchor}${pine.offset}`} {...pine} />)}
     </div>
   )
 }

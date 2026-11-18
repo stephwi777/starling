@@ -145,8 +145,15 @@
 }
 
 .location svg {
+  flex: none;
   width: 12px;
   fill: var(--beak);
+}
+
+.location span {
+  max-width: 22ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 
@@ -160,6 +167,24 @@
 
   .header.scrolled {
     background: var(--zenith);
+  }
+}
+
+
+
+/* MEDIUM SCREENS */
+
+@media (min-width: 861px) and (max-width: 1180px) {
+  .bar {
+    gap: 24px;
+  }
+
+  .header nav {
+    gap: 20px;
+  }
+
+  .location span {
+    max-width: 14ch;
   }
 }
 

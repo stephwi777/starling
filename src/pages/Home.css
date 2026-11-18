@@ -12,7 +12,7 @@
   box-sizing: content-box;
   max-width: 1120px;
   margin: 0 auto;
-  padding: clamp(160px, 30vh, 320px) var(--gutter) calc(clamp(170px, 26vw, 280px) + 32px);
+  padding: clamp(160px, 30vh, 320px) var(--gutter) calc(var(--ground) + 32px);
 }
 
 .hero h1 {
