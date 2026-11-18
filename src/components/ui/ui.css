@@ -51,17 +51,6 @@
   box-shadow: 0 1px 0 var(--press-edge);
 }
 
-.press.quiet {
-  --press-edge: color-mix(in srgb, var(--snow-shade) 72%, #000);
-  background: var(--snow);
-  color: var(--ink);
-  box-shadow: 0 5px 0 var(--press-edge);
-}
-
-.press.quiet:active {
-  box-shadow: 0 1px 0 var(--press-edge);
-}
-
 .still .press:active {
   transform: none;
 }

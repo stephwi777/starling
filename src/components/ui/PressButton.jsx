@@ -5,12 +5,10 @@ import './ui.css'
 
 // PRESS BUTTON
 
-function PressButton({ to, onClick, quiet, children }) {
-  const className = quiet ? 'press quiet' : 'press'
+function PressButton({ to, onClick, children }) {
+  if (to) return <Link className="press" to={to}>{children}</Link>
 
-  if (to) return <Link className={className} to={to}>{children}</Link>
-
-  return <button type="button" className={className} onClick={onClick}>{children}</button>
+  return <button type="button" className="press" onClick={onClick}>{children}</button>
 }
 
 export default PressButton

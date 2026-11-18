@@ -9,6 +9,9 @@
 
 .sky-scene.tall {
   --ground: clamp(170px, 26vw, 280px);
+  --moon-size: clamp(64px, 9vw, 130px);
+  --hero-top: clamp(160px, 30vh, 320px);
+  --title-size: clamp(2.8rem, 6.5vw, 4.6rem);
   min-height: max(620px, 100vh);
   min-height: max(620px, 100svh);
 }
@@ -33,9 +36,12 @@
 }
 
 .tall .moon {
-  bottom: calc(var(--ground) + clamp(24px, 40vw - 280px, 320px));
-  right: clamp(8%, 4vw + 4%, 14%);
-  width: clamp(64px, 9vw, 130px);
+  top: min(
+    calc(var(--hero-top) + 0.55 * var(--title-size) - 0.5 * var(--moon-size) + clamp(0px, (1000px - 100vw) * 0.9, 640px)),
+    calc(100% - var(--ground) - var(--moon-size) - 24px)
+  );
+  right: 18%;
+  width: var(--moon-size);
 }
 
 .band .moon {
