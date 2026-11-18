@@ -43,3 +43,8 @@ test('a skipped star is replaced by the next clear one', () => {
   const stars = [star(1, 10, 10), star(2, 50, 50), star(3, 60, 60)]
   expect(visibleStars(stars, { width: 15, height: 100 }, [{ left: 0, top: 8, right: 4, bottom: 12 }])).toEqual([star(2, 50, 50)])
 })
+
+test('the amount scales the star count for moonlight and clouds', () => {
+  expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0.5).length).toBe(70)
+  expect(visibleStars(pool, { width: 1425, height: 1293 }, [], 0).length).toBe(0)
+})

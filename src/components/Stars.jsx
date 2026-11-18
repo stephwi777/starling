@@ -61,7 +61,7 @@ function measure(field) {
 
 // FIELD
 
-function Stars() {
+function Stars({ amount = 1 }) {
   const ref = useRef(null)
   const [shown, setShown] = useState({ stars: [], sparkles: [] })
 
@@ -74,7 +74,7 @@ function Stars() {
 
       const { size, boxes } = measure(field)
 
-      setShown({ stars: visibleStars(stars, size, boxes), sparkles: visibleStars(sparkles, size, boxes) })
+      setShown({ stars: visibleStars(stars, size, boxes, amount), sparkles: visibleStars(sparkles, size, boxes, amount) })
     }
 
     const observer = new ResizeObserver(update)
@@ -85,7 +85,7 @@ function Stars() {
       active = false
       observer.disconnect()
     }
-  }, [])
+  }, [amount])
 
   return (
     <div ref={ref} className="stars" aria-hidden="true">
