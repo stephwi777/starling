@@ -89,15 +89,12 @@
 
 @keyframes brighten {
   0% {
-    transform: scale(1);
     box-shadow: 0 0 10px 3px var(--head);
   }
   60% {
-    transform: scale(1.12);
     box-shadow: 0 0 13px 4px var(--head);
   }
   100% {
-    transform: scale(1.06);
     box-shadow: 0 0 11px 3.5px var(--head);
   }
 }
