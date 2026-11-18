@@ -370,8 +370,56 @@
     }
 
     .needle.fades .needle-head {
+      top: -2.75px;
+      left: -2.75px;
+      width: 5.5px;
+      height: 5.5px;
+      box-shadow: 0 0 7px 2px var(--head), 0 0 18px 6px color-mix(in srgb, var(--tail) 50%, transparent);
       opacity: 1;
       animation: none;
+    }
+
+
+
+    /* SPINDLE */
+
+    .needle.spindle .needle-tail {
+      top: -3px;
+      width: 210px;
+      height: 6px;
+      background: linear-gradient(to right, transparent, var(--tail) 45%, color-mix(in srgb, var(--tail) 50%, white) 78%, var(--head));
+      clip-path: polygon(0 50%, 74% 0, 100% 50%, 74% 100%);
+      filter: drop-shadow(0 0 3px var(--tail));
+    }
+
+
+
+    /* BURST */
+
+    .spark {
+      --burst-at: 0.81;
+      position: absolute;
+      top: -2.5px;
+      left: calc(var(--distance) * var(--burst-at));
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--tail);
+      box-shadow: 0 0 4px var(--tail);
+      opacity: 0;
+      animation: burst 0.8s ease-out forwards;
+      animation-delay: calc(var(--duration) * 0.88);
+    }
+
+    @keyframes burst {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(0.4);
+      }
     }
 
     @keyframes follow {
@@ -427,8 +475,8 @@
     <!-- INTRO -->
 
     <section class="intro">
-      <h1>Shooting star</h1>
-      <p>Today's meteor next to two versions in the style of the shadcn.io shooting star: a long, needle-thin trail that tapers to nothing, a small bright head with a soft glow, a slower glide, and a faint wake that lingers after the head is gone.</p>
+      <h1>Shooting stars</h1>
+      <p>C is the everyday shooting star. D, E and F are ideas for the rare one that turns up now and then: pick the two you like. Today's meteor stays at the top for reference.</p>
 
       <div class="controls">
         <button type="button" class="all">Launch in every sky</button>
@@ -454,22 +502,44 @@
       <div class="sky"></div>
     </section>
 
-    <section class="option" data-style="needle">
+    <section class="option" data-style="tinted">
       <div class="option-head">
         <div>
-          <h2>B · Needle, cool white</h2>
-          <p>Close to the reference: white head, pale blue trail, about 2 seconds, with a lingering wake.</p>
+          <h2>C · Everyday shooting star</h2>
+          <p>Your pick, with a slightly larger, brighter head so it's easier to spot on phones.</p>
         </div>
         <button type="button">Launch</button>
       </div>
       <div class="sky"></div>
     </section>
 
-    <section class="option" data-style="tinted">
+    <section class="option" data-style="spindle">
       <div class="option-head">
         <div>
-          <h2>C · Needle, Starling tints</h2>
-          <p>The needle shape with our soft star tints in the trail (teal, rose, lavender or warm gold), ending like A. The trail grows only as far as the meteor has flown, then pulls in to a short stub as the streak fades.</p>
+          <h2>D · Rare: wide streak</h2>
+          <p>The shape you saw: a long, stretched diamond, thin at both ends and widest near the front, glowing a little whiter where it's widest.</p>
+        </div>
+        <button type="button">Launch</button>
+      </div>
+      <div class="sky"></div>
+    </section>
+
+    <section class="option" data-style="spindle-burst">
+      <div class="option-head">
+        <div>
+          <h2>E · Rare: wide streak with burst</h2>
+          <p>The wide streak, ending in the original burst of five little sparks.</p>
+        </div>
+        <button type="button">Launch</button>
+      </div>
+      <div class="sky"></div>
+    </section>
+
+    <section class="option" data-style="needle-burst">
+      <div class="option-head">
+        <div>
+          <h2>F · Rare: everyday streak with burst</h2>
+          <p>The everyday shooting star, ending in the original burst of sparks.</p>
         </div>
         <button type="button">Launch</button>
       </div>
@@ -495,8 +565,6 @@
       { head: 'var(--frost)', tail: '#c3a8f0' },
       { head: 'var(--moon)', tail: '#f2c98e' },
     ]
-
-    const COOL = { head: '#f4f7ff', tail: '#9cc8ff' }
 
     const STAR_TINTS = ['var(--frost)', 'var(--star-blue)', 'var(--star-warm)', 'var(--star-teal)', 'var(--star-rose)']
 
@@ -529,17 +597,36 @@
 
     // LAUNCH
 
+    const SPARKS = [
+      { x: 22, y: -14 },
+      { x: 28, y: 7 },
+      { x: 11, y: 21 },
+      { x: -3, y: -21 },
+      { x: 34, y: -4 },
+    ]
+
     function launch(section, trip) {
       const style = section.dataset.style
-      const needle = style !== 'today'
-      const colors = style === 'needle' ? COOL : (style === 'tinted' ? TINTS : TODAY)[Math.floor(trip.pick * 4)]
+      const colors = (style === 'today' ? TODAY : TINTS)[Math.floor(trip.pick * 4)]
       const meteor = document.createElement('span')
+      const classes = {
+        'today': 'meteor',
+        'tinted': 'needle fades',
+        'spindle': 'needle fades spindle',
+        'spindle-burst': 'needle fades spindle',
+        'needle-burst': 'needle fades',
+      }
 
-      meteor.className = needle ? (style === 'tinted' ? 'needle fades' : 'needle') : 'meteor'
+      meteor.className = classes[style]
       meteor.style.cssText = `top:${trip.top}%;left:${trip.left}%;--head:${colors.head};--tail:${colors.tail}`
-      meteor.innerHTML = needle
-        ? '<span class="needle-flight"><span class="needle-tail"></span><span class="needle-head"></span></span>'
-        : '<span class="flight"><span class="tail"></span><span class="head"></span></span>'
+      meteor.innerHTML = style === 'today'
+        ? '<span class="flight"><span class="tail"></span><span class="head"></span></span>'
+        : '<span class="needle-flight"><span class="needle-tail"></span><span class="needle-head"></span></span>'
+
+      if (style.endsWith('burst')) {
+        SPARKS.forEach(spark => meteor.insertAdjacentHTML('beforeend', `<span class="spark" style="--x:${spark.x}px;--y:${spark.y}px"></span>`))
+      }
+
       section.querySelector('.sky').append(meteor)
       setTimeout(() => meteor.remove(), 10000)
     }
