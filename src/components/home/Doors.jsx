@@ -1,23 +1,36 @@
 import { Link } from 'react-router'
 import IconWell from '../ui/IconWell.jsx'
 import { ConstellationIcon, PineIcon, TelescopeIcon } from '../ui/icons.jsx'
+import { monthConstellation } from '../../sky/monthConstellation.js'
+
+
+
+// HELPERS
+
+const PATTERNS = ['Big Dipper', 'Great Square']
+
+function starName(name) {
+  return PATTERNS.includes(name) ? `the ${name}` : name
+}
 
 
 
 // DOORS
 
-const DOORS = [
-  { to: '/map', Icon: PineIcon, title: 'Find dark skies', note: 'Parks and observatories near you' },
-  { to: '/learn', Icon: ConstellationIcon, title: 'Find Cassiopeia', note: "This month's constellation" },
-  { to: '/tools', Icon: TelescopeIcon, title: 'Sky tools', note: 'Moon phases, sky map and more' },
-]
+function Doors({ now, place }) {
+  const constellation = monthConstellation(now, place)
 
-function Doors() {
+  const doors = [
+    { to: '/map', icon: <PineIcon />, title: 'Find dark skies', note: 'Parks and observatories near you' },
+    { to: '/learn', icon: <ConstellationIcon name={constellation.name} />, title: `Find ${starName(constellation.name)}`, note: PATTERNS.includes(constellation.name) ? "This month's star pattern" : "This month's constellation" },
+    { to: '/tools', icon: <TelescopeIcon />, title: 'Sky tools', note: 'Moon phases, sky map and more' },
+  ]
+
   return (
     <nav className="doors" aria-label="Explore Starling">
-      {DOORS.map(({ to, Icon, title, note }) => (
+      {doors.map(({ to, icon, title, note }) => (
         <Link key={to} className="home-door" to={to}>
-          <IconWell><Icon /></IconWell>
+          <IconWell>{icon}</IconWell>
           <span>
             <strong>{title}</strong>
             <small>{note}</small>

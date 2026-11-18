@@ -1,3 +1,7 @@
+import { SHAPES, shapePath } from './constellationShapes.js'
+
+
+
 // FRAME
 
 function Icon({ children }) {
@@ -56,15 +60,16 @@ export function PineIcon() {
   )
 }
 
-export function ConstellationIcon() {
+export function ConstellationIcon({ name = 'Cassiopeia' }) {
+  const shape = SHAPES[name]
+  const busy = shape.stars.length > 6
+
   return (
     <Icon>
-      <path d="M-11 -4 L-5 6 L0 -2 L5 6 L11 -5" fill="none" stroke="var(--snow)" strokeWidth="1.6" />
-      <circle cx="-11" cy="-4" r="2.4" fill="var(--frost)" />
-      <circle cx="-5" cy="6" r="2.4" fill="var(--beak)" />
-      <circle cx="0" cy="-2" r="2.4" fill="var(--frost)" />
-      <circle cx="5" cy="6" r="2.4" fill="var(--frost)" />
-      <circle cx="11" cy="-5" r="2.4" fill="var(--frost)" />
+      <path d={shapePath(shape)} fill="none" stroke="var(--snow)" strokeWidth={busy ? 1.3 : 1.6} strokeLinejoin="round" />
+      {shape.stars.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={busy ? 1.9 : 2.4} fill={i === shape.bright ? 'var(--beak)' : 'var(--frost)'} />
+      ))}
     </Icon>
   )
 }

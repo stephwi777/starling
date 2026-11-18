@@ -47,7 +47,7 @@ function Home() {
           <ComingUpCard now={now} timeZone={place.timeZone} />
         </div>
 
-        <Doors />
+        <Doors now={now} place={place} />
       </div>
     </main>
   )
