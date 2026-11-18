@@ -34,9 +34,7 @@
   border-radius: 999px;
   background: linear-gradient(to right, transparent, var(--tail) 55%, var(--head));
   transform-origin: right;
-  animation:
-    stretch var(--duration) ease-out forwards,
-    trail-glow calc(var(--duration) * 0.45) ease-out calc(var(--duration) * 0.55) forwards;
+  animation: stretch var(--duration) ease-out forwards;
 }
 
 .head {
@@ -92,19 +90,10 @@
     box-shadow: 0 0 10px 3px var(--head);
   }
   60% {
-    box-shadow: 0 0 13px 4px var(--head);
+    box-shadow: 0 0 12px 3.5px var(--head);
   }
   100% {
-    box-shadow: 0 0 11px 3.5px var(--head);
-  }
-}
-
-@keyframes trail-glow {
-  from {
-    filter: drop-shadow(0 0 0 var(--tail));
-  }
-  to {
-    filter: drop-shadow(0 0 2px var(--tail));
+    box-shadow: 0 0 11px 3px var(--head);
   }
 }
 
