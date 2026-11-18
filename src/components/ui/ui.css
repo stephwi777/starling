@@ -1,0 +1,81 @@
+/* CARD */
+
+.card {
+  padding: clamp(18px, 2.4vw, 26px);
+  border-radius: var(--radius-card);
+  background: var(--high);
+}
+
+
+
+/* ICON WELL */
+
+.well {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-well);
+  background: var(--raised);
+}
+
+.well svg {
+  width: 30px;
+  height: 30px;
+}
+
+
+
+/* PRESS BUTTON */
+
+.press {
+  --press-edge: color-mix(in srgb, var(--beak) 72%, #000);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 10px 24px;
+  border: 0;
+  border-radius: var(--radius-button);
+  background: var(--beak);
+  color: var(--ink);
+  font: 900 1rem var(--font-body);
+  text-decoration: none;
+  box-shadow: 0 5px 0 var(--press-edge);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.press:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 var(--press-edge);
+}
+
+.press.quiet {
+  --press-edge: color-mix(in srgb, var(--raised) 55%, #000);
+  background: var(--raised);
+  color: var(--frost);
+  box-shadow: 0 5px 0 var(--press-edge);
+}
+
+.press.quiet:active {
+  box-shadow: 0 1px 0 var(--press-edge);
+}
+
+.still .press:active {
+  transform: none;
+}
+
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .press {
+    transition: none;
+  }
+
+  .press:active {
+    transform: none;
+  }
+}

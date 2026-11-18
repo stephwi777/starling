@@ -48,6 +48,7 @@ function Header() {
           <NavLink to="/calendar">Calendar</NavLink>
           <NavLink to="/map">Map</NavLink>
           <NavLink to="/learn">Learn</NavLink>
+          <NavLink to="/tools">Tools</NavLink>
         </nav>
 
         <button

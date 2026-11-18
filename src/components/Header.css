@@ -100,6 +100,7 @@ nav {
 
 nav a {
   color: var(--mist);
+  font-weight: 600;
   text-decoration: none;
 }
 
@@ -127,8 +128,9 @@ nav a.active {
   border-radius: 999px;
   background: var(--beak);
   color: var(--ink);
-  font-weight: 700;
+  font-weight: 800;
   font-size: 1rem;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--beak) 72%, #000);
   transition: scale 0.25s ease-out;
 }
 
@@ -140,9 +142,9 @@ nav a.active {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 2px solid var(--far-hills);
-  background: transparent;
+  background: color-mix(in srgb, var(--raised) 80%, transparent);
   color: var(--frost);
+  box-shadow: none;
 }
 
 .location.placed svg {

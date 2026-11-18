@@ -30,6 +30,7 @@ function App() {
         <Route path="calendar" element={<Placeholder title="Calendar" />} />
         <Route path="map" element={<Placeholder title="Map" />} />
         <Route path="learn" element={<Placeholder title="Learn" />} />
+        <Route path="tools" element={<Placeholder title="Sky tools" />} />
         <Route path="about" element={<About />} />
         <Route path="credits" element={<Credits />} />
         <Route path="contact" element={<Contact />} />

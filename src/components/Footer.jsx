@@ -14,6 +14,7 @@ const columns = [
       { label: 'Calendar', to: '/calendar' },
       { label: 'Map', to: '/map' },
       { label: 'Learn', to: '/learn' },
+      { label: 'Sky tools', to: '/tools' },
     ],
   },
   {
