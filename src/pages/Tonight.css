@@ -60,6 +60,68 @@
 
 
 
+/* STICKY HEADS */
+
+.tonight-below .card {
+  clip-path: inset(var(--cut, 0px) 0 0 0 round var(--radius-card));
+}
+
+.tonight-below .tile {
+  clip-path: inset(var(--cut, 0px) 0 0 0 round var(--radius-tile));
+}
+
+.tonight-below .card-head,
+.hours-card > h2,
+.tile h2 {
+  position: sticky;
+  top: calc(var(--stick, 0px) + var(--pad, 0px));
+  z-index: 1;
+  margin-inline: calc(-1 * var(--side, 0px));
+  padding-inline: var(--side, 0px);
+  background: var(--high);
+  box-shadow: 0 calc(-1 * var(--pad, 0px)) 0 var(--high), 0 calc(-1 * var(--pad, 0px) - 16px) 0 var(--high);
+}
+
+.tonight-below .card-head {
+  margin-bottom: 0;
+  padding-bottom: 14px;
+}
+
+.tile h2 {
+  padding-bottom: 8px;
+}
+
+.hours-card > h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: -32px;
+  padding-bottom: 8px;
+  color: var(--mist);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 24px;
+  opacity: 0;
+}
+
+.hours-card > h2 svg {
+  width: 18px;
+  height: 18px;
+}
+
+.veil {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 5;
+  height: var(--stick, 0px);
+  background: var(--zenith);
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+
 /* HOURS */
 
 .hours-summary {
@@ -68,14 +130,66 @@
   font-weight: 700;
 }
 
+.hours-row {
+  position: relative;
+  margin-top: 14px;
+}
+
 .hours {
   display: flex;
   gap: 6px;
-  margin-top: 14px;
-  padding-bottom: 6px;
   overflow-x: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--raised) transparent;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.hours::-webkit-scrollbar {
+  display: none;
+}
+
+.hours-arrow {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--mist);
+  opacity: 0;
+  translate: 0 -50%;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.hours-arrow svg {
+  width: 14px;
+  height: 28px;
+}
+
+.hours-arrow.left {
+  left: -32px;
+}
+
+.hours-arrow.right {
+  right: -32px;
+}
+
+.hours-arrow:disabled {
+  pointer-events: none;
+}
+
+.hours-card:hover .hours-arrow:enabled {
+  opacity: 1;
+}
+
+.hours-arrow:hover {
+  color: var(--frost);
+}
+
+.still .hours {
+  scroll-behavior: auto;
 }
 
 .hours li {
@@ -147,6 +261,10 @@
   line-height: 1;
 }
 
+.tile.still h2::after {
+  content: none;
+}
+
 .tile strong {
   font-size: 1.7rem;
   font-weight: 900;
@@ -164,6 +282,21 @@
 
 .phase-moon {
   overflow: visible;
+}
+
+.moon-tile {
+  grid-template-columns: 1fr auto;
+  column-gap: 16px;
+}
+
+.moon-tile h2 {
+  grid-column: 1 / -1;
+}
+
+.moon-tile .phase-moon {
+  grid-column: 2;
+  grid-row: 2 / span 3;
+  align-self: center;
 }
 
 
@@ -256,6 +389,30 @@
 
 
 
+/* TOUCH SCREENS */
+
+@media (hover: none) {
+  .hours-arrow {
+    display: none;
+  }
+}
+
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .hours {
+    scroll-behavior: auto;
+  }
+
+  .hours-arrow {
+    transition: none;
+  }
+}
+
+
+
 /* MEDIUM SCREENS */
 
 @media (max-width: 980px) {
@@ -288,6 +445,16 @@
 
   .tile strong {
     font-size: 1.35rem;
+  }
+
+  .moon-tile {
+    grid-template-columns: 1fr;
+  }
+
+  .moon-tile .phase-moon {
+    grid-column: auto;
+    grid-row: auto;
+    align-self: start;
   }
 
   .nights li {

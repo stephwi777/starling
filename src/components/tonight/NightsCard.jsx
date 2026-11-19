@@ -1,5 +1,6 @@
 import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
+import { phaseAngle } from '../../sky/skyLook.js'
 import { NightsIcon, PhaseMoon } from '../ui/icons.jsx'
 
 
@@ -32,7 +33,7 @@ function NightsCard() {
         {NIGHTS.map(night => (
           <li key={night.day}>
             <strong>{night.day}</strong>
-            <PhaseMoon lit={night.lit} size={24} />
+            <PhaseMoon angle={phaseAngle(night.lit)} size={24} />
             {night.from === null ? (
               <span className="night-none">No clear hours</span>
             ) : (

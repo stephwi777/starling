@@ -1,4 +1,3 @@
-import { phaseAngle } from '../../sky/skyLook.js'
 import { MoonShape } from '../tonight/Icons.jsx'
 import { SHAPES, shapePath } from './constellationShapes.js'
 
@@ -82,6 +81,15 @@ export function TelescopeIcon() {
       <path d="M-11 2 L6 -7 L8.5 -2 L-8.5 7 Z" fill="var(--snow)" />
       <path d="M-1 3 L-5 12 M-1 3 L3 12" stroke="var(--bronze)" strokeWidth="2" strokeLinecap="round" />
       <circle cx="9" cy="-9" r="2" fill="var(--beak)" />
+    </Icon>
+  )
+}
+
+export function ClockIcon() {
+  return (
+    <Icon>
+      <circle r="10" fill="var(--snow)" />
+      <path d="M0 -6 V0 L4 3" fill="none" stroke="var(--ink)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </Icon>
   )
 }
@@ -189,11 +197,13 @@ export function DawnIcon() {
 
 // PHASE MOON
 
-export function PhaseMoon({ lit, size }) {
+export function PhaseMoon({ angle, size, south }) {
   return (
     <svg className="phase-moon" viewBox="-60 -60 120 120" width={size} height={size} aria-hidden="true">
       <circle r="70" fill="var(--moon)" opacity="0.08" />
-      <MoonShape angle={phaseAngle(lit)} r={56} />
+      <g transform={south ? 'scale(-1 1)' : undefined}>
+        <MoonShape angle={angle} r={56} />
+      </g>
     </svg>
   )
 }

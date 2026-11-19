@@ -1,3 +1,7 @@
+import { usePlace } from '../place/usePlace.js'
+import { useNight } from '../sky/useNight.js'
+import { useNow } from '../sky/useNow.js'
+import useStickyHeads from '../hooks/useStickyHeads.js'
 import { nightLook, phaseAngle } from '../sky/skyLook.js'
 import SkyScene from '../components/sky/SkyScene.jsx'
 import HoursCard from '../components/tonight/HoursCard.jsx'
@@ -17,6 +21,11 @@ const LOOK = nightLook({ moonAngle: phaseAngle(0.53), moonLit: 0.53 })
 // TONIGHT
 
 function Tonight() {
+  const { place } = usePlace()
+  const now = useNow()
+  const sky = useNight(place, 0, null, now)
+  const below = useStickyHeads()
+
   return (
     <main className="tonight">
       <title>Tonight | Starling</title>
@@ -36,14 +45,16 @@ function Tonight() {
 
       {/* BELOW */}
 
-      <div className="tonight-below">
+      <div className="tonight-below" ref={below}>
         <HoursCard />
-        <TonightTiles />
+        <TonightTiles sky={sky} place={place} />
 
         <div className="tonight-cards">
           <NightsCard />
           <UpTonightCard />
         </div>
+
+        <div className="veil" aria-hidden="true" />
       </div>
     </main>
   )

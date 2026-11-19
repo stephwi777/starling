@@ -1,3 +1,4 @@
+import { moonTiming, nextFull } from '../../sky/moon.js'
 import { PhaseMoon } from '../ui/icons.jsx'
 
 
@@ -47,17 +48,30 @@ function SeeingDots() {
 
 
 
+// MOON TILE
+
+function MoonTile({ sky, place }) {
+  const { night, moon } = sky
+
+  return (
+    <section className="tile still moon-tile" aria-labelledby="tile-moon">
+      <h2 id="tile-moon">Moon</h2>
+      <PhaseMoon angle={night.moonAngle} size={64} south={place.latitude < 0} />
+      <strong>{Math.round(night.moonLit * 100)}% lit</strong>
+      <p>{moonTiming(moon, night, place.timeZone)}</p>
+      <p>{nextFull(night, place.timeZone)}</p>
+    </section>
+  )
+}
+
+
+
 // TILES
 
-function TonightTiles() {
+function TonightTiles({ sky, place }) {
   return (
     <div className="tiles">
-      <section className="tile" aria-labelledby="tile-moon">
-        <h2 id="tile-moon">Moon</h2>
-        <PhaseMoon lit={0.53} size={64} />
-        <strong>53% lit</strong>
-        <p>First quarter. Sets at 12:40am.</p>
-      </section>
+      <MoonTile sky={sky} place={place} />
 
       <section className="tile" aria-labelledby="tile-dark">
         <h2 id="tile-dark">Darkness</h2>

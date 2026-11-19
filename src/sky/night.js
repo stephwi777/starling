@@ -110,6 +110,7 @@ export function buildNight(place, index, now) {
 
   return {
     index,
+    noon,
     start,
     end,
     times,
