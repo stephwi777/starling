@@ -20,6 +20,10 @@ export function clock(date, timeZone) {
   return tidy(format(timeZone, { hour: 'numeric', minute: '2-digit' }).format(date))
 }
 
+export function dayName(date, timeZone) {
+  return format(timeZone, { weekday: 'long', month: 'long', day: 'numeric' }).format(date)
+}
+
 export function hourLabel(date, timeZone) {
   return tidy(format(timeZone, { hour: 'numeric' }).format(date))
 }

@@ -147,12 +147,12 @@ export function GalaxyIcon() {
 
 // HOUR ICONS
 
-const DOWN = 'M0 -10 V-2 M-3 -5 L0 -2 L3 -5'
-const UP = 'M0 -2 V-10 M-3 -7 L0 -10 L3 -7'
-const TUCKED_DOWN = 'M4 -7 V1 M1.5 -1.5 L4 1 L6.5 -1.5'
-const TUCKED_UP = 'M4 1 V-7 M1.5 -4.5 L4 -7 L6.5 -4.5'
+const DOWN = 'M0 -11 V-3 M-2.6 -5.6 L0 -3 L2.6 -5.6'
+const UP = 'M0 -3 V-11 M-2.6 -8.4 L0 -11 L2.6 -8.4'
+const TUCKED_DOWN = 'M4 -8.2 V-0.2 M1.5 -2.7 L4 -0.2 L6.5 -2.7'
+const TUCKED_UP = 'M4 -0.2 V-8.2 M1.5 -5.7 L4 -8.2 L6.5 -5.7'
 const CRESCENT = 'M0 -10 A10 10 0 1 0 8 6 A8 8 0 1 1 0 -10 Z'
-const RAYS = [-155, -118, -62, -25]
+const RAYS = [-160, -125, -55, -20]
 
 function Horizon({ arrow, children }) {
   return (
@@ -192,16 +192,16 @@ function Sun({ color }) {
         {RAYS.map(angle => {
           const a = (angle * Math.PI) / 180
 
-          return <path key={angle} d={`M${8.6 * Math.cos(a)} ${6 + 8.6 * Math.sin(a)} L${11 * Math.cos(a)} ${6 + 11 * Math.sin(a)}`} />
+          return <path key={angle} d={`M${7 * Math.cos(a)} ${4 + 7 * Math.sin(a)} L${9.4 * Math.cos(a)} ${4 + 9.4 * Math.sin(a)}`} />
         })}
       </g>
-      <path d="M-7 6 A7 7 0 0 1 7 6 Z" fill={color} />
+      <path d="M-5 4 A5 5 0 0 1 5 4 Z" fill={color} />
     </>
   )
 }
 
 function Crescent() {
-  return <path d={CRESCENT} fill="var(--moon)" transform="translate(-2 -1) scale(0.62)" />
+  return <path d={CRESCENT} fill="var(--moon)" transform="translate(-2 -2.2) scale(0.62)" />
 }
 
 export function SunsetIcon() {
@@ -223,7 +223,7 @@ export function MoonriseIcon() {
 export function TwilightIcon() {
   return (
     <Icon>
-      <path d="M-6.5 -1 A6.5 6.5 0 0 0 6.5 -1 Z" fill="var(--snow-shade)" opacity="0.85" />
+      <path d="M-5.5 1.3 A5.5 5.5 0 0 0 5.5 1.3 Z" fill="var(--snow-shade)" opacity="0.85" />
       <path d="M-11 -1 H11" stroke="var(--mist)" strokeWidth="2.6" strokeLinecap="round" />
       <path d="M-5 9 H5" stroke="var(--mist)" strokeWidth="2.2" strokeLinecap="round" opacity="0.7" />
     </Icon>

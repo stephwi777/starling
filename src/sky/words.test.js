@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { clock, compass, fists, height, hourLabel, shortCompass, where } from './words.js'
+import { clock, compass, dayName, fists, height, hourLabel, shortCompass, where } from './words.js'
 
 
 
@@ -9,6 +9,11 @@ test('clock uses the place time zone and drops :00', () => {
   expect(clock(new Date('2026-11-14T03:15:00Z'), 'America/Chicago')).toBe('9:15pm')
   expect(clock(new Date('2026-11-14T03:15:00Z'), 'Europe/Paris')).toBe('4:15am')
   expect(clock(new Date('2026-11-14T03:00:00Z'), 'America/Chicago')).toBe('9pm')
+})
+
+test('dayName gives the weekday and date in the place time zone', () => {
+  expect(dayName(new Date('2026-11-19T18:00:00Z'), 'America/Chicago')).toBe('Thursday, November 19')
+  expect(dayName(new Date('2026-11-19T18:00:00Z'), 'Pacific/Kiritimati')).toBe('Friday, November 20')
 })
 
 test('hourLabel shows just the hour', () => {

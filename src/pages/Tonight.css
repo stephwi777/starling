@@ -12,12 +12,19 @@
 
 .band-text {
   box-sizing: content-box;
+  display: grid;
+  align-content: center;
   max-width: 1120px;
+  min-height: calc(clamp(330px, 46vw, 420px) - var(--header-height, 92px) - var(--ground));
   margin: 0 auto;
-  padding: 104px var(--gutter) calc(var(--ground) + 32px);
+  padding: var(--header-height, 92px) var(--gutter) var(--ground);
+  text-align: center;
+  text-wrap: balance;
 }
 
 .band-text h1 {
+  display: grid;
+  gap: 2px;
   font-family: var(--font-body);
   font-size: 1.0625rem;
   font-weight: 700;
@@ -25,13 +32,19 @@
   color: var(--mist);
 }
 
-.verdict {
-  max-width: 26ch;
-  margin-top: 6px;
+.band-title {
   font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
-  line-height: 1.2;
+  font-size: clamp(2rem, 4.4vw, 3rem);
+  font-weight: 600;
+  line-height: 1.1;
   color: var(--moon);
+}
+
+.band-line {
+  margin-top: 10px;
+  color: var(--frost);
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
 
@@ -460,7 +473,9 @@
 
 @media (max-width: 700px) {
   .band-text {
-    padding-top: 128px;
+    min-height: 0;
+    padding-top: calc(var(--header-height, 130px) + 24px);
+    padding-bottom: calc(var(--ground) + 64px);
   }
 
   .tiles {

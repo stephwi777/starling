@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink } from 'react-router'
 import LogoMark from './LogoMark.jsx'
 import { usePlace } from '../place/usePlace.js'
@@ -12,6 +12,15 @@ import './Header.css'
 function Header() {
   const [scrolled, setScrolled] = useState(false)
   const { place, isSample, openPicker } = usePlace()
+  const bar = useRef(null)
+
+  useEffect(() => {
+    const root = document.documentElement
+    const watcher = new ResizeObserver(([entry]) => root.style.setProperty('--header-height', `${entry.target.offsetHeight}px`))
+
+    watcher.observe(bar.current)
+    return () => watcher.disconnect()
+  }, [])
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 24)
@@ -23,7 +32,7 @@ function Header() {
   }, [])
 
   return (
-    <header className={scrolled ? 'header scrolled' : 'header'}>
+    <header ref={bar} className={scrolled ? 'header scrolled' : 'header'}>
       <div className="bar">
         <Link className="logo" to="/">
           <LogoMark />

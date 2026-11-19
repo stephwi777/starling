@@ -3,7 +3,8 @@ import { useForecast } from '../sky/useForecast.js'
 import { useNight } from '../sky/useNight.js'
 import { useNow } from '../sky/useNow.js'
 import useStickyHeads from '../hooks/useStickyHeads.js'
-import { nightLook, phaseAngle } from '../sky/skyLook.js'
+import { nightLook } from '../sky/skyLook.js'
+import { dayName } from '../sky/words.js'
 import SkyScene from '../components/sky/SkyScene.jsx'
 import HoursCard from '../components/tonight/HoursCard.jsx'
 import TonightTiles from '../components/tonight/TonightTiles.jsx'
@@ -19,20 +20,15 @@ const HOUR = 60 * 60 * 1000
 
 
 
-// SKY
-
-const LOOK = nightLook({ moonAngle: phaseAngle(0.53), moonLit: 0.53 })
-
-
-
 // TONIGHT
 
 function Tonight() {
-  const { place } = usePlace()
+  const { place, isSample } = usePlace()
   const now = useNow()
   const forecast = useForecast(place, Math.floor(now.getTime() / HOUR))
   const sky = useNight(place, 0, forecast.raw, now)
   const below = useStickyHeads()
+  const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
   return (
     <main className="tonight">
@@ -42,10 +38,14 @@ function Tonight() {
 
       {/* SKY */}
 
-      <SkyScene look={LOOK} size="band">
+      <SkyScene look={look} size="band">
         <div className="band-text">
-          <h1>Tonight, Tuesday, November 17 · Kansas City</h1>
-          <p className="verdict">Clear and dark from 6:36pm to 1am. Saturn is the brightest planet up.</p>
+          <h1>
+            <span className="visually-hidden">Tonight in </span>
+            <span className="band-title">{place.name}</span>
+            <span>{dayName(sky.night.noon, place.timeZone)}{isSample && ' · sample location'}</span>
+          </h1>
+          <p className="band-line" aria-live="polite">{sky.summary}</p>
         </div>
       </SkyScene>
 
