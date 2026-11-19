@@ -48,8 +48,8 @@ function summary(options) {
   return hoursSummary({ night: NIGHT, moon: DOWN, clouds: CLEAR, showers: [], status: 'ready', timeZone: ZONE, ...options })
 }
 
-function leonids(radiant) {
-  return { name: 'Leonids', zhr: 15, daysFromPeak: 1, track: STEPS.map(() => ({ alt: radiant })) }
+function leonids(highest, peak = 660) {
+  return { name: 'Leonids', zhr: 15, daysFromPeak: 1, track: STEPS.map(m => ({ alt: highest - Math.abs(m - peak) / 10 })) }
 }
 
 
@@ -61,6 +61,14 @@ test('whole hours run from the first after sunset to the last before sunrise', (
   expect(hours[0].label).toBe('6pm')
   expect(hours.at(-1).label).toBe('6am')
   expect(hours).toHaveLength(13)
+})
+
+test('a moment seconds after the hour replaces that hour instead of doubling it', () => {
+  const night = { ...NIGHT, astroDusk: new Date(at(120).getTime() + 20 * 1000) }
+  const sevens = hourCells({ night, moon: DOWN, clouds: CLEAR, timeZone: ZONE }).filter(cell => cell.label === '7pm')
+
+  expect(sevens).toHaveLength(1)
+  expect(sevens[0]).toMatchObject({ moment: true, word: 'Fully dark' })
 })
 
 test('hours while the sky is still bright say Twilight', () => {
@@ -181,8 +189,13 @@ test('a good shower waits for the Moon to set', () => {
   expect(summary({ moon: SETS, showers: [leonids(60)] })).toBe('Clear all night. Leonid meteors are best after the Moon sets at 12:40am.')
 })
 
-test('a good shower without moonlight is best after midnight', () => {
-  expect(summary({ showers: [leonids(60)] })).toBe('Clear all night. Leonid meteors are best after midnight.')
+test('a good shower without moonlight is best when its radiant is highest', () => {
+  expect(summary({ showers: [leonids(60)] })).toBe('Clear all night. Leonid meteors are best around 4am.')
+})
+
+test('an evening shower is best in the evening, even before the Moon sets', () => {
+  expect(summary({ showers: [leonids(60, 180)] })).toBe('Clear all night. Leonid meteors are best around 8pm.')
+  expect(summary({ moon: SETS, showers: [leonids(60, 180)] })).toBe('Clear all night. Leonid meteors are best around 8pm.')
 })
 
 test('a weak shower is not mentioned', () => {
@@ -201,7 +214,7 @@ test('the Moon rising', () => {
 test('a Moon that sets after dawn does not promise darker skies', () => {
   const late = makeMoon(m => (m < 790 ? 30 : -5))
   expect(summary({ moon: late })).toBe('Clear all night.')
-  expect(summary({ moon: late, showers: [leonids(60)] })).toBe('Clear all night. Leonid meteors are best after midnight.')
+  expect(summary({ moon: late, showers: [leonids(60)] })).toBe('Clear all night. Leonid meteors are best around 4am.')
 })
 
 test('no hours while the Sun stays up', () => {

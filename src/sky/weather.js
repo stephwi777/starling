@@ -29,21 +29,14 @@ export async function fetchWeather(place, signal, fetcher = fetch) {
 
 
 
-// LOCAL HOURS
+// FORECAST HOURS
 
-function hourKey(date, timeZone) {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    hourCycle: 'h23',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-  }).formatToParts(date)
+const HOUR = 60 * 60 * 1000
 
-  const value = type => parts.find(part => part.type === type).value
+function moments(raw) {
+  const offset = (raw.utc_offset_seconds ?? 0) * 1000
 
-  return `${value('year')}-${value('month')}-${value('day')}T${value('hour')}:00`
+  return raw.hourly.time.map(time => Date.parse(`${time}Z`) - offset)
 }
 
 function average(values) {
@@ -96,9 +89,10 @@ export function skyWord(clouds) {
 
 // NIGHT WEATHER
 
-export function nightWeather(raw, night, timeZone) {
+export function nightWeather(raw, night) {
   const { hourly, hourly_units: units } = raw
-  const rows = Array.from({ length: night.hours }, (_, h) => hourly.time.indexOf(hourKey(new Date(night.start.getTime() + h * 3600000), timeZone)))
+  const hours = moments(raw)
+  const rows = Array.from({ length: night.hours }, (_, h) => hours.indexOf(night.start.getTime() + h * HOUR))
 
   if (rows.every(row => row === -1)) return null
 

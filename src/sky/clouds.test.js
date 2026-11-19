@@ -55,7 +55,7 @@ test('a second change names when the middle stretch ends', () => {
 test('a mixed rest of the night is described by its most common sky', () => {
   const mixed = [5, 5, 5, 5, 5, 5, 5, 90, 90, 40, 90, 40, 90, 90, 5]
 
-  expect(words(mixed)).toEqual({ value: 'Clear till 12am', line: 'Then mostly cloudy until dawn.' })
+  expect(words(mixed)).toEqual({ value: 'Clear till midnight', line: 'Then mostly cloudy until dawn.' })
 })
 
 test('a tie between patchy and cloudy leans cloudy', () => {

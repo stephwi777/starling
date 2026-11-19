@@ -50,3 +50,24 @@ export function meteorRate(shower, radiantAlt) {
 
   return Math.round(shower.zhr * 10 ** (-0.08 * shower.daysFromPeak) * Math.sin((radiantAlt * Math.PI) / 180))
 }
+
+
+
+// PEAKS
+
+export function showerPeak(shower, night) {
+  return shower.track.reduce((best, point, i) => {
+    if (night.sun[i] >= -18) return best
+
+    const rate = meteorRate(shower, point.alt)
+
+    return !best || rate > best.rate ? { rate, index: i } : best
+  }, null)
+}
+
+export function goodShowers(showers, night) {
+  return showers
+    .map(shower => ({ shower, peak: showerPeak(shower, night) }))
+    .filter(({ peak }) => peak && peak.rate >= GOOD_SHOWER)
+    .sort((a, b) => b.peak.rate - a.peak.rate)
+}

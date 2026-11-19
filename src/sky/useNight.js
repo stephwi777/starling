@@ -47,7 +47,7 @@ export function useNight(place, index, forecast, now) {
   }, [place, index, now])
 
   return useMemo(() => {
-    const weather = forecast ? nightWeather(forecast, sky.night, place.timeZone) : null
+    const weather = forecast ? nightWeather(forecast, sky.night) : null
     const clouds = weather?.clouds ?? null
     const best = bestWindow(sky.night, clouds)
 

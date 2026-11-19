@@ -1,7 +1,7 @@
 import { STEP } from './night.js'
 import { moonCrossings } from './moon.js'
-import { GOOD_SHOWER, meteorRate } from './meteors.js'
-import { clock } from './words.js'
+import { goodShowers } from './meteors.js'
+import { aroundHour, clock, hourLabel } from './words.js'
 
 
 
@@ -92,7 +92,7 @@ export function hourCells({ night, moon, clouds, timeZone }) {
   const hours = wholeHours(night).map(({ hour, time, dark }) => {
     const kind = dark ? cloudKind(clouds?.[hour]) ?? 'dark' : 'twilight'
 
-    return { time, label: clock(time, timeZone), kind, word: SKIES[kind], moment: false }
+    return { time, label: hourLabel(time, timeZone), kind, word: SKIES[kind], moment: false }
   })
 
   const moments = [
@@ -106,7 +106,10 @@ export function hourCells({ night, moon, clouds, timeZone }) {
     .filter(([, time]) => time)
     .map(([kind, time]) => ({ time, label: clock(time, timeZone), kind, word: MOMENTS[kind], moment: true }))
 
-  return [...moments, ...hours].sort((a, b) => a.time - b.time)
+  const minute = time => Math.floor(time / 60000)
+  const free = hours.filter(cell => !moments.some(moment => minute(moment.time) === minute(cell.time)))
+
+  return [...moments, ...free].sort((a, b) => a.time - b.time)
 }
 
 
@@ -137,13 +140,11 @@ function extraSentence({ night, moon, showers, timeZone }) {
   const rise = whileDark(crossings.rise, night)
   const set = whileDark(crossings.set, night)
 
-  const shower = showers
-    .map(item => ({ item, rate: Math.max(...item.track.map(point => meteorRate(item, point.alt))) }))
-    .filter(entry => entry.rate >= GOOD_SHOWER)
-    .sort((a, b) => b.rate - a.rate)[0]
+  const shower = goodShowers(showers, night)[0]
+  const peak = shower ? night.times[shower.peak.index] : null
 
-  if (shower && set) return `${showerName(shower.item)} are best after the Moon sets at ${clock(set, timeZone)}.`
-  if (shower) return `${showerName(shower.item)} are best after midnight.`
+  if (shower && set && set < peak) return `${showerName(shower.shower)} are best after the Moon sets at ${clock(set, timeZone)}.`
+  if (shower) return `${showerName(shower.shower)} are best around ${aroundHour(peak, timeZone)}.`
   if (set) return `The Moon sets at ${clock(set, timeZone)}, leaving darker skies.`
   if (rise) return `The Moon rises at ${clock(rise, timeZone)}.`
 

@@ -102,7 +102,7 @@ function clearForecast() {
     return `2026-11-${day}T${String(i % 24).padStart(2, '0')}:00`
   })
 
-  return { hourly_units: {}, hourly: { time, cloud_cover: time.map(() => 5) } }
+  return { utc_offset_seconds: -21600, hourly_units: {}, hourly: { time, cloud_cover: time.map(() => 5) } }
 }
 
 test('seven nights from tonight with real Moon phases', () => {
@@ -117,7 +117,7 @@ test('seven nights from tonight with real Moon phases', () => {
 test('a night dark before its track begins fills the whole track', () => {
   const tromso = { name: 'Tromsø', latitude: 69.65, longitude: 18.96, timeZone: 'Europe/Oslo' }
   const time = Array.from({ length: 10 * 24 }, (_, i) => `2026-12-${20 + Math.floor(i / 24)}T${String(i % 24).padStart(2, '0')}:00`)
-  const forecast = { hourly_units: {}, hourly: { time, cloud_cover: time.map(() => 5) } }
+  const forecast = { utc_offset_seconds: 3600, hourly_units: {}, hourly: { time, cloud_cover: time.map(() => 5) } }
   const nights = sevenNights(tromso, forecast, new Date('2026-12-21T13:00:00Z'))
 
   expect(nights[0].words).toBe('4:56pm–6:28am')

@@ -67,7 +67,11 @@ function fakeForecast(timeZone, date, pick) {
   const days = [...new Set(keys.map(key => key.day))]
   const nightOf = key => days.indexOf(key.day) - (key.hour < 12 ? 1 : 0)
 
+  const first = keys[0]
+  const offset = (Date.parse(`${first.day}T${String(first.hour).padStart(2, '0')}:00Z`) - start) / 1000
+
   return {
+    utc_offset_seconds: offset,
     hourly_units: {},
     hourly: {
       time: keys.map(key => `${key.day}T${String(key.hour).padStart(2, '0')}:00`),

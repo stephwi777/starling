@@ -65,7 +65,7 @@ export function sevenNights(place, raw, now) {
   const scale = nightScale(nights)
 
   return nights.map((night, index) => {
-    const clouds = raw ? nightWeather(raw, night, place.timeZone)?.clouds ?? null : null
+    const clouds = raw ? nightWeather(raw, night)?.clouds ?? null : null
     const row = nightRow(night, clouds, place.timeZone)
     const left = row.from ? scale(night, row.from) : null
 

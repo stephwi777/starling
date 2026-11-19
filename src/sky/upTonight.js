@@ -1,13 +1,12 @@
-import { GOOD_SHOWER, meteorRate } from './meteors.js'
+import { goodShowers } from './meteors.js'
 import { showerName } from './hours.js'
 import { sortEasiest } from './listing.js'
-import { clock, compass, fists } from './words.js'
+import { aroundHour, compass, fists } from './words.js'
 
 
 
 // SETTINGS
 
-const HOUR = 60 * 60 * 1000
 const PICKS = 4
 const LOW = 25
 const DEEP = ['cluster', 'double', 'galaxy', 'globular', 'nebula', 'planetary']
@@ -16,10 +15,6 @@ const GEAR = ['', '', 'Binoculars', 'Telescope']
 
 
 // WORDS
-
-function aroundHour(date, timeZone) {
-  return clock(new Date(Math.round(date / HOUR) * HOUR), timeZone)
-}
 
 function spot(point) {
   return point.alt >= 75 ? 'Nearly overhead' : `${fists(point.alt)} in the ${compass(point.az)}`
@@ -33,27 +28,6 @@ function objectNote(object, night, timeZone) {
   const note = `${spot(object.track[object.bestIndex])} around ${aroundHour(night.times[object.bestIndex], timeZone)}`
 
   return needsDark(object) ? `${note}. Needs a dark sky.` : note
-}
-
-
-
-// SHOWERS
-
-function showerPeak(shower, night) {
-  return shower.track.reduce((best, point, i) => {
-    if (night.sun[i] >= -18) return best
-
-    const rate = meteorRate(shower, point.alt)
-
-    return !best || rate > best.rate ? { rate, index: i } : best
-  }, null)
-}
-
-function goodShowers(showers, night) {
-  return showers
-    .map(shower => ({ shower, peak: showerPeak(shower, night) }))
-    .filter(({ peak }) => peak && peak.rate >= GOOD_SHOWER)
-    .sort((a, b) => b.peak.rate - a.peak.rate)
 }
 
 

@@ -3,6 +3,14 @@ import { fetchWeather } from './weather.js'
 
 
 
+// FAILURE
+
+export function afterFailure(previous, key) {
+  return previous.key === key && previous.raw ? previous : { key, raw: null, status: 'failed' }
+}
+
+
+
 // HOOK
 
 export function useForecast(place, refresh = 0) {
@@ -15,7 +23,7 @@ export function useForecast(place, refresh = 0) {
     fetchWeather(place, controller.signal)
       .then(raw => setForecast({ key, raw, status: 'ready' }))
       .catch(() => {
-        if (!controller.signal.aborted) setForecast({ key, raw: null, status: 'failed' })
+        if (!controller.signal.aborted) setForecast(previous => afterFailure(previous, key))
       })
 
     return () => controller.abort()

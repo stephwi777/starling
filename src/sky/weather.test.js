@@ -13,6 +13,7 @@ function fakeForecast(overrides = {}) {
   const time = Array.from({ length: 48 }, (_, i) => `2026-11-${13 + Math.floor(i / 24)}T${String(i % 24).padStart(2, '0')}:00`)
 
   return {
+    utc_offset_seconds: -21600,
     hourly_units: { temperature_2m: '°F', wind_speed_10m: 'mp/h', visibility: 'm' },
     hourly: {
       time,
@@ -42,43 +43,54 @@ test('US places ask for fahrenheit and mph', () => {
 })
 
 test('night hours line up with the local forecast hours', () => {
-  const weather = nightWeather(fakeForecast(), night, SAMPLE_PLACE.timeZone)
+  const weather = nightWeather(fakeForecast(), night)
   expect(weather.clouds.length).toBe(night.hours)
   expect(weather.clouds[0]).toBe(17)
   expect(weather.clouds[7]).toBe(24)
 })
 
+test('the night the clocks fall back gets one forecast hour per night hour', () => {
+  const fallBack = buildNight(SAMPLE_PLACE, 0, new Date('2026-10-31T20:00:00Z'))
+  const time = Array.from({ length: 48 }, (_, i) => `2026-${i < 24 ? '10-31' : '11-01'}T${String(i % 24).padStart(2, '0')}:00`)
+  const forecast = { utc_offset_seconds: -18000, hourly_units: {}, hourly: { time, cloud_cover: time.map((_, i) => i) } }
+  const clouds = nightWeather(forecast, fallBack).clouds
+  const known = clouds.filter(value => value !== null)
+
+  expect(new Set(known).size).toBe(known.length)
+  expect(known.every((value, i) => i === 0 || value === known[i - 1] + 1)).toBe(true)
+})
+
 test('missing hours become null, and no hours at all gives null', () => {
   const short = fakeForecast()
   short.hourly.time = short.hourly.time.slice(0, 20)
-  expect(nightWeather(short, night, SAMPLE_PLACE.timeZone).clouds.slice(3, 5)).toEqual([null, null])
+  expect(nightWeather(short, night).clouds.slice(3, 5)).toEqual([null, null])
 
   const empty = fakeForecast()
   empty.hourly.time = []
-  expect(nightWeather(empty, night, SAMPLE_PLACE.timeZone)).toBeNull()
+  expect(nightWeather(empty, night)).toBeNull()
 })
 
 test('jet stream speeds come hour by hour in metres per second', () => {
-  const weather = nightWeather(fakeForecast(), night, SAMPLE_PLACE.timeZone)
+  const weather = nightWeather(fakeForecast(), night)
   expect(weather.jets.length).toBe(night.hours)
   expect(weather.jets[0]).toBeCloseTo(8.94, 2)
 })
 
 test('temperature and wind are written plainly', () => {
-  const weather = nightWeather(fakeForecast(), night, SAMPLE_PLACE.timeZone)
+  const weather = nightWeather(fakeForecast(), night)
   expect(weather.temp).toBe('38°F')
   expect(weather.wind).toBe('Light wind, 6 mph')
 })
 
 test('seeing comes from jet stream wind and transparency from humidity', () => {
-  expect(nightWeather(fakeForecast(), night, SAMPLE_PLACE.timeZone)).toMatchObject({ seeing: 4, transparency: 4 })
+  expect(nightWeather(fakeForecast(), night)).toMatchObject({ seeing: 4, transparency: 4 })
 
   const rough = fakeForecast({
     wind_speed_250hPa: Array(48).fill(100),
     relative_humidity_2m: Array(48).fill(90),
     visibility: Array(48).fill(5000),
   })
-  expect(nightWeather(rough, night, SAMPLE_PLACE.timeZone)).toMatchObject({ seeing: 2, transparency: 1 })
+  expect(nightWeather(rough, night)).toMatchObject({ seeing: 2, transparency: 1 })
 })
 
 test('sky words for the night strip', () => {
@@ -102,5 +114,5 @@ test('a forecast full of gaps gives no readings instead of made-up ones', () => 
     visibility: Array(48).fill(null),
     wind_speed_250hPa: Array(48).fill(null),
   })
-  expect(nightWeather(gaps, night, SAMPLE_PLACE.timeZone)).toEqual({ clouds: null, jets: null, temp: null, wind: null, seeing: null, transparency: null })
+  expect(nightWeather(gaps, night)).toEqual({ clouds: null, jets: null, temp: null, wind: null, seeing: null, transparency: null })
 })

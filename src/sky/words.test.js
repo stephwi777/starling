@@ -11,6 +11,12 @@ test('clock uses the place time zone and drops :00', () => {
   expect(clock(new Date('2026-11-14T03:00:00Z'), 'America/Chicago')).toBe('9pm')
 })
 
+test('clock says midnight and noon in words', () => {
+  expect(clock(new Date('2026-11-14T06:00:00Z'), 'America/Chicago')).toBe('midnight')
+  expect(clock(new Date('2026-11-14T18:00:00Z'), 'America/Chicago')).toBe('noon')
+  expect(clock(new Date('2026-11-14T06:30:00Z'), 'America/Chicago')).toBe('12:30am')
+})
+
 test('dayName gives the weekday and date in the place time zone', () => {
   expect(dayName(new Date('2026-11-19T18:00:00Z'), 'America/Chicago')).toBe('Thursday, November 19')
   expect(dayName(new Date('2026-11-19T18:00:00Z'), 'Pacific/Kiritimati')).toBe('Friday, November 20')

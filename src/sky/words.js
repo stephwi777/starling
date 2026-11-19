@@ -1,5 +1,6 @@
 // TIMES
 
+const HOUR = 60 * 60 * 1000
 const formats = new Map()
 
 function format(timeZone, options) {
@@ -16,12 +17,20 @@ function tidy(text) {
   return text.replace(':00', '').replace(' PM', 'pm').replace(' AM', 'am')
 }
 
+const NAMED = { '12am': 'midnight', '12pm': 'noon' }
+
 export function clock(date, timeZone) {
-  return tidy(format(timeZone, { hour: 'numeric', minute: '2-digit' }).format(date))
+  const time = tidy(format(timeZone, { hour: 'numeric', minute: '2-digit' }).format(date))
+
+  return NAMED[time] ?? time
 }
 
 export function dayName(date, timeZone) {
   return format(timeZone, { weekday: 'long', month: 'long', day: 'numeric' }).format(date)
+}
+
+export function aroundHour(date, timeZone) {
+  return clock(new Date(Math.round(date / HOUR) * HOUR), timeZone)
 }
 
 export function shortDay(date, timeZone) {
