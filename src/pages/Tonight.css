@@ -60,14 +60,42 @@
 
 
 
+/* PRESS */
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .tonight-below .card,
+  :root:not(.still) .tonight-below .tile {
+    transition: scale 0.35s cubic-bezier(0.3, 1.3, 0.6, 1);
+  }
+
+  :root:not(.still) .tonight-below .card:active:not(:has(button:active, .see-all:active)) {
+    scale: 0.985;
+    transition-duration: 0.1s;
+  }
+
+  :root:not(.still) .tonight-below .tile:active {
+    scale: 0.96;
+    transition-duration: 0.1s;
+  }
+}
+
+
+
 /* STICKY HEADS */
 
 .tonight-below .card {
-  clip-path: inset(var(--cut, 0px) 0 0 0 round var(--radius-card));
+  --round: var(--radius-card);
 }
 
 .tonight-below .tile {
-  clip-path: inset(var(--cut, 0px) 0 0 0 round var(--radius-tile));
+  --round: var(--radius-tile);
+}
+
+.tonight-below .card,
+.tonight-below .tile {
+  --corner: min(var(--round), var(--half, 999px));
+  border-radius: var(--corner);
+  clip-path: inset(var(--cut, 0px) 0 0 0 round var(--corner));
 }
 
 .tonight-below .card-head,
@@ -78,6 +106,7 @@
   z-index: 1;
   margin-inline: calc(-1 * var(--side, 0px));
   padding-inline: var(--side, 0px);
+  border-radius: 0 0 var(--corner) var(--corner);
   background: var(--high);
   box-shadow: 0 calc(-1 * var(--pad, 0px)) 0 var(--high), 0 calc(-1 * var(--pad, 0px) - 16px) 0 var(--high);
 }
@@ -449,12 +478,14 @@
 
   .moon-tile {
     grid-template-columns: 1fr;
+    text-align: center;
   }
 
   .moon-tile .phase-moon {
     grid-column: auto;
     grid-row: auto;
     align-self: start;
+    justify-self: center;
   }
 
   .nights li {

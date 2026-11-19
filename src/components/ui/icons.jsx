@@ -3,6 +3,12 @@ import { SHAPES, shapePath } from './constellationShapes.js'
 
 
 
+// SHAPES
+
+const TWINKLE = 'M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z'
+
+
+
 // FRAME
 
 function Icon({ children }) {
@@ -104,7 +110,7 @@ export function NightsIcon() {
 }
 
 export function SparkleIcon() {
-  return <Icon><path d="M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z" fill="var(--beak)" /></Icon>
+  return <Icon><path d={TWINKLE} fill="var(--beak)" /></Icon>
 }
 
 export function SaturnIcon() {
@@ -141,56 +147,108 @@ export function GalaxyIcon() {
 
 // HOUR ICONS
 
-export function SunsetIcon() {
+const DOWN = 'M0 -10 V-2 M-3 -5 L0 -2 L3 -5'
+const UP = 'M0 -2 V-10 M-3 -7 L0 -10 L3 -7'
+const TUCKED_DOWN = 'M4 -7 V1 M1.5 -1.5 L4 1 L6.5 -1.5'
+const TUCKED_UP = 'M4 1 V-7 M1.5 -4.5 L4 -7 L6.5 -4.5'
+const CRESCENT = 'M0 -10 A10 10 0 1 0 8 6 A8 8 0 1 1 0 -10 Z'
+const RAYS = [-155, -118, -62, -25]
+
+function Horizon({ arrow, children }) {
   return (
     <Icon>
       <path d="M-11 6 H11" stroke="var(--mist)" strokeWidth="2" strokeLinecap="round" />
-      <path d="M-7 6 A7 7 0 0 1 7 6 Z" fill="var(--bronze)" />
+      {children}
+      {arrow && <path d={arrow} stroke="var(--mist)" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />}
     </Icon>
   )
+}
+
+function Cloud({ fill }) {
+  return (
+    <g fill={fill}>
+      <circle cx="-5.5" cy="2.5" r="4.5" />
+      <circle cx="0.5" cy="-1" r="6.5" />
+      <circle cx="5.5" cy="2.5" r="4.5" />
+      <rect x="-5.5" y="2.5" width="11" height="4.5" />
+    </g>
+  )
+}
+
+function Twinkles({ fill }) {
+  return (
+    <g fill={fill}>
+      <path d={TWINKLE} transform="translate(-3 -2) scale(0.6)" />
+      <path d={TWINKLE} transform="translate(7 -7) scale(0.32)" />
+      <path d={TWINKLE} transform="translate(6 6) scale(0.38)" />
+    </g>
+  )
+}
+
+function Sun({ color }) {
+  return (
+    <>
+      <g stroke={color} strokeWidth="1.6" strokeLinecap="round">
+        {RAYS.map(angle => {
+          const a = (angle * Math.PI) / 180
+
+          return <path key={angle} d={`M${8.6 * Math.cos(a)} ${6 + 8.6 * Math.sin(a)} L${11 * Math.cos(a)} ${6 + 11 * Math.sin(a)}`} />
+        })}
+      </g>
+      <path d="M-7 6 A7 7 0 0 1 7 6 Z" fill={color} />
+    </>
+  )
+}
+
+function Crescent() {
+  return <path d={CRESCENT} fill="var(--moon)" transform="translate(-2 -1) scale(0.62)" />
+}
+
+export function SunsetIcon() {
+  return <Horizon arrow={DOWN}><Sun color="var(--bronze)" /></Horizon>
+}
+
+export function SunriseIcon() {
+  return <Horizon arrow={UP}><Sun color="var(--beak)" /></Horizon>
+}
+
+export function MoonsetIcon() {
+  return <Horizon arrow={TUCKED_DOWN}><Crescent /></Horizon>
+}
+
+export function MoonriseIcon() {
+  return <Horizon arrow={TUCKED_UP}><Crescent /></Horizon>
 }
 
 export function TwilightIcon() {
   return (
     <Icon>
-      <circle r="8" fill="var(--snow-shade)" opacity="0.5" />
-      <path d="M-2 -8 A8 8 0 1 0 8 3 A6.5 6.5 0 1 1 -2 -8 Z" fill="var(--snow)" />
+      <path d="M-6.5 -1 A6.5 6.5 0 0 0 6.5 -1 Z" fill="var(--snow-shade)" opacity="0.85" />
+      <path d="M-11 -1 H11" stroke="var(--mist)" strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M-5 9 H5" stroke="var(--mist)" strokeWidth="2.2" strokeLinecap="round" opacity="0.7" />
     </Icon>
   )
 }
 
 export function ClearIcon() {
-  return (
-    <Icon>
-      <circle cx="-5" cy="-4" r="1.8" fill="var(--frost)" />
-      <circle cx="4" cy="-7" r="1.3" fill="var(--frost)" />
-      <circle cx="6" cy="4" r="2" fill="var(--frost)" />
-      <circle cx="-4" cy="6" r="1.2" fill="var(--frost)" />
-    </Icon>
-  )
+  return <Icon><Twinkles fill="var(--frost)" /></Icon>
 }
 
-export function MoonsetIcon() {
+export function DarkIcon() {
+  return <Icon><Twinkles fill="var(--mist)" /></Icon>
+}
+
+export function PatchyIcon() {
   return (
     <Icon>
-      <path d="M-11 6 H11" stroke="var(--mist)" strokeWidth="2" strokeLinecap="round" />
-      <path d="M-6 6 A6 6 0 0 1 6 6 Z" fill="var(--moon)" />
-      <path d="M0 -10 V-2 M-3 -5 L0 -2 L3 -5" stroke="var(--mist)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+      <path d={TWINKLE} fill="var(--frost)" transform="translate(-6 -6) scale(0.42)" />
+      <g transform="translate(2.5 2.5) scale(0.75)"><Cloud fill="var(--frost)" /></g>
     </Icon>
   )
 }
 
 export function CloudIcon() {
-  return <Icon><path d="M-9 6 Q-12 0 -6 -1 Q-5 -8 2 -7 Q8 -7 8 -1 Q12 0 10 6 Z" fill="var(--mist)" /></Icon>
-}
-
-export function DawnIcon() {
-  return (
-    <Icon>
-      <path d="M-11 6 H11" stroke="var(--mist)" strokeWidth="2" strokeLinecap="round" />
-      <path d="M-7 6 A7 7 0 0 1 7 6 Z" fill="var(--snow)" opacity="0.7" />
-    </Icon>
-  )
+  return <Icon><Cloud fill="var(--frost)" /></Icon>
 }
 
 

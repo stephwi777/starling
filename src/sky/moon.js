@@ -11,7 +11,7 @@ const DAY = 24 * 60 * 60 * 1000
 
 // TIMING
 
-function crossings(moon, night) {
+export function moonCrossings(moon, night) {
   const from = night.sunset ?? night.start
   const to = night.sunrise ?? night.end
   const steps = night.times.flatMap((time, i) => (time >= from && time <= to ? [{ time, up: moon.track[i].alt > 0 }] : []))
@@ -27,7 +27,7 @@ function crossings(moon, night) {
 }
 
 export function moonTiming(moon, night, timeZone) {
-  const { upAtSunset, rise, set } = crossings(moon, night)
+  const { upAtSunset, rise, set } = moonCrossings(moon, night)
 
   if (upAtSunset) return set === null ? 'Up all night' : `Sets at ${clock(set, timeZone)}`
   if (rise === null) return 'Not up tonight'

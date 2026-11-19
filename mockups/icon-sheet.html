@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling icon sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .sheet > p {
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet section {
+      margin-top: 40px;
+    }
+
+    .sheet h2 {
+      font-size: 1.5rem;
+    }
+
+
+
+    /* ICONS */
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .item {
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+      padding: 18px 14px;
+      border-radius: var(--radius-tile);
+      background: var(--high);
+      text-align: center;
+    }
+
+    .sizes {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      min-height: 72px;
+    }
+
+    .big svg {
+      width: 64px;
+      height: 64px;
+    }
+
+    .actual svg {
+      width: var(--size);
+      height: var(--size);
+    }
+
+    .item strong {
+      font-weight: 800;
+    }
+
+    .item small {
+      color: var(--mist);
+      font-size: 0.85rem;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./icon-sheet.jsx"></script>
+</body>
+</html>

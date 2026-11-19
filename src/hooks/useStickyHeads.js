@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react'
 // SETTINGS
 
 const GAP = 12
+const BAR = 44
 
 
 
@@ -29,12 +30,23 @@ function update(container) {
 
   container.querySelectorAll('.card, .tile').forEach(section => {
     const head = section.querySelector(':scope > .card-head, :scope > h2')
+
+    section.style.translate = 'none'
+    head.style.translate = 'none'
+
     const box = section.getBoundingClientRect()
+    const natural = head.getBoundingClientRect().top
     const pad = parseFloat(getComputedStyle(section).paddingTop)
+    const below = parseFloat(getComputedStyle(head).paddingBottom)
     const tall = head.offsetHeight
-    const cut = clamp(line - box.top, 0, box.height)
-    const room = box.bottom - line - 2 * pad - tall
-    const leave = clamp((room + tall) / tall, 0, 1)
+    const full = 2 * pad + tall
+    const showing = box.bottom - line
+    const hold = clamp(BAR - showing, 0, BAR)
+    const cut = clamp(line - box.top - hold, 0, box.height)
+    const leave = 1 - hold / BAR
+    const shrink = clamp((full - showing) / (full - BAR), 0, 1)
+    const parked = line + (BAR - (tall - below)) / 2
+    const lower = shrink > 0 ? line + pad + (parked - line - pad) * shrink - natural - hold : 0
     let appear = 1
 
     if (head.hasAttribute('data-appear')) {
@@ -46,18 +58,12 @@ function update(container) {
       appear = clamp((cut - swap) / (reach - swap), 0, 1)
     }
 
-    const below = parseFloat(getComputedStyle(head).paddingBottom)
-
-    head.style.translate = 'none'
-
-    const natural = head.getBoundingClientRect().top
-    const centred = line + (box.bottom - line - (tall - below)) / 2
-    const lower = room >= 0 ? (below / 2) * (1 - clamp(room / tall, 0, 1)) : centred - natural
-
     section.style.setProperty('--cut', `${cut}px`)
     section.style.setProperty('--pad', `${pad}px`)
+    section.style.setProperty('--half', `${Math.min(showing + hold, box.height) / 2}px`)
     section.style.setProperty('--side', getComputedStyle(section).paddingLeft)
     section.style.opacity = leave
+    section.style.translate = `0 ${hold}px`
     head.style.opacity = appear
     head.style.translate = `0 ${lower}px`
     if (cut > 0) stuck = true

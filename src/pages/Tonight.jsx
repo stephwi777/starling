@@ -1,4 +1,5 @@
 import { usePlace } from '../place/usePlace.js'
+import { useForecast } from '../sky/useForecast.js'
 import { useNight } from '../sky/useNight.js'
 import { useNow } from '../sky/useNow.js'
 import useStickyHeads from '../hooks/useStickyHeads.js'
@@ -9,6 +10,12 @@ import TonightTiles from '../components/tonight/TonightTiles.jsx'
 import NightsCard from '../components/tonight/NightsCard.jsx'
 import UpTonightCard from '../components/tonight/UpTonightCard.jsx'
 import './Tonight.css'
+
+
+
+// TIMING
+
+const HOUR = 60 * 60 * 1000
 
 
 
@@ -23,7 +30,8 @@ const LOOK = nightLook({ moonAngle: phaseAngle(0.53), moonLit: 0.53 })
 function Tonight() {
   const { place } = usePlace()
   const now = useNow()
-  const sky = useNight(place, 0, null, now)
+  const forecast = useForecast(place, Math.floor(now.getTime() / HOUR))
+  const sky = useNight(place, 0, forecast.raw, now)
   const below = useStickyHeads()
 
   return (
@@ -46,7 +54,7 @@ function Tonight() {
       {/* BELOW */}
 
       <div className="tonight-below" ref={below}>
-        <HoursCard />
+        <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} />
         <TonightTiles sky={sky} place={place} />
 
         <div className="tonight-cards">
