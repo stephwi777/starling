@@ -2,9 +2,15 @@ import { SHOWERS } from './catalog/showers.js'
 
 
 
-// DATES
+// SETTINGS
+
+export const GOOD_SHOWER = 8
 
 const DAY = 24 * 60 * 60 * 1000
+
+
+
+// DATES
 
 function monthDay(text) {
   const [month, day] = text.split('-').map(Number)

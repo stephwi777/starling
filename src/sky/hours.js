@@ -1,6 +1,6 @@
 import { STEP } from './night.js'
 import { moonCrossings } from './moon.js'
-import { meteorRate } from './meteors.js'
+import { GOOD_SHOWER, meteorRate } from './meteors.js'
 import { clock } from './words.js'
 
 
@@ -9,7 +9,6 @@ import { clock } from './words.js'
 
 const HOUR = 60 * 60 * 1000
 const PER_HOUR = HOUR / STEP
-const GOOD_SHOWER = 8
 
 
 
@@ -77,7 +76,7 @@ function whileDark(time, night) {
   return time && (!end || time < end) ? time : null
 }
 
-function showerName(shower) {
+export function showerName(shower) {
   return `${shower.name.replace(/s$/, '')} meteors`
 }
 

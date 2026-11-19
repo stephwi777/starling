@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling nights card sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .sheet > p {
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet section {
+      margin-top: 36px;
+    }
+
+    .sheet h2 {
+      font-size: 1.4rem;
+    }
+
+
+
+    /* CASES */
+
+    .cases {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(520px, 100%), 1fr));
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .case {
+      display: grid;
+      gap: 10px;
+    }
+
+    .case > strong {
+      font-weight: 800;
+    }
+
+    .case .card {
+      max-width: 560px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./nights-sheet.jsx"></script>
+</body>
+</html>

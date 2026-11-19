@@ -24,6 +24,10 @@ export function dayName(date, timeZone) {
   return format(timeZone, { weekday: 'long', month: 'long', day: 'numeric' }).format(date)
 }
 
+export function shortDay(date, timeZone) {
+  return format(timeZone, { weekday: 'short' }).format(date)
+}
+
 export function hourLabel(date, timeZone) {
   return tidy(format(timeZone, { hour: 'numeric' }).format(date))
 }

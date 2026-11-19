@@ -58,6 +58,12 @@ test('missing hours become null, and no hours at all gives null', () => {
   expect(nightWeather(empty, night, SAMPLE_PLACE.timeZone)).toBeNull()
 })
 
+test('jet stream speeds come hour by hour in metres per second', () => {
+  const weather = nightWeather(fakeForecast(), night, SAMPLE_PLACE.timeZone)
+  expect(weather.jets.length).toBe(night.hours)
+  expect(weather.jets[0]).toBeCloseTo(8.94, 2)
+})
+
 test('temperature and wind are written plainly', () => {
   const weather = nightWeather(fakeForecast(), night, SAMPLE_PLACE.timeZone)
   expect(weather.temp).toBe('38°F')
@@ -96,5 +102,5 @@ test('a forecast full of gaps gives no readings instead of made-up ones', () => 
     visibility: Array(48).fill(null),
     wind_speed_250hPa: Array(48).fill(null),
   })
-  expect(nightWeather(gaps, night, SAMPLE_PLACE.timeZone)).toEqual({ clouds: null, temp: null, wind: null, seeing: null, transparency: null })
+  expect(nightWeather(gaps, night, SAMPLE_PLACE.timeZone)).toEqual({ clouds: null, jets: null, temp: null, wind: null, seeing: null, transparency: null })
 })

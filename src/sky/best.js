@@ -36,12 +36,18 @@ export function bestWindow(night, clouds) {
 
 // VERDICT
 
-function windowTimes(night, best, timeZone) {
+export function windowEdges(night, best) {
   const last = night.times.length - 1
   const atDusk = best.from === 0 || night.sun[best.from - 1] >= -18
   const atDawn = best.to === last || night.sun[best.to + 1] >= -18
-  const from = atDusk ? night.astroDusk : night.times[best.from]
-  const to = atDawn ? night.astroDawn : night.times[best.to + 1]
+  const from = atDusk ? night.astroDusk ?? night.times[best.from] : night.times[best.from]
+  const to = atDawn ? night.astroDawn ?? night.times[best.to] : night.times[best.to + 1]
+
+  return { from, to, atDusk, atDawn }
+}
+
+function windowTimes(night, best, timeZone) {
+  const { from, to, atDusk, atDawn } = windowEdges(night, best)
 
   return { from: clock(from, timeZone), to: clock(to, timeZone), atDusk, atDawn }
 }

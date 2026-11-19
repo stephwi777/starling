@@ -63,8 +63,12 @@ function windWords(speed, unit) {
   return `${word}, ${Math.round(speed)} ${unit === 'mp/h' ? 'mph' : 'km/h'}`
 }
 
+function perSecond(speed, unit) {
+  return unit === 'mp/h' ? speed / 2.237 : speed / 3.6
+}
+
 function seeingScore(jet, unit) {
-  const metres = unit === 'mp/h' ? jet / 2.237 : jet / 3.6
+  const metres = perSecond(jet, unit)
 
   if (metres < 20) return 4
   if (metres < 35) return 3
@@ -103,12 +107,14 @@ export function nightWeather(raw, night, timeZone) {
   const clouds = pick('cloud_cover')
   const temp = hourly.temperature_2m?.[evening] ?? null
   const wind = hourly.wind_speed_10m?.[evening] ?? null
+  const jets = pick('wind_speed_250hPa').map(speed => (speed === null ? null : perSecond(speed, units.wind_speed_10m)))
   const jet = average(pick('wind_speed_250hPa'))
   const humidity = average(pick('relative_humidity_2m'))
   const visibility = average(pick('visibility'))
 
   return {
     clouds: clouds.some(value => value !== null) ? clouds : null,
+    jets: jets.some(value => value !== null) ? jets : null,
     temp: temp === null ? null : `${Math.round(temp)}${units.temperature_2m}`,
     wind: wind === null ? null : windWords(wind, units.wind_speed_10m),
     seeing: jet === null ? null : seeingScore(jet, units.wind_speed_10m),

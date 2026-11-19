@@ -58,8 +58,8 @@ function Tonight() {
         <TonightTiles sky={sky} place={place} status={forecast.status} />
 
         <div className="tonight-cards">
-          <NightsCard />
-          <UpTonightCard />
+          <NightsCard place={place} forecast={forecast} now={now} />
+          <UpTonightCard sky={sky} place={place} />
         </div>
 
         <div className="veil" aria-hidden="true" />

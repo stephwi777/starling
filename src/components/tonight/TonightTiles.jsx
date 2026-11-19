@@ -1,5 +1,6 @@
 import { cloudBars, cloudWords } from '../../sky/clouds.js'
 import { darkNow, darknessWords } from '../../sky/darkness.js'
+import { seeingWords } from '../../sky/seeing.js'
 import { moonTiming, nextFull } from '../../sky/moon.js'
 import { PhaseMoon } from '../ui/icons.jsx'
 
@@ -111,11 +112,29 @@ export function DarknessTile({ sky, place }) {
 
 // SEEING DOTS
 
-function SeeingDots() {
+function SeeingDots({ score }) {
   return (
-    <svg viewBox="0 0 160 30" width="100%" height="30" aria-hidden="true">
-      {[0, 1, 2, 3, 4].map(i => <circle key={i} cx={12 + i * 32} cy="15" r="9" fill={i < 3 ? 'var(--teal)' : 'var(--raised)'} />)}
+    <svg viewBox="0 0 160 30" width="100%" height="30" aria-hidden="true" opacity={score ? 1 : 0.5}>
+      {[0, 1, 2, 3, 4].map(i => <circle key={i} cx={12 + i * 32} cy="15" r="9" fill={i < score ? 'var(--teal)' : 'var(--raised)'} />)}
     </svg>
+  )
+}
+
+
+
+// SEEING TILE
+
+export function SeeingTile({ sky, place, status }) {
+  const words = seeingWords({ night: sky.night, jets: sky.weather?.jets ?? null, status, timeZone: place.timeZone })
+
+  return (
+    <section className="tile still" aria-labelledby="tile-seeing">
+      <h2 id="tile-seeing">Seeing</h2>
+      <SeeingDots score={words.score} />
+      <strong>{words.value}</strong>
+      <p>{words.line}</p>
+      {words.best && <p>{words.best}</p>}
+    </section>
   )
 }
 
@@ -150,12 +169,7 @@ function TonightTiles({ sky, place, status }) {
 
       <CloudsTile sky={sky} place={place} status={status} />
 
-      <section className="tile" aria-labelledby="tile-seeing">
-        <h2 id="tile-seeing">Seeing</h2>
-        <SeeingDots />
-        <strong>Average</strong>
-        <p>Stars will twinkle a little.</p>
-      </section>
+      <SeeingTile sky={sky} place={place} status={status} />
     </div>
   )
 }

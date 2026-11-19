@@ -1,27 +1,26 @@
+import { useMemo } from 'react'
 import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
-import { phaseAngle } from '../../sky/skyLook.js'
+import { sevenNights } from '../../sky/nights.js'
 import { NightsIcon, PhaseMoon } from '../ui/icons.jsx'
 
 
 
-// NIGHTS
+// NOTES
 
-const NIGHTS = [
-  { day: 'Tonight', lit: 0.53, from: 0.11, to: 0.57, words: '6:36pm–1am' },
-  { day: 'Wed', lit: 0.63, from: 0.11, to: 0.86, words: '6:36pm–5am' },
-  { day: 'Thu', lit: 0.72, from: 0.42, to: 0.86, words: '10pm–5am' },
-  { day: 'Fri', lit: 0.81, from: null, to: null, words: 'Cloudy all night' },
-  { day: 'Sat', lit: 0.89, from: 0.64, to: 0.86, words: '2am–5am' },
-  { day: 'Sun', lit: 0.95, from: 0.11, to: 0.86, words: '6:37pm–5am' },
-  { day: 'Mon', lit: 0.99, from: 0.11, to: 0.86, words: '6:37pm–5am' },
-]
+const NOTES = {
+  loading: 'Checking the cloud forecast…',
+  failed: 'The forecast isn’t available, so the bars show dark hours only.',
+}
 
 
 
 // NIGHTS CARD
 
-function NightsCard() {
+function NightsCard({ place, forecast, now }) {
+  const nights = useMemo(() => sevenNights(place, forecast.raw, now), [place, forecast.raw, now])
+  const note = forecast.raw ? null : NOTES[forecast.status]
+
   return (
     <Card labelledBy="nights-title">
       <div className="card-head">
@@ -30,24 +29,24 @@ function NightsCard() {
       </div>
 
       <ul className="nights">
-        {NIGHTS.map(night => (
-          <li key={night.day}>
+        {nights.map(night => (
+          <li key={night.key}>
             <strong>{night.day}</strong>
-            <PhaseMoon angle={phaseAngle(night.lit)} size={24} />
-            {night.from === null ? (
-              <span className="night-none">No clear hours</span>
+            <PhaseMoon angle={night.moonAngle} size={24} south={place.latitude < 0} />
+            <span className="visually-hidden">Moon {Math.round(night.moonLit * 100)}% lit.</span>
+            {night.label ? (
+              <span className="night-none">{night.label}</span>
             ) : (
               <span className="night-track" aria-hidden="true">
-                <i
-                  className={night.to - night.from < 0.3 ? 'short' : undefined}
-                  style={{ left: `${night.from * 100}%`, width: `${(night.to - night.from) * 100}%` }}
-                />
+                <i className={night.kind} style={{ left: `${night.left * 100}%`, width: `${night.width * 100}%` }} />
               </span>
             )}
             <span className="night-span">{night.words}</span>
           </li>
         ))}
       </ul>
+
+      {note && <p className="card-note">{note}</p>}
     </Card>
   )
 }
