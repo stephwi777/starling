@@ -1,3 +1,4 @@
+import { Link } from 'react-router'
 import { cloudBars, cloudWords } from '../../sky/clouds.js'
 import { darkNow, darknessWords } from '../../sky/darkness.js'
 import { seeingWords } from '../../sky/seeing.js'
@@ -142,12 +143,12 @@ export function SeeingTile({ sky, place, status }) {
 
 // MOON TILE
 
-function MoonTile({ sky, place }) {
+function MoonTile({ sky, place, moonLink }) {
   const { night, moon } = sky
 
   return (
-    <section className="tile still moon-tile" aria-labelledby="tile-moon">
-      <h2 id="tile-moon">Moon</h2>
+    <section className="tile moon-tile" aria-labelledby="tile-moon">
+      <h2 id="tile-moon"><Link ref={moonLink} to="moon" state={{ fromTonight: true }}>Moon</Link></h2>
       <PhaseMoon angle={night.moonAngle} size={64} south={place.latitude < 0} />
       <strong>{Math.round(night.moonLit * 100)}% lit</strong>
       <p>{moonTiming(moon, night, place.timeZone)}</p>
@@ -160,10 +161,10 @@ function MoonTile({ sky, place }) {
 
 // TILES
 
-function TonightTiles({ sky, place, status }) {
+function TonightTiles({ sky, place, status, moonLink }) {
   return (
     <div className="tiles">
-      <MoonTile sky={sky} place={place} />
+      <MoonTile sky={sky} place={place} moonLink={moonLink} />
 
       <DarknessTile sky={sky} place={place} />
 

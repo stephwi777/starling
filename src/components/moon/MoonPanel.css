@@ -1,0 +1,323 @@
+/* PANEL */
+
+.moon-panel {
+  width: min(420px, 100vw - 32px);
+  max-height: calc(100dvh - 32px);
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--high);
+  color: var(--frost);
+}
+
+.moon-panel::backdrop {
+  background: color-mix(in srgb, var(--zenith) 75%, transparent);
+}
+
+.moon-panel button:focus-visible,
+.moon-panel .moon-days button:focus-visible,
+.moon-panel [tabindex]:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}
+
+
+
+/* HEAD */
+
+.moon-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 0;
+}
+
+.moon-head h2 {
+  font-size: 1.25rem;
+}
+
+.moon-close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: var(--radius-button);
+  background: var(--raised);
+  color: var(--mist);
+}
+
+.moon-close:hover {
+  color: var(--frost);
+}
+
+
+
+/* MOON */
+
+.moon-art {
+  display: grid;
+  place-items: center;
+  padding: 6px 0 4px;
+}
+
+.moon-title {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 14px 14px;
+  text-align: center;
+}
+
+.moon-phase {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-variation-settings: 'SOFT' 100;
+  font-weight: 600;
+}
+
+.moon-night {
+  margin-top: 2px;
+  color: var(--mist);
+  font-weight: 800;
+}
+
+.moon-night.tonight {
+  color: var(--teal);
+}
+
+.moon-home {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--teal);
+}
+
+.moon-home:hover {
+  color: var(--frost);
+}
+
+.moon-home.away {
+  visibility: hidden;
+}
+
+
+
+/* RULER */
+
+.moon-ruler {
+  position: relative;
+  height: 90px;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.moon-ruler.dragging {
+  cursor: grabbing;
+}
+
+.moon-pointer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.moon-pointer span {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--beak);
+  color: var(--ink);
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.moon-pointer i {
+  width: 14px;
+  height: 9px;
+  margin-top: 1px;
+  background: var(--beak);
+  clip-path: path('M0 0 H14 L8.4 7.6 Q7 9.2 5.6 7.6 Z');
+}
+
+.moon-track {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+
+.moon-strip {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  overflow: visible;
+}
+
+.moon-strip text {
+  fill: var(--mist);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.moon-strip text.tonight {
+  fill: var(--teal);
+  font-weight: 900;
+}
+
+
+
+/* ROWS */
+
+.moon-rows {
+  padding: 4px 20px 6px;
+}
+
+.moon-rows div {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  font-weight: 700;
+}
+
+.moon-rows div + div {
+  border-top: 2px solid var(--raised);
+}
+
+.moon-rows dd {
+  color: var(--mist);
+}
+
+
+
+/* CALENDAR */
+
+.moon-calendar-head {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  padding: 14px 16px 4px;
+}
+
+.moon-calendar-head strong {
+  font-size: 1.05rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.moon-month {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--raised);
+  color: var(--mist);
+}
+
+.moon-month[aria-disabled="true"] {
+  opacity: 0.35;
+}
+
+.moon-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 0 16px;
+  padding: 8px 0 6px;
+  border-bottom: 2px solid var(--raised);
+  color: var(--mist);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.moon-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  padding: 8px 16px 18px;
+}
+
+.moon-days button {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  min-height: 44px;
+  padding: 5px 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--mist);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.moon-days button.tonight {
+  color: var(--teal);
+  font-weight: 900;
+}
+
+.moon-days button[aria-current] {
+  background: var(--raised);
+  outline: 2px solid var(--beak);
+}
+
+
+
+/* NOTE */
+
+.moon-note {
+  margin: 0 16px 18px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: var(--raised);
+  color: var(--mist);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.moon-note strong {
+  color: var(--frost);
+}
+
+
+
+/* PHONES */
+
+@media (max-width: 700px) {
+  .moon-panel {
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .moon-panel[open] {
+    animation: moon-sheet 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+}
+
+@keyframes moon-sheet {
+  from {
+    translate: 0 100%;
+  }
+}

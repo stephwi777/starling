@@ -42,6 +42,13 @@ test('the Moon is a thin crescent', () => {
   expect(night.moonAngle).toBeLessThan(90)
 })
 
+test('tonight’s Moon is measured at local midnight', () => {
+  const night = buildNight(SAMPLE_PLACE, 0, new Date('2026-11-19T21:00:00Z'))
+
+  expect(night.midnight.toISOString()).toBe('2026-11-20T06:00:00.000Z')
+  expect(Math.round(night.moonLit * 100)).toBe(77)
+})
+
 test('2am still belongs to the night that began the evening before', () => {
   const night = buildNight(SAMPLE_PLACE, 0, new Date('2026-11-14T08:00:00Z'))
   expect(night.start.toISOString()).toBe('2026-11-13T23:00:00.000Z')

@@ -333,8 +333,30 @@
 }
 
 .moon-tile {
+  position: relative;
   grid-template-columns: 1fr auto;
   column-gap: 16px;
+}
+
+.moon-tile h2 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.moon-tile h2 a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.moon-tile h2 a:focus-visible {
+  outline: none;
+}
+
+.moon-tile:has(a:focus-visible) {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
 }
 
 .moon-tile h2 {

@@ -7,10 +7,11 @@ import { useLocation } from 'react-router'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
+  const section = pathname.split('/')[1]
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' })
-  }, [pathname])
+  }, [section])
 
   return null
 }

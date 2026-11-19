@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+import { Outlet, useMatch } from 'react-router'
 import { usePlace } from '../place/usePlace.js'
 import { useForecast } from '../sky/useForecast.js'
 import { useNight } from '../sky/useNight.js'
@@ -28,11 +30,13 @@ function Tonight() {
   const forecast = useForecast(place, Math.floor(now.getTime() / HOUR))
   const sky = useNight(place, 0, forecast.raw, now)
   const below = useStickyHeads()
+  const moonLink = useRef(null)
+  const moonOpen = useMatch('/tonight/moon')
   const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
   return (
     <main className="tonight">
-      <title>Tonight | Starling</title>
+      <title>{moonOpen ? 'Moon | Starling' : 'Tonight | Starling'}</title>
 
 
 
@@ -55,7 +59,7 @@ function Tonight() {
 
       <div className="tonight-below" ref={below}>
         <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} />
-        <TonightTiles sky={sky} place={place} status={forecast.status} />
+        <TonightTiles sky={sky} place={place} status={forecast.status} moonLink={moonLink} />
 
         <div className="tonight-cards">
           <NightsCard place={place} forecast={forecast} now={now} />
@@ -64,6 +68,12 @@ function Tonight() {
 
         <div className="veil" aria-hidden="true" />
       </div>
+
+
+
+      {/* PANELS */}
+
+      <Outlet context={{ place, now, moonLink }} />
     </main>
   )
 }

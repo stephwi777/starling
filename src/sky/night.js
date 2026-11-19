@@ -37,7 +37,7 @@ function localParts(date, timeZone) {
   return { year: value('year'), month: value('month'), day: value('day'), hour: value('hour'), minute: value('minute') }
 }
 
-function localNoon(year, month, day, timeZone) {
+export function localNoon(year, month, day, timeZone) {
   const guess = Date.UTC(year, month - 1, day, 12)
   const shown = localParts(new Date(guess), timeZone)
   const offset = Date.UTC(shown.year, shown.month - 1, shown.day, shown.hour, shown.minute) - guess
@@ -106,12 +106,13 @@ export function buildNight(place, index, now) {
   }
 
   const twilight = (direction, altitude) => search(Astronomy.SearchAltitude('Sun', observer, direction, sunset ?? noon, 1, altitude))
-  const middle = new Date(start.getTime() + 4 * HOUR)
+  const midnight = new Date(noon.getTime() + 12 * HOUR)
 
   return {
     index,
     observer,
     noon,
+    midnight,
     start,
     end,
     times,
@@ -125,8 +126,8 @@ export function buildNight(place, index, now) {
     astroDawn: twilight(1, -18),
     nauticalDawn: twilight(1, -12),
     civilDawn: twilight(1, -6),
-    moonAngle: Astronomy.MoonPhase(middle),
-    moonLit: Astronomy.Illumination('Moon', middle).phase_fraction,
+    moonAngle: Astronomy.MoonPhase(midnight),
+    moonLit: Astronomy.Illumination('Moon', midnight).phase_fraction,
   }
 }
 
@@ -145,7 +146,7 @@ export function upcomingNights(place, now, count) {
       index,
       noon,
       date: date.format(noon),
-      moonAngle: Astronomy.MoonPhase(new Date(noon.getTime() + 9 * HOUR)),
+      moonAngle: Astronomy.MoonPhase(new Date(noon.getTime() + 12 * HOUR)),
     }
   })
 }
