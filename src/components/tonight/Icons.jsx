@@ -4,7 +4,7 @@ import './Icons.css'
 
 // MOON
 
-export function MoonShape({ angle, r = 10 }) {
+export function MoonShape({ angle, r = 10, shadow = 'var(--moon-dark)' }) {
   const lit = (1 - Math.cos((angle * Math.PI) / 180)) / 2
   const waxing = angle < 180
   const rx = r * Math.abs(1 - 2 * lit)
@@ -13,7 +13,7 @@ export function MoonShape({ angle, r = 10 }) {
 
   return (
     <>
-      <circle r={r} fill="var(--moon-dark)" />
+      <circle r={r} fill={shadow} />
       <path d={`M0 ${-r} A${r} ${r} 0 0 ${outer} 0 ${r} A${rx} ${r} 0 0 ${inner} 0 ${-r} Z`} fill="var(--moon)" />
     </>
   )

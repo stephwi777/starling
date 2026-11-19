@@ -1,6 +1,7 @@
 // TIMES
 
-const HOUR = 60 * 60 * 1000
+const MINUTE = 60 * 1000
+const HOUR = 60 * MINUTE
 const formats = new Map()
 
 function format(timeZone, options) {
@@ -20,7 +21,8 @@ function tidy(text) {
 const NAMED = { '12am': 'midnight', '12pm': 'noon' }
 
 export function clock(date, timeZone) {
-  const time = tidy(format(timeZone, { hour: 'numeric', minute: '2-digit' }).format(date))
+  const nearest = new Date(Math.round(date / MINUTE) * MINUTE)
+  const time = tidy(format(timeZone, { hour: 'numeric', minute: '2-digit' }).format(nearest))
 
   return NAMED[time] ?? time
 }

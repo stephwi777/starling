@@ -103,8 +103,10 @@ export function ClockIcon() {
 export function NightsIcon() {
   return (
     <Icon>
-      <rect x="-10" y="-8" width="20" height="18" rx="4" fill="var(--snow)" />
-      <rect x="-10" y="-8" width="20" height="6" rx="3" fill="var(--teal)" />
+      <rect x="-10" y="-8" width="20" height="19" rx="4" fill="var(--snow)" />
+      <path d="M-10 -1.5 V-4 A4 4 0 0 1 -6 -8 H6 A4 4 0 0 1 10 -4 V-1.5 Z" fill="var(--teal)" />
+      <path d="M-5 -11 V-5.5 M5 -11 V-5.5" stroke="var(--frost)" strokeWidth="2.6" strokeLinecap="round" />
+      <path d={CRESCENT} fill="var(--ink)" transform="translate(1.1 4.4) scale(0.42)" />
     </Icon>
   )
 }
@@ -260,7 +262,7 @@ export function PhaseMoon({ angle, size, south }) {
     <svg className="phase-moon" viewBox="-60 -60 120 120" width={size} height={size} aria-hidden="true">
       <circle r="70" fill="var(--moon)" opacity="0.08" />
       <g transform={south ? 'scale(-1 1)' : undefined}>
-        <MoonShape angle={angle} r={56} />
+        <MoonShape angle={angle} r={56} shadow="var(--moon-shadow)" />
       </g>
     </svg>
   )

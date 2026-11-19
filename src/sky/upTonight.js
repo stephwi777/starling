@@ -25,7 +25,7 @@ function needsDark(object) {
 }
 
 function objectNote(object, night, timeZone) {
-  const note = `${spot(object.track[object.bestIndex])} around ${aroundHour(night.times[object.bestIndex], timeZone)}`
+  const note = `${spot(object.track[object.bestIndex])} at ${aroundHour(night.times[object.bestIndex], timeZone)}`
 
   return needsDark(object) ? `${note}. Needs a dark sky.` : note
 }
@@ -71,7 +71,7 @@ export function upTonight({ night, moon, planets, showers, deep, shapes, stars }
     key: shower.name,
     name: showerName(shower),
     object: shower,
-    note: `About ${peak.rate} an hour around ${aroundHour(night.times[peak.index], timeZone)}`,
+    note: `About ${peak.rate} an hour at ${aroundHour(night.times[peak.index], timeZone)}`,
     gear: null,
   }))
 

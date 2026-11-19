@@ -71,6 +71,14 @@ test('a moment seconds after the hour replaces that hour instead of doubling it'
   expect(sevens[0]).toMatchObject({ moment: true, word: 'Fully dark' })
 })
 
+test('a moment seconds before the hour also replaces that hour', () => {
+  const night = { ...NIGHT, astroDusk: new Date(at(120).getTime() - 15 * 1000) }
+  const sevens = hourCells({ night, moon: DOWN, clouds: CLEAR, timeZone: ZONE }).filter(cell => cell.label === '7pm')
+
+  expect(sevens).toHaveLength(1)
+  expect(sevens[0]).toMatchObject({ moment: true, word: 'Fully dark' })
+})
+
 test('hours while the sky is still bright say Twilight', () => {
   const hours = hourCells({ night: NIGHT, moon: DOWN, clouds: CLEAR, timeZone: ZONE }).filter(cell => !cell.moment)
   expect(hours[0]).toMatchObject({ kind: 'twilight', word: 'Twilight' })

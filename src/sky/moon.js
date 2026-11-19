@@ -9,6 +9,19 @@ const DAY = 24 * 60 * 60 * 1000
 
 
 
+// EXACT TIME
+
+function exact(night, direction, before, after) {
+  if (!night.observer) return after
+
+  const window = (after - before) / DAY
+  const found = Astronomy.SearchRiseSet('Moon', night.observer, direction, new Date(before.getTime() - window * DAY), window * 3)
+
+  return found ? found.date : after
+}
+
+
+
 // TIMING
 
 export function moonCrossings(moon, night) {
@@ -19,8 +32,8 @@ export function moonCrossings(moon, night) {
   let set = null
 
   for (let i = 1; i < steps.length; i++) {
-    if (rise === null && !steps[i - 1].up && steps[i].up) rise = steps[i].time
-    if (set === null && steps[i - 1].up && !steps[i].up) set = steps[i].time
+    if (rise === null && !steps[i - 1].up && steps[i].up) rise = exact(night, 1, steps[i - 1].time, steps[i].time)
+    if (set === null && steps[i - 1].up && !steps[i].up) set = exact(night, -1, steps[i - 1].time, steps[i].time)
   }
 
   return { upAtSunset: steps[0].up, rise, set }

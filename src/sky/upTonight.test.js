@@ -110,23 +110,23 @@ test('binocular objects say so', () => {
 test('notes say where and when in fists and compass words', () => {
   const saturn = upTonight(sky(), ZONE).picks[0]
 
-  expect(saturn.note).toBe('4 fists up in the south around 9pm')
+  expect(saturn.note).toBe('4 fists up in the south at 9pm')
 })
 
 test('very high objects are nearly overhead', () => {
   const vega = upTonight(sky({ planets: [], stars: [object('Vega', 'star', { alt: 80 })] }), ZONE).picks.find(pick => pick.name === 'Vega')
 
-  expect(vega.note).toBe('Nearly overhead around 9pm')
+  expect(vega.note).toBe('Nearly overhead at 9pm')
 })
 
 test('faint deep-sky objects need a dark sky', () => {
   const andromeda = upTonight(sky({ deep: [object('Andromeda Galaxy', 'galaxy', { mag: 3.4, az: 45, alt: 70 })] }), ZONE).picks[2]
 
-  expect(andromeda.note).toBe('7 fists up in the northeast around 9pm. Needs a dark sky.')
+  expect(andromeda.note).toBe('7 fists up in the northeast at 9pm. Needs a dark sky.')
 })
 
 test('showers say how many meteors and when', () => {
-  expect(upTonight(sky(), ZONE).picks[1].note).toBe('About 15 an hour around 4am')
+  expect(upTonight(sky(), ZONE).picks[1].note).toBe('About 15 an hour at 4am')
 })
 
 

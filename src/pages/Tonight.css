@@ -525,10 +525,11 @@
 
   .nights li {
     grid-template-columns: 68px 24px 1fr;
+    row-gap: 4px;
   }
 
   .night-span {
-    grid-column: 2 / -1;
+    grid-column: 3;
     text-align: left;
   }
 }

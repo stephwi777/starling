@@ -120,7 +120,7 @@ test('a night dark before its track begins fills the whole track', () => {
   const forecast = { utc_offset_seconds: 3600, hourly_units: {}, hourly: { time, cloud_cover: time.map(() => 5) } }
   const nights = sevenNights(tromso, forecast, new Date('2026-12-21T13:00:00Z'))
 
-  expect(nights[0].words).toBe('4:56pm–6:28am')
+  expect(nights[0].words).toBe('4:56pm–6:29am')
   expect(nights.every(entry => entry.left >= 0 && entry.left + entry.width <= 1)).toBe(true)
   expect(nights[0].width).toBeGreaterThan(0.95)
 })

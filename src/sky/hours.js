@@ -106,7 +106,7 @@ export function hourCells({ night, moon, clouds, timeZone }) {
     .filter(([, time]) => time)
     .map(([kind, time]) => ({ time, label: clock(time, timeZone), kind, word: MOMENTS[kind], moment: true }))
 
-  const minute = time => Math.floor(time / 60000)
+  const minute = time => Math.round(time / 60000)
   const free = hours.filter(cell => !moments.some(moment => minute(moment.time) === minute(cell.time)))
 
   return [...moments, ...free].sort((a, b) => a.time - b.time)

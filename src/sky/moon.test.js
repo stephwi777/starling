@@ -1,6 +1,8 @@
 import { expect, test } from 'vitest'
 import { moonTiming, nextFull } from './moon.js'
-import { buildNight } from './night.js'
+import { buildNight, observerFor } from './night.js'
+import { trackObject } from './tracks.js'
+import { MOON } from './catalog/planets.js'
 import { SAMPLE_PLACE } from '../place/placeStorage.js'
 
 
@@ -13,6 +15,7 @@ const FIVE_PM = new Date('2026-11-18T23:00:00Z').getTime()
 const TIMES = [0, 1, 2, 3, 4].map(hour)
 const NIGHT = { times: TIMES, sunset: TIMES[0], sunrise: TIMES[4] }
 const NOW = new Date('2026-11-18T20:00:00Z')
+const USNO_PLACE = { latitude: 39.1, longitude: -94.58, timeZone: ZONE }
 
 function moon(alts) {
   return { track: alts.map(alt => ({ alt })) }
@@ -32,6 +35,20 @@ function nightAt(index) {
 
 test('up at sunset and sets during the night', () => {
   expect(moonTiming(moon([5, 3, 1, -1, -3]), NIGHT, ZONE)).toBe('Sets at 8pm')
+})
+
+test('a real moonset matches the US Naval Observatory to the minute', () => {
+  const night = buildNight(USNO_PLACE, 0, new Date('2026-11-19T21:00:00Z'))
+  const tracked = trackObject(MOON, night, observerFor(USNO_PLACE))
+
+  expect(moonTiming(tracked, night, ZONE)).toBe('Sets at 2:32am')
+})
+
+test('a real moonrise matches the US Naval Observatory to the minute', () => {
+  const night = buildNight(USNO_PLACE, 0, new Date('2026-12-01T21:00:00Z'))
+  const tracked = trackObject(MOON, night, observerFor(USNO_PLACE))
+
+  expect(moonTiming(tracked, night, ZONE)).toBe('Rises at 1:03am')
 })
 
 test('rises during the night', () => {
