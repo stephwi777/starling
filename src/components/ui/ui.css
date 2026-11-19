@@ -6,6 +6,52 @@
   background: var(--high);
 }
 
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-head h2 {
+  font-size: 1.4rem;
+}
+
+.card-link {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+  color: var(--beak);
+  font-weight: 800;
+  text-decoration: underline 2px;
+  text-underline-offset: 5px;
+}
+
+.card-link:hover {
+  color: var(--frost);
+}
+
+
+
+/* ROWS */
+
+.row-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.row-text strong {
+  display: block;
+  font-weight: 800;
+}
+
+.row-text small {
+  color: var(--mist);
+  font-size: 0.92rem;
+}
+
 
 
 /* ICON WELL */

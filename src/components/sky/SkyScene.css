@@ -77,6 +77,15 @@
 
 /* SMALL SCREENS */
 
+@media (max-width: 700px) {
+  .band .moon {
+    top: auto;
+    bottom: calc(var(--ground) + 12px);
+    right: 12%;
+    width: 40px;
+  }
+}
+
 @media (max-width: 480px) {
   .tall .moon {
     translate: 0 -16px;

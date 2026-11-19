@@ -1,173 +1,270 @@
-/* PAGE */
+/* TONIGHT */
 
 .tonight {
-  --header-height: 0px;
-  display: grid;
-  gap: 16px;
-  max-width: 1320px;
-  margin: 0 auto;
-  padding: clamp(104px, 11vw, 128px) var(--gutter) 80px;
   font-size: 1.0625rem;
-  line-height: 1.5;
+  line-height: 1.55;
   font-variant-numeric: tabular-nums;
 }
 
-.tonight .box {
-  border: 1px solid var(--rule);
-  border-radius: 12px;
-  background: var(--panel);
+
+
+/* SKY */
+
+.band-text {
+  box-sizing: content-box;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 104px var(--gutter) calc(var(--ground) + 32px);
 }
 
-[data-mode="hobbyist"] .adv,
-[data-mode="advanced"] .hob {
-  display: none;
-}
-
-.tonight .tip {
-  color: var(--mist);
-  font-size: 0.9rem;
-}
-
-
-
-/* INTRO */
-
-.tonight .intro {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 12px 32px;
-  max-width: none;
-  margin: 0;
-  padding: 0;
-  font-size: inherit;
-}
-
-.tonight .intro h1 {
+.band-text h1 {
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 1.0625rem;
   font-weight: 700;
-  line-height: 1.4;
+  line-height: 1.55;
   color: var(--mist);
-}
-
-.text-button {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--beak);
-  font: inherit;
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 .verdict {
-  max-width: 52ch;
+  max-width: 26ch;
   margin-top: 6px;
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.4vw, 1.6rem);
-  line-height: 1.3;
+  font-size: clamp(1.5rem, 3.2vw, 2.2rem);
+  line-height: 1.2;
   color: var(--moon);
 }
 
-.settings {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px 20px;
-}
 
 
+/* BELOW */
 
-/* WORK AREA */
-
-.work {
+.tonight-below {
   display: grid;
-  grid-template-columns: minmax(300px, 380px) 1fr;
-  align-items: start;
-  gap: 16px;
+  gap: 18px;
+  box-sizing: content-box;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 36px var(--gutter) 80px;
 }
 
-.sky-view {
-  padding: 16px;
+.tonight-below > *,
+.tonight-cards > * {
+  min-width: 0;
 }
 
-.sky-view h2 {
+.tonight-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+
+
+/* HOURS */
+
+.hours-summary {
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--raised);
+  font-weight: 700;
+}
+
+.hours {
+  display: flex;
+  gap: 6px;
+  margin-top: 14px;
+  padding-bottom: 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--raised) transparent;
+}
+
+.hours li {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 74px;
+  padding: 10px 6px;
+  border-radius: var(--radius-well);
+  text-align: center;
+}
+
+.hours li.moment {
+  background: var(--raised);
+}
+
+.hours svg {
+  width: 26px;
+  height: 26px;
+}
+
+.hour-time {
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.hour-word {
+  color: var(--mist);
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+
+
+/* TILES */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.tile {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+  min-height: 200px;
+  padding: 18px 20px;
+  border-radius: var(--radius-tile);
+  background: var(--high);
+}
+
+.tile h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.55;
+  color: var(--mist);
 }
 
-.picked {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--rule);
-}
-
-.picked h3 {
-  font-family: var(--font-display);
+.tile h2::after {
+  content: '›' / '';
+  margin-left: auto;
   font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--moon);
+  line-height: 1;
 }
 
-.picked p + p {
-  margin-top: 4px;
+.tile strong {
+  font-size: 1.7rem;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
-.sky-view > .tip {
-  margin-top: 8px;
+.tile p {
+  color: var(--mist);
+  font-size: 0.95rem;
+}
+
+.tile svg {
+  margin-block: 6px;
+}
+
+.phase-moon {
+  overflow: visible;
 }
 
 
 
-/* WIDE SCREENS */
+/* NIGHTS */
 
-@media (min-width: 861px) {
-  .tonight {
-    --header-height: 92px;
-  }
+.nights li {
+  display: grid;
+  grid-template-columns: 74px 28px 1fr 96px;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 0;
 }
 
-@media (min-width: 1101px) and (min-height: 860px) {
-  .sky-view {
-    position: sticky;
-    top: calc(var(--header-height) + 190px);
-  }
+.nights li + li {
+  border-top: 2px solid var(--raised);
+}
+
+.nights strong {
+  font-weight: 900;
+}
+
+.night-track {
+  position: relative;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--zenith);
+}
+
+.night-track i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 999px;
+  background: var(--teal);
+}
+
+.night-track i.short {
+  background: var(--bronze);
+}
+
+.night-span {
+  color: var(--mist);
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.night-none {
+  color: var(--mist);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+
+
+/* UP TONIGHT */
+
+.see-all {
+  margin-left: auto;
+  color: var(--beak);
+  font-weight: 800;
+}
+
+.up-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+}
+
+.up-list li + li {
+  border-top: 2px solid var(--raised);
+}
+
+.level {
+  margin-left: 6px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--far-hills);
+  color: var(--snow);
+  font-size: 0.75rem;
+  font-weight: 800;
+  white-space: nowrap;
+  vertical-align: 2px;
+}
+
+.chevron {
+  color: var(--mist);
 }
 
 
 
 /* MEDIUM SCREENS */
 
-@media (max-width: 860px) {
-  .tonight {
-    padding-top: 150px;
+@media (max-width: 980px) {
+  .tiles {
+    grid-template-columns: 1fr 1fr;
   }
-}
 
-@media (max-width: 1100px) {
-  .work {
+  .tonight-cards {
     grid-template-columns: 1fr;
-  }
-
-  .sky-view {
-    position: static;
-    display: grid;
-    grid-template-columns: minmax(220px, 320px) 1fr;
-    align-items: start;
-    gap: 4px 24px;
-  }
-
-  .sky-view h2,
-  .sky-view > .tip {
-    grid-column: 1 / -1;
-  }
-
-  .picked {
-    align-self: center;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
   }
 }
 
@@ -175,21 +272,30 @@
 
 /* SMALL SCREENS */
 
-@media (max-width: 720px) {
-  .tonight .intro {
-    grid-template-columns: 1fr;
+@media (max-width: 700px) {
+  .band-text {
+    padding-top: 128px;
   }
 
-  .settings {
-    justify-content: flex-start;
+  .tiles {
+    gap: 12px;
   }
 
-  .sky-view {
-    grid-template-columns: 1fr;
+  .tile {
+    min-height: 180px;
+    padding: 16px;
   }
 
-  .picked {
-    padding-top: 12px;
-    border-top: 1px solid var(--rule);
+  .tile strong {
+    font-size: 1.35rem;
+  }
+
+  .nights li {
+    grid-template-columns: 52px 24px 1fr;
+  }
+
+  .night-span {
+    grid-column: 2 / -1;
+    text-align: left;
   }
 }

@@ -1,3 +1,5 @@
+import { phaseAngle } from '../../sky/skyLook.js'
+import { MoonShape } from '../tonight/Icons.jsx'
 import { SHAPES, shapePath } from './constellationShapes.js'
 
 
@@ -5,7 +7,7 @@ import { SHAPES, shapePath } from './constellationShapes.js'
 // FRAME
 
 function Icon({ children }) {
-  return <svg viewBox="-13 -13 26 26">{children}</svg>
+  return <svg viewBox="-13 -13 26 26" aria-hidden="true">{children}</svg>
 }
 
 
@@ -81,5 +83,117 @@ export function TelescopeIcon() {
       <path d="M-1 3 L-5 12 M-1 3 L3 12" stroke="var(--bronze)" strokeWidth="2" strokeLinecap="round" />
       <circle cx="9" cy="-9" r="2" fill="var(--beak)" />
     </Icon>
+  )
+}
+
+export function NightsIcon() {
+  return (
+    <Icon>
+      <rect x="-10" y="-8" width="20" height="18" rx="4" fill="var(--snow)" />
+      <rect x="-10" y="-8" width="20" height="6" rx="3" fill="var(--teal)" />
+    </Icon>
+  )
+}
+
+export function SparkleIcon() {
+  return <Icon><path d="M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z" fill="var(--beak)" /></Icon>
+}
+
+export function SaturnIcon() {
+  return (
+    <Icon>
+      <ellipse rx="11" ry="3.5" fill="none" stroke="var(--bronze)" strokeWidth="2" transform="rotate(-18)" />
+      <circle r="6" fill="var(--bronze)" />
+    </Icon>
+  )
+}
+
+export function ClusterIcon() {
+  return (
+    <Icon>
+      <circle cx="-4" cy="-3" r="2.3" fill="var(--frost)" />
+      <circle cx="3" cy="-5" r="1.9" fill="var(--frost)" />
+      <circle cx="5" cy="2" r="2.3" fill="var(--frost)" />
+      <circle cx="-2" cy="5" r="1.9" fill="var(--frost)" />
+      <circle cx="-7" cy="3" r="1.5" fill="var(--frost)" />
+    </Icon>
+  )
+}
+
+export function GalaxyIcon() {
+  return (
+    <Icon>
+      <ellipse rx="11" ry="4.5" fill="var(--snow)" opacity="0.55" transform="rotate(-25)" />
+      <ellipse rx="4" ry="2" fill="var(--frost)" transform="rotate(-25)" />
+    </Icon>
+  )
+}
+
+
+
+// HOUR ICONS
+
+export function SunsetIcon() {
+  return (
+    <Icon>
+      <path d="M-11 6 H11" stroke="var(--mist)" strokeWidth="2" strokeLinecap="round" />
+      <path d="M-7 6 A7 7 0 0 1 7 6 Z" fill="var(--bronze)" />
+    </Icon>
+  )
+}
+
+export function TwilightIcon() {
+  return (
+    <Icon>
+      <circle r="8" fill="var(--snow-shade)" opacity="0.5" />
+      <path d="M-2 -8 A8 8 0 1 0 8 3 A6.5 6.5 0 1 1 -2 -8 Z" fill="var(--snow)" />
+    </Icon>
+  )
+}
+
+export function ClearIcon() {
+  return (
+    <Icon>
+      <circle cx="-5" cy="-4" r="1.8" fill="var(--frost)" />
+      <circle cx="4" cy="-7" r="1.3" fill="var(--frost)" />
+      <circle cx="6" cy="4" r="2" fill="var(--frost)" />
+      <circle cx="-4" cy="6" r="1.2" fill="var(--frost)" />
+    </Icon>
+  )
+}
+
+export function MoonsetIcon() {
+  return (
+    <Icon>
+      <path d="M-11 6 H11" stroke="var(--mist)" strokeWidth="2" strokeLinecap="round" />
+      <path d="M-6 6 A6 6 0 0 1 6 6 Z" fill="var(--moon)" />
+      <path d="M0 -10 V-2 M-3 -5 L0 -2 L3 -5" stroke="var(--mist)" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+    </Icon>
+  )
+}
+
+export function CloudIcon() {
+  return <Icon><path d="M-9 6 Q-12 0 -6 -1 Q-5 -8 2 -7 Q8 -7 8 -1 Q12 0 10 6 Z" fill="var(--mist)" /></Icon>
+}
+
+export function DawnIcon() {
+  return (
+    <Icon>
+      <path d="M-11 6 H11" stroke="var(--mist)" strokeWidth="2" strokeLinecap="round" />
+      <path d="M-7 6 A7 7 0 0 1 7 6 Z" fill="var(--snow)" opacity="0.7" />
+    </Icon>
+  )
+}
+
+
+
+// PHASE MOON
+
+export function PhaseMoon({ lit, size }) {
+  return (
+    <svg className="phase-moon" viewBox="-60 -60 120 120" width={size} height={size} aria-hidden="true">
+      <circle r="70" fill="var(--moon)" opacity="0.08" />
+      <MoonShape angle={phaseAngle(lit)} r={56} />
+    </svg>
   )
 }

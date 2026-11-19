@@ -81,6 +81,10 @@ export function skyLook({ sunAlt, moonAlt, moonLit, moonAngle, cloudCover, isHom
 
 // HOME NIGHT
 
+export function phaseAngle(lit) {
+  return (Math.acos(1 - 2 * lit) * 180) / Math.PI
+}
+
 export function nightLook({ moonAngle, moonLit, south = false }) {
   return {
     ...skyLook({ sunAlt: -30, moonAlt: 30, moonLit: 0, moonAngle, cloudCover: null, isHome: true }),
