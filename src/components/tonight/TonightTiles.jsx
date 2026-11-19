@@ -1,3 +1,5 @@
+import { cloudBars, cloudWords } from '../../sky/clouds.js'
+import { darkNow, darknessWords } from '../../sky/darkness.js'
 import { moonTiming, nextFull } from '../../sky/moon.js'
 import { PhaseMoon } from '../ui/icons.jsx'
 
@@ -5,15 +7,28 @@ import { PhaseMoon } from '../ui/icons.jsx'
 
 // CLOUD BARS
 
-const COVER = [0, 0, 5, 5, 0, 10, 20, 50, 70, 55, 30, 10]
+const SHADES = {
+  clear: 'var(--raised)',
+  patchy: 'var(--snow-shade)',
+  cloudy: 'var(--mist)',
+}
 
-function CloudBars() {
+function CloudBars({ bars }) {
+  const slot = 160 / Math.max(bars.length, 1)
+  const width = slot * 0.74
+
   return (
-    <svg viewBox="0 0 160 40" width="100%" height="40" aria-hidden="true">
-      {COVER.map((value, i) => {
-        const height = 6 + value * 0.3
+    <svg viewBox="0 0 160 48" width="100%" height="48" aria-hidden="true">
+      {bars.map((bar, i) => {
+        const x = i * slot + (slot - width) / 2
+        const height = 6 + (bar.cover ?? 0) * 0.3
 
-        return <rect key={i} x={i * 13.5} y={40 - height} width="10" height={height} rx="4" fill={value >= 40 ? 'var(--mist)' : 'var(--raised)'} />
+        return (
+          <g key={i}>
+            <rect x={x} y={40 - height} width={width} height={height} rx={Math.min(4, width / 2)} fill={SHADES[bar.kind] ?? 'var(--raised)'} opacity={bar.kind ? 1 : 0.5} />
+            {bar.now && <circle cx={x + width / 2} cy="45" r="2.5" fill="var(--frost)" />}
+          </g>
+        )
       })}
     </svg>
   )
@@ -21,16 +36,74 @@ function CloudBars() {
 
 
 
-// DARKNESS ARC
+// CLOUDS TILE
 
-function DarknessArc() {
+export function CloudsTile({ sky, place, status }) {
+  const words = cloudWords({ night: sky.night, clouds: sky.clouds, status, timeZone: place.timeZone })
+
+  return (
+    <section className="tile still" aria-labelledby="tile-clouds">
+      <h2 id="tile-clouds">Clouds</h2>
+      <CloudBars bars={cloudBars(sky.night, sky.clouds, sky.nowIndex)} />
+      <strong>{words.value}</strong>
+      <p>{words.line}</p>
+    </section>
+  )
+}
+
+
+
+// SUN PATH
+
+const HORIZON = 44
+const RISE = 38
+const SOFT = 25
+
+function height(alt) {
+  if (alt >= 0) return Math.min(53, HORIZON + (alt * RISE) / SOFT)
+
+  return HORIZON - Math.tanh(-alt / SOFT) * RISE
+}
+
+function stretches(points, alts, keep) {
+  return points.map(([x, y], i) => (keep(alts[i]) ? `${i > 0 && keep(alts[i - 1]) ? 'L' : 'M'}${x} ${y}` : '')).join(' ').trim()
+}
+
+function Stroke({ d, color, opacity }) {
+  return d ? <path d={d} fill="none" stroke={color} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity={opacity} /> : null
+}
+
+function SunPath({ night, nowIndex }) {
+  const points = night.sun.map((alt, i) => [4 + (i / (night.sun.length - 1)) * 152, height(alt)])
+  const now = nowIndex === null ? null : points[nowIndex]
+
   return (
     <svg viewBox="0 0 160 56" width="100%" height="56" aria-hidden="true">
-      <path d="M4 14 Q 80 92 156 14" fill="none" stroke="var(--raised)" strokeWidth="4" strokeLinecap="round" />
-      <path d="M34 39 Q 80 70 126 39" fill="none" stroke="var(--teal)" strokeWidth="4" strokeLinecap="round" />
-      <line x1="0" y1="14" x2="160" y2="14" stroke="var(--mist)" strokeWidth="1.5" strokeDasharray="3 5" />
-      <circle cx="62" cy="52" r="5" fill="var(--frost)" />
+      <Stroke d={stretches(points, night.sun, () => true)} color="var(--snow-shade)" opacity="0.8" />
+      <Stroke d={stretches(points, night.sun, alt => alt > 0)} color="var(--beak)" opacity="0.7" />
+      <Stroke d={stretches(points, night.sun, alt => alt < -18)} color="var(--teal)" />
+      <line x1="0" y1={HORIZON} x2="160" y2={HORIZON} stroke="var(--mist)" strokeWidth="1.5" strokeDasharray="3 5" />
+      {now && <circle cx={now[0]} cy={now[1]} r="5" fill="var(--frost)" />}
     </svg>
+  )
+}
+
+
+
+// DARKNESS TILE
+
+export function DarknessTile({ sky, place }) {
+  const words = darknessWords(sky.night, place.timeZone)
+  const now = darkNow(sky.night, sky.nowIndex)
+
+  return (
+    <section className="tile still" aria-labelledby="tile-dark">
+      <h2 id="tile-dark">Darkness</h2>
+      <SunPath night={sky.night} nowIndex={sky.nowIndex} />
+      <strong>{words.value}</strong>
+      <p>{words.line}</p>
+      {now && <p>{now}</p>}
+    </section>
   )
 }
 
@@ -68,24 +141,14 @@ function MoonTile({ sky, place }) {
 
 // TILES
 
-function TonightTiles({ sky, place }) {
+function TonightTiles({ sky, place, status }) {
   return (
     <div className="tiles">
       <MoonTile sky={sky} place={place} />
 
-      <section className="tile" aria-labelledby="tile-dark">
-        <h2 id="tile-dark">Darkness</h2>
-        <DarknessArc />
-        <strong>6:36pm</strong>
-        <p>Fully dark until 5:29am.</p>
-      </section>
+      <DarknessTile sky={sky} place={place} />
 
-      <section className="tile" aria-labelledby="tile-clouds">
-        <h2 id="tile-clouds">Clouds</h2>
-        <CloudBars />
-        <strong>Clear till 1am</strong>
-        <p>Then patchy until dawn.</p>
-      </section>
+      <CloudsTile sky={sky} place={place} status={status} />
 
       <section className="tile" aria-labelledby="tile-seeing">
         <h2 id="tile-seeing">Seeing</h2>

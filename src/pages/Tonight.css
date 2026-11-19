@@ -316,6 +316,12 @@
 .tile p {
   color: var(--mist);
   font-size: 0.95rem;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.tile p + p {
+  margin-top: 4px;
 }
 
 .tile svg {

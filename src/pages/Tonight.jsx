@@ -55,7 +55,7 @@ function Tonight() {
 
       <div className="tonight-below" ref={below}>
         <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} />
-        <TonightTiles sky={sky} place={place} />
+        <TonightTiles sky={sky} place={place} status={forecast.status} />
 
         <div className="tonight-cards">
           <NightsCard />

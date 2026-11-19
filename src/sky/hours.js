@@ -53,14 +53,14 @@ const UNAVAILABLE = 'The forecast isn’t available right now, so clouds aren’
 
 // HELPERS
 
-function cloudKind(cover) {
+export function cloudKind(cover) {
   if (cover === null || cover === undefined) return null
   if (cover < 20) return 'clear'
   if (cover < 60) return 'patchy'
   return 'cloudy'
 }
 
-function wholeHours(night) {
+export function wholeHours(night) {
   const afterSunset = time => !night.sunset || time > night.sunset
   const beforeSunrise = time => !night.sunrise || time < night.sunrise
 
