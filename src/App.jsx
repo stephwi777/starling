@@ -9,6 +9,7 @@ import Credits from './pages/Credits.jsx'
 import About from './pages/About.jsx'
 import Tonight from './pages/Tonight.jsx'
 import MoonPanel from './components/moon/MoonPanel.jsx'
+import CloudsPanel from './components/clouds/CloudsPanel.jsx'
 import './App.css'
 
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="tonight" element={<Tonight />}>
           <Route path="moon" element={<MoonPanel />} />
+          <Route path="clouds" element={<CloudsPanel />} />
         </Route>
         <Route path="calendar" element={<Placeholder title="Calendar" />} />
         <Route path="map" element={<Placeholder title="Map" />} />

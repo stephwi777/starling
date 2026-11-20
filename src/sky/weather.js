@@ -1,6 +1,6 @@
 // REQUEST
 
-const FIELDS = ['cloud_cover', 'temperature_2m', 'wind_speed_10m', 'relative_humidity_2m', 'visibility', 'wind_speed_250hPa']
+const FIELDS = ['cloud_cover', 'cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high', 'temperature_2m', 'dew_point_2m', 'precipitation_probability', 'wind_speed_10m', 'relative_humidity_2m', 'visibility', 'wind_speed_250hPa']
 
 export function weatherUrl(place) {
   const params = new URLSearchParams({
@@ -8,6 +8,7 @@ export function weatherUrl(place) {
     longitude: place.longitude,
     hourly: FIELDS.join(','),
     forecast_days: 8,
+    past_days: 2,
     timezone: place.timeZone,
   })
 
@@ -33,7 +34,7 @@ export async function fetchWeather(place, signal, fetcher = fetch) {
 
 const HOUR = 60 * 60 * 1000
 
-function moments(raw) {
+export function moments(raw) {
   const offset = (raw.utc_offset_seconds ?? 0) * 1000
 
   return raw.hourly.time.map(time => Date.parse(`${time}Z`) - offset)

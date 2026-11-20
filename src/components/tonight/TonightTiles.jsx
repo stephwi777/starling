@@ -7,6 +7,21 @@ import { PhaseMoon } from '../ui/icons.jsx'
 
 
 
+// TILE LINK
+
+function TileLink({ id, to, link, panelClose }) {
+  function toggle(event) {
+    if (!panelClose.current) return
+
+    event.preventDefault()
+    panelClose.current()
+  }
+
+  return <Link ref={link} className="tile-link" aria-labelledby={id} to={to} state={{ fromTonight: true }} onClick={toggle} />
+}
+
+
+
 // CLOUD BARS
 
 const SHADES = {
@@ -40,12 +55,13 @@ function CloudBars({ bars }) {
 
 // CLOUDS TILE
 
-export function CloudsTile({ sky, place, status }) {
+export function CloudsTile({ sky, place, status, link, panelClose }) {
   const words = cloudWords({ night: sky.night, clouds: sky.clouds, status, timeZone: place.timeZone })
 
   return (
-    <section className="tile still" aria-labelledby="tile-clouds">
+    <section className="tile" aria-labelledby="tile-clouds">
       <h2 id="tile-clouds">Clouds</h2>
+      <TileLink id="tile-clouds" to="clouds" link={link} panelClose={panelClose} />
       <CloudBars bars={cloudBars(sky.night, sky.clouds, sky.nowIndex)} />
       <strong>{words.value}</strong>
       <p>{words.line}</p>
@@ -143,20 +159,13 @@ export function SeeingTile({ sky, place, status }) {
 
 // MOON TILE
 
-function MoonTile({ sky, place, moonLink, moonClose }) {
-  function toggle(event) {
-    if (!moonClose.current) return
-
-    event.preventDefault()
-    moonClose.current()
-  }
-
+function MoonTile({ sky, place, link, panelClose }) {
   const { night, moon } = sky
 
   return (
     <section className="tile moon-tile" aria-labelledby="tile-moon">
       <h2 id="tile-moon">Moon</h2>
-      <Link ref={moonLink} className="tile-link" aria-labelledby="tile-moon" to="moon" state={{ fromTonight: true }} onClick={toggle} />
+      <TileLink id="tile-moon" to="moon" link={link} panelClose={panelClose} />
       <PhaseMoon angle={night.moonAngle} size={64} south={place.latitude < 0} />
       <strong>{Math.round(night.moonLit * 100)}% lit</strong>
       <p>{moonTiming(moon, night, place.timeZone)}</p>
@@ -169,14 +178,14 @@ function MoonTile({ sky, place, moonLink, moonClose }) {
 
 // TILES
 
-function TonightTiles({ sky, place, status, moonLink, moonClose }) {
+function TonightTiles({ sky, place, status, links, panelClose }) {
   return (
     <div className="tiles">
-      <MoonTile sky={sky} place={place} moonLink={moonLink} moonClose={moonClose} />
+      <MoonTile sky={sky} place={place} link={links.moon} panelClose={panelClose} />
 
       <DarknessTile sky={sky} place={place} />
 
-      <CloudsTile sky={sky} place={place} status={status} />
+      <CloudsTile sky={sky} place={place} status={status} link={links.clouds} panelClose={panelClose} />
 
       <SeeingTile sky={sky} place={place} status={status} />
     </div>

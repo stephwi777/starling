@@ -42,6 +42,16 @@ test('US places ask for fahrenheit and mph', () => {
   expect(weatherUrl(paris)).not.toContain('mph')
 })
 
+test('the request asks for cloud layers, dew point, rain and the night before', () => {
+  const url = weatherUrl(SAMPLE_PLACE)
+
+  for (const field of ['cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high', 'dew_point_2m', 'precipitation_probability']) {
+    expect(url).toContain(field)
+  }
+
+  expect(url).toContain('past_days=2')
+})
+
 test('night hours line up with the local forecast hours', () => {
   const weather = nightWeather(fakeForecast(), night)
   expect(weather.clouds.length).toBe(night.hours)
