@@ -112,25 +112,28 @@ function same(a, b) {
 
 
 
-// MOON LINE
+// TILE LINE
 
-export function moonLine(night, windows, timeZone) {
+export function darkLine(night, windows, timeZone) {
   const span = darkSpan(night)
 
-  if (!span) return null
-  if (!windows.length) return 'The Moon is up all night.'
+  if (!span || night.sun.every(alt => alt < -18)) return null
+
+  const end = clock(span.to, timeZone)
+
+  if (!windows.length) return `Moon up all night; fully dark until ${end}.`
 
   if (windows.length === 1) {
     const { from, to } = windows[0]
     const atDusk = same(from, span.from)
     const atDawn = same(to, span.to)
 
-    if (atDusk && atDawn) return 'No Moon during the dark hours.'
-    if (atDawn) return `Moon sets at ${clock(from, timeZone)}; truly dark after.`
-    if (atDusk) return `Moon rises at ${clock(to, timeZone)}; truly dark until then.`
+    if (atDusk && atDawn) return `No Moon; truly dark until ${end}.`
+    if (atDawn) return `Moon sets at ${clock(from, timeZone)}; truly dark until ${end}.`
+    if (atDusk) return `Moon rises at ${clock(to, timeZone)}; fully dark until ${end}.`
   }
 
-  return `Truly dark ${ranges(windows, timeZone)}.`
+  return `Truly dark ${ranges(windows, timeZone)}; fully dark until ${end}.`
 }
 
 
