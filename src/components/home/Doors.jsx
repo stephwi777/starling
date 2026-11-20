@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import IconWell from '../ui/IconWell.jsx'
-import { ConstellationIcon, PineIcon, TelescopeIcon } from '../ui/icons.jsx'
+import { PineIcon, TelescopeIcon } from '../ui/icons.jsx'
+import SkyIcon from '../sky-icons/SkyIcon.jsx'
 import { monthConstellation } from '../../sky/monthConstellation.js'
 
 
@@ -22,7 +23,7 @@ function Doors({ now, place }) {
 
   const doors = [
     { to: '/map', icon: <PineIcon />, title: 'Find dark skies', note: 'Parks and observatories near you' },
-    { to: '/learn', icon: <ConstellationIcon name={constellation.name} />, title: `Find ${starName(constellation.name)}`, note: PATTERNS.includes(constellation.name) ? "This month's star pattern" : "This month's constellation" },
+    { to: '/learn', icon: <SkyIcon object={constellation} />, title: `Find ${starName(constellation.name)}`, note: PATTERNS.includes(constellation.name) ? "This month's star pattern" : "This month's constellation" },
     { to: '/tools', icon: <TelescopeIcon />, title: 'Sky tools', note: 'Moon phases, sky map and more' },
   ]
 

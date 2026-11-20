@@ -1,3 +1,4 @@
+import { localNoon } from './night.js'
 import { SHOWERS } from './catalog/showers.js'
 
 
@@ -70,4 +71,26 @@ export function goodShowers(showers, night) {
     .map(shower => ({ shower, peak: showerPeak(shower, night) }))
     .filter(({ peak }) => peak && peak.rate >= GOOD_SHOWER)
     .sort((a, b) => b.peak.rate - a.peak.rate)
+}
+
+
+
+// NEXT SHOWER
+
+const STRONG = 15
+
+function peakDate(shower, year, timeZone) {
+  const [month, day] = shower.peak.split('-').map(Number)
+
+  return localNoon(year, month, day, timeZone)
+}
+
+export function nextShower(now, timeZone) {
+  const year = Number(new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric' }).format(now))
+
+  return SHOWERS
+    .filter(shower => shower.zhr >= STRONG)
+    .flatMap(shower => [year, year + 1].map(y => ({ name: shower.name, peak: peakDate(shower, y, timeZone) })))
+    .filter(({ peak }) => peak > now)
+    .sort((a, b) => a.peak - b.peak)[0]
 }

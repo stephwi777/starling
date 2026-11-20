@@ -25,3 +25,6 @@ dist-ssr
 
 # Brainstorming mockups
 .superpowers
+
+# Downloaded sky data (rebuild with the catalog script)
+data/raw

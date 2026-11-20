@@ -48,7 +48,7 @@ function Popover({ title, titleId, link, panelClose, children }) {
     let frame
 
     const place = () => {
-      const tile = link.current?.closest('.tile')
+      const tile = link.current?.closest('.tile, .card')
 
       if (matchMedia(PHONE).matches || !tile) return setSpot({ sheet: true })
 
@@ -88,7 +88,7 @@ function Popover({ title, titleId, link, panelClose, children }) {
     panelClose.current = close
 
     const outside = event => {
-      if (!panel.current.contains(event.target) && !link.current?.closest('.tile')?.contains(event.target)) close()
+      if (!panel.current.contains(event.target) && !link.current?.closest('.tile, .card')?.contains(event.target)) close()
     }
 
     const escape = event => {

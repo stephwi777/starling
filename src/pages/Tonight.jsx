@@ -24,7 +24,7 @@ const HOUR = 60 * 60 * 1000
 
 // PANELS
 
-const TITLES = { moon: 'Moon', clouds: 'Clouds', darkness: 'Darkness', seeing: 'Seeing' }
+const TITLES = { moon: 'Moon', clouds: 'Clouds', darkness: 'Darkness', seeing: 'Seeing', up: 'Up tonight' }
 
 
 
@@ -40,9 +40,10 @@ function Tonight() {
   const cloudsLink = useRef(null)
   const darknessLink = useRef(null)
   const seeingLink = useRef(null)
+  const upLink = useRef(null)
   const panelClose = useRef(null)
   const panel = useMatch('/tonight/:panel')?.params.panel
-  const links = { moon: moonLink, clouds: cloudsLink, darkness: darknessLink, seeing: seeingLink }
+  const links = { moon: moonLink, clouds: cloudsLink, darkness: darknessLink, seeing: seeingLink, up: upLink }
   const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
   return (
@@ -74,7 +75,7 @@ function Tonight() {
 
         <div className="tonight-cards">
           <NightsCard place={place} forecast={forecast} now={now} />
-          <UpTonightCard sky={sky} place={place} />
+          <UpTonightCard sky={sky} place={place} link={links.up} panelClose={panelClose} />
         </div>
 
         <div className="veil" aria-hidden="true" />
@@ -84,7 +85,7 @@ function Tonight() {
 
       {/* PANELS */}
 
-      <Outlet context={{ place, now, forecast, links, panelClose }} />
+      <Outlet context={{ place, now, sky, forecast, links, panelClose }} />
     </main>
   )
 }

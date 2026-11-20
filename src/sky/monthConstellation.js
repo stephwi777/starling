@@ -1,4 +1,4 @@
-import { CONSTELLATIONS } from './catalog/constellations.js'
+import { SKY_SHAPES } from './catalog/sky.js'
 
 
 
@@ -16,5 +16,5 @@ export function monthConstellation(date, place) {
   const month = Number(new Intl.DateTimeFormat('en-US', { timeZone: place.timeZone, month: 'numeric' }).format(date)) - 1
   const name = (place.latitude < 0 ? SOUTH : NORTH)[month]
 
-  return CONSTELLATIONS.find(constellation => constellation.name === name)
+  return SKY_SHAPES.find(constellation => constellation.name === name)
 }

@@ -35,3 +35,13 @@ test('southern places never get a far northern constellation', () => {
   expect(names).not.toContain('Big Dipper')
   expect(names[5]).toBe('Scorpius')
 })
+
+test('every month has a figure to draw in both hemispheres', () => {
+  for (const place of [{ latitude: 39, timeZone: 'UTC' }, { latitude: -34, timeZone: 'UTC' }]) {
+    for (let month = 0; month < 12; month++) {
+      const shape = monthConstellation(new Date(Date.UTC(2026, month, 15)), place)
+
+      expect(shape.figure.stars.length, `${month} ${place.latitude}`).toBeGreaterThan(1)
+    }
+  }
+})

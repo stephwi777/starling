@@ -1,0 +1,25 @@
+// ASTERISM PICKS
+
+export const ASTERISM_PICKS = [
+  { key: 'BigDipper', name: 'Big Dipper' },
+  { key: 'LittleDipper', name: 'Little Dipper' },
+  { key: 'Belt', name: 'Orion’s Belt' },
+  { key: 'Sword', name: 'Orion’s Sword' },
+  { key: 'WinterHexagon', name: 'Winter Hexagon' },
+  { key: 'WinterTriangle', name: 'Winter Triangle' },
+  { key: 'SummerTriangle', name: 'Summer Triangle' },
+  { key: 'NorthernCross', name: 'Northern Cross' },
+  { key: 'PegasusSquare', name: 'Great Square' },
+  { key: 'Teapot', name: 'Teapot' },
+  { key: 'TheSickle', name: 'Sickle' },
+  { key: 'GreatDiamond', name: 'Great Diamond' },
+  { key: 'Kite', name: 'Kite' },
+  { key: 'Keystone', name: 'Keystone' },
+  { key: 'Fishhook', name: 'Fishhook' },
+  { key: 'CircletofPisces', name: 'Circlet' },
+  { key: 'WaterJar', name: 'Water Jar' },
+  { key: 'JobsCoffin', name: 'Job’s Coffin' },
+  { key: 'FalseCross', name: 'False Cross' },
+  { key: 'DiamondCross', name: 'Diamond Cross' },
+  { key: 'SouthernPointer', name: 'Southern Pointers' },
+]

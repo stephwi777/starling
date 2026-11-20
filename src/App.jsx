@@ -12,6 +12,7 @@ import MoonPanel from './components/moon/MoonPanel.jsx'
 import CloudsPanel from './components/clouds/CloudsPanel.jsx'
 import DarknessPanel from './components/darkness/DarknessPanel.jsx'
 import SeeingPanel from './components/seeing/SeeingPanel.jsx'
+import UpTonightPanel from './components/uptonight/UpTonightPanel.jsx'
 import './App.css'
 
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="clouds" element={<CloudsPanel />} />
           <Route path="darkness" element={<DarknessPanel />} />
           <Route path="seeing" element={<SeeingPanel />} />
+          <Route path="up" element={<UpTonightPanel />} />
         </Route>
         <Route path="calendar" element={<Placeholder title="Calendar" />} />
         <Route path="map" element={<Placeholder title="Map" />} />

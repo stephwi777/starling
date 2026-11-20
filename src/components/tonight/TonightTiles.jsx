@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import { Link } from 'react-router'
 import { cloudBars, cloudWords } from '../../sky/clouds.js'
 import { darknessWords } from '../../sky/darkness.js'
 import { moonLine, skyPath, trulyDark } from '../../sky/darkPanel.js'
@@ -7,21 +6,7 @@ import { seeingWords } from '../../sky/seeing.js'
 import { moonTiming, nextFull } from '../../sky/moon.js'
 import { PhaseMoon } from '../ui/icons.jsx'
 import SunStrokes from '../darkness/SunStrokes.jsx'
-
-
-
-// TILE LINK
-
-function TileLink({ id, to, link, panelClose }) {
-  function toggle(event) {
-    if (!panelClose.current) return
-
-    event.preventDefault()
-    panelClose.current()
-  }
-
-  return <Link ref={link} className="tile-link" aria-labelledby={id} to={to} state={{ fromTonight: true }} onClick={toggle} />
-}
+import TileLink from './TileLink.jsx'
 
 
 

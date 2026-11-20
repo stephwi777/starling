@@ -62,6 +62,12 @@ export function shortCompass(az) {
   return SHORT_POINTS[point(az)]
 }
 
+const EIGHT = ['north', 'northeast', 'east', 'southeast', 'south', 'southwest', 'west', 'northwest']
+
+export function wideCompass(az) {
+  return EIGHT[Math.round(az / 45) % 8]
+}
+
 
 
 // HEIGHTS

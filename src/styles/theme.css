@@ -26,6 +26,11 @@
   --meteor-rose: #f0a8c6;
   --meteor-lilac: #c3a8f0;
   --meteor-gold: #f2c98e;
+  --star-icy: #a3bfff;
+  --star-cream: #fff3d9;
+  --star-orange: #f6b878;
+  --star-red: #f08c74;
+  --leaf: #a8e0b8;
 
   --panel: var(--high);
   --panel-raised: var(--raised);
@@ -84,6 +89,14 @@
   --uranus: #8fd6d0;
   --neptune: #7f9cf0;
   --pluto: #c9a99a;
+  --jupiter-zone: #f3d3a0;
+  --jupiter-belt: #c98a5e;
+  --jupiter-band: #eba35a;
+  --jupiter-spot: #c4704a;
+  --mars-dark: #b8603f;
+  --mars-mid: #c4704c;
+  --neptune-dark: #4f73d0;
+  --neptune-light: #8fb0f0;
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Nunito', system-ui, sans-serif;
@@ -151,6 +164,11 @@
   --meteor-rose: #e8553c;
   --meteor-lilac: #ff6a50;
   --meteor-gold: #e8553c;
+  --star-icy: #ff6a50;
+  --star-cream: #ff8a6c;
+  --star-orange: #e8553c;
+  --star-red: #d8503a;
+  --leaf: #e0603e;
 
   --panel: #170504;
   --panel-raised: #200705;
@@ -171,6 +189,14 @@
   --uranus: #d8503a;
   --neptune: #c0402c;
   --pluto: #b8402c;
+  --jupiter-zone: #ff8a6c;
+  --jupiter-belt: #b8402c;
+  --jupiter-band: #e8553c;
+  --jupiter-spot: #8f2f20;
+  --mars-dark: #8f2f20;
+  --mars-mid: #b8402c;
+  --neptune-dark: #8f2f20;
+  --neptune-light: #e0603e;
 }
 
 

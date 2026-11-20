@@ -81,9 +81,10 @@ const sources = [
     tone: 'dark',
     size: '300px',
     name: 'Astronomy Engine',
-    use: 'Works out where the Sun, Moon, planets and stars are in your sky.',
+    use: 'Finds where everything is in your sky.',
     credits: [
       { text: 'MIT License, by Don Cross', href: 'https://github.com/cosinekitty/astronomy' },
+      { text: 'Star lists: d3-celestial, BSD', href: 'https://github.com/ofrohn/d3-celestial' },
     ],
   },
   {

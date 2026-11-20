@@ -10,7 +10,8 @@
     "test": "vitest run",
     "preview": "vite preview",
     "predeploy": "npm run build && cp dist/index.html dist/404.html",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "catalog": "node scripts/build-catalog.mjs"
   },
   "dependencies": {
     "astronomy-engine": "^2.1.19",

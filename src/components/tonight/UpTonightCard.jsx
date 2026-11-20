@@ -1,25 +1,15 @@
 import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
 import { upTonight } from '../../sky/upTonight.js'
-import { SHAPES } from '../ui/constellationShapes.js'
-import { ConstellationIcon, SparkleIcon } from '../ui/icons.jsx'
-import { ObjectIcon } from './Icons.jsx'
-
-
-
-// ROW ICON
-
-function RowIcon({ object }) {
-  if (object.kind === 'shape' && SHAPES[object.name]) return <ConstellationIcon name={object.name} />
-
-  return <ObjectIcon object={object} />
-}
+import { SparkleIcon } from '../ui/icons.jsx'
+import SkyIcon from '../sky-icons/SkyIcon.jsx'
+import TileLink from './TileLink.jsx'
 
 
 
 // UP TONIGHT CARD
 
-function UpTonightCard({ sky, place }) {
+function UpTonightCard({ sky, place, link, panelClose }) {
   const { picks, total, empty } = upTonight(sky, place.timeZone)
 
   return (
@@ -27,8 +17,10 @@ function UpTonightCard({ sky, place }) {
       <div className="card-head">
         <IconWell><SparkleIcon /></IconWell>
         <h2 id="up-title">Up tonight</h2>
-        {picks.length > 0 && <span className="up-count">{picks.length} of {total}</span>}
+        {total > 0 && <span className="up-count" aria-hidden="true">See all {total} ›</span>}
       </div>
+
+      <TileLink id="up-title" to="up" link={link} panelClose={panelClose} />
 
       {empty ? (
         <p className="card-note">{empty}</p>
@@ -36,7 +28,7 @@ function UpTonightCard({ sky, place }) {
         <ul className="up-list">
           {picks.map(({ key, name, object, note, gear }) => (
             <li key={key}>
-              <IconWell><RowIcon object={object} /></IconWell>
+              <IconWell><SkyIcon object={object} moonAngle={sky.night.moonAngle} /></IconWell>
               <span className="row-text">
                 <strong>
                   {name}

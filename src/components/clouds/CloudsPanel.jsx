@@ -82,7 +82,7 @@ function CloudsPanel() {
 
   const summary = hour ? cloudSummary(hour) ?? missing(forecast.status) : { kind: 'No night', line: 'The Sun doesn’t set this night.' }
   const unit = forecast.raw?.hourly_units?.temperature_2m ?? '°C'
-  const layers = hour && hour.low !== null ? `Low ${hour.low}% · Middle ${hour.mid}% · High ${hour.high}%` : null
+  const layers = hour && hour.low !== null ? [`Low ${hour.low}%`, `Mid ${hour.mid}%`, `High ${hour.high}%`].join(' · ') : null
   const sky = hour && transparencyWords(hour)
   const dew = hour && dewWords(hour, unit)
 

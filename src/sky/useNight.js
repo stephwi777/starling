@@ -5,9 +5,8 @@ import { activeShowers } from './meteors.js'
 import { bestWindow, shortVerdict, verdict } from './best.js'
 import { nightWeather } from './weather.js'
 import { MOON, PLANETS } from './catalog/planets.js'
-import { STARS } from './catalog/stars.js'
-import { CONSTELLATIONS } from './catalog/constellations.js'
-import { DEEP_SKY } from './catalog/deepSky.js'
+import { SKY_DEEP, SKY_SHAPES, SKY_STARS } from './catalog/sky.js'
+import { fixedTracker } from './fastSky.js'
 
 
 
@@ -15,6 +14,10 @@ import { DEEP_SKY } from './catalog/deepSky.js'
 
 function trackAll(list, defaults, night, observer) {
   return list.map(object => trackObject({ ...defaults, ...object }, night, observer))
+}
+
+function trackFixed(list, defaults, fixed) {
+  return list.map(object => fixed({ ...defaults, ...object }))
 }
 
 function nowIndexFor(night, now) {
@@ -25,26 +28,33 @@ function nowIndexFor(night, now) {
 
 
 
+// SKY
+
+export function buildSky(place, index, now) {
+  const night = buildNight(place, index, now)
+  const observer = observerFor(place)
+  const middle = night.times[Math.floor(night.times.length / 2)]
+  const fixed = fixedTracker(night, observer)
+
+  return {
+    night,
+    observer,
+    moon: trackObject(MOON, night, observer),
+    planets: trackAll(PLANETS, {}, night, observer),
+    stars: trackFixed(SKY_STARS, { gear: 1, color: '--frost' }, fixed),
+    shapes: trackFixed(SKY_SHAPES, { kind: 'shape', gear: 1, color: '--snow' }, fixed),
+    deep: trackFixed(SKY_DEEP, { color: '--snow' }, fixed),
+    showers: trackAll(activeShowers(middle), { mag: 0 }, night, observer),
+    nowIndex: nowIndexFor(night, now),
+  }
+}
+
+
+
 // HOOK
 
 export function useNight(place, index, forecast, now) {
-  const sky = useMemo(() => {
-    const night = buildNight(place, index, now)
-    const observer = observerFor(place)
-    const middle = night.times[Math.floor(night.times.length / 2)]
-
-    return {
-      night,
-      observer,
-      moon: trackObject(MOON, night, observer),
-      planets: trackAll(PLANETS, {}, night, observer),
-      stars: trackAll(STARS, { kind: 'star', gear: 1, color: '--frost' }, night, observer),
-      shapes: trackAll(CONSTELLATIONS, { kind: 'shape', gear: 1, color: '--snow', mag: 2 }, night, observer),
-      deep: trackAll(DEEP_SKY, { color: '--snow' }, night, observer),
-      showers: trackAll(activeShowers(middle), { mag: 0 }, night, observer),
-      nowIndex: nowIndexFor(night, now),
-    }
-  }, [place, index, now])
+  const sky = useMemo(() => buildSky(place, index, now), [place, index, now])
 
   return useMemo(() => {
     const weather = forecast ? nightWeather(forecast, sky.night) : null

@@ -1,5 +1,4 @@
 import { MoonShape } from '../tonight/Icons.jsx'
-import { SHAPES, shapePath } from './constellationShapes.js'
 
 
 
@@ -63,20 +62,6 @@ export function PineIcon() {
       <path d="M0 -11 L8 4 L-8 4 Z" fill="var(--teal)" />
       <path d="M0 -4 L9 10 L-9 10 Z" fill="var(--teal)" />
       <rect x="-1.5" y="10" width="3" height="3" fill="var(--bronze)" />
-    </Icon>
-  )
-}
-
-export function ConstellationIcon({ name = 'Cassiopeia' }) {
-  const shape = SHAPES[name]
-  const busy = shape.stars.length > 6
-
-  return (
-    <Icon>
-      <path d={shapePath(shape)} fill="none" stroke="var(--snow)" strokeWidth={busy ? 1.3 : 1.6} strokeLinejoin="round" />
-      {shape.stars.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={busy ? 1.9 : 2.4} fill={i === shape.bright ? 'var(--beak)' : 'var(--frost)'} />
-      ))}
     </Icon>
   )
 }
