@@ -33,7 +33,7 @@ function MoonCalendar({ nights, year, month, first, last, selectedNight, tonight
   const atLast = year === last.year && month === last.month
 
   return (
-    <section className="moon-calendar" aria-label="Calendar">
+    <div className="moon-calendar" role="group" aria-label="Calendar">
       <div className="moon-calendar-head">
         <button type="button" className="moon-month" aria-label="Previous month" aria-disabled={atFirst} onClick={() => atFirst || onMonth(-1)}>
           <Chevron path="M10 3 L5 8 L10 13" />
@@ -70,7 +70,7 @@ function MoonCalendar({ nights, year, month, first, last, selectedNight, tonight
           )
         })}
       </div>
-    </section>
+    </div>
   )
 }
 

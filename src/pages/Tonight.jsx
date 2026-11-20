@@ -31,6 +31,7 @@ function Tonight() {
   const sky = useNight(place, 0, forecast.raw, now)
   const below = useStickyHeads()
   const moonLink = useRef(null)
+  const moonClose = useRef(null)
   const moonOpen = useMatch('/tonight/moon')
   const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
@@ -59,7 +60,7 @@ function Tonight() {
 
       <div className="tonight-below" ref={below}>
         <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} />
-        <TonightTiles sky={sky} place={place} status={forecast.status} moonLink={moonLink} />
+        <TonightTiles sky={sky} place={place} status={forecast.status} moonLink={moonLink} moonClose={moonClose} />
 
         <div className="tonight-cards">
           <NightsCard place={place} forecast={forecast} now={now} />
@@ -73,7 +74,7 @@ function Tonight() {
 
       {/* PANELS */}
 
-      <Outlet context={{ place, now, moonLink }} />
+      <Outlet context={{ place, now, moonLink, moonClose }} />
     </main>
   )
 }

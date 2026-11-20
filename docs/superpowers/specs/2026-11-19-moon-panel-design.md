@@ -70,6 +70,9 @@ The Moon tile on Tonight shows tonight's phase in one line. The user loves Apple
 
 ### Opening and closing
 
+**Revised 2026-11-19 after the user tried the first build:** the panel is a light popover, not a modal. There's no dark backdrop. The whole Moon tile is the button. The panel opens beside the tile (right if there's room, otherwise left) with a tiny arrow pointing at the tile's middle, and follows the tile if the page scrolls. ✕, Escape, clicking outside it, or clicking the tile again close it. Opening is a short fade-and-grow from the tile's side and closing is the reverse. There's no motion with reduced motion or the animation toggle off. The "Moon" title is centered. On phones, and whenever neither side of the tile has room (about 380px), it's still a full-screen sheet that slides up. The ruler is quieter: a small yellow pointer with no time pill, finer ticks 10px apart, and the time moves into the night line ("Thursday night, November 19 at midnight"). The notes below describe the first build where they differ.
+
+
 - The Moon tile becomes pressable (a link to `/tonight/moon`) and gets its › chevron back. The other tiles stay as they are.
 - The panel opens over Tonight. On wide screens it is a centered panel (about the mockup's width, scrolling inside if taller than the window) over a dimmed Tonight. On phones it fills the screen like a sheet.
 - It opens at **midnight tonight** (the middle of tonight's night).

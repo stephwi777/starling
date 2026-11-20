@@ -1,19 +1,63 @@
 /* PANEL */
 
-.moon-panel {
-  width: min(420px, 100vw - 32px);
-  max-height: calc(100dvh - 32px);
-  padding: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  border: 0;
-  border-radius: var(--radius-card);
-  background: var(--high);
-  color: var(--frost);
+:root.moon-open {
+  overflow: hidden;
+  padding-right: var(--scrollbar-gap);
 }
 
-.moon-panel::backdrop {
-  background: color-mix(in srgb, var(--zenith) 75%, transparent);
+.moon-panel {
+  --from: -10px;
+  position: fixed;
+  inset: auto;
+  z-index: 40;
+  width: min(352px, 100vw - 32px);
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+  color: var(--frost);
+  filter: drop-shadow(0 18px 36px color-mix(in srgb, var(--zenith) 80%, transparent));
+  transform-origin: left var(--arrow, 50%);
+}
+
+.moon-panel.left {
+  --from: 10px;
+  transform-origin: right var(--arrow, 50%);
+}
+
+.moon-panel.unplaced {
+  visibility: hidden;
+}
+
+.moon-scroll {
+  max-height: min(640px, 100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--raised) transparent;
+  scrollbar-width: thin;
+  border-radius: var(--radius-card);
+  clip-path: inset(0 round var(--radius-card));
+  background: var(--high);
+}
+
+.moon-arrow {
+  position: absolute;
+  top: var(--arrow);
+  width: 9px;
+  height: 18px;
+  background: var(--high);
+  translate: 0 -50%;
+}
+
+.moon-panel.right .moon-arrow {
+  right: 100%;
+  clip-path: path('M9 0 L1.4 7.6 Q0 9 1.4 10.4 L9 18 Z');
+}
+
+.moon-panel.left .moon-arrow {
+  left: 100%;
+  clip-path: path('M0 0 L7.6 7.6 Q9 9 7.6 10.4 L0 18 Z');
 }
 
 .moon-panel button:focus-visible,
@@ -28,14 +72,16 @@
 /* HEAD */
 
 .moon-head {
-  display: flex;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px 0;
+  padding: 14px 16px 0;
 }
 
 .moon-head h2 {
+  grid-column: 2;
   font-size: 1.25rem;
+  text-align: center;
 }
 
 .moon-close {
@@ -49,10 +95,6 @@
   color: var(--mist);
 }
 
-.moon-close:hover {
-  color: var(--frost);
-}
-
 
 
 /* MOON */
@@ -60,7 +102,7 @@
 .moon-art {
   display: grid;
   place-items: center;
-  padding: 6px 0 4px;
+  padding: 20px 0 26px;
 }
 
 .moon-title {
@@ -83,6 +125,7 @@
   margin-top: 2px;
   color: var(--mist);
   font-weight: 800;
+  text-wrap: balance;
 }
 
 .moon-night.tonight {
@@ -115,7 +158,9 @@
 
 .moon-ruler {
   position: relative;
-  height: 90px;
+  height: 66px;
+  margin: 0 12px;
+  border-radius: 14px;
   overflow: hidden;
   cursor: grab;
   touch-action: none;
@@ -131,39 +176,24 @@
   top: 0;
   left: 50%;
   z-index: 1;
-  display: grid;
-  justify-items: center;
+  width: 12px;
+  height: 9px;
+  background: var(--beak);
+  clip-path: path('M0 0 H12 L7.2 7.4 Q6 9 4.8 7.4 Z');
   translate: -50% 0;
   pointer-events: none;
-}
-
-.moon-pointer span {
-  padding: 1px 8px;
-  border-radius: 999px;
-  background: var(--beak);
-  color: var(--ink);
-  font-size: 0.75rem;
-  font-weight: 900;
-}
-
-.moon-pointer i {
-  width: 14px;
-  height: 9px;
-  margin-top: 1px;
-  background: var(--beak);
-  clip-path: path('M0 0 H14 L8.4 7.6 Q7 9.2 5.6 7.6 Z');
 }
 
 .moon-track {
   position: absolute;
   inset: 0;
   overflow: hidden;
-  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
 }
 
 .moon-strip {
   position: absolute;
-  top: 28px;
+  top: 14px;
   left: 50%;
   overflow: visible;
 }
@@ -171,13 +201,15 @@
 .moon-strip text {
   fill: var(--mist);
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
+  opacity: 0.8;
 }
 
 .moon-strip text.tonight {
   fill: var(--teal);
   font-weight: 900;
+  opacity: 1;
 }
 
 
@@ -250,8 +282,8 @@
 .moon-days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 4px;
-  padding: 8px 16px 18px;
+  gap: 3px;
+  padding: 8px 12px 18px;
 }
 
 .moon-days button {
@@ -298,26 +330,122 @@
 
 
 
+/* MOTION */
+
+:root:not(.still) .moon-panel {
+  animation: moon-fade 0.12s ease-out both;
+}
+
+:root:not(.still) .moon-panel.leaving {
+  animation: moon-fade-out 0.12s ease-in forwards;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .moon-panel {
+    animation: moon-grow 0.34s ease-out both, moon-fade 0.15s ease-out both;
+    animation: moon-grow 0.34s linear(0, 0.45 15%, 1.08 35%, 0.97 55%, 1.01 75%, 1) both, moon-fade 0.15s ease-out both;
+  }
+
+  :root:not(.still) .moon-panel.leaving {
+    animation: moon-leave 0.16s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  :root:not(.still) .moon-panel button:active {
+    scale: 0.95;
+  }
+}
+
+@keyframes moon-grow {
+  from {
+    scale: 0.9;
+    translate: var(--from) 0;
+  }
+}
+
+@keyframes moon-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes moon-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes moon-leave {
+  to {
+    opacity: 0;
+    scale: 0.94;
+    translate: var(--from) 0;
+  }
+}
+
+
+
+/* HOVER */
+
+.moon-panel button {
+  transition: scale 0.15s ease-out, background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+@media (hover: hover) {
+  .moon-month:not([aria-disabled="true"]):hover,
+  .moon-close:hover {
+    color: var(--frost);
+  }
+
+  .moon-days button:not([aria-current]):hover {
+    background: color-mix(in srgb, var(--raised) 70%, transparent);
+    color: var(--frost);
+  }
+}
+
+
+
 /* PHONES */
 
-@media (max-width: 700px) {
-  .moon-panel {
-    width: 100%;
-    max-width: 100%;
-    height: 100dvh;
-    max-height: none;
-    border-radius: 0;
+.moon-panel.sheet {
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  filter: none;
+}
+
+.moon-panel.sheet .moon-scroll {
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  clip-path: none;
+  box-shadow: none;
+}
+
+.moon-panel.sheet .moon-arrow {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .moon-panel.sheet {
+    animation-name: moon-rise;
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  :root:not(.still) .moon-panel.sheet.leaving {
+    animation-name: moon-sink;
+    animation-duration: 0.2s;
   }
 }
 
-@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
-  :root:not(.still) .moon-panel[open] {
-    animation: moon-sheet 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
-  }
-}
-
-@keyframes moon-sheet {
+@keyframes moon-rise {
   from {
+    translate: 0 100%;
+  }
+}
+
+@keyframes moon-sink {
+  to {
     translate: 0 100%;
   }
 }

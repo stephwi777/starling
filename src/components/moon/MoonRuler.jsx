@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { rulerLabel } from '../../sky/moonNights.js'
-import { clock } from '../../sky/words.js'
 
 
 
 // SETTINGS
 
-const GAP = 14
+const GAP = 10
 const WHEEL_STEP = 40
 const NOTCH_GLIDE = 140
 const NIGHT_GLIDE = 250
@@ -63,14 +62,14 @@ function Ticks({ notches, nights, tonightNight, timeZone }) {
   return (
     <>
       {notches.map((notch, i) => {
-        const tall = notch.kind === 'noon' ? 30 : notch.kind === 'midnight' ? 22 : 16
-        const opacity = notch.kind === 'noon' ? 0.9 : notch.kind === 'midnight' ? 0.7 : 0.45
+        const tall = notch.kind === 'noon' ? 28 : notch.kind === 'midnight' ? 22 : 18
+        const opacity = notch.kind === 'noon' ? 0.8 : notch.kind === 'midnight' ? 0.5 : 0.32
 
-        return <rect key={i} x={i * GAP - 1.5} y={(30 - tall) / 2 + 2} width="3" height={tall} rx="1.5" fill={notch.kind === 'noon' ? 'var(--frost)' : 'var(--snow-shade)'} opacity={opacity} />
+        return <rect key={i} x={i * GAP - 1} y={(28 - tall) / 2} width="2" height={tall} rx="1" fill={notch.kind === 'noon' ? 'var(--frost)' : 'var(--mist)'} opacity={opacity} />
       })}
 
       {notches.map((notch, i) => notch.kind === 'midnight' && (
-        <text key={`label-${i}`} x={i * GAP} y="54" textAnchor="middle" className={notch.night === tonightNight ? 'tonight' : undefined}>
+        <text key={`label-${i}`} x={i * GAP} y="46" textAnchor="middle" className={notch.night === tonightNight ? 'tonight' : undefined}>
           {rulerLabel(nights[notch.night], notch.night === tonightNight, timeZone)}
         </text>
       ))}
@@ -184,13 +183,10 @@ function MoonRuler({ ref, notches, nights, tonightNight, index, glide, timeZone,
       onPointerUp={pointerUp}
       onPointerCancel={pointerUp}
     >
-      <div className="moon-pointer" aria-hidden="true">
-        <span>{clock(notches[Math.round(position)].time, timeZone)}</span>
-        <i />
-      </div>
+      <i className="moon-pointer" aria-hidden="true" />
 
       <div className="moon-track" aria-hidden="true">
-        <svg className="moon-strip" width={notches.length * GAP} height="62" style={{ transform: `translateX(${-position * GAP}px)` }}>
+        <svg className="moon-strip" width={notches.length * GAP} height="52" style={{ transform: `translateX(${-position * GAP}px)` }}>
           {ticks}
         </svg>
       </div>

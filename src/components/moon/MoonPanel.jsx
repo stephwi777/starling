@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useLocation, useNavigate, useOutletContext } from 'react-router'
 import { nightStart } from '../../sky/night.js'
 import { distanceWords, fullMoonWords, moonAt, nightName, phaseName, riseAndSet } from '../../sky/moonFacts.js'
@@ -7,6 +7,7 @@ import { clock } from '../../sky/words.js'
 import { PhaseMoon } from '../ui/icons.jsx'
 import MoonRuler, { useNotchWheel } from './MoonRuler.jsx'
 import MoonCalendar from './MoonCalendar.jsx'
+import { popoverPlace } from './popoverPlace.js'
 import './MoonPanel.css'
 
 
@@ -39,11 +40,28 @@ function TimeOrNone({ date, timeZone }) {
 
 
 
+// MOTION
+
+const LEAVE = 200
+const WIDTH = 352
+const HEIGHT = 640
+const PHONE = '(max-width: 700px)'
+
+function motionOff() {
+  return matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('still')
+}
+
+
+
 // MOON PANEL
 
 function MoonPanel() {
-  const { place, now, moonLink } = useOutletContext()
-  const dialog = useRef(null)
+  const { place, now, moonLink, moonClose } = useOutletContext()
+  const panel = useRef(null)
+  const scroller = useRef(null)
+  const closeButton = useRef(null)
+  const [spot, setSpot] = useState(null)
+  const [leaving, setLeaving] = useState(false)
   const art = useRef(null)
   const ruler = useRef(null)
   const closing = useRef(false)
@@ -102,22 +120,80 @@ function MoonPanel() {
 
   useNotchWheel(art, step)
 
-  useEffect(() => {
-    const element = dialog.current
-
-    if (!element.open) element.showModal()
-
-    return () => moonLink.current?.focus()
-  }, [moonLink])
-
   function close() {
     if (closing.current) return
 
     closing.current = true
+    setLeaving(true)
 
-    if (location.state?.fromTonight) navigate(-1)
-    else navigate('/tonight', { replace: true })
+    setTimeout(() => {
+      if (location.state?.fromTonight) navigate(-1)
+      else navigate('/tonight', { replace: true })
+    }, motionOff() ? 0 : LEAVE)
   }
+
+  useLayoutEffect(() => {
+    const element = panel.current
+    const link = moonLink.current
+    let frame
+
+    const place = () => {
+      const tile = moonLink.current?.closest('.tile')
+
+      if (matchMedia(PHONE).matches || !tile) return setSpot({ sheet: true })
+
+      const size = { width: Math.min(WIDTH, window.innerWidth - 32), height: Math.min(HEIGHT, scroller.current.scrollHeight) }
+
+      const spot = popoverPlace(tile.getBoundingClientRect(), size, { width: window.innerWidth, height: window.innerHeight })
+
+      setSpot(spot.fits ? spot : { sheet: true })
+    }
+
+    const later = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(place)
+    }
+
+    document.documentElement.style.setProperty('--scrollbar-gap', `${window.innerWidth - document.documentElement.clientWidth}px`)
+    document.documentElement.classList.add('moon-open')
+    element.showPopover?.()
+    place()
+    window.addEventListener('resize', later)
+
+    return () => {
+      cancelAnimationFrame(frame)
+      document.documentElement.classList.remove('moon-open')
+      window.removeEventListener('resize', later)
+      link?.focus({ preventScroll: true })
+    }
+  }, [moonLink])
+
+  const placed = Boolean(spot)
+
+  useEffect(() => {
+    if (placed) closeButton.current.focus({ preventScroll: true })
+  }, [placed])
+
+  useEffect(() => {
+    moonClose.current = close
+
+    const outside = event => {
+      if (!panel.current.contains(event.target) && !moonLink.current?.closest('.tile')?.contains(event.target)) close()
+    }
+
+    const escape = event => {
+      if (event.key === 'Escape') close()
+    }
+
+    document.addEventListener('pointerdown', outside)
+    document.addEventListener('keydown', escape)
+
+    return () => {
+      moonClose.current = null
+      document.removeEventListener('pointerdown', outside)
+      document.removeEventListener('keydown', escape)
+    }
+  })
 
   const home = () => setMove(current => ({ ...current, time: null, glide: false }))
 
@@ -127,89 +203,100 @@ function MoonPanel() {
   }
 
   return (
-    <dialog ref={dialog} className="moon-panel" aria-labelledby="moon-title" onCancel={event => { event.preventDefault(); close() }} onClose={close}>
-      <div className="moon-head">
-        <h2 id="moon-title">Moon</h2>
-        <button type="button" className="moon-close" aria-label="Close" onClick={close}>
-          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
-        </button>
-      </div>
+    <div
+      ref={panel}
+      popover="manual"
+      role="dialog"
+      aria-labelledby="moon-title"
+      className={['moon-panel', spot?.sheet ? 'sheet' : spot?.side, spot ? '' : 'unplaced', leaving ? 'leaving' : ''].filter(Boolean).join(' ')}
+      style={spot && !spot.sheet ? { left: spot.left, top: spot.top, '--arrow': `${spot.arrow}px` } : undefined}
+    >
+      <span className="moon-arrow" aria-hidden="true" />
 
-
-
-      {/* MOON */}
-
-      <div className="moon-art">
-        <span ref={art}><PhaseMoon angle={moon.angle} size={170} south={place.latitude < 0} /></span>
-      </div>
-
-      <div className="moon-title">
-        <HomeArrow path={BACK} shown={index > sky.home} onClick={homeFromArrow} />
-        <div>
-          <p className="moon-phase">{phase}</p>
-          <p className={`moon-night${notch.night === sky.tonight ? ' tonight' : ''}`}>{title}</p>
+      <div className="moon-scroll" ref={scroller}>
+        <div className="moon-head">
+          <h2 id="moon-title">Moon</h2>
+          <button ref={closeButton} type="button" className="moon-close" aria-label="Close" onClick={close}>
+            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
+          </button>
         </div>
-        <HomeArrow path={AHEAD} shown={index < sky.home} onClick={homeFromArrow} />
+
+
+
+        {/* MOON */}
+
+        <div className="moon-art">
+          <span ref={art}><PhaseMoon angle={moon.angle} size={150} south={place.latitude < 0} /></span>
+        </div>
+
+        <div className="moon-title">
+          <HomeArrow path={BACK} shown={index > sky.home} onClick={homeFromArrow} />
+          <div>
+            <p className="moon-phase">{phase}</p>
+            <p className={`moon-night${notch.night === sky.tonight ? ' tonight' : ''}`}>{title.replace(/ (\d+)$/, '\u00a0$1')} at{'\u00a0'}{clock(notch.time, place.timeZone)}</p>
+          </div>
+          <HomeArrow path={AHEAD} shown={index < sky.home} onClick={homeFromArrow} />
+        </div>
+
+
+
+        {/* RULER */}
+
+        <MoonRuler
+          ref={ruler}
+          notches={sky.notches}
+          nights={sky.nights}
+          tonightNight={sky.tonight}
+          index={index}
+          glide={move.glide}
+          timeZone={place.timeZone}
+          valueText={`${title}, ${clock(notch.time, place.timeZone)}, ${phase}, ${lit}% lit${notch.night === sky.tonight ? ', tonight' : ''}`}
+          onMove={(target, glide) => moveTo(() => target, glide)}
+          onStep={step}
+          onNight={stepNight}
+          onHome={home}
+        />
+
+
+
+        {/* ROWS */}
+
+        <dl className="moon-rows">
+          <div><dt>Lit</dt><dd>{lit}%</dd></div>
+          <div><dt>Moonrise</dt><dd><TimeOrNone date={times.rise} timeZone={place.timeZone} /></dd></div>
+          <div><dt>Moonset</dt><dd><TimeOrNone date={times.set} timeZone={place.timeZone} /></dd></div>
+          <div><dt>Next full Moon</dt><dd>{full}</dd></div>
+          <div><dt>Distance</dt><dd>{distanceWords(moon.km, place.country)}</dd></div>
+        </dl>
+
+
+
+        {/* CALENDAR */}
+
+        <MoonCalendar
+          nights={sky.nights}
+          year={browse.year}
+          month={browse.month}
+          first={sky.nights[0]}
+          last={sky.nights.at(-1)}
+          selectedNight={notch.night}
+          tonightNight={sky.tonight}
+          south={place.latitude < 0}
+          timeZone={place.timeZone}
+          onMonth={turnMonth}
+          onPick={pick => moveTo(from => sameTimeIndex(sky.notches, sky.nights, from, pick), false)}
+        />
+
+
+
+        {/* NOTE */}
+
+        <div className="moon-note">
+          <p><strong>Why does the Moon change shape?</strong></p>
+          <p>The Sun always lights half of the Moon. As it circles Earth, we see more or less of that lit half.</p>
+        </div>
       </div>
-
-
-
-      {/* RULER */}
-
-      <MoonRuler
-        ref={ruler}
-        notches={sky.notches}
-        nights={sky.nights}
-        tonightNight={sky.tonight}
-        index={index}
-        glide={move.glide}
-        timeZone={place.timeZone}
-        valueText={`${title}, ${clock(notch.time, place.timeZone)}, ${phase}, ${lit}% lit${notch.night === sky.tonight ? ', tonight' : ''}`}
-        onMove={(target, glide) => moveTo(() => target, glide)}
-        onStep={step}
-        onNight={stepNight}
-        onHome={home}
-      />
-
-
-
-      {/* ROWS */}
-
-      <dl className="moon-rows">
-        <div><dt>Lit</dt><dd>{lit}%</dd></div>
-        <div><dt>Moonrise</dt><dd><TimeOrNone date={times.rise} timeZone={place.timeZone} /></dd></div>
-        <div><dt>Moonset</dt><dd><TimeOrNone date={times.set} timeZone={place.timeZone} /></dd></div>
-        <div><dt>Next full Moon</dt><dd>{full}</dd></div>
-        <div><dt>Distance</dt><dd>{distanceWords(moon.km, place.country)}</dd></div>
-      </dl>
-
-
-
-      {/* CALENDAR */}
-
-      <MoonCalendar
-        nights={sky.nights}
-        year={browse.year}
-        month={browse.month}
-        first={sky.nights[0]}
-        last={sky.nights.at(-1)}
-        selectedNight={notch.night}
-        tonightNight={sky.tonight}
-        south={place.latitude < 0}
-        timeZone={place.timeZone}
-        onMonth={turnMonth}
-        onPick={pick => moveTo(from => sameTimeIndex(sky.notches, sky.nights, from, pick), false)}
-      />
-
-
-
-      {/* NOTE */}
-
-      <div className="moon-note">
-        <p><strong>Why does the Moon change shape?</strong></p>
-        <p>The Sun always lights half of the Moon. As it circles Earth, we see more or less of that lit half.</p>
-      </div>
-    </dialog>
+    </div>
   )
 }
 

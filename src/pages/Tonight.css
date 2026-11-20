@@ -338,23 +338,14 @@
   column-gap: 16px;
 }
 
-.moon-tile h2 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.moon-tile h2 a::after {
-  content: '';
+.tile-link {
   position: absolute;
   inset: 0;
+  z-index: 3;
   border-radius: inherit;
 }
 
-.moon-tile h2 a:focus-visible {
-  outline: none;
-}
-
-.moon-tile:has(a:focus-visible) {
+.tile-link:focus-visible {
   outline: 3px solid var(--beak);
   outline-offset: 2px;
 }

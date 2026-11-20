@@ -143,12 +143,20 @@ export function SeeingTile({ sky, place, status }) {
 
 // MOON TILE
 
-function MoonTile({ sky, place, moonLink }) {
+function MoonTile({ sky, place, moonLink, moonClose }) {
+  function toggle(event) {
+    if (!moonClose.current) return
+
+    event.preventDefault()
+    moonClose.current()
+  }
+
   const { night, moon } = sky
 
   return (
     <section className="tile moon-tile" aria-labelledby="tile-moon">
-      <h2 id="tile-moon"><Link ref={moonLink} to="moon" state={{ fromTonight: true }}>Moon</Link></h2>
+      <h2 id="tile-moon">Moon</h2>
+      <Link ref={moonLink} className="tile-link" aria-labelledby="tile-moon" to="moon" state={{ fromTonight: true }} onClick={toggle} />
       <PhaseMoon angle={night.moonAngle} size={64} south={place.latitude < 0} />
       <strong>{Math.round(night.moonLit * 100)}% lit</strong>
       <p>{moonTiming(moon, night, place.timeZone)}</p>
@@ -161,10 +169,10 @@ function MoonTile({ sky, place, moonLink }) {
 
 // TILES
 
-function TonightTiles({ sky, place, status, moonLink }) {
+function TonightTiles({ sky, place, status, moonLink, moonClose }) {
   return (
     <div className="tiles">
-      <MoonTile sky={sky} place={place} moonLink={moonLink} />
+      <MoonTile sky={sky} place={place} moonLink={moonLink} moonClose={moonClose} />
 
       <DarknessTile sky={sky} place={place} />
 
