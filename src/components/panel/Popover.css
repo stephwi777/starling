@@ -96,6 +96,109 @@
 
 
 
+/* CHART */
+
+.popover-chart {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 8px 16px 0;
+}
+
+.popover-picker {
+  border-radius: 10px;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.popover-picker svg {
+  display: block;
+}
+
+
+
+/* VERDICT */
+
+.popover-verdict {
+  padding: 14px 24px 8px;
+  text-align: center;
+}
+
+.popover-verdict p:first-child {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-variation-settings: 'SOFT' 100;
+  font-weight: 600;
+}
+
+.popover-verdict p + p {
+  color: var(--mist);
+  font-weight: 800;
+}
+
+.popover-verdict p:last-child:not(:nth-child(1)) {
+  margin-top: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+
+
+/* ROWS */
+
+.popover-rows {
+  padding: 2px 20px 8px;
+}
+
+.popover-rows dt {
+  white-space: nowrap;
+}
+
+.popover-rows div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 0;
+  font-weight: 700;
+}
+
+.popover-rows div + div {
+  border-top: 2px solid var(--raised);
+}
+
+.popover-rows dd {
+  color: var(--mist);
+  text-align: right;
+}
+
+.popover-rows small {
+  display: block;
+  font-size: 0.78rem;
+  opacity: 0.85;
+}
+
+
+
+/* NOTE */
+
+.popover-note {
+  margin: 4px 16px 18px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: var(--raised);
+  color: var(--mist);
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.popover-note strong {
+  color: var(--frost);
+}
+
+
+
 /* MOTION */
 
 :root:not(.still) .popover {

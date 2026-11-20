@@ -80,10 +80,27 @@ test('missing hours become null, and no hours at all gives null', () => {
   expect(nightWeather(empty, night)).toBeNull()
 })
 
-test('jet stream speeds come hour by hour in metres per second', () => {
-  const weather = nightWeather(fakeForecast(), night)
-  expect(weather.jets.length).toBe(night.hours)
-  expect(weather.jets[0]).toBeCloseTo(8.94, 2)
+test('upper air comes hour by hour in metres per second', () => {
+  const weather = nightWeather(fakeForecast({
+    wind_gusts_10m: Array(48).fill(20),
+    wind_speed_850hPa: Array(48).fill(10),
+    wind_speed_700hPa: Array(48).fill(10),
+    wind_speed_500hPa: Array(48).fill(10),
+    wind_direction_850hPa: Array(48).fill(0),
+    wind_direction_700hPa: Array(48).fill(0),
+    wind_direction_500hPa: Array(48).fill(180),
+    wind_direction_250hPa: Array(48).fill(180),
+  }), night)
+
+  expect(weather.air.length).toBe(night.hours)
+  expect(weather.air[0].jet).toBeCloseTo(8.94, 2)
+  expect(weather.air[0].gust).toBeCloseTo(8.94, 2)
+  expect(weather.air[0].wind).toBeCloseTo(2.68, 2)
+  expect(weather.air[0].shear).toBeCloseTo(8.94, 2)
+})
+
+test('upper air without layer details leaves the churning unknown', () => {
+  expect(nightWeather(fakeForecast(), night).air[0]).toMatchObject({ shear: null, gust: null })
 })
 
 test('temperature and wind are written plainly', () => {
@@ -124,5 +141,5 @@ test('a forecast full of gaps gives no readings instead of made-up ones', () => 
     visibility: Array(48).fill(null),
     wind_speed_250hPa: Array(48).fill(null),
   })
-  expect(nightWeather(gaps, night)).toEqual({ clouds: null, jets: null, temp: null, wind: null, seeing: null, transparency: null })
+  expect(nightWeather(gaps, night)).toEqual({ clouds: null, air: null, temp: null, wind: null, seeing: null, transparency: null })
 })

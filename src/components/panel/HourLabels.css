@@ -1,0 +1,17 @@
+/* HOUR LABELS */
+
+.hour-labels {
+  position: relative;
+  height: 1.3em;
+  margin-top: 4px;
+  color: var(--mist);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.hour-labels span {
+  position: absolute;
+  top: 0;
+  translate: -50% 0;
+  white-space: nowrap;
+}

@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest'
-import { seeingWords } from './seeing.js'
+import { SAMPLE_PLACE } from '../place/placeStorage.js'
+import { hourScore, seeingRows, seeingWords, shearOf } from './seeing.js'
 
 
 
@@ -26,12 +27,16 @@ function night(sunAt = m => (m < 4 ? 2 : m < 96 || m >= 749 ? -10 : -30), extra 
   }
 }
 
-function hours(pick) {
-  return Array.from({ length: 15 }, (_, hour) => pick(hour))
+function calm(jet, extra = {}) {
+  return jet === null ? null : { jet, shear: 0, gust: 0, wind: 0, ...extra }
 }
 
-function words(jets, options = {}) {
-  return seeingWords({ night: night(), jets, status: 'ready', timeZone: ZONE, ...options })
+function hours(pick) {
+  return Array.from({ length: 15 }, (_, hour) => calm(pick(hour)))
+}
+
+function words(air, options = {}) {
+  return seeingWords({ night: night(), air, status: 'ready', timeZone: ZONE, ...options })
 }
 
 
@@ -89,7 +94,58 @@ test('when the forecast is missing', () => {
 })
 
 test('a night when the Sun never sets', () => {
-  const result = seeingWords({ night: night(() => 5), jets: hours(() => 5), status: 'ready', timeZone: ZONE })
+  const result = seeingWords({ night: night(() => 5), air: hours(() => 5), status: 'ready', timeZone: ZONE })
 
   expect(result).toEqual({ score: 0, value: 'No night', line: 'The Sun doesn’t set tonight.', best: null })
+})
+
+
+
+// CAUSES
+
+test('gusty ground wind lowers the score', () => {
+  expect(hourScore(calm(5, { gust: 12 }))).toBe(3)
+  expect(words(Array.from({ length: 15 }, () => calm(5, { gust: 12 }))).value).toBe('Average')
+})
+
+test('churning air layers lower the score', () => {
+  expect(hourScore(calm(5, { shear: 12 }))).toBe(4)
+  expect(hourScore(calm(5, { shear: 20 }))).toBe(3)
+})
+
+test('the score never drops below one', () => {
+  expect(hourScore(calm(60, { shear: 30, gust: 20 }))).toBe(1)
+})
+
+test('layers blowing opposite ways count as churning', () => {
+  expect(shearOf([10, 10], [0, 180])).toBeCloseTo(20)
+  expect(shearOf([10, 15], [90, 90])).toBeCloseTo(5)
+  expect(shearOf([10, null], [90, 90])).toBeNull()
+})
+
+
+
+// ROWS
+
+test('rows name each cause in plain words', () => {
+  const rows = seeingRows({ jet: 15, shear: 4, gust: 7.2, wind: 3 }, 'US')
+
+  expect(rows.jet).toEqual({ value: 'Light', note: '34 mph, 34,000 ft up' })
+  expect(rows.layers).toEqual({ value: 'Smooth', note: 'moving together' })
+  expect(rows.ground).toEqual({ value: 'Gusty', note: '7 mph, gusts 16' })
+})
+
+test('rows use km/h outside the US', () => {
+  expect(seeingRows({ jet: 15, shear: 20, gust: 12, wind: 5 }, 'FR')).toEqual({
+    jet: { value: 'Light', note: '54 km/h, 10 km up' },
+    layers: { value: 'Churning', note: 'tumbling into each other' },
+    ground: { value: 'Very gusty', note: '18 km/h, gusts 43' },
+  })
+})
+
+test('unknown layers are shown as unknown', () => {
+  expect(seeingRows({ jet: 15, shear: null, gust: null, wind: 3 }, SAMPLE_PLACE.country)).toMatchObject({
+    layers: { value: '—', note: null },
+    ground: { value: '—', note: '7 mph' },
+  })
 })

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { darkNow, darknessWords } from './darkness.js'
+import { darknessWords } from './darkness.js'
 
 
 
@@ -46,42 +46,4 @@ test('a night that is fully dark the whole time', () => {
 test('a night when the Sun never sets', () => {
   const words = darknessWords(night(() => 5, { astroDusk: null, astroDawn: null }), ZONE)
   expect(words).toEqual({ value: 'Daylight', line: 'The Sun doesn’t set tonight.' })
-})
-
-
-
-// NOW
-
-const ORDINARY = night(m => (m < 4 ? 2 : m < 96 || m >= 749 ? -10 : -30))
-
-test('no words when it is not tonight', () => {
-  expect(darkNow(ORDINARY, null)).toBe(null)
-})
-
-test('before sunset the Sun is still up', () => {
-  expect(darkNow(ORDINARY, 0)).toBe('The Sun is still up.')
-})
-
-test('evening twilight', () => {
-  expect(darkNow(ORDINARY, 5)).toBe('Evening twilight now.')
-})
-
-test('fully dark with hours left', () => {
-  expect(darkNow(ORDINARY, 60)).toBe('Fully dark now, 2 hours left.')
-})
-
-test('fully dark with one hour left', () => {
-  expect(darkNow(ORDINARY, 68)).toBe('Fully dark now, 1 hour left.')
-})
-
-test('fully dark with minutes left', () => {
-  expect(darkNow(ORDINARY, 71)).toBe('Fully dark now, 39 minutes left.')
-})
-
-test('morning twilight', () => {
-  expect(darkNow(ORDINARY, 78)).toBe('Morning twilight now.')
-})
-
-test('twilight on a night that never gets fully dark', () => {
-  expect(darkNow(night(() => -10, { astroDusk: null, astroDawn: null }), 40)).toBe('Twilight now.')
 })

@@ -1,6 +1,6 @@
-import { useRef } from 'react'
 import { barLayers } from '../../sky/cloudPanel.js'
-import { clock } from '../../sky/words.js'
+import useChartPicking from '../panel/useChartPicking.js'
+import HourLabels from '../panel/HourLabels.jsx'
 
 
 
@@ -60,77 +60,17 @@ function Bar({ hour, x, width, cell }) {
 
 
 
-// HOUR PICKING
-
-const KEYS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1 }
-
-function useHourPicking(count, onChoose, onStep, onNight) {
-  const dragging = useRef(false)
-
-  function pick(event) {
-    const box = event.currentTarget.getBoundingClientRect()
-    const index = Math.floor(((event.clientX - box.left) / box.width) * count)
-
-    onChoose(Math.max(0, Math.min(count - 1, index)))
-  }
-
-  return {
-    onPointerDown(event) {
-      dragging.current = true
-      event.currentTarget.setPointerCapture?.(event.pointerId)
-      pick(event)
-    },
-    onPointerMove(event) {
-      if (dragging.current) pick(event)
-    },
-    onPointerUp() {
-      dragging.current = false
-    },
-    onPointerCancel() {
-      dragging.current = false
-    },
-    onKeyDown(event) {
-      const moves = {
-        ...KEYS,
-        Home: () => onChoose(0),
-        End: () => onChoose(count - 1),
-        PageUp: () => onNight(-1),
-        PageDown: () => onNight(1),
-      }
-      const move = moves[event.key]
-
-      if (move === undefined) return
-
-      event.preventDefault()
-
-      if (typeof move === 'number') onStep(move)
-      else move()
-    },
-  }
-}
-
-
-
-// LABELS
-
-function localHour(date, timeZone) {
-  return Number(new Intl.DateTimeFormat('en-US', { timeZone, hour: 'numeric', hourCycle: 'h23' }).format(date))
-}
-
-
-
 // CLOUD CHART
 
 function CloudChart({ hours, chosen, valueText, timeZone, onChoose, onStep, onNight }) {
-  const picking = useHourPicking(hours.length, onChoose, onStep, onNight)
+  const picking = useChartPicking(hours.length, { onChoose, onStep, onNight })
   const cell = WIDTH / hours.length
   const width = cell * 0.62
-  const middle = i => ((i + 0.5) / hours.length) * 100
 
   return (
-    <div className="clouds-chart">
+    <div className="popover-chart">
       <div
-        className="clouds-bars"
+        className="popover-picker"
         role="slider"
         tabIndex={0}
         aria-label="Hour"
@@ -146,11 +86,7 @@ function CloudChart({ hours, chosen, valueText, timeZone, onChoose, onStep, onNi
         </svg>
       </div>
 
-      <div className="clouds-hours" aria-hidden="true">
-        {hours.map((hour, i) => localHour(hour.time, timeZone) % 3 === 0 && (
-          <span key={i} style={{ left: `${middle(i)}%` }}>{clock(hour.time, timeZone)}</span>
-        ))}
-      </div>
+      <HourLabels hours={hours} timeZone={timeZone} />
 
       <div className="clouds-key" aria-hidden="true">
         <span><i className="low" />Low</span>

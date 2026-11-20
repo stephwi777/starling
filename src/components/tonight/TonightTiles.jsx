@@ -1,9 +1,12 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router'
 import { cloudBars, cloudWords } from '../../sky/clouds.js'
-import { darkNow, darknessWords } from '../../sky/darkness.js'
+import { darknessWords } from '../../sky/darkness.js'
+import { moonLine, skyPath, trulyDark } from '../../sky/darkPanel.js'
 import { seeingWords } from '../../sky/seeing.js'
 import { moonTiming, nextFull } from '../../sky/moon.js'
 import { PhaseMoon } from '../ui/icons.jsx'
+import SunStrokes from '../darkness/SunStrokes.jsx'
 
 
 
@@ -71,36 +74,21 @@ export function CloudsTile({ sky, place, status, link, panelClose }) {
 
 
 
-// SUN PATH
+// SUN CURVE
 
-const HORIZON = 44
-const RISE = 38
-const SOFT = 25
+const STEP = 10 * 60 * 1000
 
-function height(alt) {
-  if (alt >= 0) return Math.min(53, HORIZON + (alt * RISE) / SOFT)
-
-  return HORIZON - Math.tanh(-alt / SOFT) * RISE
-}
-
-function stretches(points, alts, keep) {
-  return points.map(([x, y], i) => (keep(alts[i]) ? `${i > 0 && keep(alts[i - 1]) ? 'L' : 'M'}${x} ${y}` : '')).join(' ').trim()
-}
-
-function Stroke({ d, color, opacity }) {
-  return d ? <path d={d} fill="none" stroke={color} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" opacity={opacity} /> : null
-}
-
-function SunPath({ night, nowIndex }) {
-  const points = night.sun.map((alt, i) => [4 + (i / (night.sun.length - 1)) * 152, height(alt)])
-  const now = nowIndex === null ? null : points[nowIndex]
+function SunCurve({ path, nowIndex }) {
+  const top = Math.max(...path.sun) + 5
+  const bottom = Math.min(...path.sun) - 5
+  const x = i => 4 + (i / (path.sun.length - 1)) * 152
+  const y = alt => 6 + ((top - alt) / (top - bottom)) * 52
+  const now = nowIndex === null ? null : [x(nowIndex), y(path.sun[nowIndex])]
 
   return (
-    <svg viewBox="0 0 160 56" width="100%" height="56" aria-hidden="true">
-      <Stroke d={stretches(points, night.sun, () => true)} color="var(--snow-shade)" opacity="0.8" />
-      <Stroke d={stretches(points, night.sun, alt => alt > 0)} color="var(--beak)" opacity="0.7" />
-      <Stroke d={stretches(points, night.sun, alt => alt < -18)} color="var(--teal)" />
-      <line x1="0" y1={HORIZON} x2="160" y2={HORIZON} stroke="var(--mist)" strokeWidth="1.5" strokeDasharray="3 5" />
+    <svg viewBox="0 0 160 64" width="100%" height="64" aria-hidden="true">
+      <line x1="0" y1={y(0)} x2="160" y2={y(0)} stroke="var(--mist)" strokeWidth="1.5" strokeDasharray="3 5" />
+      <SunStrokes path={path} x={x} y={y} width={4} />
       {now && <circle cx={now[0]} cy={now[1]} r="5" fill="var(--frost)" />}
     </svg>
   )
@@ -110,17 +98,23 @@ function SunPath({ night, nowIndex }) {
 
 // DARKNESS TILE
 
-export function DarknessTile({ sky, place }) {
-  const words = darknessWords(sky.night, place.timeZone)
-  const now = darkNow(sky.night, sky.nowIndex)
+export function DarknessTile({ sky, place, now, link, panelClose }) {
+  const { night } = sky
+  const words = darknessWords(night, place.timeZone)
+  const path = useMemo(() => skyPath(night.observer, night.noon), [night])
+  const windows = useMemo(() => trulyDark(night), [night])
+  const moon = moonLine(night, windows, place.timeZone)
+  const step = Math.round((now - night.noon) / STEP)
+  const nowIndex = step >= 0 && step < path.sun.length ? step : null
 
   return (
-    <section className="tile still" aria-labelledby="tile-dark">
+    <section className="tile" aria-labelledby="tile-dark">
       <h2 id="tile-dark">Darkness</h2>
-      <SunPath night={sky.night} nowIndex={sky.nowIndex} />
+      <TileLink id="tile-dark" to="darkness" link={link} panelClose={panelClose} />
+      <SunCurve path={path} nowIndex={nowIndex} />
       <strong>{words.value}</strong>
       <p>{words.line}</p>
-      {now && <p>{now}</p>}
+      {moon && <p>{moon}</p>}
     </section>
   )
 }
@@ -141,12 +135,13 @@ function SeeingDots({ score }) {
 
 // SEEING TILE
 
-export function SeeingTile({ sky, place, status }) {
-  const words = seeingWords({ night: sky.night, jets: sky.weather?.jets ?? null, status, timeZone: place.timeZone })
+export function SeeingTile({ sky, place, status, link, panelClose }) {
+  const words = seeingWords({ night: sky.night, air: sky.weather?.air ?? null, status, timeZone: place.timeZone })
 
   return (
-    <section className="tile still" aria-labelledby="tile-seeing">
+    <section className="tile" aria-labelledby="tile-seeing">
       <h2 id="tile-seeing">Seeing</h2>
+      <TileLink id="tile-seeing" to="seeing" link={link} panelClose={panelClose} />
       <SeeingDots score={words.score} />
       <strong>{words.value}</strong>
       <p>{words.line}</p>
@@ -178,16 +173,16 @@ function MoonTile({ sky, place, link, panelClose }) {
 
 // TILES
 
-function TonightTiles({ sky, place, status, links, panelClose }) {
+function TonightTiles({ sky, place, now, status, links, panelClose }) {
   return (
     <div className="tiles">
       <MoonTile sky={sky} place={place} link={links.moon} panelClose={panelClose} />
 
-      <DarknessTile sky={sky} place={place} />
+      <DarknessTile sky={sky} place={place} now={now} link={links.darkness} panelClose={panelClose} />
 
       <CloudsTile sky={sky} place={place} status={status} link={links.clouds} panelClose={panelClose} />
 
-      <SeeingTile sky={sky} place={place} status={status} />
+      <SeeingTile sky={sky} place={place} status={status} link={links.seeing} panelClose={panelClose} />
     </div>
   )
 }

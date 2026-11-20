@@ -1,0 +1,153 @@
+/* VERDICT */
+
+.dark-verdict {
+  padding: 12px 24px 4px;
+  text-align: center;
+}
+
+.dark-verdict p:first-child {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-variation-settings: 'SOFT' 100;
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.dark-verdict p + p {
+  margin-top: 2px;
+  color: var(--mist);
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+
+
+/* CHART */
+
+.dark-chart {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 10px 16px 0;
+}
+
+.dark-picker {
+  border-radius: 16px;
+  cursor: ew-resize;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.dark-picker svg {
+  display: block;
+}
+
+.dark-picker text {
+  font-family: var(--font-body);
+  font-size: 8.5px;
+  font-weight: 800;
+}
+
+.dark-lane {
+  margin-top: 6px;
+}
+
+.dark-lane text {
+  fill: var(--zenith);
+}
+
+.dark-band.day {
+  fill: color-mix(in srgb, var(--far-hills) 60%, var(--high));
+}
+
+.dark-band.civil {
+  fill: color-mix(in srgb, var(--far-hills) 40%, var(--high));
+}
+
+.dark-band.nautical {
+  fill: color-mix(in srgb, var(--far-hills) 22%, var(--high));
+}
+
+.dark-band.astronomical {
+  fill: var(--high);
+}
+
+.dark-band.dark {
+  fill: color-mix(in srgb, var(--zenith) 75%, var(--high));
+}
+
+.dark-hours {
+  position: relative;
+  height: 1.3em;
+  margin: 4px 2px 0;
+  color: var(--mist);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.dark-hours span {
+  position: absolute;
+  top: 0;
+  translate: -50% 0;
+  white-space: nowrap;
+}
+
+.dark-hours span:first-child {
+  translate: 0 0;
+}
+
+.dark-hours span:last-child {
+  translate: -100% 0;
+}
+
+.dark-key {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  padding-top: 12px;
+  color: var(--mist);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.dark-key span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dark-key i {
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.dark-key .dark {
+  background: var(--teal);
+}
+
+.dark-key .moonlit {
+  background: var(--moon);
+}
+
+.dark-key .twilight {
+  background: var(--snow-shade);
+}
+
+.dark-key .day {
+  background: var(--beak);
+}
+
+.dark-at {
+  margin: 10px 20px 4px;
+  color: var(--mist);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.dark-at span {
+  white-space: nowrap;
+}

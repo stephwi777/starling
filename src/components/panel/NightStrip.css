@@ -1,0 +1,109 @@
+/* STRIP */
+
+.night-strip {
+  padding: 8px 12px 0;
+}
+
+.night-days {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+}
+
+.night-days button {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0 0 4px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--frost);
+  font-weight: 800;
+}
+
+.night-days span {
+  color: var(--mist);
+  font-size: 0.72rem;
+}
+
+.night-days b {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-weight: 800;
+}
+
+.night-days .past b {
+  color: var(--mist);
+  opacity: 0.55;
+}
+
+.night-days .tonight b {
+  color: var(--teal);
+  font-weight: 900;
+}
+
+.night-days [aria-current] b {
+  background: var(--raised);
+  outline: 2px solid var(--beak);
+}
+
+.night-date {
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px 4px;
+}
+
+.night-date strong {
+  font-size: 0.92rem;
+  font-weight: 800;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.night-date strong.tonight {
+  color: var(--teal);
+}
+
+.night-arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--raised);
+  color: var(--mist);
+}
+
+.night-arrow[aria-disabled="true"] {
+  opacity: 0.35;
+}
+
+
+
+/* HOVER */
+
+@media (hover: hover) {
+  .night-arrow:not([aria-disabled="true"]):hover {
+    color: var(--frost);
+  }
+
+  .night-days button:not([aria-current]):hover b {
+    background: color-mix(in srgb, var(--raised) 70%, transparent);
+  }
+}
+
+
+
+/* FOCUS */
+
+.popover .night-days button:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}

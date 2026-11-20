@@ -24,7 +24,7 @@ const HOUR = 60 * 60 * 1000
 
 // PANELS
 
-const TITLES = { moon: 'Moon', clouds: 'Clouds' }
+const TITLES = { moon: 'Moon', clouds: 'Clouds', darkness: 'Darkness', seeing: 'Seeing' }
 
 
 
@@ -38,8 +38,11 @@ function Tonight() {
   const below = useStickyHeads()
   const moonLink = useRef(null)
   const cloudsLink = useRef(null)
+  const darknessLink = useRef(null)
+  const seeingLink = useRef(null)
   const panelClose = useRef(null)
   const panel = useMatch('/tonight/:panel')?.params.panel
+  const links = { moon: moonLink, clouds: cloudsLink, darkness: darknessLink, seeing: seeingLink }
   const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
   return (
@@ -67,7 +70,7 @@ function Tonight() {
 
       <div className="tonight-below" ref={below}>
         <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} />
-        <TonightTiles sky={sky} place={place} status={forecast.status} links={{ moon: moonLink, clouds: cloudsLink }} panelClose={panelClose} />
+        <TonightTiles sky={sky} place={place} now={now} status={forecast.status} links={links} panelClose={panelClose} />
 
         <div className="tonight-cards">
           <NightsCard place={place} forecast={forecast} now={now} />
@@ -81,7 +84,7 @@ function Tonight() {
 
       {/* PANELS */}
 
-      <Outlet context={{ place, now, forecast, links: { moon: moonLink, clouds: cloudsLink }, panelClose }} />
+      <Outlet context={{ place, now, forecast, links, panelClose }} />
     </main>
   )
 }

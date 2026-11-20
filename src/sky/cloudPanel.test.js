@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest'
 import { SAMPLE_PLACE } from '../place/placeStorage.js'
 import { buildNight } from './night.js'
-import { barLayers, cloudHours, cloudSummary, dewWords, hazeWords, panelNights, sameHour, startHour, transparencyWords } from './cloudPanel.js'
+import { barLayers, cloudHours, cloudSummary, dewWords, hazeWords, transparencyWords } from './cloudPanel.js'
+import { panelNights, sameHour, startHour } from './panelNights.js'
 
 
 

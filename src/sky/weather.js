@@ -1,6 +1,10 @@
+import { shearOf } from './seeing.js'
+
+
+
 // REQUEST
 
-const FIELDS = ['cloud_cover', 'cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high', 'temperature_2m', 'dew_point_2m', 'precipitation_probability', 'wind_speed_10m', 'relative_humidity_2m', 'visibility', 'wind_speed_250hPa']
+const FIELDS = ['cloud_cover', 'cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high', 'temperature_2m', 'dew_point_2m', 'precipitation_probability', 'wind_speed_10m', 'relative_humidity_2m', 'visibility', 'wind_gusts_10m', 'wind_speed_850hPa', 'wind_speed_700hPa', 'wind_speed_500hPa', 'wind_speed_250hPa', 'wind_direction_850hPa', 'wind_direction_700hPa', 'wind_direction_500hPa', 'wind_direction_250hPa']
 
 export function weatherUrl(place) {
   const params = new URLSearchParams({
@@ -33,6 +37,7 @@ export async function fetchWeather(place, signal, fetcher = fetch) {
 // FORECAST HOURS
 
 const HOUR = 60 * 60 * 1000
+const LAYERS = ['850hPa', '700hPa', '500hPa', '250hPa']
 
 export function moments(raw) {
   const offset = (raw.utc_offset_seconds ?? 0) * 1000
@@ -102,14 +107,27 @@ export function nightWeather(raw, night) {
   const clouds = pick('cloud_cover')
   const temp = hourly.temperature_2m?.[evening] ?? null
   const wind = hourly.wind_speed_10m?.[evening] ?? null
-  const jets = pick('wind_speed_250hPa').map(speed => (speed === null ? null : perSecond(speed, units.wind_speed_10m)))
+  const unit = units.wind_speed_10m
+  const metres = field => pick(field).map(speed => (speed === null ? null : perSecond(speed, unit)))
+  const jets = metres('wind_speed_250hPa')
+  const gusts = metres('wind_gusts_10m')
+  const winds = metres('wind_speed_10m')
+  const speeds = LAYERS.map(layer => metres(`wind_speed_${layer}`))
+  const directions = LAYERS.map(layer => pick(`wind_direction_${layer}`))
+
+  const air = jets.map((jet, h) => (jet === null ? null : {
+    jet,
+    shear: shearOf(speeds.map(layer => layer[h]), directions.map(layer => layer[h])),
+    gust: gusts[h],
+    wind: winds[h],
+  }))
   const jet = average(pick('wind_speed_250hPa'))
   const humidity = average(pick('relative_humidity_2m'))
   const visibility = average(pick('visibility'))
 
   return {
     clouds: clouds.some(value => value !== null) ? clouds : null,
-    jets: jets.some(value => value !== null) ? jets : null,
+    air: air.some(Boolean) ? air : null,
     temp: temp === null ? null : `${Math.round(temp)}${units.temperature_2m}`,
     wind: wind === null ? null : windWords(wind, units.wind_speed_10m),
     seeing: jet === null ? null : seeingScore(jet, units.wind_speed_10m),

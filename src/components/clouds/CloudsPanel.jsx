@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router'
 import { nightStart } from '../../sky/night.js'
-import { cloudHours, cloudSummary, dewWords, hazeWords, panelNights, sameHour, startHour, transparencyWords } from '../../sky/cloudPanel.js'
+import { cloudHours, cloudSummary, dewWords, hazeWords, transparencyWords } from '../../sky/cloudPanel.js'
+import { panelNights, sameHour, startHour } from '../../sky/panelNights.js'
 import { useAir } from '../../sky/useAir.js'
 import { clock } from '../../sky/words.js'
 import Popover from '../panel/Popover.jsx'
-import NightStrip from './NightStrip.jsx'
+import NightStrip from '../panel/NightStrip.jsx'
 import CloudChart from './CloudChart.jsx'
 import './CloudsPanel.css'
 
@@ -111,7 +112,7 @@ function CloudsPanel() {
 
       {/* VERDICT */}
 
-      <div className="clouds-verdict">
+      <div className="popover-verdict">
         <p>{summary.kind}</p>
         {hour && <p>at {clock(hour.time, place.timeZone)}</p>}
         <p>{summary.line}</p>
@@ -122,7 +123,7 @@ function CloudsPanel() {
       {/* ROWS */}
 
       {hour && (
-        <dl className="clouds-rows">
+        <dl className="popover-rows">
           <div><dt>Cloud cover</dt><Value value={percent(hour.cover)} note={layers} /></div>
           <div><dt>Transparency</dt><Value value={sky.value} note={sky.note} /></div>
           <div><dt>Dew risk</dt><Value value={dew.value} note={dew.note} /></div>
@@ -135,7 +136,7 @@ function CloudsPanel() {
 
       {/* NOTE */}
 
-      <div className="clouds-note">
+      <div className="popover-note">
         <p><strong>What’s transparency?</strong></p>
         <p>How clear and dark the air itself is. Haze, smoke and damp air scatter light, washing out faint things like galaxies and the Milky Way, even with no clouds.</p>
       </div>
