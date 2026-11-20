@@ -84,13 +84,30 @@ export function showerName(shower) {
 
 // HOURLY ROW
 
-export function hourCells({ night, moon, clouds, timeZone }) {
+function skyKind(dark, cover) {
+  return dark ? cloudKind(cover) ?? 'dark' : 'twilight'
+}
+
+function nowCell(night, clouds, now) {
+  const i = now ? Math.floor((now - night.start) / STEP) : -1
+  const afterSunset = !night.sunset || now > night.sunset
+  const beforeSunrise = !night.sunrise || now < night.sunrise
+
+  if (i < 0 || i >= night.times.length || !afterSunset || !beforeSunrise || night.sun[i] >= 0) return null
+
+  const kind = skyKind(night.sun[i] < -18, clouds?.[Math.floor(i / PER_HOUR)])
+
+  return { time: now, label: 'Now', kind, word: SKIES[kind], moment: false, now: true }
+}
+
+export function hourCells({ night, moon, clouds, timeZone, now }) {
   if (!wholeHours(night).length) return []
 
   const { rise, set } = moonCrossings(moon, night)
+  const current = nowCell(night, clouds, now)
 
   const hours = wholeHours(night).map(({ hour, time, dark }) => {
-    const kind = dark ? cloudKind(clouds?.[hour]) ?? 'dark' : 'twilight'
+    const kind = skyKind(dark, clouds?.[hour])
 
     return { time, label: hourLabel(time, timeZone), kind, word: SKIES[kind], moment: false }
   })
@@ -107,9 +124,10 @@ export function hourCells({ night, moon, clouds, timeZone }) {
     .map(([kind, time]) => ({ time, label: clock(time, timeZone), kind, word: MOMENTS[kind], moment: true }))
 
   const minute = time => Math.round(time / 60000)
-  const free = hours.filter(cell => !moments.some(moment => minute(moment.time) === minute(cell.time)))
+  const thisHour = cell => current && cell.time <= current.time && current.time - cell.time < HOUR
+  const free = hours.filter(cell => !thisHour(cell) && !moments.some(moment => minute(moment.time) === minute(cell.time)))
 
-  return [...moments, ...free].sort((a, b) => a.time - b.time)
+  return [...moments, ...free, current].filter(Boolean).sort((a, b) => a.time - b.time)
 }
 
 

@@ -134,6 +134,41 @@ test('cells are in time order', () => {
 })
 
 
+// NOW
+
+function row(now) {
+  return hourCells({ night: NIGHT, moon: DOWN, clouds: CLEAR, timeZone: ZONE, now })
+}
+
+test('the current hour becomes a Now cell', () => {
+  const cells = row(at(250))
+  const now = cells.findIndex(cell => cell.now)
+
+  expect(cells[now]).toMatchObject({ label: 'Now', kind: 'clear', word: 'Clear', moment: false })
+  expect(cells[now - 1].label).toBe('8pm')
+  expect(cells[now + 1].label).toBe('10pm')
+  expect(cells.some(cell => cell.label === '9pm')).toBe(false)
+})
+
+test('Now sits just after a moment earlier in the same hour', () => {
+  const labels = row(at(100)).map(cell => cell.label)
+
+  expect(labels.slice(1, 4)).toEqual(['6:36pm', 'Now', '7pm'])
+  expect(labels).not.toContain('6pm')
+})
+
+test('Now during twilight says Twilight', () => {
+  expect(row(at(30)).find(cell => cell.now)).toMatchObject({ kind: 'twilight', word: 'Twilight' })
+})
+
+test('no Now cell before sunset or after sunrise', () => {
+  expect(row(at(2)).some(cell => cell.now)).toBe(false)
+  expect(row(at(835)).some(cell => cell.now)).toBe(false)
+  expect(row(undefined).some(cell => cell.now)).toBe(false)
+})
+
+
+
 
 // CLOUD SENTENCE
 

@@ -70,7 +70,7 @@ function Tonight() {
       {/* BELOW */}
 
       <div className="tonight-below" ref={below}>
-        <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} />
+        <HoursCard sky={sky} status={forecast.status} timeZone={place.timeZone} now={now} />
         <TonightTiles sky={sky} place={place} now={now} status={forecast.status} links={links} panelClose={panelClose} />
 
         <div className="tonight-cards">

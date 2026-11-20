@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import { useOutletContext } from 'react-router'
 import { nightStart } from '../../sky/night.js'
 import { panelNights } from '../../sky/panelNights.js'
@@ -29,7 +29,7 @@ function Value({ value, note }) {
     ? <><span aria-hidden="true">—</span><span className="visually-hidden">None</span></>
     : value
 
-  return <dd>{shown}{note && <small>{note}</small>}</dd>
+  return <><dd>{shown}</dd>{note && <dd><small>{note}</small></dd>}</>
 }
 
 
@@ -107,7 +107,7 @@ function DarknessPanel() {
       />
 
       <p className="dark-at">
-        {at.split(' · ').map((part, i) => <span key={part}>{i > 0 && ' · '}{part}</span>)}
+        {at.split(' · ').map((part, i) => <Fragment key={part}>{i > 0 && '\u00a0· '}<span>{part}</span></Fragment>)}
       </p>
 
 

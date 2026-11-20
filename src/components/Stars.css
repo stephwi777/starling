@@ -82,12 +82,63 @@
 
 
 
+/* FLARE */
+
+.star::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: calc(var(--size) * 5 + 12px);
+  height: calc(var(--size) * 5 + 12px);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, currentColor 75%, transparent) 0%, color-mix(in srgb, currentColor 25%, transparent) 35%, transparent 70%);
+  opacity: 0;
+  translate: -50% -50%;
+}
+
+.stars .star.bloom {
+  animation: bloom-core 1.5s ease-in-out;
+}
+
+.stars .star.bloom::before {
+  animation: bloom-halo 1.5s ease-in-out;
+}
+
+@keyframes bloom-core {
+  42% {
+    opacity: min(1, calc(var(--base) * 2));
+    transform: scale(1.35);
+  }
+}
+
+@keyframes bloom-halo {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  42% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+
+
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
   .star.twinkle,
   .star.glow,
-  .star.shimmer {
+  .star.shimmer,
+  .stars .star.bloom,
+  .stars .star.bloom::before {
     animation: none;
   }
 }

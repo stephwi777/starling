@@ -51,11 +51,13 @@ function Arrow({ side, shown, onClick }) {
 
 // HOURS CARD
 
-function HoursCard({ sky, status, timeZone }) {
-  const details = { night: sky.night, moon: sky.moon, clouds: sky.clouds, showers: sky.showers, status, timeZone }
+function HoursCard({ sky, status, timeZone, now }) {
+  const details = { night: sky.night, moon: sky.moon, clouds: sky.clouds, showers: sky.showers, status, timeZone, now }
   const cells = hourCells(details)
   const words = cells.map(cell => cell.word).join()
   const row = useRef(null)
+  const placed = useRef(false)
+  const hasNow = cells.some(cell => cell.now)
   const [ends, setEnds] = useState({ start: true, end: false })
 
   function check() {
@@ -82,6 +84,16 @@ function HoursCard({ sky, status, timeZone }) {
 
   useEffect(check, [words])
 
+  useEffect(() => {
+    if (placed.current || !hasNow) return
+
+    const list = row.current
+    const cell = list.querySelector('.now')
+
+    list.scrollTo({ left: cell.offsetLeft - list.offsetLeft, behavior: 'instant' })
+    placed.current = true
+  }, [hasNow])
+
   return (
     <Card labelledBy="hours-title" className="hours-card">
       <h2 id="hours-title" data-appear><ClockIcon />Hour by hour</h2>
@@ -94,7 +106,11 @@ function HoursCard({ sky, status, timeZone }) {
             const Icon = ICONS[cell.kind]
 
             return (
-              <li key={`${cell.kind}${cell.time.getTime()}`} className={cell.moment ? 'moment' : undefined}>
+              <li
+                key={cell.now ? 'now' : `${cell.kind}${cell.time.getTime()}`}
+                className={cell.moment ? 'moment' : cell.now ? 'now' : undefined}
+                aria-current={cell.now ? 'time' : undefined}
+              >
                 <span className="hour-time">{cell.label}</span>
                 <Icon />
                 <span className="hour-word">{cell.word}</span>

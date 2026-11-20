@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { rulerLabel } from '../../sky/moonNights.js'
+import useTabRing from '../panel/useTabRing.js'
 
 
 
@@ -87,6 +88,7 @@ function MoonRuler({ ref, notches, nights, tonightNight, index, glide, timeZone,
   const shown = useRef(index)
   const [position, setPosition] = useState(index)
   const [drag, setDrag] = useState(null)
+  const ring = useTabRing()
   const last = notches.length - 1
   const ticks = useMemo(() => <Ticks notches={notches} nights={nights} tonightNight={tonightNight} timeZone={timeZone} />, [notches, nights, tonightNight, timeZone])
 
@@ -177,6 +179,7 @@ function MoonRuler({ ref, notches, nights, tonightNight, index, glide, timeZone,
       aria-valuemax={last}
       aria-valuenow={index}
       aria-valuetext={valueText}
+      {...ring}
       onKeyDown={keyDown}
       onPointerDown={pointerDown}
       onPointerMove={pointerMove}

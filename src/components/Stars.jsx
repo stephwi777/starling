@@ -30,6 +30,62 @@ const stars = Array.from({ length: 640 }, (_, i) => {
 
 
 
+// FLARES
+
+const FLARE = 1500
+const GAP = [1500, 3000]
+const PAIR = 0.3
+const PAIR_GAP = [500, 900]
+
+const between = ([low, high]) => low + Math.random() * (high - low)
+
+function useFlares(ref, shown) {
+  useEffect(() => {
+    const field = ref.current
+    const calm = matchMedia('(prefers-reduced-motion: reduce)')
+    const pool = shown.flatMap((star, i) => (star.size > 1.5 ? [i] : []))
+    const timers = new Set()
+
+    if (!pool.length) return
+
+    const later = (wait, task) => {
+      const timer = setTimeout(() => {
+        timers.delete(timer)
+        task()
+      }, wait)
+
+      timers.add(timer)
+    }
+
+    const flare = () => {
+      const star = field.children[pool[Math.floor(Math.random() * pool.length)]]
+
+      star.classList.add('bloom')
+      later(FLARE, () => star.classList.remove('bloom'))
+    }
+
+    const schedule = () => later(between(GAP), () => {
+      const paused = document.documentElement.classList.contains('still')
+
+      if (!calm.matches && !paused && !document.hidden) {
+        flare()
+        if (Math.random() < PAIR) later(between(PAIR_GAP), flare)
+      }
+
+      schedule()
+    })
+
+    schedule()
+
+    return () => {
+      timers.forEach(clearTimeout)
+      field.querySelectorAll('.bloom').forEach(star => star.classList.remove('bloom'))
+    }
+  }, [ref, shown])
+}
+
+
+
 // TEXT BOXES
 
 const WORDS = 'h1, h2, h3, h4, p, li, dt, dd, label, time, figcaption, blockquote'
@@ -78,6 +134,8 @@ function Stars({ amount = 1 }) {
   const ref = useRef(null)
   const [shown, setShown] = useState([])
 
+  useFlares(ref, shown)
+
   useEffect(() => {
     const field = ref.current
     let active = true
@@ -118,6 +176,7 @@ function Stars({ amount = 1 }) {
             '--tint': star.color,
             opacity: star.opacity,
             '--base': star.opacity,
+            '--size': `${star.size}px`,
             '--twinkle': `${star.duration}s`,
             '--shimmer': `${star.shimmerDuration}s`,
             '--delay': `${star.delay}s`,

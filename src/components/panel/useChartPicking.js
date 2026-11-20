@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import useTabRing from './useTabRing.js'
 
 
 
@@ -12,6 +13,7 @@ const KEYS = { ArrowLeft: -1, ArrowDown: -1, ArrowRight: 1, ArrowUp: 1 }
 
 function useChartPicking(count, { onChoose, onStep, onNight, bigStep = 1 }) {
   const dragging = useRef(false)
+  const ring = useTabRing()
 
   function pick(event) {
     const box = event.currentTarget.getBoundingClientRect()
@@ -21,6 +23,7 @@ function useChartPicking(count, { onChoose, onStep, onNight, bigStep = 1 }) {
   }
 
   return {
+    ...ring,
     onPointerDown(event) {
       dragging.current = true
       event.currentTarget.setPointerCapture?.(event.pointerId)

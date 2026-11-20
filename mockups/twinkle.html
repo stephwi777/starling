@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling mockup: star flares and now</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PALETTE */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --far-hills: #31296a;
+      --snow: #b9ade4;
+      --snow-shade: #a093d4;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --teal: #55bcab;
+      --bronze: #d6a866;
+      --beak: #f1cd57;
+      --moon: #f6ead0;
+      --star-blue: #c9d6ff;
+      --star-warm: #ffe4bc;
+      --star-teal: #c2f5ea;
+      --star-rose: #ffd2e2;
+      --clear-top: #070920;
+      --clear-middle: #0f1230;
+      --clear-low: #262158;
+    }
+
+
+
+    /* BASE */
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+    }
+
+    body {
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px clamp(16px, 4vw, 48px) 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+      line-height: 1.15;
+    }
+
+    h1 {
+      color: var(--moon);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+    }
+
+    h2 {
+      font-size: 1.35rem;
+    }
+
+    .intro p,
+    .part > p {
+      max-width: 64ch;
+      margin-top: 10px;
+      color: var(--mist);
+    }
+
+    .part {
+      margin-top: 56px;
+    }
+
+
+
+    /* CONTROLS */
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 24px;
+      align-items: center;
+      margin-top: 22px;
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .controls label {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    select,
+    button {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--raised);
+      color: var(--frost);
+      font: inherit;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--beak);
+    }
+
+
+
+    /* OPTIONS */
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .option {
+      overflow: hidden;
+      border-radius: 26px;
+      background: var(--high);
+    }
+
+    .option header {
+      display: flex;
+      gap: 12px;
+      align-items: start;
+      justify-content: space-between;
+      padding: 18px 20px 14px;
+    }
+
+    .option header p {
+      margin-top: 4px;
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+    .sky {
+      position: relative;
+      height: 300px;
+      background: linear-gradient(var(--clear-top), var(--clear-middle) 60%, var(--clear-low));
+    }
+
+
+
+    /* STARS */
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: currentColor;
+      translate: -50% -50%;
+    }
+
+    .star.bright {
+      box-shadow: 0 0 6px 1px color-mix(in srgb, currentColor 55%, transparent);
+    }
+
+    .star.twinkle {
+      animation: twinkle var(--twinkle) ease-in-out var(--delay) infinite;
+    }
+
+    @keyframes twinkle {
+      50% {
+        opacity: calc(var(--base) * 0.65);
+      }
+    }
+
+    .star::before,
+    .star::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      opacity: 0;
+      translate: -50% -50%;
+      pointer-events: none;
+    }
+
+    .star::before {
+      width: var(--halo);
+      height: var(--halo);
+      border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, currentColor 75%, transparent) 0%, color-mix(in srgb, currentColor 25%, transparent) 35%, transparent 70%);
+    }
+
+
+
+    /* A · SWELL */
+
+    [data-look="swell"] .star.flare {
+      --halo: calc(var(--size) * 4 + 10px);
+      animation: swell-core var(--flare) ease-in-out;
+    }
+
+    [data-look="swell"] .star.flare::before {
+      animation: swell-halo var(--flare) ease-in-out;
+    }
+
+    @keyframes swell-core {
+      50% {
+        opacity: 1;
+        transform: scale(1.7);
+      }
+    }
+
+    @keyframes swell-halo {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.2);
+      }
+
+      50% {
+        opacity: 0.9;
+        transform: scale(1);
+      }
+    }
+
+
+
+    /* B · BLOOM */
+
+    [data-look="bloom"],
+    [data-look="glint"] {
+      --core: 2.1;
+      --peak: 1;
+    }
+
+    [data-look="softer"] {
+      --core: 1.6;
+      --peak: 0.7;
+    }
+
+    [data-look="softest"] {
+      --core: 1.35;
+      --peak: 0.5;
+    }
+
+    [data-look="bloom"] .star.flare {
+      --halo: calc(var(--size) * 7 + 16px);
+    }
+
+    [data-look="softer"] .star.flare {
+      --halo: calc(var(--size) * 6 + 14px);
+    }
+
+    [data-look="softest"] .star.flare {
+      --halo: calc(var(--size) * 5 + 12px);
+    }
+
+    [data-look="bloom"] .star.flare {
+      animation: bloom-core var(--flare) cubic-bezier(0.3, 0, 0.3, 1);
+    }
+
+    [data-look="bloom"] .star.flare::before {
+      animation: bloom-halo var(--flare) cubic-bezier(0.3, 0, 0.3, 1);
+    }
+
+    [data-look="softer"] .star.flare,
+    [data-look="softest"] .star.flare {
+      animation: soft-core var(--flare) ease-in-out;
+    }
+
+    [data-look="softer"] .star.flare::before,
+    [data-look="softest"] .star.flare::before {
+      animation: soft-halo var(--flare) ease-in-out;
+    }
+
+    @keyframes bloom-core {
+      35% {
+        opacity: 1;
+        transform: scale(var(--core));
+      }
+    }
+
+    @keyframes bloom-halo {
+      0% {
+        opacity: 0;
+        transform: scale(0.15);
+      }
+
+      35% {
+        opacity: var(--peak);
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.25);
+      }
+    }
+
+    @keyframes soft-core {
+      42% {
+        opacity: 1;
+        transform: scale(var(--core));
+      }
+    }
+
+    @keyframes soft-halo {
+      0% {
+        opacity: 0;
+        transform: scale(0.2);
+      }
+
+      42% {
+        opacity: var(--peak);
+        transform: scale(1);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.2);
+      }
+    }
+
+
+
+    /* C · GLINT */
+
+    [data-look="glint"] .star.flare {
+      --halo: calc(var(--size) * 5 + 12px);
+      --rays: calc(var(--size) * 7 + 18px);
+      animation: bloom-core var(--flare) cubic-bezier(0.3, 0, 0.3, 1);
+    }
+
+    [data-look="glint"] .star.flare::before {
+      animation: bloom-halo var(--flare) cubic-bezier(0.3, 0, 0.3, 1);
+    }
+
+    [data-look="glint"] .star.flare::after {
+      width: var(--rays);
+      height: var(--rays);
+      background:
+        linear-gradient(90deg, transparent, color-mix(in srgb, currentColor 85%, transparent), transparent) center / 100% 1.5px no-repeat,
+        linear-gradient(transparent, color-mix(in srgb, currentColor 85%, transparent), transparent) center / 1.5px 100% no-repeat;
+      animation: glint-rays var(--flare) cubic-bezier(0.3, 0, 0.3, 1);
+    }
+
+    @keyframes glint-rays {
+      0% {
+        opacity: 0;
+        transform: scale(0.1) rotate(-20deg);
+      }
+
+      35% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(0.6) rotate(15deg);
+      }
+    }
+
+
+
+    /* D · FLICKER */
+
+    [data-look="flicker"] .star.flare {
+      --halo: calc(var(--size) * 5 + 12px);
+      animation: flicker-core var(--flare) ease-in-out;
+    }
+
+    [data-look="flicker"] .star.flare::before {
+      animation: flicker-halo var(--flare) ease-in-out;
+    }
+
+    @keyframes flicker-core {
+      25% {
+        opacity: 1;
+        transform: scale(1.8);
+      }
+
+      45% {
+        opacity: var(--base);
+        transform: scale(1.2);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(2);
+      }
+    }
+
+    @keyframes flicker-halo {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.2);
+      }
+
+      25% {
+        opacity: 0.85;
+        transform: scale(0.85);
+      }
+
+      45% {
+        opacity: 0.3;
+        transform: scale(0.6);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+
+
+    /* HOURS */
+
+    .hours-options {
+      display: grid;
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .hours-card {
+      min-width: 0;
+      padding: 22px 26px 26px;
+      border-radius: 30px;
+      background: var(--high);
+    }
+
+    .hours-card h2 {
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .hours-card h2 span {
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .hours-card > p {
+      margin-top: 4px;
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+    .summary {
+      margin-top: 16px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--zenith);
+      font-weight: 700;
+    }
+
+    .hours {
+      display: flex;
+      gap: 6px;
+      margin: 14px 0 0;
+      padding: 0;
+      overflow-x: auto;
+      list-style: none;
+      scrollbar-width: none;
+    }
+
+    .hours li {
+      position: relative;
+      display: grid;
+      flex: none;
+      justify-items: center;
+      gap: 6px;
+      min-width: 74px;
+      padding: 10px 6px;
+      border-radius: 18px;
+      text-align: center;
+    }
+
+    .hours li.moment {
+      background: var(--raised);
+    }
+
+    .hours svg {
+      width: 26px;
+      height: 26px;
+    }
+
+    .hour-time {
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .hour-word {
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    [data-now="teal"] li.now .hour-time {
+      color: var(--teal);
+    }
+
+    [data-now="dot"] li.now::before {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--frost);
+      translate: -50% 0;
+    }
+
+    [data-now="dim"] li.now .hour-time {
+      color: var(--teal);
+    }
+
+    [data-now="dim"] li.past {
+      opacity: 0.45;
+    }
+
+
+
+    /* REDUCED MOTION */
+
+    @media (prefers-reduced-motion: reduce) {
+      .star.twinkle {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <section class="intro">
+      <h1>Star flares</h1>
+      <p>Every so often one star swells with light, on top of the quiet twinkle the sky already has. Bloom as you picked it, then two subtler, slower versions. Use “Flare now” to watch one on demand, and slow motion to see the shape.</p>
+
+      <div class="controls">
+        <label>
+          How often
+          <select id="often">
+            <option value="rare">Rarely (every 4–8s)</option>
+            <option value="some" selected>Sometimes (every 1.5–3s)</option>
+            <option value="lively">Lively (every 0.6–1.2s)</option>
+          </select>
+        </label>
+
+        <label><input type="checkbox" id="slow"> Slow motion (4×)</label>
+      </div>
+    </section>
+
+    <div class="options">
+      <section class="option" data-look="bloom" data-time="700">
+        <header>
+          <div>
+            <h2>B · Bloom</h2>
+            <p>The one you picked, unchanged. Quick bright rise, wide halo. 0.7s.</p>
+          </div>
+          <button type="button">Flare now</button>
+        </header>
+        <div class="sky"></div>
+      </section>
+
+      <section class="option" data-look="softer" data-time="1100">
+        <header>
+          <div>
+            <h2>B2 · Softer</h2>
+            <p>Smaller, dimmer halo and the star grows less. Even rise and fall. 1.1s.</p>
+          </div>
+          <button type="button">Flare now</button>
+        </header>
+        <div class="sky"></div>
+      </section>
+
+      <section class="option" data-look="softest" data-time="1500">
+        <header>
+          <div>
+            <h2>B3 · Softest</h2>
+            <p>Half-strength halo and a gentle swell, like a slow breath. 1.5s.</p>
+          </div>
+          <button type="button">Flare now</button>
+        </header>
+        <div class="sky"></div>
+      </section>
+    </div>
+
+
+
+    <section class="part">
+      <h2>Now in the hourly row</h2>
+      <p>Shown at 9:40pm. The cell for the current hour says “Now” instead of “9pm”, so it reads in words and not only by color. Before sunset nothing changes. If it’s now during a moment, like Fully dark at 6:17pm, the moment keeps its time and the Now cell sits just after it.</p>
+
+      <div class="hours-options">
+        <div class="hours-card" data-now="plain">
+          <h2>A · Now <span>just the word</span></h2>
+          <p>Like Apple Weather.</p>
+        </div>
+
+        <div class="hours-card" data-now="teal">
+          <h2>B · Now in teal <span>matches Tonight on the Moon ruler</span></h2>
+          <p>Teal already means “tonight / right now” in the Moon panel.</p>
+        </div>
+
+        <div class="hours-card" data-now="dot">
+          <h2>C · Now with a dot <span>matches the tiles’ now dots</span></h2>
+          <p>The Clouds and Darkness tiles mark the present with a small frost dot.</p>
+        </div>
+
+        <div class="hours-card" data-now="dim">
+          <h2>D · Teal Now, past hours dimmed <span>row starts at Now</span></h2>
+          <p>Earlier hours stay in the row so the night’s story is kept, just quieter. The row opens scrolled to Now.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+
+
+  <script>
+    // STARS
+
+    const tints = ['var(--frost)', 'var(--frost)', 'var(--frost)', 'var(--star-blue)', 'var(--star-blue)', 'var(--star-warm)', 'var(--star-teal)', 'var(--star-rose)']
+
+    const field = Array.from({ length: 170 }, (_, i) => {
+      const bright = i % 16 === 0
+
+      return {
+        top: Math.pow(Math.random(), 1.2) * 100,
+        left: Math.random() * 100,
+        size: bright ? Math.random() * 0.9 + 2.9 : Math.pow(Math.random(), 2) * 2.3 + 0.9,
+        opacity: bright ? 1 : Math.pow(Math.random(), 1.5) * 0.6 + 0.35,
+        color: tints[Math.floor(Math.random() * tints.length)],
+        bright,
+        twinkle: !bright && Math.random() < 0.12,
+        duration: Math.random() * 4 + 4,
+        delay: Math.random() * 8,
+      }
+    })
+
+    const skies = [...document.querySelectorAll('.option')].map(option => {
+      const sky = option.querySelector('.sky')
+
+      const stars = field.map(star => {
+        const dot = document.createElement('span')
+
+        dot.className = `star${star.bright ? ' bright' : ''}${star.twinkle ? ' twinkle' : ''}`
+        dot.style.cssText = `top:${star.top}%;left:${star.left}%;width:${star.size}px;height:${star.size}px;color:${star.color};opacity:${star.opacity};--base:${star.opacity};--size:${star.size}px;--twinkle:${star.duration}s;--delay:${star.delay}s`
+        sky.append(dot)
+
+        return { dot, star }
+      })
+
+      const flare = () => {
+        const pool = stars.filter(({ star }) => star.size > 1.5)
+        const { dot } = pool[Math.floor(Math.random() * pool.length)]
+        const time = Number(option.dataset.time) * (document.querySelector('#slow').checked ? 4 : 1)
+
+        dot.style.setProperty('--flare', `${time}ms`)
+        dot.classList.add('flare')
+        setTimeout(() => dot.classList.remove('flare'), time)
+      }
+
+      option.querySelector('button').addEventListener('click', flare)
+
+      return flare
+    })
+
+
+
+    // TIMING
+
+    const GAPS = { rare: [4000, 8000], some: [1500, 3000], lively: [600, 1200] }
+
+    function next(flare) {
+      const [low, high] = GAPS[document.querySelector('#often').value]
+      const slow = document.querySelector('#slow').checked ? 4 : 1
+
+      setTimeout(() => {
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) flare()
+        next(flare)
+      }, (low + Math.random() * (high - low)) * slow)
+    }
+
+    skies.forEach(next)
+
+
+
+    // HOURS
+
+    const TWINKLE = 'M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z'
+
+    const ICONS = {
+      sunset: `<path d="M-11 6 H11" stroke="var(--mist)" stroke-width="2" stroke-linecap="round"/><path d="M-5 4 A5 5 0 0 1 5 4 Z" fill="var(--bronze)"/><path d="M0 -9 V-1 M-2.5 -3.5 L0 -1 L2.5 -3.5" stroke="var(--mist)" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+      twilight: `<path d="M-5.5 1.3 A5.5 5.5 0 0 0 5.5 1.3 Z" fill="var(--snow-shade)" opacity="0.85"/><path d="M-11 -1 H11" stroke="var(--mist)" stroke-width="2.6" stroke-linecap="round"/><path d="M-5 9 H5" stroke="var(--mist)" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/>`,
+      dark: `<path d="${TWINKLE}" fill="var(--beak)"/>`,
+      clear: `<g fill="var(--frost)"><path d="${TWINKLE}" transform="translate(-3 -2) scale(0.6)"/><path d="${TWINKLE}" transform="translate(7 -7) scale(0.32)"/><path d="${TWINKLE}" transform="translate(6 6) scale(0.38)"/></g>`,
+    }
+
+    const CELLS = [
+      ['4:45pm', 'sunset', 'Sunset', 'moment'],
+      ['5pm', 'twilight', 'Twilight'],
+      ['6pm', 'twilight', 'Twilight'],
+      ['6:17pm', 'dark', 'Fully dark', 'moment'],
+      ['7pm', 'clear', 'Clear'],
+      ['8pm', 'clear', 'Clear'],
+      ['9pm', 'clear', 'Clear', 'now'],
+      ['10pm', 'clear', 'Clear'],
+      ['11pm', 'clear', 'Clear'],
+      ['12am', 'clear', 'Clear'],
+      ['1am', 'clear', 'Clear'],
+      ['2am', 'clear', 'Clear'],
+      ['3am', 'clear', 'Clear'],
+    ]
+
+    document.querySelectorAll('.hours-card').forEach(card => {
+      const past = CELLS.findIndex(cell => cell[3] === 'now')
+
+      card.insertAdjacentHTML('beforeend', `
+        <p class="summary">Clear all night. The Moon sets at 3:21am, leaving darker skies.</p>
+        <ul class="hours">
+          ${CELLS.map(([time, icon, word, kind], i) => `
+            <li class="${kind ?? ''}${i < past ? ' past' : ''}">
+              <span class="hour-time">${kind === 'now' ? 'Now' : time}</span>
+              <svg viewBox="-13 -13 26 26" aria-hidden="true">${ICONS[icon]}</svg>
+              <span class="hour-word">${word}</span>
+            </li>`).join('')}
+        </ul>`)
+
+      if (card.dataset.now === 'dim') {
+        const list = card.querySelector('.hours')
+        list.scrollLeft = list.querySelector('.now').offsetLeft - list.offsetLeft
+      }
+    })
+  </script>
+</body>
+</html>

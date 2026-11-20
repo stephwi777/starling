@@ -100,8 +100,8 @@ test('each moment is day, twilight, moonlit or dark', () => {
 test('the chosen moment is described in words', () => {
   const time = new Date('2026-11-20T03:30:00Z')
 
-  expect(atWords(time, -51, 30, ZONE)).toBe('9:30pm · Fully dark, Moon up · Sun 51° below the horizon')
-  expect(atWords(time, -8, -5, ZONE)).toBe('9:30pm · Nautical twilight · Sun 8° below the horizon')
+  expect(atWords(time, -51, 30, ZONE)).toBe('9:30pm · Fully dark, Moon up · Sun 51° down')
+  expect(atWords(time, -8, -5, ZONE)).toBe('9:30pm · Nautical twilight · Sun 8° down')
   expect(atWords(time, 12, -5, ZONE)).toBe('9:30pm · Daylight · Sun 12° up')
 })
 

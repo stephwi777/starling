@@ -169,7 +169,7 @@ function stage(sun, moon) {
 }
 
 export function atWords(time, sun, moon, timeZone) {
-  const where = sun > 0 ? `Sun ${Math.round(sun)}° up` : `Sun ${Math.round(-sun)}° below the horizon`
+  const where = sun > 0 ? `Sun ${Math.round(sun)}° up` : `Sun ${Math.round(-sun)}° down`
 
   return `${clock(time, timeZone)} · ${stage(sun, moon)} · ${where}`
 }

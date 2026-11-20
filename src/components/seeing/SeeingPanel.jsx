@@ -19,7 +19,7 @@ function Value({ value, note }) {
     ? <><span aria-hidden="true">—</span><span className="visually-hidden">Unknown</span></>
     : value
 
-  return <dd>{shown}{note && <small>{note}</small>}</dd>
+  return <><dd>{shown}</dd>{note && <dd><small>{note}</small></dd>}</>
 }
 
 

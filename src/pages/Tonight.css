@@ -249,6 +249,10 @@
   background: var(--raised);
 }
 
+.hours li.now .hour-time {
+  color: var(--teal);
+}
+
 .hours svg {
   width: 26px;
   height: 26px;

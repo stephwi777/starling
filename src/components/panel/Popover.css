@@ -66,6 +66,10 @@
   outline-offset: 2px;
 }
 
+.popover [data-ring="off"]:focus-visible {
+  outline: none;
+}
+
 
 
 /* HEAD */
@@ -157,9 +161,9 @@
 }
 
 .popover-rows div {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
   padding: 11px 0;
   font-weight: 700;
 }
@@ -171,6 +175,10 @@
 .popover-rows dd {
   color: var(--mist);
   text-align: right;
+}
+
+.popover-rows dd + dd {
+  grid-column: 1 / -1;
 }
 
 .popover-rows small {
