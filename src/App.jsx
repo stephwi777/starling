@@ -8,6 +8,7 @@ import Contact from './pages/Contact.jsx'
 import Credits from './pages/Credits.jsx'
 import About from './pages/About.jsx'
 import Tonight from './pages/Tonight.jsx'
+import Calendar from './pages/Calendar.jsx'
 import MoonPanel from './components/moon/MoonPanel.jsx'
 import CloudsPanel from './components/clouds/CloudsPanel.jsx'
 import DarknessPanel from './components/darkness/DarknessPanel.jsx'
@@ -38,7 +39,7 @@ function App() {
           <Route path="seeing" element={<SeeingPanel />} />
           <Route path="up" element={<UpTonightPanel />} />
         </Route>
-        <Route path="calendar" element={<Placeholder title="Calendar" />} />
+        <Route path="calendar" element={<Calendar />} />
         <Route path="map" element={<Placeholder title="Map" />} />
         <Route path="learn" element={<Placeholder title="Learn" />} />
         <Route path="tools" element={<Placeholder title="Sky tools" />} />

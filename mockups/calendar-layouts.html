@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling calendar layouts</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sheet > p,
+    .sheet > section > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet > section {
+      margin-top: 52px;
+    }
+
+    .sheet > section > h2 {
+      font-size: 1.5rem;
+    }
+
+    .sizes {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: start;
+      gap: 28px;
+      margin-top: 18px;
+    }
+
+    .desktop {
+      width: 760px;
+    }
+
+    .phone {
+      width: 375px;
+    }
+
+    .frame {
+      padding: 22px 16px 28px;
+      border-radius: 30px;
+      background: var(--zenith);
+      outline: 2px solid var(--raised);
+    }
+
+
+
+    /* PAGE HEAD */
+
+    .cal-head h1 {
+      color: var(--moon);
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+    }
+
+    .cal-head p {
+      margin-top: 2px;
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .cal-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px 16px;
+      margin-top: 16px;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--high);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .switch::before {
+      content: '';
+      position: absolute;
+      inset: 4px auto 4px 4px;
+      width: calc(50% - 4px);
+      border-radius: 999px;
+      background: var(--raised);
+      transition: translate 0.3s cubic-bezier(0.3, 1.3, 0.6, 1);
+    }
+
+    .switch.world::before {
+      translate: 100% 0;
+    }
+
+    .switch button {
+      position: relative;
+      min-height: 40px;
+      padding: 0 16px;
+      border: 0;
+      background: none;
+      color: var(--mist);
+      font: inherit;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .switch button[aria-pressed="true"] {
+      color: var(--frost);
+    }
+
+    .choose {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 16px;
+      background: var(--high);
+      color: var(--frost);
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+
+
+    /* MONTH GRID */
+
+    .month-card {
+      margin-top: 18px;
+    }
+
+    .month-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .month-top h2 {
+      font-size: 1.35rem;
+    }
+
+    .month-top span {
+      display: flex;
+      gap: 8px;
+    }
+
+    .month-top button {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--raised);
+      color: var(--frost);
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .grid .weekday {
+      padding-bottom: 4px;
+      color: var(--mist);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .day {
+      display: grid;
+      justify-items: center;
+      align-content: start;
+      gap: 3px;
+      min-height: 74px;
+      padding: 6px 2px;
+      border-radius: 14px;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .compact .day {
+      min-height: 0;
+      padding: 4px 0 6px;
+    }
+
+    .day.has {
+      background: var(--raised);
+    }
+
+    .day.picked {
+      outline: 2px solid var(--beak);
+    }
+
+    .day.today b {
+      color: var(--teal);
+    }
+
+    .day-icons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .day-icons svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 3px;
+      height: 6px;
+    }
+
+    .dots i {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--beak);
+    }
+
+    .phone .day {
+      min-height: 60px;
+    }
+
+    .phone .day-icons svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .phone .compact .day {
+      min-height: 0;
+    }
+
+
+
+    /* EVENT LIST */
+
+    .events {
+      display: grid;
+    }
+
+    .events li {
+      display: grid;
+      grid-template-columns: 48px 44px 1fr;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+    }
+
+    .events li + li {
+      border-top: 2px solid var(--raised);
+    }
+
+    .when {
+      display: grid;
+      justify-items: center;
+      line-height: 1.1;
+    }
+
+    .when small {
+      color: var(--mist);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .when b {
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .events .row-text strong {
+      font-weight: 900;
+    }
+
+    .events .row-text small {
+      display: block;
+      color: var(--mist);
+      font-size: 0.88rem;
+    }
+
+    .month-label {
+      margin: 22px 0 4px;
+      color: var(--mist);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .month-label:first-child {
+      margin-top: 0;
+    }
+
+    .day-panel h3 {
+      margin-top: 16px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 900;
+    }
+
+    .sun-icon circle {
+      fill: var(--beak);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-layouts.jsx"></script>
+</body>
+</html>

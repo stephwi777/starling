@@ -21,7 +21,7 @@ export function observerFor(place) {
 
 // LOCAL TIME
 
-function localParts(date, timeZone) {
+export function localParts(date, timeZone) {
   const parts = new Intl.DateTimeFormat('en-US', {
     timeZone,
     hourCycle: 'h23',

@@ -266,6 +266,62 @@ export function SnowIcon() {
   return <Falling kind="snow" />
 }
 
+export function SolarEclipseIcon() {
+  return (
+    <Icon>
+      <circle r="10" fill="var(--beak)" opacity="0.35" />
+      <circle r="8" fill="var(--beak)" />
+      <circle r="7.6" cx="2.4" cy="-0.8" fill="var(--zenith)" />
+    </Icon>
+  )
+}
+
+export function LunarEclipseIcon() {
+  return (
+    <Icon>
+      <circle r="10" fill="var(--moon)" />
+      <circle r="10" fill="var(--bronze)" opacity="0.75" />
+      <circle r="10" cx="-6" fill="var(--moon)" opacity="0.55" />
+    </Icon>
+  )
+}
+
+export function TransitIcon() {
+  return (
+    <Icon>
+      <circle r="10" fill="var(--beak)" />
+      <circle r="2.2" cx="3.5" cy="-2" fill="var(--zenith)" />
+    </Icon>
+  )
+}
+
+export function SeasonIcon() {
+  return (
+    <Icon>
+      <g stroke="var(--beak)" strokeWidth="2" strokeLinecap="round">
+        {[0, 45, 90, 135, 180, 225, 270, 315].map(angle => {
+          const a = (angle * Math.PI) / 180
+
+          return <path key={angle} d={`M${7.5 * Math.cos(a)} ${7.5 * Math.sin(a)} L${10.5 * Math.cos(a)} ${10.5 * Math.sin(a)}`} />
+        })}
+      </g>
+      <circle r="5" fill="var(--beak)" />
+    </Icon>
+  )
+}
+
+export function ParadeIcon() {
+  return (
+    <Icon>
+      <path d="M-11 6 Q0 -4 11 -8" fill="none" stroke="var(--mist)" strokeWidth="1.2" strokeDasharray="2 2.5" opacity="0.7" />
+      <circle cx="-8" cy="3.4" r="2.6" fill="var(--bronze)" />
+      <circle cx="-1.5" cy="-0.6" r="3.2" fill="var(--frost)" />
+      <circle cx="5" cy="-3.8" r="2.4" fill="var(--star-rose)" />
+      <circle cx="10" cy="-7.2" r="1.8" fill="var(--beak)" />
+    </Icon>
+  )
+}
+
 
 
 // PHASE MOON
