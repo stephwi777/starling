@@ -45,6 +45,7 @@ function base(kinds, date, place, extra) {
     time: clock(date, place.timeZone),
     here: true,
     where: null,
+    tags: [],
     ...extra,
   }
 }
@@ -96,7 +97,8 @@ function fullEvent(date, previous, place, observer) {
   return base(kinds, date, place, {
     icon: 'full-moon',
     short,
-    name: [short, ...tags].join(' · '),
+    name: short,
+    tags,
     note: notes.join(' '),
     rows: [
       ['Full at', `${clock(date, place.timeZone)}`],
@@ -112,7 +114,8 @@ function newEvent(date, previous, place) {
   return base(['new-moon', black && 'black-moon'].filter(Boolean), date, place, {
     icon: 'new-moon',
     short: black ? 'Black Moon' : 'New Moon',
-    name: black ? 'New Moon · Black Moon' : 'New Moon',
+    name: 'New Moon',
+    tags: black ? ['Black Moon'] : [],
     note: `The Moon is lost in the Sun’s glare, so the nights are at their darkest. Great for faint galaxies and the Milky Way.${black ? ' A Black Moon: the second new Moon this month.' : ''}`,
     rows: [['New at', clock(date, place.timeZone)]],
   })

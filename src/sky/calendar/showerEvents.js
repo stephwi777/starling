@@ -68,6 +68,7 @@ function showerEvent(shower, year, place, observer) {
     day,
     time: 'Peak night',
     here,
+    tags: [],
     where: here ? null : `Best seen from the ${shower.dec < 0 ? 'Southern' : 'Northern'} Hemisphere.`,
     icon: 'shower',
     short: `${shower.name} peak`,

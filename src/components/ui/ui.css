@@ -101,6 +101,30 @@
   transform: none;
 }
 
+.press-soft {
+  --press-face: var(--raised);
+  --press-edge: color-mix(in srgb, var(--raised) 65%, #000);
+  border: 0;
+  background: var(--press-face);
+  color: var(--frost);
+  box-shadow: 0 2px 0 var(--press-edge);
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s, background-color 90ms ease-out;
+}
+
+.press-soft:hover {
+  --press-face: color-mix(in srgb, var(--raised) 90%, var(--snow-shade));
+}
+
+.press-soft:active {
+  transform: translateY(2px);
+  box-shadow: 0 0 0 var(--press-edge);
+}
+
+.still .press-soft:active {
+  transform: none;
+}
+
 
 
 /* REDUCED MOTION */
@@ -110,7 +134,8 @@
     transition: none;
   }
 
-  .press:active {
+  .press:active,
+  .press-soft:active {
     transform: none;
   }
 }

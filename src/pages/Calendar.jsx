@@ -9,6 +9,7 @@ import useMedia from '../hooks/useMedia.js'
 import useCalendarSettings from '../components/calendar/useCalendarSettings.js'
 import KindList from '../components/calendar/KindList.jsx'
 import WorldSwitch from '../components/calendar/WorldSwitch.jsx'
+import SearchBox from '../components/calendar/SearchBox.jsx'
 import MonthGrid from '../components/calendar/MonthGrid.jsx'
 import EventRow from '../components/calendar/EventRow.jsx'
 import EventCard from '../components/calendar/EventCard.jsx'
@@ -144,16 +145,12 @@ function Calendar() {
 
   const tools = (
     <div className="calendar-controls">
-      <label className="calendar-search">
-        <span className="visually-hidden">Search events</span>
-        <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" strokeWidth="2.2" /><path d="M13 13 L17 17" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" /></svg>
-        <input type="search" placeholder="Search" value={query} onChange={event => setQuery(event.target.value)} />
-      </label>
+      <SearchBox query={query} setQuery={setQuery} />
 
       <WorldSwitch world={settings.world} setWorld={settings.setWorld} />
 
       {!wide && (
-        <button type="button" className="calendar-choose" aria-expanded={choosing} aria-controls="kind-list" onClick={() => setChoosing(open => !open)}>
+        <button type="button" className="calendar-choose press-soft" aria-expanded={choosing} aria-controls="kind-list" onClick={() => setChoosing(open => !open)}>
           Choose events
         </button>
       )}

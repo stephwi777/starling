@@ -28,7 +28,7 @@ test('December 2026 has a New Moon and a full Cold supermoon', () => {
   const [fresh] = find(events, 'new-moon')
 
   expect(fresh).toMatchObject({ day: '2026-12-08', time: '6:53pm', name: 'New Moon' })
-  expect(full).toMatchObject({ day: '2026-12-23', time: '7:29pm', short: 'Full Cold Moon', name: 'Full Cold Moon · Supermoon' })
+  expect(full).toMatchObject({ day: '2026-12-23', time: '7:29pm', short: 'Full Cold Moon', name: 'Full Cold Moon', tags: ['Supermoon'] })
   expect(full.kinds).toEqual(['full-moon', 'supermoon'])
   expect(full.here).toBe(true)
 })

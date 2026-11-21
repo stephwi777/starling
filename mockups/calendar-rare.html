@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling rare events sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 100px;
+    }
+
+    .sheet > p,
+    .sheet > section > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet > section {
+      margin-top: 56px;
+    }
+
+    .sheet > section > h2 {
+      margin-bottom: 4px;
+      font-size: 1.5rem;
+    }
+
+    .sheet .month {
+      margin-top: 18px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+
+
+    /* A · SOLID CHIP */
+
+    .vA .chip.rare {
+      background: var(--c);
+      color: var(--zenith);
+      font-weight: 900;
+    }
+
+    .vA .chip.rare:hover {
+      background: color-mix(in srgb, var(--c) 88%, var(--frost));
+    }
+
+
+
+    /* B · GLOW AND SPARKLE */
+
+    .vB .chip.rare {
+      position: relative;
+      overflow: visible;
+      background: color-mix(in srgb, var(--c) 30%, var(--high));
+      box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--c) 80%, transparent), 0 0 16px 2px color-mix(in srgb, var(--c) 40%, transparent);
+    }
+
+    .vB .chip.rare::after {
+      content: '✦';
+      position: absolute;
+      top: -9px;
+      right: -5px;
+      color: var(--beak);
+      font-size: 0.85rem;
+      animation: twinkle-mark 3.2s ease-in-out infinite;
+    }
+
+    @keyframes twinkle-mark {
+      0%, 100% {
+        opacity: 0.55;
+        scale: 0.85;
+      }
+
+      50% {
+        opacity: 1;
+        scale: 1.1;
+      }
+    }
+
+
+
+    /* C · TINTED DAY */
+
+    .vC .month-days li.rare-day {
+      background: color-mix(in srgb, var(--c) 16%, var(--high));
+    }
+
+    .vC .month-days li.rare-day .day-number {
+      color: var(--c);
+    }
+
+
+
+    /* D · DON'T MISS */
+
+    .dont-miss {
+      margin-top: 18px;
+      padding: 16px 18px 18px;
+      border-radius: var(--radius-tile);
+      background: var(--high);
+    }
+
+    .dont-miss h3 {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 900;
+    }
+
+    .dont-miss h3 span {
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .dont-miss ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .dont-miss li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--c) 16%, var(--high));
+    }
+
+    .dont-miss li .well {
+      flex: none;
+    }
+
+    .dont-miss strong {
+      display: block;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .dont-miss small {
+      display: block;
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-rare.jsx"></script>
+</body>
+</html>

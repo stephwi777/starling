@@ -63,7 +63,7 @@ function YearList({ place, start, filters, south, onPick }) {
 
       {open && !working && everything.length > 0 && (
         <div className="year-actions">
-          <button type="button" onClick={addAll}>Add all {everything.length} to your calendar</button>
+          <button type="button" className="press-soft" onClick={addAll}>Add all {everything.length} to your calendar</button>
           <p>Downloads one file that Apple Calendar, Google Calendar and Outlook can open. It follows the checklist and search above.</p>
         </div>
       )}

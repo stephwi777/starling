@@ -56,7 +56,7 @@ export function shownEvents(events, { kinds, world, query }) {
   return events.filter(event => (
     event.kinds.some(kind => kinds.includes(kind))
     && (world || event.here)
-    && (!words || `${event.name} ${event.note}`.toLowerCase().includes(words))
+    && (!words || `${event.name} ${event.tags.join(' ')} ${event.note}`.toLowerCase().includes(words))
   ))
 }
 

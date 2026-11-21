@@ -55,6 +55,7 @@ function base(kinds, date, place, extra) {
     here: true,
     where: null,
     rows: [],
+    tags: [],
     ...extra,
   }
 }

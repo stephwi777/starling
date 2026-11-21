@@ -6,6 +6,7 @@ import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
 import { CalendarIcon } from '../ui/icons.jsx'
 import EventIcon from '../calendar/EventIcon.jsx'
+import Tags from '../calendar/Tags.jsx'
 
 
 
@@ -54,7 +55,7 @@ function ComingUpCard({ place, now }) {
               <Link className="coming-row" to={`/calendar?month=${event.day.slice(0, 7)}&event=${encodeURIComponent(event.id)}`}>
                 <IconWell><EventIcon icon={event.icon} south={place.latitude < 0} /></IconWell>
                 <span className="row-text">
-                  <strong>{event.name}</strong>
+                  <strong>{event.name} <Tags tags={event.tags} /></strong>
                   <small>{firstSentence(event.note)}</small>
                 </span>
                 <time dateTime={event.day}>{shortDay(event.day)}</time>

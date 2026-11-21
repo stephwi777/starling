@@ -1,5 +1,6 @@
 import IconWell from '../ui/IconWell.jsx'
 import EventIcon from './EventIcon.jsx'
+import Tags from './Tags.jsx'
 
 
 
@@ -15,7 +16,7 @@ function EventRow({ event, south, dated, onPick }) {
       {dated && <span className="event-row-date" aria-hidden="true"><small>{weekday}</small><b>{day}</b></span>}
       <IconWell><EventIcon icon={event.icon} south={south} /></IconWell>
       <span className="row-text">
-        <strong>{event.name}</strong>
+        <strong>{event.name} <Tags tags={event.tags} /></strong>
         <small>
           {dated && <span className="visually-hidden">{weekday} {day}, </span>}
           {event.time}{event.here ? '' : ' · Not visible from here'}

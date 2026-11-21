@@ -1,11 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Link } from 'react-router'
 import { GROUPS } from '../../sky/calendar/kinds.js'
 import { calendarFile, fileName } from '../../sky/calendar/ics.js'
 import { popoverPlace } from '../panel/popoverPlace.js'
 import { eventDate } from './dates.js'
 import { download, eventLink } from './download.js'
 import EventIcon from './EventIcon.jsx'
+import CardMenu from './CardMenu.jsx'
+import Tags from './Tags.jsx'
 import '../panel/Popover.css'
 
 
@@ -49,6 +50,13 @@ function EventCard({ event, anchor, place, today, south, onClose }) {
   const [copied, setCopied] = useState(false)
   const group = GROUPS.find(item => item.id === event.group)
   const ahead = daysAhead(event, today)
+  const soon = ahead >= 0 && ahead < WEEK && event.here
+
+  const options = [
+    { label: 'Add to calendar', onSelect: addToCalendar },
+    { label: 'Copy link', onSelect: copyLink },
+    soon && { label: ahead === 0 ? 'See tonight’s conditions' : 'See the forecast', to: '/tonight' },
+  ].filter(Boolean)
 
   function addToCalendar() {
     download(fileName(event.name), calendarFile([event], { place, linkFor: eventLink }))
@@ -140,20 +148,32 @@ function EventCard({ event, anchor, place, today, south, onClose }) {
       <span className="popover-arrow" aria-hidden="true" />
 
       <div className="popover-scroll" ref={scroller}>
+        <div className="event-card-top">
+          <p className="event-card-group">{group?.name}</p>
+
+          <div className="event-card-tools">
+            <CardMenu items={options} />
+            <button ref={closeButton} type="button" className="popover-close" aria-label="Close" onClick={close}>
+              <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
+            </button>
+          </div>
+        </div>
+
         <div className="event-card-head">
           <span className="event-card-icon"><EventIcon icon={event.icon} south={south} /></span>
 
-          <div>
-            <p className="event-card-group">{group?.name}</p>
+          <div className="event-card-title">
             <h2 id="event-title">{event.name}</h2>
+            <Tags tags={event.tags} />
           </div>
-
-          <button ref={closeButton} type="button" className="popover-close" aria-label="Close" onClick={close}>
-            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
-          </button>
         </div>
 
-        <p className="event-card-when">{eventDate(event)} · {event.time}</p>
+        <div className="event-card-when">
+          <p>{eventDate(event)}</p>
+          <p>{event.time}</p>
+        </div>
+
+        <p className="event-card-copied" role="status">{copied ? 'Link copied' : ''}</p>
 
         {!event.here && (
           <p className="event-card-away"><strong>Not visible from {place.name}.</strong> {event.where}</p>
@@ -166,19 +186,6 @@ function EventCard({ event, anchor, place, today, south, onClose }) {
             {event.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
           </dl>
         )}
-
-        {ahead >= 0 && ahead < WEEK && event.here && (
-          <Link className="event-card-tonight" to="/tonight">
-            {ahead === 0 ? 'See tonight’s sky conditions' : 'See the forecast for this night'}
-            <span aria-hidden="true"> ›</span>
-          </Link>
-        )}
-
-        <div className="event-card-actions">
-          <button type="button" onClick={addToCalendar}>Add to calendar</button>
-          <button type="button" onClick={copyLink}>{copied ? 'Link copied' : 'Copy link'}</button>
-          <span className="visually-hidden" role="status">{copied ? 'Link copied' : ''}</span>
-        </div>
       </div>
     </div>
   )

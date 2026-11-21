@@ -62,7 +62,7 @@ function eventLines(event, { place, url, now }) {
     ...(span
       ? [`DTSTART:${stamp(span.from)}`, `DTEND:${stamp(end)}`]
       : [`DTSTART;VALUE=DATE:${dateOnly(event.day)}`, `DTEND;VALUE=DATE:${dateOnly(event.day, 1)}`]),
-    `SUMMARY:${plain(event.name)}`,
+    `SUMMARY:${plain([event.name, ...(event.tags ?? [])].join(', '))}`,
     `DESCRIPTION:${plain(details.join('\n'))}`,
     `LOCATION:${plain(place.name)}`,
     url && `URL:${url}`,

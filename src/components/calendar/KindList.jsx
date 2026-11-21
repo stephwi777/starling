@@ -81,7 +81,7 @@ function KindList({ id, kinds, toggleKind, setGroup, suggest }) {
     <div className="kind-list" id={id}>
       <div className="kind-head">
         <h2>Show on calendar</h2>
-        <button type="button" className="kind-reset" onClick={suggest}>Suggested</button>
+        <button type="button" className="kind-reset press-soft" onClick={suggest}>Suggested</button>
       </div>
 
       <p className="kind-count">{total} of {KINDS.length} kinds of events</p>

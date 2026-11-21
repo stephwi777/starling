@@ -73,6 +73,7 @@ function base(kind, date, place, extra) {
     day: dayKey(date, place.timeZone),
     time: clock(date, place.timeZone),
     rows: [],
+    tags: [],
     ...extra,
   }
 }
