@@ -17,7 +17,7 @@ function UpTonightCard({ sky, place, link, panelClose }) {
       <div className="card-head">
         <IconWell><SparkleIcon /></IconWell>
         <h2 id="up-title">Up tonight</h2>
-        {total > 0 && <span className="up-count" aria-hidden="true">See all {total} ›</span>}
+        {total > 0 && <span className="up-count" aria-hidden="true">See all {total}<i>›</i></span>}
       </div>
 
       <TileLink id="up-title" to="up" link={link} panelClose={panelClose} />

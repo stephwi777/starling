@@ -65,6 +65,8 @@ export function useNight(place, index, forecast, now) {
       ...sky,
       weather,
       clouds,
+      temps: weather?.temps ?? null,
+      falls: weather?.falls ?? null,
       best,
       verdict: verdict({ night: sky.night, clouds, best, planets: sky.planets, timeZone: place.timeZone }),
       summary: shortVerdict({ night: sky.night, clouds, best, timeZone: place.timeZone }),

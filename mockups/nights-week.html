@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling next 7 nights sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sheet > p,
+    .sheet > section > p {
+      max-width: 68ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet > section {
+      margin-top: 44px;
+    }
+
+    .sheet > section > h2 {
+      font-size: 1.4rem;
+    }
+
+    .sizes {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: start;
+      gap: 24px;
+      margin-top: 18px;
+    }
+
+    .desktop {
+      width: 551px;
+    }
+
+    .phone {
+      width: 343px;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+
+
+    /* ROWS */
+
+    .sheet .three-up li,
+    .sheet .three-up .nights-scale {
+      grid-template-columns: 74px 70px 1fr;
+    }
+
+
+
+    /* 1 · BRIGHTER IS BETTER */
+
+    .glow-bar {
+      position: relative;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--zenith);
+    }
+
+    .glow-bar i {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    }
+
+    .glow-bar i.first {
+      border-start-start-radius: 999px;
+      border-end-start-radius: 999px;
+    }
+
+    .glow-bar i.last {
+      border-start-end-radius: 999px;
+      border-end-end-radius: 999px;
+    }
+
+    .d {
+      background: var(--teal);
+    }
+
+    .m {
+      background: color-mix(in srgb, var(--teal) 38%, var(--high));
+    }
+
+    .c {
+      background: color-mix(in srgb, var(--mist) 28%, var(--high));
+    }
+
+    .t {
+      background: var(--zenith);
+    }
+
+
+
+    /* 2 · HOUR BLOCKS */
+
+    .blocks {
+      display: grid;
+      grid-template-columns: repeat(14, 1fr);
+      gap: 3px;
+      height: 16px;
+    }
+
+    .blocks i {
+      border-radius: 4px;
+    }
+
+
+
+    /* 3 · JUST THE NUMBER */
+
+    .count {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .count b {
+      color: var(--teal);
+      font-weight: 900;
+    }
+
+    .count span {
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+
+
+    /* KEY */
+
+    .key4 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+      margin-top: 10px;
+      color: var(--mist);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .key4 span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .key4 i {
+      width: 12px;
+      height: 8px;
+      border-radius: 3px;
+    }
+
+    .key4 .t {
+      outline: 1px solid color-mix(in srgb, var(--mist) 25%, transparent);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./nights-week.jsx"></script>
+</body>
+</html>

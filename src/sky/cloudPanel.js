@@ -1,5 +1,5 @@
 import { wholeHours } from './hours.js'
-import { moments } from './weather.js'
+import { fallOf, moments } from './weather.js'
 
 
 
@@ -21,19 +21,27 @@ export function cloudHours(night, raw, air) {
   const weather = reader(raw)
   const haze = reader(air)
 
-  return wholeHours(night).map(({ time, dark }) => ({
-    time,
-    dark,
-    cover: weather('cloud_cover', time),
-    low: weather('cloud_cover_low', time),
-    mid: weather('cloud_cover_mid', time),
-    high: weather('cloud_cover_high', time),
-    temp: weather('temperature_2m', time),
-    dew: weather('dew_point_2m', time),
-    rain: weather('precipitation_probability', time),
-    humidity: weather('relative_humidity_2m', time),
-    aod: haze('aerosol_optical_depth', time),
-  }))
+  const unit = raw?.hourly_units?.temperature_2m
+
+  return wholeHours(night).map(({ time, dark }) => {
+    const temp = weather('temperature_2m', time)
+    const rain = weather('precipitation_probability', time)
+
+    return {
+      time,
+      dark,
+      cover: weather('cloud_cover', time),
+      low: weather('cloud_cover_low', time),
+      mid: weather('cloud_cover_mid', time),
+      high: weather('cloud_cover_high', time),
+      temp,
+      dew: weather('dew_point_2m', time),
+      rain,
+      fall: fallOf(rain, weather('snowfall', time), temp, unit),
+      humidity: weather('relative_humidity_2m', time),
+      aod: haze('aerosol_optical_depth', time),
+    }
+  })
 }
 
 

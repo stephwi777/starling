@@ -29,6 +29,14 @@ const SKIES = {
   patchy: 'Patchy',
   cloudy: 'Cloudy',
   dark: 'Dark',
+  rain: 'Rain',
+  snow: 'Snow',
+}
+
+const FALLS = {
+  rain: 'Rain',
+  snow: 'Snow',
+  both: 'Rain and snow',
 }
 
 const ALL_NIGHT = {
@@ -84,32 +92,39 @@ export function showerName(shower) {
 
 // HOURLY ROW
 
-function skyKind(dark, cover) {
+function skyKind(dark, cover, fall) {
+  if (fall) return fall
+
   return dark ? cloudKind(cover) ?? 'dark' : 'twilight'
 }
 
-function nowCell(night, clouds, now) {
+function skyCell(kind, temp) {
+  return { kind, word: SKIES[kind], temp: temp ?? null, moment: false }
+}
+
+function nowCell({ night, clouds, falls, temps }, now) {
   const i = now ? Math.floor((now - night.start) / STEP) : -1
   const afterSunset = !night.sunset || now > night.sunset
   const beforeSunrise = !night.sunrise || now < night.sunrise
 
   if (i < 0 || i >= night.times.length || !afterSunset || !beforeSunrise || night.sun[i] >= 0) return null
 
-  const kind = skyKind(night.sun[i] < -18, clouds?.[Math.floor(i / PER_HOUR)])
+  const hour = Math.floor(i / PER_HOUR)
+  const kind = skyKind(night.sun[i] < -18, clouds?.[hour], falls?.[hour])
 
-  return { time: now, label: 'Now', kind, word: SKIES[kind], moment: false, now: true }
+  return { time: now, label: 'Now', ...skyCell(kind, temps?.[hour]), now: true }
 }
 
-export function hourCells({ night, moon, clouds, timeZone, now }) {
+export function hourCells({ night, moon, clouds, falls, temps, timeZone, now }) {
   if (!wholeHours(night).length) return []
 
   const { rise, set } = moonCrossings(moon, night)
-  const current = nowCell(night, clouds, now)
+  const current = nowCell({ night, clouds, falls, temps }, now)
 
   const hours = wholeHours(night).map(({ hour, time, dark }) => {
-    const kind = skyKind(dark, clouds?.[hour])
+    const kind = skyKind(dark, clouds?.[hour], falls?.[hour])
 
-    return { time, label: hourLabel(time, timeZone), kind, word: SKIES[kind], moment: false }
+    return { time, label: hourLabel(time, timeZone), ...skyCell(kind, temps?.[hour]) }
   })
 
   const moments = [
@@ -169,8 +184,29 @@ function extraSentence({ night, moon, showers, timeZone }) {
   return null
 }
 
+export function fallSentence(night, falls, timeZone) {
+  const hours = wholeHours(night)
+  const wet = hours.filter(({ hour }) => falls?.[hour])
+
+  if (!wet.length) return null
+
+  const kinds = new Set(wet.map(({ hour }) => falls[hour]))
+  const word = FALLS[kinds.size > 1 ? 'both' : [...kinds][0]]
+  const first = wet[0]
+  const last = wet.at(-1)
+  const end = new Date(last.time.getTime() + HOUR)
+
+  if (wet.length === hours.length) return `${word} likely all night.`
+  if (wet.length === 1) return `${word} likely around ${hourLabel(first.time, timeZone)}.`
+  if (last.hour - first.hour + 1 > wet.length) return `${word} on and off ${hourLabel(first.time, timeZone)}–${hourLabel(end, timeZone)}.`
+
+  return `${word} likely ${hourLabel(first.time, timeZone)}–${hourLabel(end, timeZone)}.`
+}
+
 export function hoursSummary(options) {
   if (!wholeHours(options.night).length) return 'The Sun doesn’t set tonight.'
 
-  return [cloudSentence(options), extraSentence(options)].filter(Boolean).join(' ')
+  const fall = options.clouds ? fallSentence(options.night, options.falls, options.timeZone) : null
+
+  return [cloudSentence(options), fall ?? extraSentence(options)].filter(Boolean).join(' ')
 }

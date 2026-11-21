@@ -4,9 +4,15 @@ import { darknessWords } from '../../sky/darkness.js'
 import { darkLine, skyPath, trulyDark } from '../../sky/darkPanel.js'
 import { seeingWords } from '../../sky/seeing.js'
 import { moonTiming, nextFull } from '../../sky/moon.js'
-import { PhaseMoon } from '../ui/icons.jsx'
+import { Fall, PhaseMoon } from '../ui/icons.jsx'
 import SunStrokes from '../darkness/SunStrokes.jsx'
 import TileLink from './TileLink.jsx'
+
+
+
+// NOW DOT
+
+const NOW_DOT = 4
 
 
 
@@ -21,9 +27,10 @@ const SHADES = {
 function CloudBars({ bars }) {
   const slot = 160 / Math.max(bars.length, 1)
   const width = slot * 0.74
+  const wet = bars.some(bar => bar.fall)
 
   return (
-    <svg viewBox="0 0 160 48" width="100%" height="48" aria-hidden="true">
+    <svg viewBox={wet ? '0 -12 160 62' : '0 0 160 50'} width="100%" height={wet ? 62 : 50} aria-hidden="true">
       {bars.map((bar, i) => {
         const x = i * slot + (slot - width) / 2
         const height = 6 + (bar.cover ?? 0) * 0.3
@@ -31,7 +38,8 @@ function CloudBars({ bars }) {
         return (
           <g key={i}>
             <rect x={x} y={40 - height} width={width} height={height} rx={Math.min(4, width / 2)} fill={SHADES[bar.kind] ?? 'var(--raised)'} opacity={bar.kind ? 1 : 0.5} />
-            {bar.now && <circle cx={x + width / 2} cy="45" r="2.5" fill="var(--frost)" />}
+            {bar.fall && <Fall kind={bar.fall} x={x + width / 2} y={34 - height} />}
+            {bar.now && <circle cx={x + width / 2} cy="45.5" r={NOW_DOT} fill="var(--frost)" />}
           </g>
         )
       })}
@@ -44,13 +52,13 @@ function CloudBars({ bars }) {
 // CLOUDS TILE
 
 export function CloudsTile({ sky, place, status, link, panelClose }) {
-  const words = cloudWords({ night: sky.night, clouds: sky.clouds, status, timeZone: place.timeZone })
+  const words = cloudWords({ night: sky.night, clouds: sky.clouds, falls: sky.falls, status, timeZone: place.timeZone })
 
   return (
     <section className="tile" aria-labelledby="tile-clouds">
       <h2 id="tile-clouds">Clouds</h2>
       <TileLink id="tile-clouds" to="clouds" link={link} panelClose={panelClose} />
-      <CloudBars bars={cloudBars(sky.night, sky.clouds, sky.nowIndex)} />
+      <CloudBars bars={cloudBars(sky.night, sky.clouds, sky.nowIndex, sky.falls)} />
       <strong>{words.value}</strong>
       <p>{words.line}</p>
     </section>
@@ -74,7 +82,7 @@ function SunCurve({ path, nowIndex }) {
     <svg viewBox="0 0 160 64" width="100%" height="64" aria-hidden="true">
       <line x1="0" y1={y(0)} x2="160" y2={y(0)} stroke="var(--mist)" strokeWidth="1.5" strokeDasharray="3 5" />
       <SunStrokes path={path} x={x} y={y} width={4} />
-      {now && <circle cx={now[0]} cy={now[1]} r="5" fill="var(--frost)" />}
+      {now && <circle cx={now[0]} cy={now[1]} r={NOW_DOT + 0.5} fill="var(--frost)" />}
     </svg>
   )
 }

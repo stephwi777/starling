@@ -4,7 +4,7 @@ import { shearOf } from './seeing.js'
 
 // REQUEST
 
-const FIELDS = ['cloud_cover', 'cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high', 'temperature_2m', 'dew_point_2m', 'precipitation_probability', 'wind_speed_10m', 'relative_humidity_2m', 'visibility', 'wind_gusts_10m', 'wind_speed_850hPa', 'wind_speed_700hPa', 'wind_speed_500hPa', 'wind_speed_250hPa', 'wind_direction_850hPa', 'wind_direction_700hPa', 'wind_direction_500hPa', 'wind_direction_250hPa']
+const FIELDS = ['cloud_cover', 'cloud_cover_low', 'cloud_cover_mid', 'cloud_cover_high', 'temperature_2m', 'dew_point_2m', 'precipitation_probability', 'snowfall', 'wind_speed_10m', 'relative_humidity_2m', 'visibility', 'wind_gusts_10m', 'wind_speed_850hPa', 'wind_speed_700hPa', 'wind_speed_500hPa', 'wind_speed_250hPa', 'wind_direction_850hPa', 'wind_direction_700hPa', 'wind_direction_500hPa', 'wind_direction_250hPa']
 
 export function weatherUrl(place) {
   const params = new URLSearchParams({
@@ -82,6 +82,14 @@ function transparencyScore(humidity, visibility, unit) {
   return Math.max(1, metres < 10000 ? score - 1 : score)
 }
 
+export function fallOf(chance, snowfall, temp, unit) {
+  if (chance === null || chance === undefined || chance < 50) return null
+
+  const freezing = unit === '°F' ? 32 : 0
+
+  return snowfall > 0 || (temp !== null && temp !== undefined && temp <= freezing) ? 'snow' : 'rain'
+}
+
 export function skyWord(clouds) {
   const mean = average(clouds)
 
@@ -105,6 +113,9 @@ export function nightWeather(raw, night) {
   const pick = field => rows.map(row => (row === -1 ? null : hourly[field]?.[row] ?? null))
   const evening = rows.find((row, h) => h >= 4 && row !== -1) ?? rows.find(row => row !== -1)
   const clouds = pick('cloud_cover')
+  const temps = pick('temperature_2m')
+  const snowfall = pick('snowfall')
+  const falls = pick('precipitation_probability').map((chance, h) => fallOf(chance, snowfall[h], temps[h], units.temperature_2m))
   const temp = hourly.temperature_2m?.[evening] ?? null
   const wind = hourly.wind_speed_10m?.[evening] ?? null
   const unit = units.wind_speed_10m
@@ -128,6 +139,8 @@ export function nightWeather(raw, night) {
   return {
     clouds: clouds.some(value => value !== null) ? clouds : null,
     air: air.some(Boolean) ? air : null,
+    temps: temps.some(value => value !== null) ? temps.map(value => (value === null ? null : Math.round(value))) : null,
+    falls: falls.some(Boolean) ? falls : null,
     temp: temp === null ? null : `${Math.round(temp)}${units.temperature_2m}`,
     wind: wind === null ? null : windWords(wind, units.wind_speed_10m),
     seeing: jet === null ? null : seeingScore(jet, units.wind_speed_10m),

@@ -5,6 +5,8 @@ import { MoonShape } from '../tonight/Icons.jsx'
 // SHAPES
 
 const TWINKLE = 'M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z'
+const DROP = 'M0 -4.2 Q3.2 0 3.2 1.6 A3.2 3.2 0 0 1 -3.2 1.6 Q-3.2 0 0 -4.2 Z'
+const FLAKE = 'M0 -3.6 V3.6 M-3.1 -1.8 L3.1 1.8 M-3.1 1.8 L3.1 -1.8'
 
 
 
@@ -236,6 +238,32 @@ export function PatchyIcon() {
 
 export function CloudIcon() {
   return <Icon><Cloud fill="var(--frost)" /></Icon>
+}
+
+export function Fall({ kind, x, y, scale = 1 }) {
+  const place = `translate(${x} ${y}) scale(${scale})`
+
+  if (kind === 'snow') return <path d={FLAKE} transform={place} stroke="var(--frost)" strokeWidth="1.3" strokeLinecap="round" />
+
+  return <path d={DROP} transform={place} fill="var(--star-blue)" />
+}
+
+function Falling({ kind }) {
+  return (
+    <Icon>
+      <g transform="translate(0 -3)"><Cloud fill="var(--frost)" /></g>
+      <Fall kind={kind} x={-4} y={9} scale={0.7} />
+      <Fall kind={kind} x={4} y={9} scale={0.7} />
+    </Icon>
+  )
+}
+
+export function RainIcon() {
+  return <Falling kind="rain" />
+}
+
+export function SnowIcon() {
+  return <Falling kind="snow" />
 }
 
 

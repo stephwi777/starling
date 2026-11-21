@@ -53,6 +53,12 @@ test('each hour from sunset to sunrise picks up its forecast values', () => {
   expect(hours[0].aod).toBeNull()
 })
 
+test('hours with a likely chance of rain are marked wet', () => {
+  const hours = cloudHours(night, fakeRaw('precipitation_probability', i => (i === 19 ? 70 : 10)), null)
+
+  expect(hours.map(hour => hour.fall)).toEqual(hours.map((_, i) => (i === 1 ? 'rain' : null)))
+})
+
 test('haze values come from the air-quality forecast', () => {
   const air = fakeRaw('aerosol_optical_depth', () => 0.12)
 

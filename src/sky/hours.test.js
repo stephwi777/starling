@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { hourCells, hoursSummary } from './hours.js'
+import { fallSentence, hourCells, hoursSummary } from './hours.js'
 
 
 
@@ -165,6 +165,51 @@ test('no Now cell before sunset or after sunrise', () => {
   expect(row(at(2)).some(cell => cell.now)).toBe(false)
   expect(row(at(835)).some(cell => cell.now)).toBe(false)
   expect(row(undefined).some(cell => cell.now)).toBe(false)
+})
+
+
+
+// RAIN AND TEMPERATURE
+
+const TEMPS = clouds(h => 45 - h)
+const WET = clouds(h => (h === 7 || h === 8 ? 'rain' : null))
+
+function wetRow(falls = WET) {
+  return hourCells({ night: NIGHT, moon: DOWN, clouds: CLEAR, falls, temps: TEMPS, timeZone: ZONE })
+}
+
+test('hours carry their temperature, moments do not need one', () => {
+  const cells = wetRow()
+
+  expect(cells.find(cell => cell.label === '8pm')).toMatchObject({ kind: 'clear', word: 'Clear', temp: 42 })
+  expect(cells.find(cell => cell.moment).temp).toBeUndefined()
+})
+
+test('wet hours become Rain or Snow cells, even in twilight', () => {
+  const snowy = clouds(h => (h === 1 ? 'snow' : null))
+
+  expect(wetRow().find(cell => cell.label === '12am')).toMatchObject({ kind: 'rain', word: 'Rain' })
+  expect(wetRow(snowy).find(cell => cell.label === '6pm')).toMatchObject({ kind: 'snow', word: 'Snow' })
+})
+
+test('the Now cell shows the hour’s temperature and rain', () => {
+  const now = hourCells({ night: NIGHT, moon: DOWN, clouds: CLEAR, falls: WET, temps: TEMPS, timeZone: ZONE, now: at(430) }).find(cell => cell.now)
+
+  expect(now).toMatchObject({ kind: 'rain', temp: 38 })
+})
+
+test('rain sentences name the wet hours', () => {
+  const sentence = falls => fallSentence(NIGHT, falls, ZONE)
+
+  expect(sentence(WET)).toBe('Rain likely 12am–2am.')
+  expect(sentence(clouds(h => (h === 3 ? 'snow' : null)))).toBe('Snow likely around 8pm.')
+  expect(sentence(clouds(h => (h === 2 || h === 5 ? 'rain' : null)))).toBe('Rain on and off 7pm–11pm.')
+  expect(sentence(clouds(h => (h === 2 ? 'rain' : h === 3 ? 'snow' : null)))).toBe('Rain and snow likely 7pm–9pm.')
+  expect(sentence(null)).toBeNull()
+})
+
+test('on wet nights the rain sentence replaces the Moon sentence', () => {
+  expect(summary({ moon: SETS, falls: WET })).toBe('Clear all night. Rain likely 12am–2am.')
 })
 
 

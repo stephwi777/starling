@@ -125,3 +125,20 @@ test('bars wait without a forecast', () => {
   expect(bars).toHaveLength(13)
   expect(bars.every(bar => bar.cover === null)).toBe(true)
 })
+
+
+
+// RAIN
+
+test('on wet nights the tile line names the rain', () => {
+  const falls = hours(hour => (hour === 7 || hour === 8 ? 'rain' : null))
+
+  expect(words(hours(() => 5), { falls })).toEqual({ value: 'Clear all night', line: 'Rain likely 12am–2am.' })
+})
+
+test('wet bars carry their rain or snow', () => {
+  const falls = hours(hour => (hour === 7 ? 'snow' : null))
+  const bars = cloudBars(night(), hours(() => 90), null, falls)
+
+  expect(bars.filter(bar => bar.fall).map(bar => bar.fall)).toEqual(['snow'])
+})

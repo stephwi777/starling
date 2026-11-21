@@ -9,6 +9,8 @@ import {
   MoonriseIcon,
   MoonsetIcon,
   PatchyIcon,
+  RainIcon,
+  SnowIcon,
   SparkleIcon,
   SunriseIcon,
   SunsetIcon,
@@ -26,6 +28,8 @@ const ICONS = {
   'clear': ClearIcon,
   'patchy': PatchyIcon,
   'cloudy': CloudIcon,
+  'rain': RainIcon,
+  'snow': SnowIcon,
   'dark': DarkIcon,
   'moonrise': MoonriseIcon,
   'moonset': MoonsetIcon,
@@ -52,7 +56,7 @@ function Arrow({ side, shown, onClick }) {
 // HOURS CARD
 
 function HoursCard({ sky, status, timeZone, now }) {
-  const details = { night: sky.night, moon: sky.moon, clouds: sky.clouds, showers: sky.showers, status, timeZone, now }
+  const details = { night: sky.night, moon: sky.moon, clouds: sky.clouds, falls: sky.falls, temps: sky.temps, showers: sky.showers, status, timeZone, now }
   const cells = hourCells(details)
   const words = cells.map(cell => cell.word).join()
   const row = useRef(null)
@@ -113,7 +117,9 @@ function HoursCard({ sky, status, timeZone, now }) {
               >
                 <span className="hour-time">{cell.label}</span>
                 <Icon />
-                <span className="hour-word">{cell.word}</span>
+                {cell.moment || cell.temp === null
+                  ? <span className="hour-word">{cell.word}</span>
+                  : <span className="hour-word"><span className="visually-hidden">{cell.word}, </span>{cell.temp}°</span>}
               </li>
             )
           })}

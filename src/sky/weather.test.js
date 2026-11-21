@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 import { SAMPLE_PLACE } from '../place/placeStorage.js'
 import { buildNight } from './night.js'
-import { fetchWeather, nightWeather, skyWord, weatherUrl } from './weather.js'
+import { fallOf, fetchWeather, nightWeather, skyWord, weatherUrl } from './weather.js'
 
 
 
@@ -141,5 +141,33 @@ test('a forecast full of gaps gives no readings instead of made-up ones', () => 
     visibility: Array(48).fill(null),
     wind_speed_250hPa: Array(48).fill(null),
   })
-  expect(nightWeather(gaps, night)).toEqual({ clouds: null, air: null, temp: null, wind: null, seeing: null, transparency: null })
+  expect(nightWeather(gaps, night)).toEqual({ clouds: null, air: null, temps: null, falls: null, temp: null, wind: null, seeing: null, transparency: null })
+})
+
+
+
+// RAIN, SNOW AND TEMPERATURE
+
+test('an hour is wet from a 50% chance, snowy when snow falls or it freezes', () => {
+  expect(fallOf(40, 0, 50, '°F')).toBeNull()
+  expect(fallOf(null, 0, 50, '°F')).toBeNull()
+  expect(fallOf(50, 0, 50, '°F')).toBe('rain')
+  expect(fallOf(70, 0.4, 35, '°F')).toBe('snow')
+  expect(fallOf(70, 0, 31, '°F')).toBe('snow')
+  expect(fallOf(70, 0, 1, '°C')).toBe('rain')
+  expect(fallOf(70, 0, -1, '°C')).toBe('snow')
+})
+
+test('night weather gives rounded hourly temperatures and wet hours', () => {
+  const weather = nightWeather(fakeForecast({
+    precipitation_probability: Array.from({ length: 48 }, (_, i) => (i === 23 ? 80 : 10)),
+  }), night)
+  const wet = weather.falls.flatMap((fall, h) => (fall ? [[h, fall]] : []))
+
+  expect(weather.temps[0]).toBe(38)
+  expect(wet).toEqual([[weather.falls.indexOf('rain'), 'rain']])
+})
+
+test('dry nights have no wet hours', () => {
+  expect(nightWeather(fakeForecast(), night).falls).toBeNull()
 })

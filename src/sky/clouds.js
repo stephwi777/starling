@@ -1,5 +1,5 @@
 import { STEP } from './night.js'
-import { cloudKind, wholeHours } from './hours.js'
+import { cloudKind, fallSentence, wholeHours } from './hours.js'
 import { clock } from './words.js'
 
 
@@ -47,7 +47,14 @@ function mostly(hours) {
 
 // CLOUD WORDS
 
-export function cloudWords({ night, clouds, status, timeZone }) {
+export function cloudWords(options) {
+  const words = skyWords(options)
+  const fall = options.clouds && fallSentence(options.night, options.falls, options.timeZone)
+
+  return fall ? { ...words, line: fall } : words
+}
+
+function skyWords({ night, clouds, status, timeZone }) {
   const hours = wholeHours(night)
 
   if (!hours.length) return { value: 'No night', line: 'The Sun doesn’t set tonight.' }
@@ -80,12 +87,12 @@ export function cloudWords({ night, clouds, status, timeZone }) {
 
 // CLOUD BARS
 
-export function cloudBars(night, clouds, nowIndex) {
+export function cloudBars(night, clouds, nowIndex, falls) {
   const nowHour = nowIndex === null ? null : Math.round((nowIndex * STEP) / HOUR)
 
   return wholeHours(night).map(({ hour }) => {
     const cover = clouds?.[hour] ?? null
 
-    return { cover, kind: cloudKind(cover), now: hour === nowHour }
+    return { cover, kind: cloudKind(cover), fall: falls?.[hour] ?? null, now: hour === nowHour }
   })
 }

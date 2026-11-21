@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling rain and temperature sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sheet > p,
+    .sheet > section > p {
+      max-width: 68ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet > section {
+      margin-top: 44px;
+    }
+
+    .sheet h2 {
+      font-size: 1.4rem;
+    }
+
+    .sheet h3 {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .sheet h3 span {
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+
+
+    /* CASES */
+
+    .cases {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 18px;
+    }
+
+    .case {
+      display: grid;
+      align-content: start;
+      gap: 10px;
+    }
+
+    .case > small {
+      max-width: 44ch;
+      color: var(--mist);
+    }
+
+    .sizes {
+      display: flex;
+      align-items: start;
+      gap: 16px;
+    }
+
+    .desktop {
+      width: 264px;
+    }
+
+    .phone {
+      width: 158px;
+    }
+
+    .wide {
+      display: grid;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .wide > * {
+      min-width: 0;
+    }
+
+    .sheet h3 {
+      margin: 0;
+    }
+
+    .wide > small {
+      color: var(--mist);
+    }
+
+
+
+    /* HIDDEN WORDS */
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+
+
+    .hours li {
+      position: relative;
+    }
+
+
+
+    /* NOW */
+
+    .hours li.now .hour-time {
+      color: var(--teal);
+    }
+
+
+
+    /* PANEL */
+
+    .mini-panel {
+      width: 352px;
+      padding: 18px 16px 14px;
+      border-radius: 26px;
+      background: var(--high);
+    }
+
+    .mini-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding: 0 4px;
+      color: var(--mist);
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./outside-sheet.jsx"></script>
+</body>
+</html>

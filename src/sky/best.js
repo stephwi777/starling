@@ -13,8 +13,8 @@ function isGood(night, clouds, i) {
   return clouds[hour] !== null && clouds[hour] < 40
 }
 
-export function bestWindow(night, clouds) {
-  let best = null
+export function clearWindows(night, clouds) {
+  const runs = []
   let run = null
 
   night.times.forEach((_, i) => {
@@ -24,12 +24,16 @@ export function bestWindow(night, clouds) {
     if (good) run.to = i
 
     if ((!good || i === night.times.length - 1) && run) {
-      if (!best || run.to - run.from > best.to - best.from) best = run
+      runs.push(run)
       run = null
     }
   })
 
-  return best && best.to - best.from >= 3 ? best : null
+  return runs.filter(({ from, to }) => to - from >= 3)
+}
+
+export function bestWindow(night, clouds) {
+  return clearWindows(night, clouds).reduce((best, run) => (!best || run.to - run.from > best.to - best.from ? run : best), null)
 }
 
 

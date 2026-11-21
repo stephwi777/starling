@@ -126,9 +126,9 @@ function CloudsPanel() {
         <dl className="popover-rows">
           <div><dt>Cloud cover</dt><Value value={percent(hour.cover)} note={layers} /></div>
           <div><dt>Transparency</dt><Value value={sky.value} note={sky.note} /></div>
+          <div><dt>Chance of rain</dt><Value value={percent(hour.rain)} /></div>
           <div><dt>Dew risk</dt><Value value={dew.value} note={dew.note} /></div>
           <div><dt>Haze & smoke</dt><Value value={hazeWords(hour.aod, air.status)} /></div>
-          <div><dt>Chance of rain</dt><Value value={percent(hour.rain)} /></div>
         </dl>
       )}
 

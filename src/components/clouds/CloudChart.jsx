@@ -1,6 +1,7 @@
 import { barLayers } from '../../sky/cloudPanel.js'
 import useChartPicking from '../panel/useChartPicking.js'
 import HourLabels from '../panel/HourLabels.jsx'
+import { Fall } from '../ui/icons.jsx'
 
 
 
@@ -21,11 +22,11 @@ const FILLS = {
 
 // CLOUD
 
-function Cloud({ x, top, size }) {
+function Cloud({ x, top, size, lift = 0 }) {
   const k = size / 22
 
   return (
-    <g transform={`translate(${x} ${top - 2 - 7 * k}) scale(${k})`} fill="var(--frost)">
+    <g transform={`translate(${x} ${top - 2 - 7 * k - lift}) scale(${k})`} fill="var(--frost)">
       <circle cx="-5.5" cy="2.5" r="4.5" />
       <circle cx="0.5" cy="-1" r="6.5" />
       <circle cx="5.5" cy="2.5" r="4.5" />
@@ -53,7 +54,13 @@ function Bar({ hour, x, width, cell }) {
     <g>
       {parts}
       {(hour.cover ?? 0) < 5 && <rect x={x} y={BASE - 3} width={width} height="3" rx="1.5" fill="var(--raised)" opacity={hour.cover === null ? 0.5 : 1} />}
-      {hour.cover >= 60 && <Cloud x={x + width / 2} top={top} size={cell * 0.9} />}
+      {(hour.cover >= 60 || hour.fall) && <Cloud x={x + width / 2} top={top} size={cell * 0.9} lift={hour.fall ? 7 : 0} />}
+      {hour.fall && (
+        <>
+          <Fall kind={hour.fall} x={x + width / 2 - 3.2} y={top - 4.5} scale={0.62} />
+          <Fall kind={hour.fall} x={x + width / 2 + 3.2} y={top - 4.5} scale={0.62} />
+        </>
+      )}
     </g>
   )
 }

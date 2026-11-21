@@ -8,7 +8,7 @@ import './Stars.css'
 
 const tints = ['var(--frost)', 'var(--frost)', 'var(--frost)', 'var(--star-blue)', 'var(--star-blue)', 'var(--star-warm)', 'var(--star-teal)', 'var(--star-rose)']
 
-const stars = Array.from({ length: 640 }, (_, i) => {
+const stars = Array.from({ length: 580 }, (_, i) => {
   const bright = i % 16 === 0
 
   return {

@@ -13,7 +13,7 @@
 }
 
 .star.bright {
-  box-shadow: 0 0 6px 1px color-mix(in srgb, var(--tint) 55%, transparent);
+  box-shadow: 0 0 4px 0.5px color-mix(in srgb, var(--tint) 40%, transparent);
 }
 
 
