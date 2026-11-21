@@ -1,4 +1,4 @@
-import { localNoon } from './night.js'
+import * as Astronomy from 'astronomy-engine'
 import { SHOWERS } from './catalog/showers.js'
 
 
@@ -8,6 +8,8 @@ import { SHOWERS } from './catalog/showers.js'
 export const GOOD_SHOWER = 8
 
 const DAY = 24 * 60 * 60 * 1000
+const SUN_PER_DAY = 0.9856
+const PRECESSION = 1.3969713 / 100
 
 
 
@@ -26,12 +28,26 @@ function isActive(shower, code) {
   return start <= end ? code >= start && code <= end : code >= start || code <= end
 }
 
-function daysFromPeak(shower, date) {
-  const { month, day } = monthDay(shower.peak)
-  const today = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate())
-  const year = date.getUTCFullYear()
+function sinceEpoch(date) {
+  return (date.getTime() - Date.UTC(2000, 0, 1, 12)) / (365.25 * DAY)
+}
 
-  return Math.min(...[year - 1, year, year + 1].map(y => Math.abs(Date.UTC(y, month - 1, day) - today) / DAY))
+function daysFromPeak(shower, date) {
+  const sun = Astronomy.SunPosition(date).elon - PRECESSION * sinceEpoch(date)
+  const apart = Math.abs(((sun - shower.sun + 540) % 360) - 180)
+
+  return Math.round(apart / SUN_PER_DAY)
+}
+
+
+
+// PEAK TIME
+
+export function peakTime(shower, year) {
+  const start = new Date(Date.UTC(year, 0, 1))
+  const target = (shower.sun + PRECESSION * sinceEpoch(start)) % 360
+
+  return Astronomy.SearchSunLongitude(target, start, 366).date
 }
 
 
@@ -79,18 +95,12 @@ export function goodShowers(showers, night) {
 
 const STRONG = 15
 
-function peakDate(shower, year, timeZone) {
-  const [month, day] = shower.peak.split('-').map(Number)
-
-  return localNoon(year, month, day, timeZone)
-}
-
-export function nextShower(now, timeZone) {
-  const year = Number(new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric' }).format(now))
+export function nextShower(now) {
+  const year = now.getUTCFullYear()
 
   return SHOWERS
     .filter(shower => shower.zhr >= STRONG)
-    .flatMap(shower => [year, year + 1].map(y => ({ name: shower.name, peak: peakDate(shower, y, timeZone) })))
+    .flatMap(shower => [year, year + 1].map(y => ({ name: shower.name, peak: peakTime(shower, y) })))
     .filter(({ peak }) => peak > now)
     .sort((a, b) => a.peak - b.peak)[0]
 }

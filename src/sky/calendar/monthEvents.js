@@ -1,10 +1,10 @@
-import { observerFor } from '../night.js'
+import { localParts, observerFor } from '../night.js'
 import { eclipseEvents } from './eclipseEvents.js'
 import { moonEvents } from './moonEvents.js'
 import { planetEvents } from './planetEvents.js'
 import { sunEvents } from './seasonEvents.js'
 import { showerEvents } from './showerEvents.js'
-import { DAY, monthBounds, monthKey } from './skyTools.js'
+import { DAY, dayKey, monthBounds, monthKey } from './skyTools.js'
 
 
 
@@ -70,4 +70,19 @@ export function monthsFrom(year, month, count) {
 
     return { year: year + Math.floor(index / 12), month: (index % 12) + 1 }
   })
+}
+
+
+
+// COMING UP
+
+export function upcoming(place, now, { kinds, count = 3, days = 30 }) {
+  const today = dayKey(now, place.timeZone)
+  const last = dayKey(new Date(now.getTime() + days * DAY), place.timeZone)
+  const { year, month } = localParts(now, place.timeZone)
+
+  return monthsFrom(year, month, 2)
+    .flatMap(({ year: y, month: m }) => shownEvents(monthEvents(place, y, m), { kinds, world: false, query: '' }))
+    .filter(event => event.day >= today && event.day <= last)
+    .slice(0, count)
 }

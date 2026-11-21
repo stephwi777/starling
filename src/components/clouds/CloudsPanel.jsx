@@ -43,7 +43,7 @@ function missing(status) {
 // CLOUDS PANEL
 
 function CloudsPanel() {
-  const { place, now, forecast, links, panelClose } = useOutletContext()
+  const { place, now, forecast, links, registerClose } = useOutletContext()
   const air = useAir(place)
   const tonightNoon = nightStart(place, now).getTime()
   const { nights, tonight } = useMemo(() => panelNights(place, new Date(tonightNoon)), [place, tonightNoon])
@@ -87,7 +87,7 @@ function CloudsPanel() {
   const dew = hour && dewWords(hour, unit)
 
   return (
-    <Popover title="Clouds" titleId="clouds-title" link={links.clouds} panelClose={panelClose}>
+    <Popover title="Clouds" titleId="clouds-title" link={links.clouds} registerClose={registerClose}>
       {/* NIGHTS */}
 
       <NightStrip nights={nights} tonight={tonight} chosen={choice.night} timeZone={place.timeZone} onPick={pickNight} />

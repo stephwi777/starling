@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { DEFAULT_KINDS, KINDS } from './kinds.js'
-import { monthEvents, monthsFrom, shownEvents } from './monthEvents.js'
+import { monthEvents, monthsFrom, shownEvents, upcoming } from './monthEvents.js'
 
 
 
@@ -53,4 +53,23 @@ test('months roll over into the next year', () => {
 
 test('a month is remembered instead of worked out again', () => {
   expect(monthEvents(KC, 2027, 2)).toBe(february)
+})
+
+
+
+// COMING UP
+
+test('coming up lists the next few events from today, in order', () => {
+  const soon = upcoming(KC, new Date('2026-11-13T20:00:00Z'), { kinds: DEFAULT_KINDS, count: 10 })
+
+  expect(soon[0].day >= '2026-11-13').toBe(true)
+  expect(soon.map(event => event.day)).toEqual([...soon.map(event => event.day)].sort())
+  expect(soon.map(event => event.short)).toContain('Leonids peak')
+  expect(soon.every(event => event.day <= '2026-12-13')).toBe(true)
+})
+
+test('coming up follows the chosen kinds', () => {
+  const soon = upcoming(KC, new Date('2026-11-13T20:00:00Z'), { kinds: ['full-moon'], count: 10 })
+
+  expect(soon.map(event => event.short)).toEqual(['Full Beaver Moon'])
 })

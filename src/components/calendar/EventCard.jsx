@@ -1,6 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { Link } from 'react-router'
 import { GROUPS } from '../../sky/calendar/kinds.js'
+import { calendarFile, fileName } from '../../sky/calendar/ics.js'
 import { popoverPlace } from '../panel/popoverPlace.js'
+import { eventDate } from './dates.js'
+import { download, eventLink } from './download.js'
 import EventIcon from './EventIcon.jsx'
 import '../panel/Popover.css'
 
@@ -12,6 +16,9 @@ const LEAVE = 200
 const WIDTH = 352
 const HEIGHT = 640
 const PHONE = '(max-width: 700px)'
+const WEEK = 7
+const DAY = 24 * 60 * 60 * 1000
+const COPIED = 2000
 
 
 
@@ -21,24 +28,41 @@ function motionOff() {
   return matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('still')
 }
 
-export function eventDate(event) {
-  const [year, month, day] = event.day.split('-').map(Number)
+function daysAhead(event, today) {
+  const at = key => Date.UTC(...key.split('-').map((part, i) => Number(part) - (i === 1 ? 1 : 0)))
 
-  return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }).format(Date.UTC(year, month - 1, day))
+  return Math.round((at(event.day) - at(today)) / DAY)
 }
+
 
 
 
 // EVENT CARD
 
-function EventCard({ event, anchor, placeName, south, onClose }) {
+function EventCard({ event, anchor, place, today, south, onClose }) {
   const card = useRef(null)
   const scroller = useRef(null)
   const closeButton = useRef(null)
   const closing = useRef(false)
   const [spot, setSpot] = useState(null)
   const [leaving, setLeaving] = useState(false)
+  const [copied, setCopied] = useState(false)
   const group = GROUPS.find(item => item.id === event.group)
+  const ahead = daysAhead(event, today)
+
+  function addToCalendar() {
+    download(fileName(event.name), calendarFile([event], { place, linkFor: eventLink }))
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(eventLink(event))
+      setCopied(true)
+      setTimeout(() => setCopied(false), COPIED)
+    } catch {
+      setCopied(false)
+    }
+  }
 
   function close() {
     if (closing.current) return
@@ -52,7 +76,7 @@ function EventCard({ event, anchor, placeName, south, onClose }) {
     let frame
 
     const place = () => {
-      if (matchMedia(PHONE).matches || !anchor.isConnected) return setSpot({ sheet: true })
+      if (matchMedia(PHONE).matches || !anchor?.isConnected) return setSpot({ sheet: true })
 
       const size = { width: Math.min(WIDTH, window.innerWidth - 32), height: Math.min(HEIGHT, scroller.current.scrollHeight) }
       const found = popoverPlace(anchor.getBoundingClientRect(), size, { width: window.innerWidth, height: window.innerHeight })
@@ -75,7 +99,7 @@ function EventCard({ event, anchor, placeName, south, onClose }) {
       cancelAnimationFrame(frame)
       document.documentElement.classList.remove('popover-open')
       window.removeEventListener('resize', later)
-      if (anchor.isConnected) anchor.focus({ preventScroll: true })
+      if (anchor?.isConnected) anchor.focus({ preventScroll: true })
     }
   }, [anchor])
 
@@ -87,7 +111,7 @@ function EventCard({ event, anchor, placeName, south, onClose }) {
 
   useEffect(() => {
     const outside = pointer => {
-      if (!card.current.contains(pointer.target) && !anchor.contains(pointer.target)) close()
+      if (!card.current.contains(pointer.target) && !anchor?.contains(pointer.target)) close()
     }
 
     const escape = key => {
@@ -132,7 +156,7 @@ function EventCard({ event, anchor, placeName, south, onClose }) {
         <p className="event-card-when">{eventDate(event)} · {event.time}</p>
 
         {!event.here && (
-          <p className="event-card-away"><strong>Not visible from {placeName}.</strong> {event.where}</p>
+          <p className="event-card-away"><strong>Not visible from {place.name}.</strong> {event.where}</p>
         )}
 
         <p className="event-card-note">{event.note}</p>
@@ -142,6 +166,19 @@ function EventCard({ event, anchor, placeName, south, onClose }) {
             {event.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
           </dl>
         )}
+
+        {ahead >= 0 && ahead < WEEK && event.here && (
+          <Link className="event-card-tonight" to="/tonight">
+            {ahead === 0 ? 'See tonight’s sky conditions' : 'See the forecast for this night'}
+            <span aria-hidden="true"> ›</span>
+          </Link>
+        )}
+
+        <div className="event-card-actions">
+          <button type="button" onClick={addToCalendar}>Add to calendar</button>
+          <button type="button" onClick={copyLink}>{copied ? 'Link copied' : 'Copy link'}</button>
+          <span className="visually-hidden" role="status">{copied ? 'Link copied' : ''}</span>
+        </div>
       </div>
     </div>
   )

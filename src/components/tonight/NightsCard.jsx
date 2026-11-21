@@ -78,7 +78,7 @@ function NightsCard({ place, forecast, now }) {
 
         {keyed && (
           <div className="nights-key" aria-hidden="true">
-            <span><i className="dark" />Clear & truly dark</span>
+            <span><i className="dark" />Clear & moonless</span>
             <span><i className="moonlit" />Clear, Moon up</span>
             <span><i className="cloudy" />Cloudy</span>
             <span><i className="twilight" />Twilight</span>

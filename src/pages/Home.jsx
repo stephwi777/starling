@@ -1,6 +1,6 @@
 import { usePlace } from '../place/usePlace.js'
 import { useForecast } from '../sky/useForecast.js'
-import { useNight } from '../sky/useNight.js'
+import { useSummary } from '../sky/useSummary.js'
 import { useNow } from '../sky/useNow.js'
 import { nightLook } from '../sky/skyLook.js'
 import SkyScene from '../components/sky/SkyScene.jsx'
@@ -25,7 +25,7 @@ function Home() {
   const { place, isSample } = usePlace()
   const now = useNow()
   const forecast = useForecast(place, Math.floor(now.getTime() / HOUR))
-  const sky = useNight(place, 0, forecast.raw, now)
+  const sky = useSummary(place, forecast.raw, now)
   const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
 
   return (
@@ -50,7 +50,7 @@ function Home() {
       <div className="home-below">
         <div className="home-cards">
           <TonightCard sky={sky} place={place} isSample={isSample} status={forecast.status} />
-          <ComingUpCard now={now} timeZone={place.timeZone} south={place.latitude < 0} />
+          <ComingUpCard place={place} now={now} />
         </div>
 
         <Doors now={now} place={place} />

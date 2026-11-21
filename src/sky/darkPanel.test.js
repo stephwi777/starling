@@ -2,7 +2,7 @@ import { expect, test } from 'vitest'
 import { SAMPLE_PLACE } from '../place/placeStorage.js'
 import { buildNight, observerFor } from './night.js'
 import { darkSpan } from './darkness.js'
-import { STEP_COUNT, atWords, darkVerdict, hoursWords, darkLine, moonTimes, sampleKind, skyPath, trulyDark } from './darkPanel.js'
+import { STEP_COUNT, atWords, darkVerdict, hoursWords, darkLine, moonTimes, sampleKind, skyPath, moonlessWindows } from './darkPanel.js'
 
 
 
@@ -34,39 +34,39 @@ test('the sky path samples every 10 minutes from noon to noon', () => {
 
 
 
-// TRULY DARK
+// MOONLESS
 
-test('a setting Moon leaves truly dark hours after it sets', () => {
+test('a setting Moon leaves moonless hours after it sets', () => {
   const night = nightOf('2026-11-19')
-  const windows = trulyDark(night)
+  const windows = moonlessWindows(night)
 
-  expect(darkLine(night, windows, ZONE)).toBe('Moon sets at 2:32am; truly dark until 5:34am.')
-  expect(darkVerdict(night, windows, ZONE)).toEqual({ value: '3 hr 2 min', line: 'truly dark, 2:32am–5:34am' })
+  expect(darkLine(night, windows, ZONE)).toBe('Moon sets at 2:32am; moonless until 5:34am.')
+  expect(darkVerdict(night, windows, ZONE)).toEqual({ value: '3 hr 2 min', line: 'moonless, 2:32am–5:34am' })
 })
 
-test('near full Moon there are no truly dark hours', () => {
+test('near full Moon there are no moonless hours', () => {
   const night = nightOf('2026-11-23')
-  const windows = trulyDark(night)
+  const windows = moonlessWindows(night)
 
   expect(windows).toEqual([])
   expect(darkLine(night, windows, ZONE)).toBe('Moon up all night; fully dark until 5:37am.')
-  expect(darkVerdict(night, windows, ZONE)).toEqual({ value: 'No truly dark hours', line: 'The 100% lit Moon is up all night.' })
+  expect(darkVerdict(night, windows, ZONE)).toEqual({ value: 'No moonless hours', line: 'The 100% lit Moon is up all night.' })
 })
 
-test('a rising Moon ends the truly dark hours', () => {
+test('a rising Moon ends the moonless hours', () => {
   const night = nightOf('2026-12-03')
-  const windows = trulyDark(night)
+  const windows = moonlessWindows(night)
 
   expect(windows[0].from).toEqual(darkSpan(night).from)
   expect(darkLine(night, windows, ZONE)).toBe('Moon rises at 3:11am; fully dark until 5:46am.')
 })
 
-test('around new Moon the whole dark span is truly dark', () => {
+test('around new Moon the whole dark span is moonless', () => {
   const night = nightOf('2026-12-09')
-  const windows = trulyDark(night)
+  const windows = moonlessWindows(night)
 
   expect(windows).toEqual([darkSpan(night)])
-  expect(darkLine(night, windows, ZONE)).toBe('No Moon; truly dark until 5:51am.')
+  expect(darkLine(night, windows, ZONE)).toBe('Moonless all night, until 5:51am.')
   expect(darkVerdict(night, windows, ZONE).value).toBe('11 hr 19 min')
 })
 
@@ -74,7 +74,7 @@ test('midsummer nights far north never get fully dark', () => {
   const oslo = nightOf('2026-06-21', OSLO)
   const tromso = nightOf('2026-06-21', TROMSO)
 
-  expect(trulyDark(oslo)).toEqual([])
+  expect(moonlessWindows(oslo)).toEqual([])
   expect(darkLine(oslo, [], OSLO.timeZone)).toBeNull()
   expect(darkVerdict(oslo, [], OSLO.timeZone).value).toBe('No full dark')
   expect(darkVerdict(tromso, [], TROMSO.timeZone).value).toBe('No night')

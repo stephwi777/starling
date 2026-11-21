@@ -1,4 +1,5 @@
-import { Clipped, Dot, seeded } from './parts.jsx'
+import { Clipped, Dot } from './parts.jsx'
+import { seeded } from './shapes.js'
 
 
 

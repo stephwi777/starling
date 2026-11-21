@@ -45,7 +45,7 @@ function missing(status) {
 // SEEING PANEL
 
 function SeeingPanel() {
-  const { place, now, forecast, links, panelClose } = useOutletContext()
+  const { place, now, forecast, links, registerClose } = useOutletContext()
   const tz = place.timeZone
   const tonightNoon = nightStart(place, now).getTime()
   const { nights, tonight } = useMemo(() => panelNights(place, new Date(tonightNoon)), [place, tonightNoon])
@@ -73,7 +73,7 @@ function SeeingPanel() {
   const rows = hour?.air ? seeingRows(hour.air, place.country) : null
 
   return (
-    <Popover title="Seeing" titleId="seeing-title" link={links.seeing} panelClose={panelClose}>
+    <Popover title="Seeing" titleId="seeing-title" link={links.seeing} registerClose={registerClose}>
       {/* NIGHTS */}
 
       <NightStrip nights={nights} tonight={tonight} chosen={choice.night} timeZone={tz} onPick={pickNight} />

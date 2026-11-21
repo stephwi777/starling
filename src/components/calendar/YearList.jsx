@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { monthEvents, monthsFrom, shownEvents } from '../../sky/calendar/monthEvents.js'
+import { calendarFile } from '../../sky/calendar/ics.js'
+import { download, eventLink } from './download.js'
 import EventRow from './EventRow.jsx'
 
 
@@ -23,7 +25,6 @@ function monthName(year, month) {
 function YearList({ place, start, filters, south, onPick }) {
   const [open, setOpen] = useState(false)
   const [months, setMonths] = useState([])
-  const placeKey = `${place.latitude},${place.longitude},${place.timeZone}`
 
   useEffect(() => {
     if (!open) return
@@ -44,9 +45,14 @@ function YearList({ place, start, filters, south, onPick }) {
     timer = setTimeout(step, 0)
 
     return () => clearTimeout(timer)
-  }, [open, placeKey, start.year, start.month])
+  }, [open, place, start.year, start.month])
 
   const working = open && months.length < MONTHS
+  const everything = months.flatMap(({ events }) => shownEvents(events, filters))
+
+  function addAll() {
+    download('starling-sky-events.ics', calendarFile(everything, { place, linkFor: eventLink }))
+  }
 
   return (
     <details className="year-list" onToggle={event => setOpen(event.currentTarget.open)}>
@@ -55,11 +61,18 @@ function YearList({ place, start, filters, south, onPick }) {
         <small>The next 12 months</small>
       </summary>
 
+      {open && !working && everything.length > 0 && (
+        <div className="year-actions">
+          <button type="button" onClick={addAll}>Add all {everything.length} to your calendar</button>
+          <p>Downloads one file that Apple Calendar, Google Calendar and Outlook can open. It follows the checklist and search above.</p>
+        </div>
+      )}
+
       {months.map(({ year, month, events }) => {
         const shown = shownEvents(events, filters)
 
         return (
-          <section key={`${year}-${month}`} className="year-month" aria-label={monthName(year, month)}>
+          <div key={`${year}-${month}`} className="year-month">
             <h3>{monthName(year, month)}</h3>
 
             {shown.length ? (
@@ -69,7 +82,7 @@ function YearList({ place, start, filters, south, onPick }) {
             ) : (
               <p className="calendar-note">Nothing that matches this month.</p>
             )}
-          </section>
+          </div>
         )
       })}
 

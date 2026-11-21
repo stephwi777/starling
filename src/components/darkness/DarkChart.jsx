@@ -126,7 +126,7 @@ function DarkChart({ path, range, lit, chosen, valueText, timeZone, onChoose, on
       </div>
 
       <div className="dark-key" aria-hidden="true">
-        <span><i className="dark" />Truly dark</span>
+        <span><i className="dark" />Moonless</span>
         <span><i className="moonlit" />Moon up</span>
         <span><i className="twilight" />Twilight</span>
         <span><i className="day" />Day</span>

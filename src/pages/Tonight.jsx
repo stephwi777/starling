@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useCallback, useRef } from 'react'
 import { Outlet, useMatch } from 'react-router'
 import { usePlace } from '../place/usePlace.js'
 import { useForecast } from '../sky/useForecast.js'
@@ -42,6 +42,9 @@ function Tonight() {
   const seeingLink = useRef(null)
   const upLink = useRef(null)
   const panelClose = useRef(null)
+  const registerClose = useCallback(close => {
+    panelClose.current = close
+  }, [])
   const panel = useMatch('/tonight/:panel')?.params.panel
   const links = { moon: moonLink, clouds: cloudsLink, darkness: darknessLink, seeing: seeingLink, up: upLink }
   const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
@@ -75,7 +78,7 @@ function Tonight() {
 
         <div className="tonight-cards">
           <NightsCard place={place} forecast={forecast} now={now} />
-          <UpTonightCard sky={sky} place={place} link={links.up} panelClose={panelClose} />
+          <UpTonightCard sky={sky} place={place} link={upLink} panelClose={panelClose} />
         </div>
 
         <div className="veil" aria-hidden="true" />
@@ -85,7 +88,7 @@ function Tonight() {
 
       {/* PANELS */}
 
-      <Outlet context={{ place, now, sky, forecast, links, panelClose }} />
+      <Outlet context={{ place, now, sky, forecast, links, registerClose }} />
     </main>
   )
 }

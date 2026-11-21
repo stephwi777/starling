@@ -107,7 +107,7 @@ test('every night shares one grid of hours from the earliest start to the latest
 const RANGE = { first: 5, count: 14 }
 const MOON_SETS = [{ from: at(420), to: at(900) }]
 
-test('each hour block says twilight, cloudy, moonlit or truly dark', () => {
+test('each hour block says twilight, cloudy, moonlit or moonless', () => {
   const blocks = nightBlocks(night(), hours(hour => (hour === 8 ? 90 : 5)), MOON_SETS, RANGE)
 
   expect(blocks).toEqual(['twilight', 'twilight', 'moonlit', 'moonlit', 'moonlit', 'moonlit', 'moonlit', 'dark', 'cloudy', 'dark', 'dark', 'dark', 'twilight', 'twilight'])
@@ -169,7 +169,7 @@ test('seven nights without a forecast show dark hours', () => {
 
 // MOONLIGHT AND BEST NIGHT
 
-test('the best night has the most truly dark time, with moonlit time worth less', () => {
+test('the best night has the most moonless time, with moonlit time worth less', () => {
   const clear = (dark, moonlit) => ({ kind: 'clear', blocks: [...Array(dark).fill('dark'), ...Array(moonlit).fill('moonlit')] })
 
   expect(bestIndex([clear(2, 6), clear(5, 0), { kind: 'none', blocks: [] }])).toBe(1)

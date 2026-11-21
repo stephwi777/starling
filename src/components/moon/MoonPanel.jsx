@@ -5,7 +5,8 @@ import { distanceWords, fullMoonWords, moonAt, nightName, phaseName, riseAndSet 
 import { chosenIndex, nearestNotch, notchesFor, rulerNights, sameTimeIndex, tonightIndex } from '../../sky/moonNights.js'
 import { clock } from '../../sky/words.js'
 import { PhaseMoon } from '../ui/icons.jsx'
-import MoonRuler, { useNotchWheel } from './MoonRuler.jsx'
+import MoonRuler from './MoonRuler.jsx'
+import useNotchWheel from './useNotchWheel.js'
 import MoonCalendar from './MoonCalendar.jsx'
 import Popover from '../panel/Popover.jsx'
 import './MoonPanel.css'
@@ -43,7 +44,7 @@ function TimeOrNone({ date, timeZone }) {
 // MOON PANEL
 
 function MoonPanel() {
-  const { place, now, links, panelClose } = useOutletContext()
+  const { place, now, links, registerClose } = useOutletContext()
   const art = useRef(null)
   const ruler = useRef(null)
   const tonightNoon = nightStart(place, now).getTime()
@@ -107,7 +108,7 @@ function MoonPanel() {
   }
 
   return (
-    <Popover title="Moon" titleId="moon-title" link={links.moon} panelClose={panelClose}>
+    <Popover title="Moon" titleId="moon-title" link={links.moon} registerClose={registerClose}>
       {/* MOON */}
 
       <div className="moon-art">

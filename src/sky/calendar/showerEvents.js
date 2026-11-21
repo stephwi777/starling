@@ -1,8 +1,9 @@
 import * as Astronomy from 'astronomy-engine'
 import { SHOWERS } from '../catalog/showers.js'
+import { peakTime } from '../meteors.js'
 import { localNoon } from '../night.js'
 import { clock, dayName, where } from '../words.js'
-import { HOUR, MINUTE, dayKey, moonLit } from './skyTools.js'
+import { HOUR, MINUTE, moonLit, nightKey } from './skyTools.js'
 
 
 
@@ -26,6 +27,12 @@ function shortDate(year, text, timeZone) {
   return new Intl.DateTimeFormat('en-US', { timeZone, month: 'short', day: 'numeric' }).format(localNoon(year, month, day, timeZone))
 }
 
+function eveningOf(key, timeZone) {
+  const [year, month, day] = key.split('-').map(Number)
+
+  return localNoon(year, month, day, timeZone)
+}
+
 function highestRadiant(shower, noon, observer) {
   let best = null
 
@@ -44,8 +51,9 @@ function highestRadiant(shower, noon, observer) {
 // SHOWER EVENT
 
 function showerEvent(shower, year, place, observer) {
-  const [month, day] = monthDay(shower.peak)
-  const noon = localNoon(year, month, day, place.timeZone)
+  const peak = peakTime(shower, year)
+  const day = nightKey(peak, place.timeZone)
+  const noon = eveningOf(day, place.timeZone)
   const reach = 90 - Math.abs(place.latitude - shower.dec)
   const here = reach >= LOWEST_PEAK
   const top = highestRadiant(shower, noon, observer)
@@ -56,8 +64,8 @@ function showerEvent(shower, year, place, observer) {
     id: `shower-${shower.name}-${year}`,
     kinds: [MAJOR.includes(shower.name) ? 'major-shower' : 'minor-shower'],
     group: 'meteor',
-    date: noon,
-    day: dayKey(noon, place.timeZone),
+    date: peak,
+    day,
     time: 'Peak night',
     here,
     where: here ? null : `Best seen from the ${shower.dec < 0 ? 'Southern' : 'Northern'} Hemisphere.`,
@@ -66,7 +74,8 @@ function showerEvent(shower, year, place, observer) {
     name: `${shower.name} peak`,
     note: `${shower.hint} Up to ${shower.zhr} meteors an hour under perfectly dark skies; expect fewer near towns.`,
     rows: [
-      ['Peak night', dayName(noon, place.timeZone)],
+      ['Peak night', `${dayName(noon, place.timeZone)} into ${new Intl.DateTimeFormat('en-US', { timeZone: place.timeZone, weekday: 'long' }).format(new Date(noon.getTime() + 24 * HOUR))}`],
+      ['Exact peak', `${clock(peak, place.timeZone)}, ${new Intl.DateTimeFormat('en-US', { timeZone: place.timeZone, month: 'short', day: 'numeric' }).format(peak)}`],
       ['Active', `${shortDate(startYear, shower.start, place.timeZone)} to ${shortDate(endYear, shower.end, place.timeZone)}`],
       ['Radiant', `In ${Astronomy.Constellation(shower.ra, shower.dec).name}`],
       ['Best time', top.alt > 0 ? `Around ${clock(top.date, place.timeZone)}, radiant ${where(top.alt, top.az).toLowerCase()}` : 'The radiant stays below your horizon'],

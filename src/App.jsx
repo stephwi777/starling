@@ -1,20 +1,26 @@
+import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import Home from './pages/Home.jsx'
 import Placeholder from './pages/Placeholder.jsx'
-import Contact from './pages/Contact.jsx'
-import Credits from './pages/Credits.jsx'
-import About from './pages/About.jsx'
-import Tonight from './pages/Tonight.jsx'
-import Calendar from './pages/Calendar.jsx'
-import MoonPanel from './components/moon/MoonPanel.jsx'
-import CloudsPanel from './components/clouds/CloudsPanel.jsx'
-import DarknessPanel from './components/darkness/DarknessPanel.jsx'
-import SeeingPanel from './components/seeing/SeeingPanel.jsx'
-import UpTonightPanel from './components/uptonight/UpTonightPanel.jsx'
 import './App.css'
+
+
+
+// PAGES
+
+const Contact = lazy(() => import('./pages/Contact.jsx'))
+const Credits = lazy(() => import('./pages/Credits.jsx'))
+const About = lazy(() => import('./pages/About.jsx'))
+const Tonight = lazy(() => import('./pages/Tonight.jsx'))
+const Calendar = lazy(() => import('./pages/Calendar.jsx'))
+const MoonPanel = lazy(() => import('./components/moon/MoonPanel.jsx'))
+const CloudsPanel = lazy(() => import('./components/clouds/CloudsPanel.jsx'))
+const DarknessPanel = lazy(() => import('./components/darkness/DarknessPanel.jsx'))
+const SeeingPanel = lazy(() => import('./components/seeing/SeeingPanel.jsx'))
+const UpTonightPanel = lazy(() => import('./components/uptonight/UpTonightPanel.jsx'))
 
 
 
@@ -30,6 +36,7 @@ function App() {
 
       {/* PAGES */}
 
+      <Suspense fallback={<main className="page-loading" aria-busy="true" />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="tonight" element={<Tonight />}>
@@ -48,6 +55,7 @@ function App() {
         <Route path="contact" element={<Contact />} />
         <Route path="*" element={<Placeholder title="Lost in space" text="We couldn't find that page." />} />
       </Routes>
+      </Suspense>
 
 
 

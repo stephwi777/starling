@@ -28,7 +28,6 @@ export const KINDS = [
   { id: 'transit', group: 'eclipse', name: 'Mercury and Venus transits', on: true },
 
   { id: 'opposition', group: 'planet', name: 'At their best', on: true },
-  { id: 'elongation', group: 'planet', name: 'Mercury and Venus at their best', on: true },
   { id: 'venus-brightest', group: 'planet', name: 'Venus at its brightest', on: true },
   { id: 'mars-closest', group: 'planet', name: 'Mars closest to Earth', on: true },
   { id: 'planet-pair', group: 'planet', name: 'Close pairs of planets', on: true },

@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import IconWell from '../ui/IconWell.jsx'
-import { PineIcon, TelescopeIcon } from '../ui/icons.jsx'
+import { PineIcon, SparkleIcon, TelescopeIcon } from '../ui/icons.jsx'
 import SkyIcon from '../sky-icons/SkyIcon.jsx'
-import { monthConstellation } from '../../sky/monthConstellation.js'
 
 
 
@@ -18,12 +18,37 @@ function starName(name) {
 
 // DOORS
 
+function useConstellation(now, place) {
+  const [constellation, setConstellation] = useState(null)
+  const month = `${now.getUTCFullYear()}-${now.getUTCMonth()}`
+
+  useEffect(() => {
+    let current = true
+
+    import('../../sky/monthConstellation.js').then(({ monthConstellation }) => {
+      if (current) setConstellation(monthConstellation(new Date(), place))
+    })
+
+    return () => {
+      current = false
+    }
+  }, [month, place])
+
+  return constellation
+}
+
 function Doors({ now, place }) {
-  const constellation = monthConstellation(now, place)
+  const constellation = useConstellation(now, place)
+  const shape = constellation && PATTERNS.includes(constellation.name)
 
   const doors = [
     { to: '/map', icon: <PineIcon />, title: 'Find dark skies', note: 'Parks and observatories near you' },
-    { to: '/learn', icon: <SkyIcon object={constellation} />, title: `Find ${starName(constellation.name)}`, note: PATTERNS.includes(constellation.name) ? "This month's star pattern" : "This month's constellation" },
+    {
+      to: '/learn',
+      icon: constellation ? <SkyIcon object={constellation} /> : <SparkleIcon />,
+      title: constellation ? `Find ${starName(constellation.name)}` : 'Find a constellation',
+      note: shape ? "This month's star pattern" : "This month's constellation",
+    },
     { to: '/tools', icon: <TelescopeIcon />, title: 'Sky tools', note: 'Moon phases, sky map and more' },
   ]
 

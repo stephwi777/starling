@@ -25,7 +25,7 @@ const OUTER = ['Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 const ALL = ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 
 const PAIR_LIMIT = 2
-const MOON_LIMIT = 4
+const MOON_LIMIT = 3
 const SUN_CLEAR = 15
 const MOON_SUN_CLEAR = 12
 const PARADE_SIZE = 4
@@ -157,7 +157,7 @@ function elongationEvents(start, end, place, observer) {
       const evening = found.visibility === 'evening'
       const view = viewed([body], found.time.date, place, observer, 'Too low in your sky after dark.')
 
-      events.push(base(['elongation'], found.time.date, place, {
+      events.push(base(['opposition'], found.time.date, place, {
         icon: `planet:${body}`,
         short: `${body} at its best`,
         name: `${body} at its best`,

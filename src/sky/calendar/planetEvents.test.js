@@ -57,7 +57,7 @@ test('the Moon passing Jupiter is found with its distance apart', () => {
 })
 
 test('Mercury and Venus at their best say which part of the sky to look in', () => {
-  const [venus] = kind(month(2027, 1), 'elongation')
+  const [venus] = kind(month(2027, 1), 'opposition').filter(event => event.short.startsWith('Venus'))
 
   expect(venus).toMatchObject({ short: 'Venus at its best', time: 'Before dawn' })
   expect(venus.note).toMatch(/morning sky, 47° away\. Look low in the east before sunrise\.$/)

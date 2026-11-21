@@ -1,4 +1,5 @@
-import { Dot, Spark, scatter, seeded } from './parts.jsx'
+import { Dot, Spark } from './parts.jsx'
+import { scatter, seeded } from './shapes.js'
 
 
 

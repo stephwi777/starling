@@ -49,12 +49,12 @@
   gap: 18px 28px;
 }
 
-.calendar-top h1 {
+.calendar-title h1 {
   color: var(--moon);
   font-size: clamp(2.2rem, 4vw, 3rem);
 }
 
-.calendar-top p {
+.calendar-title p {
   margin-top: 2px;
   color: var(--mist);
   font-weight: 700;
@@ -180,6 +180,103 @@
   background: var(--high);
 }
 
+.calendar-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+
+
+/* WIDE SCREENS */
+
+.calendar-page.wide {
+  padding: calc(var(--header-height, 92px) + 16px) clamp(16px, 2.2vw, 40px) 60px;
+}
+
+.wide .calendar-inner {
+  max-width: 2000px;
+}
+
+.wide .calendar-body {
+  grid-template-columns: 310px minmax(0, 1fr);
+  min-height: calc(100dvh - var(--header-height, 92px) - 36px);
+  margin-top: 0;
+}
+
+.wide .calendar-side {
+  position: relative;
+  align-self: stretch;
+  overflow: hidden;
+  padding: 0;
+}
+
+.calendar-side-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 24px 20px;
+  scrollbar-color: var(--raised) transparent;
+  scrollbar-width: thin;
+}
+
+.wide .calendar-title {
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--raised);
+}
+
+.wide .calendar-title h1 {
+  font-size: 2.4rem;
+}
+
+.wide .calendar-title p {
+  font-size: 0.95rem;
+}
+
+.wide .month {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.wide .month-days {
+  flex: 1;
+  grid-auto-rows: minmax(84px, auto);
+}
+
+.wide .month-days li {
+  min-height: 0;
+}
+
+.wide .month-head {
+  flex-wrap: nowrap;
+}
+
+.wide .world-switch button {
+  padding: 0 12px;
+}
+
+.wide .calendar-search input {
+  width: clamp(110px, 11vw - 30px, 220px);
+}
+
+.wide .chip {
+  font-size: 0.8rem;
+}
+
+.month-head .calendar-controls {
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.wide .month-head .month-nav {
+  order: -1;
+  margin-left: 0;
+}
+
 
 
 /* KINDS */
@@ -218,70 +315,172 @@
 }
 
 .kind-group {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
-.kind-group summary {
+.kind-group-head {
   display: flex;
   align-items: center;
-  gap: 10px;
+  margin: 0 -8px;
+  padding-left: 4px;
+  border-radius: 12px;
+  transition: background-color 90ms ease-out;
+}
+
+.kind-group-head:hover {
+  background: color-mix(in srgb, var(--raised) 70%, transparent);
+}
+
+.kind-option.group-box {
+  flex: none;
+  margin: 0;
+  padding: 0 4px 0 4px;
   min-height: 44px;
+}
+
+.kind-option.group-box input {
+  left: 4px;
+}
+
+.group-box .kind-box {
+  border-color: var(--c);
+}
+
+.kind-toggle {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: var(--frost);
+  font: inherit;
   font-weight: 900;
+  text-align: left;
   cursor: pointer;
-  list-style: none;
 }
 
-.kind-group summary::-webkit-details-marker {
-  display: none;
-}
-
-.kind-group summary small {
+.kind-toggle small {
   margin-left: auto;
   color: var(--mist);
   font-size: 0.8rem;
   font-weight: 800;
 }
 
-.kind-group summary::after {
-  content: '›';
+.kind-chevron {
   color: var(--mist);
   font-size: 1.4rem;
   line-height: 1;
   transition: rotate 0.2s;
 }
 
-.kind-group[open] summary::after {
+.kind-group.open .kind-chevron {
   rotate: 90deg;
 }
 
-.swatch {
-  flex: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 5px;
-  background: var(--c);
+.kind-option:not(.group-box):hover {
+  background: color-mix(in srgb, var(--raised) 70%, transparent);
 }
 
-.kind-group label {
+.kind-toggle:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}
+
+.kind-items {
+  padding: 0 0 6px 26px;
+}
+
+.kind-option {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 38px;
-  padding-left: 4px;
+  gap: 11px;
+  min-height: 40px;
+  margin: 0 -8px;
+  padding: 0 8px 0 12px;
+  border-radius: 12px;
   font-size: 0.92rem;
   font-weight: 700;
   cursor: pointer;
 }
 
-.kind-group input {
-  flex: none;
-  width: 18px;
-  height: 18px;
-  accent-color: var(--c);
+.kind-option input {
+  position: absolute;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
-.kind-group .kind-all {
-  color: var(--mist);
+.kind-box {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid color-mix(in srgb, var(--mist) 55%, transparent);
+  border-radius: 6px;
+}
+
+.kind-box svg {
+  width: 14px;
+  height: 14px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--zenith);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.kind-tick {
+  stroke-dasharray: 14;
+  stroke-dashoffset: 14;
+}
+
+.kind-dash {
+  opacity: 0;
+}
+
+.kind-option input:checked + .kind-box,
+.kind-option input:indeterminate + .kind-box {
+  border-color: var(--c);
+  background: var(--c);
+}
+
+.kind-option input:checked + .kind-box .kind-tick {
+  stroke-dashoffset: 0;
+}
+
+.kind-option input:indeterminate + .kind-box .kind-tick {
+  stroke-dashoffset: 14;
+}
+
+.kind-option input:indeterminate + .kind-box .kind-dash {
+  opacity: 1;
+}
+
+.kind-option:hover .kind-box {
+  border-color: var(--frost);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 18%, transparent);
+}
+
+.kind-option:hover input:checked + .kind-box,
+.kind-option:hover input:indeterminate + .kind-box {
+  border-color: color-mix(in srgb, var(--c) 82%, var(--zenith));
+  background: color-mix(in srgb, var(--c) 82%, var(--zenith));
+}
+
+.kind-option input:focus-visible + .kind-box {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
 }
 
 
@@ -296,6 +495,7 @@
 
 .month-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin-bottom: 14px;
@@ -303,6 +503,7 @@
 
 .month-head h2 {
   font-size: 1.6rem;
+  white-space: nowrap;
 }
 
 .month-nav {
@@ -375,6 +576,20 @@
   color: var(--zenith);
 }
 
+.past .day-number {
+  color: color-mix(in srgb, var(--mist) 70%, transparent);
+}
+
+.past .chip,
+.past .day-bars i {
+  opacity: 0.5;
+}
+
+.past .chip:hover,
+.past .chip:focus-visible {
+  opacity: 1;
+}
+
 
 
 /* CHIPS */
@@ -407,7 +622,7 @@
   display: -webkit-box;
   min-width: 0;
   overflow: hidden;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -421,6 +636,10 @@
   outline: 1.5px dashed color-mix(in srgb, var(--c) 65%, transparent);
   outline-offset: -1.5px;
   color: var(--mist);
+}
+
+.chip.away:hover {
+  background: color-mix(in srgb, var(--c) 14%, transparent);
 }
 
 .chip:focus-visible,
@@ -663,16 +882,128 @@
 }
 
 .event-card .popover-rows {
-  padding-bottom: 16px;
+  padding-bottom: 8px;
+}
+
+.event-card-tonight {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0 20px;
+  color: var(--beak);
+  font-weight: 800;
+  text-decoration: underline 2px;
+  text-underline-offset: 5px;
+}
+
+.event-card-tonight:hover {
+  color: var(--frost);
+}
+
+.event-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 20px 20px;
+}
+
+.event-card-actions button,
+.year-actions button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 14px;
+  background: var(--raised);
+  color: var(--frost);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 90ms ease-out;
+}
+
+.event-card-actions button:hover,
+.year-actions button:hover {
+  background: color-mix(in srgb, var(--raised) 70%, var(--snow-shade));
+}
+
+.event-card-actions button:focus-visible,
+.year-actions button:focus-visible,
+.event-card-tonight:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}
+
+.year-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding-bottom: 4px;
+}
+
+.year-actions p {
+  max-width: 52ch;
+  color: var(--mist);
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 
 
 /* MOTION */
 
+.month-days {
+  touch-action: pan-y;
+}
+
+.chip,
+.event-row,
+.kind-option {
+  transition: background-color 90ms ease-out;
+}
+
+.kind-box {
+  transition: box-shadow 140ms ease-out;
+}
+
+.kind-tick {
+  transition: stroke-dashoffset 90ms ease-out;
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .kind-box {
+    transition: box-shadow 140ms ease-out, scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+
+  :root:not(.still) .kind-option:active .kind-box {
+    scale: 0.84;
+    transition-duration: 140ms, 0.06s;
+  }
+
   :root:not(.still) .world-switch::before {
     transition: translate 0.3s cubic-bezier(0.3, 1.3, 0.6, 1);
+  }
+
+  :root:not(.still) .month-days.slide-next {
+    animation: month-next 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+
+  :root:not(.still) .month-days.slide-prev {
+    animation: month-prev 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+}
+
+@keyframes month-next {
+  from {
+    opacity: 0;
+    translate: 28px 0;
+  }
+}
+
+@keyframes month-prev {
+  from {
+    opacity: 0;
+    translate: -28px 0;
   }
 }
 

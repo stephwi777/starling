@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 import { localNoon } from './night.js'
 import { clock } from './words.js'
-import { distanceWords, fullMoonWords, moonAt, nightName, phaseName, riseAndSet } from './moonFacts.js'
+import { distanceWords, fullMoonWords, litSide, moonAt, nightName, phaseName, riseAndSet } from './moonFacts.js'
 
 
 
@@ -65,4 +65,15 @@ test('distance in miles for the US and kilometers elsewhere', () => {
 
 test('night names', () => {
   expect(nightName(noonOf(11, 19), KC.timeZone)).toBe('Thursday night, November 19')
+})
+
+
+
+// LIT SIDE
+
+test('quarter Moons are lit on the side seen from each hemisphere', () => {
+  expect(litSide('first-quarter', false)).toBe('right')
+  expect(litSide('last-quarter', false)).toBe('left')
+  expect(litSide('first-quarter', true)).toBe('left')
+  expect(litSide('last-quarter', true)).toBe('right')
 })

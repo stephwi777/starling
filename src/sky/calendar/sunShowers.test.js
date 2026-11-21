@@ -51,7 +51,7 @@ test('December has the Geminids as a major shower and the Ursids as a minor one'
   const showers = showerEvents(start, end, KC, observerFor(KC))
 
   expect(showers.map(event => [event.short, event.kinds[0], event.day, event.here])).toEqual([
-    ['Geminids peak', 'major-shower', '2026-12-14', true],
+    ['Geminids peak', 'major-shower', '2026-12-13', true],
     ['Ursids peak', 'minor-shower', '2026-12-22', true],
   ])
 })

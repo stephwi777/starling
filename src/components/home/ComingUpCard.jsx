@@ -1,27 +1,39 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { comingUp, eventDay, litSide } from '../../sky/comingUp.js'
+import { upcoming } from '../../sky/calendar/monthEvents.js'
+import { loadCalendar } from '../../sky/calendar/calendarStorage.js'
 import Card from '../ui/Card.jsx'
 import IconWell from '../ui/IconWell.jsx'
-import { CalendarIcon, FullMoonIcon, HalfMoonIcon, MeteorIcon, NewMoonIcon } from '../ui/icons.jsx'
+import { CalendarIcon } from '../ui/icons.jsx'
+import EventIcon from '../calendar/EventIcon.jsx'
 
 
 
-// ICONS
+// HELPERS
 
-const ICONS = {
-  'shower': MeteorIcon,
-  'full-moon': FullMoonIcon,
-  'new-moon': NewMoonIcon,
-  'first-quarter': HalfMoonIcon,
-  'last-quarter': HalfMoonIcon,
+function shortDay(key) {
+  const [year, month, day] = key.split('-').map(Number)
+
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric' }).format(Date.UTC(year, month - 1, day))
+}
+
+function firstSentence(text) {
+  return text.match(/^.*?[.!?](\s|$)/)?.[0].trim() ?? text
 }
 
 
 
 // COMING UP CARD
 
-function ComingUpCard({ now, timeZone, south }) {
-  const events = comingUp(now)
+function ComingUpCard({ place, now }) {
+  const [events, setEvents] = useState(null)
+  const day = now.toDateString()
+
+  useEffect(() => {
+    const timer = setTimeout(() => setEvents(upcoming(place, new Date(), { kinds: loadCalendar().kinds })), 0)
+
+    return () => clearTimeout(timer)
+  }, [place, day])
 
   return (
     <Card labelledBy="home-coming">
@@ -31,24 +43,24 @@ function ComingUpCard({ now, timeZone, south }) {
         <Link className="card-link" to="/calendar">Calendar</Link>
       </div>
 
-      {events.length === 0 ? (
-        <p className="card-note">Nothing big in the next month. Clear skies are still worth a look!</p>
-      ) : (
-        <ul className="coming-list">
-          {events.map(event => {
-            const Icon = ICONS[event.kind]
+      {events === null && <p className="card-note">Checking the sky calendar…</p>}
 
-            return (
-              <li key={`${event.kind}${event.date.toISOString()}`}>
-                <IconWell><Icon side={litSide(event.kind, south)} /></IconWell>
+      {events?.length === 0 && <p className="card-note">Nothing big in the next month. Clear skies are still worth a look!</p>}
+
+      {events?.length > 0 && (
+        <ul className="coming-list">
+          {events.map(event => (
+            <li key={event.id}>
+              <Link className="coming-row" to={`/calendar?month=${event.day.slice(0, 7)}&event=${encodeURIComponent(event.id)}`}>
+                <IconWell><EventIcon icon={event.icon} south={place.latitude < 0} /></IconWell>
                 <span className="row-text">
                   <strong>{event.name}</strong>
-                  <small>{event.note}</small>
+                  <small>{firstSentence(event.note)}</small>
                 </span>
-                <time dateTime={event.date.toISOString()}>{eventDay(event, timeZone)}</time>
-              </li>
-            )
-          })}
+                <time dateTime={event.day}>{shortDay(event.day)}</time>
+              </Link>
+            </li>
+          ))}
         </ul>
       )}
     </Card>

@@ -39,7 +39,7 @@ export function skyPath(observer, noon) {
 
 
 
-// TRULY DARK
+// MOONLESS
 
 function moonEvents(observer, from, to) {
   const events = []
@@ -60,7 +60,7 @@ function moonEvents(observer, from, to) {
   return events.sort((a, b) => a - b)
 }
 
-export function trulyDark(night) {
+export function moonlessWindows(night) {
   const span = darkSpan(night)
 
   if (!span) return []
@@ -128,12 +128,12 @@ export function darkLine(night, windows, timeZone) {
     const atDusk = same(from, span.from)
     const atDawn = same(to, span.to)
 
-    if (atDusk && atDawn) return `No Moon; truly dark until ${end}.`
-    if (atDawn) return `Moon sets at ${clock(from, timeZone)}; truly dark until ${end}.`
+    if (atDusk && atDawn) return `Moonless all night, until ${end}.`
+    if (atDawn) return `Moon sets at ${clock(from, timeZone)}; moonless until ${end}.`
     if (atDusk) return `Moon rises at ${clock(to, timeZone)}; fully dark until ${end}.`
   }
 
-  return `Truly dark ${ranges(windows, timeZone)}; fully dark until ${end}.`
+  return `Moonless ${ranges(windows, timeZone)}; fully dark until ${end}.`
 }
 
 
@@ -143,9 +143,9 @@ export function darkLine(night, windows, timeZone) {
 export function darkVerdict(night, windows, timeZone) {
   if (night.sun.every(alt => alt > 0)) return { value: 'No night', line: 'The Sun doesn’t set this night.' }
   if (!darkSpan(night)) return { value: 'No full dark', line: 'Twilight lasts all night.' }
-  if (!windows.length) return { value: 'No truly dark hours', line: `The ${Math.round(night.moonLit * 100)}% lit Moon is up all night.` }
+  if (!windows.length) return { value: 'No moonless hours', line: `The ${Math.round(night.moonLit * 100)}% lit Moon is up all night.` }
 
-  return { value: hoursWords(total(windows)), line: `truly dark, ${ranges(windows, timeZone)}` }
+  return { value: hoursWords(total(windows)), line: `moonless, ${ranges(windows, timeZone)}` }
 }
 
 
@@ -164,7 +164,7 @@ function stage(sun, moon) {
 
   if (kind === 'day') return 'Daylight'
   if (kind === 'moonlit') return 'Fully dark, Moon up'
-  if (kind === 'dark') return 'Truly dark'
+  if (kind === 'dark') return 'Moonless'
   if (sun > -6) return 'Civil twilight'
   if (sun > -12) return 'Nautical twilight'
 

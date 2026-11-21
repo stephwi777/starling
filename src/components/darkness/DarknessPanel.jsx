@@ -3,7 +3,7 @@ import { useOutletContext } from 'react-router'
 import { nightStart } from '../../sky/night.js'
 import { panelNights } from '../../sky/panelNights.js'
 import { darkSpan } from '../../sky/darkness.js'
-import { STEP_COUNT, atWords, darkVerdict, hoursWords, moonTimes, skyPath, trulyDark } from '../../sky/darkPanel.js'
+import { STEP_COUNT, atWords, darkVerdict, hoursWords, moonTimes, skyPath, moonlessWindows } from '../../sky/darkPanel.js'
 import { clock } from '../../sky/words.js'
 import Popover from '../panel/Popover.jsx'
 import NightStrip from '../panel/NightStrip.jsx'
@@ -47,7 +47,7 @@ function rangeOf(paths) {
 // DARKNESS PANEL
 
 function DarknessPanel() {
-  const { place, now, links, panelClose } = useOutletContext()
+  const { place, now, links, registerClose } = useOutletContext()
   const tz = place.timeZone
   const tonightNoon = nightStart(place, now).getTime()
   const { nights, tonight } = useMemo(() => panelNights(place, new Date(tonightNoon)), [place, tonightNoon])
@@ -62,12 +62,12 @@ function DarknessPanel() {
 
   const night = nights[choice.night]
   const path = paths[choice.night]
-  const windows = useMemo(() => trulyDark(night), [night])
+  const windows = useMemo(() => moonlessWindows(night), [night])
   const verdict = darkVerdict(night, windows, tz)
   const dark = darkSpan(night)
   const lit = Math.round(night.moonLit * 100)
   const at = atWords(path.times[choice.index], path.sun[choice.index], path.moon[choice.index], tz)
-  const trulyTotal = windows.reduce((sum, { from, to }) => sum + (to - from), 0)
+  const moonlessTotal = windows.reduce((sum, { from, to }) => sum + (to - from), 0)
 
   const clamp = (value, last) => Math.max(0, Math.min(last, value))
   const pickNight = target => setChoice(current => ({ ...current, night: clamp(target, nights.length - 1) }))
@@ -76,7 +76,7 @@ function DarknessPanel() {
   const step = direction => setChoice(current => ({ ...current, index: clamp(current.index + direction, STEP_COUNT - 1) }))
 
   return (
-    <Popover title="Darkness" titleId="darkness-title" link={links.darkness} panelClose={panelClose}>
+    <Popover title="Darkness" titleId="darkness-title" link={links.darkness} registerClose={registerClose}>
       {/* NIGHTS */}
 
       <NightStrip nights={nights} tonight={tonight} chosen={choice.night} timeZone={tz} onPick={pickNight} />
@@ -119,7 +119,7 @@ function DarknessPanel() {
         <div><dt>Evening twilight</dt><Value value={span(night.sunset, night.astroDusk, tz)} note={`Civil ${time(night.civilDusk, tz)} · Nautical ${time(night.nauticalDusk, tz)}`} /></div>
         <div><dt>Fully dark</dt><Value value={dark ? span(dark.from, dark.to, tz) : 'None'} note={dark && hoursWords(dark.to - dark.from)} /></div>
         <div><dt>Moon</dt><Value value={`${lit}% lit`} note={moonTimes(place, night.noon, tz)} /></div>
-        <div><dt>Truly dark</dt><Value value={windows.length ? windows.map(({ from, to }) => span(from, to, tz)).join(', ') : 'None'} note={windows.length ? `${hoursWords(trulyTotal)}, no Sun or Moon` : dark && 'the Moon is up'} /></div>
+        <div><dt>Moonless</dt><Value value={windows.length ? windows.map(({ from, to }) => span(from, to, tz)).join(', ') : 'None'} note={windows.length ? `${hoursWords(moonlessTotal)}, no Sun or Moon` : dark && 'the Moon is up'} /></div>
         <div><dt>Morning twilight</dt><Value value={span(night.astroDawn, night.sunrise, tz)} note={`Nautical ${time(night.nauticalDawn, tz)} · Civil ${time(night.civilDawn, tz)}`} /></div>
         <div><dt>Sunrise</dt><Value value={time(night.sunrise, tz)} /></div>
       </dl>

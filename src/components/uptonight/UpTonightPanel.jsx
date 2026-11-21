@@ -19,7 +19,7 @@ function emptyWords({ query, type }, now, timeZone) {
   if (query.trim()) return `Nothing called “${query.trim()}” is up tonight.`
 
   if (type === 'meteor') {
-    const next = nextShower(now, timeZone)
+    const next = nextShower(now)
     const day = new Intl.DateTimeFormat('en-US', { timeZone, month: 'long', day: 'numeric' }).format(next.peak)
 
     return `No strong meteor showers tonight. The ${next.name} peak on ${day}.`
@@ -33,7 +33,7 @@ function emptyWords({ query, type }, now, timeZone) {
 // UP TONIGHT PANEL
 
 function UpTonightPanel() {
-  const { place, now, sky, links, panelClose } = useOutletContext()
+  const { place, now, sky, links, registerClose } = useOutletContext()
   const tz = place.timeZone
   const list = useMemo(() => upList(sky, now, tz), [sky, now, tz])
   const [filters, setFilters] = useState({ gear: 2, type: 'all', query: '' })
@@ -55,7 +55,7 @@ function UpTonightPanel() {
   ].map(group => ({ ...group, rows: rows.filter(row => row.group === group.key) })).filter(group => group.rows.length)
 
   return (
-    <Popover title="Up tonight" titleId="up-panel-title" link={links.up} panelClose={panelClose}>
+    <Popover title="Up tonight" titleId="up-panel-title" link={links.up} registerClose={registerClose}>
       <p className="up-count-line" aria-live="polite">{rows.length} things to see with {GEAR_WORDS[filters.gear]}</p>
 
 

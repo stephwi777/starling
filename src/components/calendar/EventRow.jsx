@@ -11,7 +11,7 @@ function EventRow({ event, south, dated, onPick }) {
   const weekday = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'short' }).format(date)
 
   return (
-    <button type="button" className={`event-row${event.here ? '' : ' away'}`} data-group={event.group} aria-haspopup="dialog" onClick={click => onPick(event, click.currentTarget)}>
+    <button type="button" className={`event-row${event.here ? '' : ' away'}`} data-group={event.group} data-event={event.id} aria-haspopup="dialog" onClick={click => onPick(event, click.currentTarget)}>
       {dated && <span className="event-row-date" aria-hidden="true"><small>{weekday}</small><b>{day}</b></span>}
       <IconWell><EventIcon icon={event.icon} south={south} /></IconWell>
       <span className="row-text">

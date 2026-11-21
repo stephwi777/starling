@@ -39,16 +39,19 @@ function Cloud({ x, top, size, lift = 0 }) {
 
 // BAR
 
-function Bar({ hour, x, width, cell }) {
-  let top = BASE
-
-  const parts = barLayers(hour).map(({ layer, size }) => {
+function stack(hour) {
+  return barLayers(hour).reduce((pieces, { layer, size }) => {
     const height = size * SCALE
+    const below = pieces.at(-1)?.y ?? BASE
 
-    top -= height
+    return [...pieces, { layer, height, y: below - height }]
+  }, [])
+}
 
-    return <rect key={layer} x={x} y={top} width={width} height={height} {...FILLS[layer]} />
-  })
+function Bar({ hour, x, width, cell }) {
+  const pieces = stack(hour)
+  const top = pieces.at(-1)?.y ?? BASE
+  const parts = pieces.map(({ layer, height, y }) => <rect key={layer} x={x} y={y} width={width} height={height} {...FILLS[layer]} />)
 
   return (
     <g>

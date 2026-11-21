@@ -1,6 +1,6 @@
 import { STEP, buildNight } from './night.js'
 import { clearWindows, windowEdges } from './best.js'
-import { trulyDark } from './darkPanel.js'
+import { moonlessWindows } from './darkPanel.js'
 import { wholeHours } from './hours.js'
 import { nightWeather } from './weather.js'
 import { clock, shortDay } from './words.js'
@@ -102,7 +102,7 @@ function darkWords(blocks) {
 
   if (!dark) return 'The Moon is up the whole time.'
 
-  return `About ${dark} ${dark === 1 ? 'hour' : 'hours'} clear and truly dark.`
+  return `About ${dark} ${dark === 1 ? 'hour' : 'hours'} clear and moonless.`
 }
 
 
@@ -128,7 +128,7 @@ export function sevenNights(place, raw, now) {
     const weather = raw ? nightWeather(raw, night) : null
     const clouds = weather?.clouds ?? null
     const row = nightRow(night, clouds, place.timeZone, nightFall(night, weather?.falls))
-    const blocks = row.label ? [] : nightBlocks(night, clouds, clouds ? trulyDark(night) : [], range)
+    const blocks = row.label ? [] : nightBlocks(night, clouds, clouds ? moonlessWindows(night) : [], range)
 
     return {
       ...row,

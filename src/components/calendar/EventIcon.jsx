@@ -1,4 +1,4 @@
-import { litSide } from '../../sky/comingUp.js'
+import { litSide } from '../../sky/moonFacts.js'
 import {
   FullMoonIcon,
   HalfMoonIcon,

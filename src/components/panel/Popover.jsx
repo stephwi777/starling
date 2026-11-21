@@ -20,7 +20,7 @@ function motionOff() {
 
 // POPOVER
 
-function Popover({ title, titleId, link, panelClose, children }) {
+function Popover({ title, titleId, link, registerClose, children }) {
   const panel = useRef(null)
   const scroller = useRef(null)
   const closeButton = useRef(null)
@@ -85,7 +85,7 @@ function Popover({ title, titleId, link, panelClose, children }) {
   }, [placed])
 
   useEffect(() => {
-    panelClose.current = close
+    registerClose(close)
 
     const outside = event => {
       if (!panel.current.contains(event.target) && !link.current?.closest('.tile, .card')?.contains(event.target)) close()
@@ -99,7 +99,7 @@ function Popover({ title, titleId, link, panelClose, children }) {
     document.addEventListener('keydown', escape)
 
     return () => {
-      panelClose.current = null
+      registerClose(null)
       document.removeEventListener('pointerdown', outside)
       document.removeEventListener('keydown', escape)
     }

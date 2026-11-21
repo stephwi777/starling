@@ -7,11 +7,11 @@ import { clock } from './words.js'
 
 export const SEEING = [
   null,
-  { value: 'Bad', line: 'Shaky air will blur the view.', best: 'Wide views with binoculars' },
-  { value: 'Poor', line: 'Stars will twinkle a lot.', best: 'Wide views with binoculars' },
-  { value: 'Average', line: 'Stars will twinkle a little.', best: 'The Moon and bright objects' },
-  { value: 'Good', line: 'Steady air. Good for telescopes.', best: 'Moon and planets' },
-  { value: 'Excellent', line: 'Very steady air. Great for telescopes!', best: 'Planet detail, close double stars' },
+  { value: 'Bad', line: 'Shaky air will blur the view.', best: 'Wide binocular views' },
+  { value: 'Poor', line: 'Stars will twinkle a lot.', best: 'Wide binocular views' },
+  { value: 'Average', line: 'Stars will twinkle a little.', best: 'Moon and bright planets' },
+  { value: 'Good', line: 'Steady air. Good for telescopes.', best: 'Planets in detail' },
+  { value: 'Excellent', line: 'Very steady air. Great for telescopes!', best: 'Every fine detail' },
 ]
 
 const JET = [10, 20, 30, 40]

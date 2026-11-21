@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { rulerLabel } from '../../sky/moonNights.js'
 import useTabRing from '../panel/useTabRing.js'
+import useNotchWheel from './useNotchWheel.js'
 
 
 
 // SETTINGS
 
 const GAP = 10
-const WHEEL_STEP = 40
 const NOTCH_GLIDE = 140
 const NIGHT_GLIDE = 250
 
@@ -17,42 +17,6 @@ const NIGHT_GLIDE = 250
 
 function motionOff() {
   return matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('still')
-}
-
-
-
-// WHEEL
-
-export function useNotchWheel(target, onStep) {
-  const step = useRef(onStep)
-  const sum = useRef(0)
-
-  useEffect(() => {
-    step.current = onStep
-  })
-
-  useEffect(() => {
-    const element = target.current
-
-    const wheel = event => {
-      const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
-
-      event.preventDefault()
-
-      if (!delta) return
-
-      sum.current = Math.sign(delta) === Math.sign(sum.current) ? sum.current + delta : delta
-
-      if (Math.abs(sum.current) < WHEEL_STEP && event.deltaMode === 0) return
-
-      sum.current = 0
-      step.current(Math.sign(delta))
-    }
-
-    element.addEventListener('wheel', wheel, { passive: false })
-
-    return () => element.removeEventListener('wheel', wheel)
-  }, [target])
 }
 
 

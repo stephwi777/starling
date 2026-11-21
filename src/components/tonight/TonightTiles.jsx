@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { cloudBars, cloudWords } from '../../sky/clouds.js'
 import { darknessWords } from '../../sky/darkness.js'
-import { darkLine, skyPath, trulyDark } from '../../sky/darkPanel.js'
+import { darkLine, skyPath, moonlessWindows } from '../../sky/darkPanel.js'
 import { seeingWords } from '../../sky/seeing.js'
 import { moonTiming, nextFull } from '../../sky/moon.js'
 import { Fall, PhaseMoon } from '../ui/icons.jsx'
@@ -95,7 +95,7 @@ export function DarknessTile({ sky, place, now, link, panelClose }) {
   const { night } = sky
   const words = darknessWords(night, place.timeZone)
   const path = useMemo(() => skyPath(night.observer, night.noon), [night])
-  const windows = useMemo(() => trulyDark(night), [night])
+  const windows = useMemo(() => moonlessWindows(night), [night])
   const line = darkLine(night, windows, place.timeZone) ?? words.line
   const step = Math.round((now - night.noon) / STEP)
   const nowIndex = step >= 0 && step < path.sun.length ? step : null

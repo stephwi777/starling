@@ -84,3 +84,13 @@ export function distanceWords(km, country) {
 export function nightName(noon, timeZone) {
   return `${format(noon, timeZone, { weekday: 'long' })} night, ${format(noon, timeZone, { month: 'long', day: 'numeric' })}`
 }
+
+
+
+// LIT SIDE
+
+export function litSide(kind, south) {
+  const right = kind === 'first-quarter'
+
+  return right !== south ? 'right' : 'left'
+}

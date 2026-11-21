@@ -44,8 +44,7 @@ So nobody misses something special in the sky this year. Sky conditions stay on 
 | Eclipses and transits | Solar eclipses | on |
 | Eclipses and transits | Lunar eclipses | on |
 | Eclipses and transits | Mercury and Venus transits | on |
-| Planets | At their best (opposition) | on |
-| Planets | Mercury and Venus at their best (greatest elongation) | on |
+| Planets | At their best (opposition for outer planets, greatest elongation for Mercury and Venus; merged 2026-11-20) | on |
 | Planets | Venus at its brightest | on |
 | Planets | Mars closest to Earth | on |
 | Planets | Close pairs of planets | on |
@@ -75,6 +74,8 @@ An event can belong to more than one kind (a full Moon that is also a supermoon)
 - Moments show a clock time; night events show Evening, Late night, Before dawn or All night, with the viewing window in the card.
 
 ## Page
+
+Revised 2026-11-20 after the first draft: on wide screens (above 1180px) the calendar fills the whole screen width and height; the big Calendar title and place line sit at the top of the left column above the checklist, and search plus the switch sit in the month's header row after Today ‹ › and the month name (Google order). Rows fit their events and then stretch to fill the screen. Tablets and phones (900px and below) use colored bars with a tap-to-list day view, and swiping left or right changes the month with a short slide. Ideas for later: tapping a day or week to see exact timeframes, and adding events to the user's own calendar app.
 
 - No sky band (only Home and Tonight have one). Title, a one-line subtitle naming the place, then search, the switch and (on phones) a Choose events button.
 - Desktop: checklist sidebar on the left (grouped, color swatches, x/y counts), month grid on the right with Today and ‹ › buttons. Chips show icon and name, colored by group (Moon cream, eclipses rose, planets bronze, meteors teal, Sun and seasons beak). Chip names wrap to two lines rather than being cut.

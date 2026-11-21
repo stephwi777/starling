@@ -99,6 +99,7 @@ function lunarEvent(eclipse, place, observer) {
   ].filter(Boolean)
 
   return base('lunar-eclipse', peak, place, {
+    span: { from: minutesFrom(peak, -eclipse.sd_penum), to: minutesFrom(peak, eclipse.sd_penum) },
     icon: 'lunar-eclipse',
     short: words.name.replace(' eclipse', ''),
     name: words.name,
@@ -152,6 +153,7 @@ function solarEvent(eclipse, place, observer) {
   ]
 
   return base('solar-eclipse', local ? local.peak.time.date : peak, place, {
+    span: local ? { from: local.partial_begin.time.date, to: local.partial_end.time.date } : null,
     icon: 'solar-eclipse',
     short: SOLAR[kind].replace(' solar eclipse', ' eclipse'),
     name: SOLAR[kind],
@@ -189,6 +191,7 @@ function transitEvents(start, end, place, observer) {
       const time = date => clock(date, place.timeZone)
 
       events.push(base('transit', transit.peak.date, place, {
+        span: { from: transit.start.date, to: transit.finish.date },
         icon: 'transit',
         short: `${body} crosses the Sun`,
         name: `${body} crosses the Sun`,
