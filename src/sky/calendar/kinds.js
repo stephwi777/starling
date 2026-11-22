@@ -17,6 +17,7 @@ export const KINDS = [
   { id: 'new-moon', group: 'moon', name: 'New Moon', on: true },
   { id: 'supermoon', group: 'moon', name: 'Supermoon', on: true },
   { id: 'blue-moon', group: 'moon', name: 'Blue Moon', on: true },
+  { id: 'moon-star', group: 'moon', name: 'Moon near a bright star', on: false },
   { id: 'quarter-moon', group: 'moon', name: 'First and last quarter', on: false },
   { id: 'micromoon', group: 'moon', name: 'Micromoon', on: false },
   { id: 'black-moon', group: 'moon', name: 'Black Moon', on: false },
@@ -32,6 +33,7 @@ export const KINDS = [
   { id: 'mars-closest', group: 'planet', name: 'Mars closest to Earth', on: true },
   { id: 'planet-pair', group: 'planet', name: 'Close pairs of planets', on: true },
   { id: 'moon-planet', group: 'planet', name: 'Moon near a planet', on: true },
+  { id: 'planet-star', group: 'planet', name: 'Planets near bright stars', on: true },
   { id: 'parade', group: 'planet', name: 'Planet parades', on: true },
   { id: 'station', group: 'planet', name: 'Turning points', on: false },
   { id: 'solar-conjunction', group: 'planet', name: 'Behind or in front of the Sun', on: false },
@@ -41,6 +43,7 @@ export const KINDS = [
   { id: 'minor-shower', group: 'meteor', name: 'Minor showers', on: true },
 
   { id: 'season', group: 'sun', name: 'Equinoxes and solstices', on: true },
+  { id: 'milky-way', group: 'sun', name: 'Milky Way season', on: true },
   { id: 'earth-distance', group: 'sun', name: 'Earth closest and farthest', on: false },
 ]
 

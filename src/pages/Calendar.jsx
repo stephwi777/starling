@@ -23,6 +23,7 @@ import './Calendar.css'
 
 const NARROW = '(max-width: 900px)'
 const SIDEBAR = '(max-width: 1279px)'
+const ROOMY = '(min-width: 1880px)'
 
 
 
@@ -42,6 +43,18 @@ function monthFrom(text) {
 }
 
 const monthText = ({ year, month }) => `${year}-${String(month).padStart(2, '0')}`
+
+
+
+// FILTER ICON
+
+function FilterIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+      <path d="M2 4 H14 M4.5 8 H11.5 M7 12 H9" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+    </svg>
+  )
+}
 
 
 
@@ -83,6 +96,8 @@ function Calendar() {
   const settings = useCalendarSettings()
   const narrow = useMedia(NARROW)
   const wide = !useMedia(SIDEBAR)
+  const roomy = useMedia(ROOMY)
+  const chooser = useRef(null)
   const south = place.latitude < 0
 
   const all = useMemo(() => monthEvents(place, shown.year, shown.month), [place, shown.year, shown.month])
@@ -132,6 +147,29 @@ function Calendar() {
     setSelected(today)
   }
 
+  useEffect(() => {
+    if (!choosing || roomy) return
+
+    function away(event) {
+      if (!narrow && !chooser.current.contains(event.target)) setChoosing(false)
+    }
+
+    function key(event) {
+      if (event.key !== 'Escape') return
+
+      setChoosing(false)
+      chooser.current.querySelector('button').focus()
+    }
+
+    document.addEventListener('pointerdown', away)
+    document.addEventListener('keydown', key)
+
+    return () => {
+      document.removeEventListener('pointerdown', away)
+      document.removeEventListener('keydown', key)
+    }
+  }, [choosing, roomy, narrow])
+
   const pick = (event, anchor) => setPicked({ event, anchor })
 
   const list = <KindList id="kind-list" kinds={settings.kinds} toggleKind={settings.toggleKind} setGroup={settings.setGroup} suggest={settings.suggest} />
@@ -143,36 +181,41 @@ function Calendar() {
     </div>
   )
 
+  const choose = (
+    <div className="calendar-chooser" ref={chooser}>
+      <button type="button" className="calendar-choose soft-button" aria-expanded={choosing} aria-controls="kind-list" onClick={() => setChoosing(open => !open)}>
+        <FilterIcon />Choose events
+      </button>
+
+      {choosing && <div className="choose-panel">{list}</div>}
+    </div>
+  )
+
   const tools = (
     <div className="calendar-controls">
+      {!roomy && choose}
+
       <SearchBox query={query} setQuery={setQuery} />
 
       <WorldSwitch world={settings.world} setWorld={settings.setWorld} />
-
-      {!wide && (
-        <button type="button" className="calendar-choose soft-button" aria-expanded={choosing} aria-controls="kind-list" onClick={() => setChoosing(open => !open)}>
-          Choose events
-        </button>
-      )}
     </div>
   )
 
   return (
-    <main className={`calendar-page${wide ? ' wide' : ''}`}>
+    <main className={['calendar-page', wide && 'wide', roomy && 'roomy'].filter(Boolean).join(' ')}>
       <title>Calendar | Starling</title>
 
       <div className="calendar-inner">
-        {/* TOP */}
+        {/* TITLE */}
 
-        {!wide && <div className="calendar-top">{heading}{tools}</div>}
-        {!wide && choosing && <div className="calendar-sheet">{list}</div>}
+        {!roomy && <div className="visually-hidden">{heading}</div>}
 
 
 
         {/* MONTH */}
 
         <div className="calendar-body">
-          {wide && (
+          {roomy && (
             <div className="calendar-side">
               <div className="calendar-side-scroll">
                 {heading}
@@ -190,7 +233,7 @@ function Calendar() {
               selected={selected}
               narrow={narrow}
               south={south}
-              tools={wide ? tools : null}
+              tools={tools}
               slide={slide}
               onMonth={move}
               onToday={goToday}

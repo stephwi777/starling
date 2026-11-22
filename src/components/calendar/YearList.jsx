@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { monthEvents, monthsFrom, shownEvents } from '../../sky/calendar/monthEvents.js'
 import { calendarFile } from '../../sky/calendar/ics.js'
 import { download, eventLink } from './download.js'
@@ -20,14 +20,51 @@ function monthName(year, month) {
 
 
 
+// STICK LINE
+
+function stickLine() {
+  const header = document.querySelector('.header')
+
+  return getComputedStyle(header).position === 'fixed' ? header.offsetHeight : 0
+}
+
+
+
 // YEAR LIST
 
 function YearList({ place, start, filters, south, onPick }) {
   const [open, setOpen] = useState(false)
   const [months, setMonths] = useState([])
+  const loaded = useRef('')
+  const [stuck, setStuck] = useState(false)
+  const cap = useRef(null)
 
   useEffect(() => {
-    if (!open) return
+    let watcher
+
+    function watch() {
+      const line = stickLine()
+
+      watcher?.disconnect()
+      watcher = new IntersectionObserver(([entry]) => {
+        setStuck(entry.isIntersecting && entry.intersectionRatio < 1 && entry.boundingClientRect.top < line + 2)
+      }, { rootMargin: `${-line - 2}px 0px 0px 0px`, threshold: [0, 1] })
+      watcher.observe(cap.current)
+    }
+
+    watch()
+    window.addEventListener('resize', watch)
+
+    return () => {
+      watcher.disconnect()
+      window.removeEventListener('resize', watch)
+    }
+  }, [])
+
+  useEffect(() => {
+    const key = `${place.latitude},${place.longitude},${place.timeZone}|${start.year}-${start.month}`
+
+    if (!open || loaded.current === key) return
 
     const list = monthsFrom(start.year, start.month, MONTHS)
     const done = []
@@ -40,6 +77,7 @@ function YearList({ place, start, filters, south, onPick }) {
       setMonths([...done])
 
       if (done.length < list.length) timer = setTimeout(step, 0)
+      else loaded.current = key
     }
 
     timer = setTimeout(step, 0)
@@ -57,14 +95,16 @@ function YearList({ place, start, filters, south, onPick }) {
   return (
     <details className="year-list" onToggle={event => setOpen(event.currentTarget.open)}>
       <summary>
-        <span>All events, month by month</span>
-        <small>The next 12 months</small>
+        <span>All events by month</span>
+        <small>Next 12 months</small>
       </summary>
 
-      {open && !working && everything.length > 0 && (
+      <div className={stuck ? 'year-cap stuck' : 'year-cap'} ref={cap} aria-hidden="true" />
+
+      {(working || everything.length > 0) && (
         <div className="year-actions">
-          <button type="button" className="soft-button" onClick={addAll}>Add all {everything.length} to your calendar</button>
-          <p>Downloads one file that Apple Calendar, Google Calendar and Outlook can open. It follows the checklist and search above.</p>
+          <button type="button" className="soft-button" disabled={working} onClick={addAll}>Add all to your calendar</button>
+          <p>Works with Apple, Google and Outlook. Follows your checklist and search.</p>
         </div>
       )}
 

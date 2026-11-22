@@ -22,7 +22,7 @@ test('a month holds only its own days, in order', () => {
 
 test('every event belongs to a known kind and group', () => {
   expect(february.every(event => event.kinds.every(kind => ALL.includes(kind)))).toBe(true)
-  expect(new Set(february.map(event => event.group))).toEqual(new Set(['moon', 'eclipse', 'planet']))
+  expect(new Set(february.map(event => event.group))).toEqual(new Set(['moon', 'eclipse', 'planet', 'sun']))
 })
 
 test('the default kinds hide the lesser-known events', () => {
@@ -72,4 +72,11 @@ test('coming up follows the chosen kinds', () => {
   const soon = upcoming(KC, new Date('2026-11-13T20:00:00Z'), { kinds: ['full-moon'], count: 10 })
 
   expect(soon.map(event => event.short)).toEqual(['Full Beaver Moon'])
+})
+
+test('every event has a short name for phone calendars', () => {
+  const year = Array.from({ length: 12 }, (_, i) => monthEvents(KC, 2027, i + 1)).flat()
+
+  expect(year.filter(event => !event.tiny)).toEqual([])
+  expect(year.every(event => event.tiny.length <= 20)).toBe(true)
 })

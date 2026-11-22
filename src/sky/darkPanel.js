@@ -145,7 +145,7 @@ export function darkVerdict(night, windows, timeZone) {
   if (!darkSpan(night)) return { value: 'No full dark', line: 'Twilight lasts all night.' }
   if (!windows.length) return { value: 'No moonless hours', line: `The ${Math.round(night.moonLit * 100)}% lit Moon is up all night.` }
 
-  return { value: hoursWords(total(windows)), line: `moonless, ${ranges(windows, timeZone)}` }
+  return { value: hoursWords(total(windows)), line: `Moonless, ${ranges(windows, timeZone)}` }
 }
 
 

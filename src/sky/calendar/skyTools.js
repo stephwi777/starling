@@ -114,6 +114,46 @@ export function bestMoment(bodies, window, observer) {
 
 
 
+// CLOSEST APPROACH
+
+export function minima(from, to, step, value, limit) {
+  const found = []
+  let before = value(new Date(from - step))
+  let now = value(new Date(from))
+
+  for (let time = from; time < to; time += step) {
+    const after = value(new Date(time + step))
+
+    if (now < limit && now <= before && now < after) found.push(new Date(time))
+    before = now
+    now = after
+  }
+
+  return found
+}
+
+export function refine(around, value, span = 3 * HOUR, step = 10 * MINUTE) {
+  let best = around
+  let low = value(around)
+
+  for (let time = around.getTime() - span; time <= around.getTime() + span; time += step) {
+    const next = value(new Date(time))
+
+    if (next < low) {
+      low = next
+      best = new Date(time)
+    }
+  }
+
+  return { date: best, value: low }
+}
+
+export function degrees(value) {
+  return `${value < 1 ? value.toFixed(1) : Math.round(value * 10) / 10}°`
+}
+
+
+
 // TIME WORDS
 
 export function timeWord(window, timeZone) {
@@ -131,6 +171,26 @@ export function windowWords(window, timeZone) {
   if (window.to - window.from < 30 * MINUTE) return `Around ${clock(window.from, timeZone)}`
 
   return `${clock(window.from, timeZone)}–${clock(window.to, timeZone)}`
+}
+
+
+
+// VIEWED FROM HERE
+
+export function viewed(bodies, around, place, observer, why) {
+  const window = viewWindow(bodies, around, observer)
+
+  if (!window) return { here: false, where: why, rows: [] }
+
+  const time = timeWord(window, place.timeZone)
+
+  return {
+    here: true,
+    where: null,
+    day: time === 'Before dawn' ? dayKey(window.from, place.timeZone) : nightKey(window.from, place.timeZone),
+    time,
+    window,
+  }
 }
 
 

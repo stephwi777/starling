@@ -72,6 +72,7 @@ function showerEvent(shower, year, place, observer) {
     where: here ? null : `Best seen from the ${shower.dec < 0 ? 'Southern' : 'Northern'} Hemisphere.`,
     icon: 'shower',
     short: `${shower.name} peak`,
+    tiny: shower.name.replace('Northern ', 'N. ').replace('Southern ', 'S. '),
     name: `${shower.name} peak`,
     note: `${shower.hint} Up to ${shower.zhr} meteors an hour under perfectly dark skies; expect fewer near towns.`,
     rows: [

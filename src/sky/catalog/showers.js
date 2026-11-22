@@ -5,6 +5,7 @@ export const SHOWERS = [
   { name: 'Lyrids', start: '04-14', end: '04-30', peak: '04-22', sun: 32.32, zhr: 18, ra: 18.07, dec: 33.3, speed: 49, parent: 'Comet Thatcher', hint: 'Bright meteors with lasting trails.' },
   { name: 'Eta Aquariids', start: '04-19', end: '05-28', peak: '05-06', sun: 45.5, zhr: 50, ra: 22.53, dec: -1, speed: 66, parent: 'Comet Halley', hint: 'Fast meteors before dawn.' },
   { name: 'Southern Delta Aquariids', start: '07-12', end: '08-23', peak: '07-31', sun: 127, zhr: 25, ra: 22.67, dec: -16.4, speed: 41, parent: 'Comet 96P/Machholz', hint: 'Faint meteors, best from dark sites.' },
+  { name: 'Alpha Capricornids', start: '07-03', end: '08-15', peak: '07-30', sun: 127, zhr: 5, ra: 20.47, dec: -10.2, speed: 23, parent: 'Comet 169P/NEAT', hint: 'Few meteors, but slow, bright fireballs.' },
   { name: 'Perseids', start: '07-17', end: '08-24', peak: '08-12', sun: 140.0, zhr: 100, ra: 3.2, dec: 58, speed: 59, parent: 'Comet Swift–Tuttle', hint: 'The summer favorite, with many bright meteors.' },
   { name: 'Draconids', start: '10-06', end: '10-10', peak: '10-08', sun: 195.4, zhr: 10, ra: 17.47, dec: 54, speed: 20, parent: 'Comet Giacobini–Zinner', hint: 'Slow meteors, best in the evening.' },
   { name: 'Orionids', start: '10-02', end: '11-07', peak: '10-21', sun: 208.0, zhr: 20, ra: 6.33, dec: 15.6, speed: 66, parent: 'Comet Halley', hint: 'Fast meteors from Halley’s Comet.' },

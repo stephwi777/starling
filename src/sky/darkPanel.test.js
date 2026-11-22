@@ -41,7 +41,7 @@ test('a setting Moon leaves moonless hours after it sets', () => {
   const windows = moonlessWindows(night)
 
   expect(darkLine(night, windows, ZONE)).toBe('Moon sets at 2:32am; moonless until 5:34am.')
-  expect(darkVerdict(night, windows, ZONE)).toEqual({ value: '3 hr 2 min', line: 'moonless, 2:32am–5:34am' })
+  expect(darkVerdict(night, windows, ZONE)).toEqual({ value: '3 hr 2 min', line: 'Moonless, 2:32am–5:34am' })
 })
 
 test('near full Moon there are no moonless hours', () => {

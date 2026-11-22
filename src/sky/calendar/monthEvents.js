@@ -4,6 +4,7 @@ import { moonEvents } from './moonEvents.js'
 import { planetEvents } from './planetEvents.js'
 import { sunEvents } from './seasonEvents.js'
 import { showerEvents } from './showerEvents.js'
+import { starEvents } from './starEvents.js'
 import { DAY, dayKey, monthBounds, monthKey } from './skyTools.js'
 
 
@@ -29,6 +30,7 @@ function compute(place, year, month) {
     ...eclipseEvents(from, to, place, observer),
     ...planetEvents(from, to, place, observer),
     ...showerEvents(from, to, place, observer),
+    ...starEvents(from, to, place, observer),
     ...sunEvents(from, to, place),
   ]
     .filter(event => event.day.startsWith(key))

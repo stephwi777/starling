@@ -310,6 +310,20 @@ export function SeasonIcon() {
   )
 }
 
+export function MilkyWayIcon() {
+  return (
+    <Icon>
+      <g transform="rotate(-32)">
+        <ellipse rx="12.5" ry="5" fill="var(--snow)" opacity="0.12" />
+        <ellipse rx="9" ry="3" fill="var(--snow)" opacity="0.18" />
+        <ellipse cx="1.5" rx="4" ry="2.8" fill="var(--moon)" opacity="0.8" />
+        <path d="M-10 0.6 Q-2 -1.4 8 0.8" fill="none" stroke="var(--zenith)" strokeWidth="1.1" strokeLinecap="round" opacity="0.55" />
+      </g>
+      {[[-8, 1, 0.8], [-4, 6, 0.6], [6, -9, 0.7], [9, -1, 0.6], [-1, -8, 0.5], [3, 8, 0.5]].map(([x, y, r]) => <circle key={`${x}${y}`} cx={x} cy={y} r={r} fill="var(--frost)" />)}
+    </Icon>
+  )
+}
+
 export function ParadeIcon() {
   return (
     <Icon>

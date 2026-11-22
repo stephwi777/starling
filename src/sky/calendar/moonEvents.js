@@ -97,6 +97,7 @@ function fullEvent(date, previous, place, observer) {
   return base(kinds, date, place, {
     icon: 'full-moon',
     short,
+    tiny: blue ? 'Blue Moon' : 'Full Moon',
     name: short,
     tags,
     note: notes.join(' '),
@@ -114,6 +115,7 @@ function newEvent(date, previous, place) {
   return base(['new-moon', black && 'black-moon'].filter(Boolean), date, place, {
     icon: 'new-moon',
     short: black ? 'Black Moon' : 'New Moon',
+    tiny: black ? 'Black Moon' : 'New Moon',
     name: 'New Moon',
     tags: black ? ['Black Moon'] : [],
     note: `The Moon is lost in the Sun’s glare, so the nights are at their darkest. Great for faint galaxies and the Milky Way.${black ? ' A Black Moon: the second new Moon this month.' : ''}`,
@@ -125,6 +127,7 @@ function quarterEvent(date, first, place) {
   return base(['quarter-moon'], date, place, {
     icon: first ? 'first-quarter' : 'last-quarter',
     short: first ? 'First quarter' : 'Last quarter',
+    tiny: first ? 'First quarter' : 'Last quarter',
     name: first ? 'First quarter Moon' : 'Last quarter Moon',
     note: first ? 'Half lit and high in the evening sky. Craters stand out along the edge of the shadow.' : 'Half lit, rising around midnight and high at dawn.',
     rows: [['Exact at', clock(date, place.timeZone)]],
@@ -169,6 +172,7 @@ function distanceEvents(start, end, place) {
     events.push(base(['moon-distance'], apsis.time.date, place, {
       icon: close ? 'moon-close' : 'moon-far',
       short: close ? 'Moon closest' : 'Moon farthest',
+      tiny: close ? 'Moon closest' : 'Moon farthest',
       name: close ? 'Moon at its closest' : 'Moon at its farthest',
       note: close ? 'The Moon reaches the nearest point of its orbit (perigee).' : 'The Moon reaches the farthest point of its orbit (apogee).',
       rows: [['Distance', distanceWords(apsis.dist_km, place.country)]],
@@ -192,6 +196,7 @@ function nodeEvents(start, end, place) {
     events.push(base(['moon-node'], node.time.date, place, {
       icon: 'moon-node',
       short: 'Moon crosses Sun’s path',
+      tiny: 'Moon node',
       name: 'Moon crosses the Sun’s path',
       note: `The Moon crosses the ecliptic heading ${node.kind > 0 ? 'north' : 'south'}. Eclipses can only happen when a new or full Moon falls near one of these crossings.`,
       rows: [],

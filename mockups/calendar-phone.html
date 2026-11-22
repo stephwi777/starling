@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling phone calendar sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    .sheet {
+      padding: 32px 24px 80px;
+    }
+
+    .sheet > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .frames {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .frames h2 {
+      margin-bottom: 4px;
+      font-size: 1.15rem;
+    }
+
+    .frames small {
+      display: block;
+      max-width: 375px;
+      margin-bottom: 10px;
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .frames iframe {
+      width: 375px;
+      height: 760px;
+      border: 0;
+      border-radius: 28px;
+      background: var(--zenith);
+      box-shadow: 0 0 0 6px var(--high);
+    }
+
+
+
+    /* SHARED */
+
+    :root[data-phone] .day-bars {
+      width: 94%;
+      gap: 2px;
+    }
+
+    :root[data-phone] .day-bars i {
+      height: auto;
+      overflow: hidden;
+    }
+
+    :root[data-phone] .day-bars span {
+      display: block;
+      color: var(--frost);
+      font-size: 9.5px;
+      font-style: normal;
+      font-weight: 800;
+      line-height: 1.3;
+      text-align: left;
+    }
+
+
+
+    /* A · LABELS */
+
+    :root[data-phone="a"] .day-bars i {
+      padding: 1px 3px;
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--c) 32%, var(--high));
+    }
+
+    :root[data-phone="a"] .day-bars span {
+      white-space: nowrap;
+    }
+
+    :root[data-phone="a"] .day-bars i:nth-child(n + 4) {
+      display: none;
+    }
+
+
+
+    /* B · COLORED EDGE */
+
+    :root[data-phone="b"] .day-bars i {
+      padding-left: 3px;
+      border-left: 2px solid var(--c);
+      border-radius: 0;
+      background: none;
+    }
+
+    :root[data-phone="b"] .day-bars span {
+      display: -webkit-box;
+      overflow: hidden;
+      color: color-mix(in srgb, var(--c) 45%, var(--frost));
+      overflow-wrap: anywhere;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    :root[data-phone="b"] .day-bars i:nth-child(n + 3) {
+      display: none;
+    }
+
+
+
+    /* C · TWO-LINE LABELS */
+
+    :root:is([data-phone="c"], [data-phone="d"]) .day-bars i {
+      padding: 2px 3px;
+      border-radius: 4px;
+      background: color-mix(in srgb, var(--c) 32%, var(--high));
+    }
+
+    :root:is([data-phone="c"], [data-phone="d"]) .day-bars span {
+      display: -webkit-box;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+    }
+
+    :root:is([data-phone="c"], [data-phone="d"]) .day-bars i:nth-child(n + 3) {
+      display: none;
+    }
+
+    :root[data-phone="d"] .day-bars span {
+      overflow-wrap: normal;
+    }
+
+    :root[data-phone] .day-bars i.away {
+      background: none;
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 70%, transparent);
+    }
+
+    :root[data-phone="b"] .day-bars i.away {
+      box-shadow: none;
+      border-left-style: dashed;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-phone.jsx"></script>
+</body>
+</html>

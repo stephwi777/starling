@@ -48,12 +48,12 @@ function easy(list, night, timeZone) {
   }))
 }
 
-function takeTurns(groups) {
+function takeTurns(groups, count) {
   const picks = []
 
-  for (let round = 0; picks.length < PICKS && groups.some(group => group.length > round); round++) {
+  for (let round = 0; picks.length < count && groups.some(group => group.length > round); round++) {
     groups.forEach(group => {
-      if (picks.length < PICKS && group[round]) picks.push(group[round])
+      if (picks.length < count && group[round]) picks.push(group[round])
     })
   }
 
@@ -81,7 +81,7 @@ export function upTonight({ night, moon, planets, showers, deep, shapes, stars }
     easy(deep, night, timeZone),
     easy(shapes, night, timeZone),
     easy(stars, night, timeZone),
-  ])
+  ], PICKS)
 
   const total = [moon, ...planets, ...deep, ...shapes, ...stars].filter(object => object.visible).length + good.length
 

@@ -562,6 +562,41 @@
   border-top: 2px solid var(--raised);
 }
 
+.up-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.up-ghosts {
+  flex: 1 1 0;
+  min-height: 72px;
+  overflow: hidden;
+  mask-image: linear-gradient(black, transparent 90%);
+  pointer-events: none;
+}
+
+.up-ghosts li {
+  border-top: 2px solid var(--raised);
+}
+
+.ghost-lines {
+  display: grid;
+  flex: 1;
+  gap: 10px;
+}
+
+.ghost-lines i {
+  width: 38%;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--raised);
+}
+
+.ghost-lines i + i {
+  width: 62%;
+  height: 10px;
+}
+
 .level {
   margin-left: 6px;
   padding: 1px 9px;

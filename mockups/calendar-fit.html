@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling calendar fit sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PICKER */
+
+    .picker {
+      position: fixed;
+      z-index: 50;
+      right: 16px;
+      bottom: 16px;
+      width: min(320px, calc(100vw - 32px));
+      padding: 14px;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--raised) 96%, transparent);
+      box-shadow: 0 12px 30px color-mix(in srgb, var(--zenith) 70%, transparent);
+      font-size: 0.9rem;
+    }
+
+    .picker fieldset {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .picker legend {
+      margin-bottom: 6px;
+      font-weight: 900;
+    }
+
+    .picker label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .picker label:has(input:checked) {
+      background: var(--high);
+    }
+
+    .picker input {
+      margin-top: 4px;
+      accent-color: var(--beak);
+    }
+
+    .picker strong {
+      display: block;
+    }
+
+    .picker small {
+      color: var(--mist);
+    }
+
+    .picker p {
+      margin-top: 8px;
+      color: var(--mist);
+      font-size: 0.8rem;
+    }
+
+
+
+    /* A · CHECKLIST BUTTON */
+
+    :root[data-fit="a"] .calendar-page.wide {
+      padding-inline: var(--gutter);
+    }
+
+    :root[data-fit="a"] .wide .calendar-inner {
+      max-width: 1120px;
+    }
+
+    :root[data-fit="a"] .wide .calendar-body {
+      position: relative;
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    :root[data-fit="a"] .wide .calendar-side {
+      display: none;
+    }
+
+    :root[data-fit="a"].choosing .wide .calendar-side {
+      position: absolute;
+      z-index: 20;
+      top: var(--panel-top);
+      left: var(--panel-left);
+      display: block;
+      width: 330px;
+      background: var(--raised);
+      box-shadow: 0 16px 36px color-mix(in srgb, var(--zenith) 75%, transparent);
+    }
+
+    :root[data-fit="a"].choosing .calendar-side .calendar-title {
+      display: none;
+    }
+
+    :root[data-fit="a"].choosing .calendar-side-scroll {
+      position: static;
+    }
+
+    :root[data-fit="a"] .wide .world-switch svg {
+      display: none;
+    }
+
+    :root[data-fit="a"] .wide .world-switch button {
+      padding: 0 11px;
+    }
+
+    :root[data-fit="a"] .wide .calendar-search {
+      width: 150px;
+    }
+
+    :root[data-fit="a"] .month-head .calendar-controls {
+      gap: 12px;
+    }
+
+    .fit-choose {
+      display: none;
+    }
+
+    :root[data-fit="a"] .fit-choose {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    :root[data-fit="a"].choosing .fit-choose {
+      --soft-face: color-mix(in srgb, var(--raised) 70%, var(--snow-shade));
+    }
+
+    .fit-choose svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .fit-choose:focus-visible {
+      outline: 3px solid var(--beak);
+      outline-offset: 3px;
+    }
+
+
+
+    /* B · CHECKLIST STAYS */
+
+    :root[data-fit="b"] .calendar-page.wide {
+      padding-right: max(var(--gutter), (100% - 1120px) / 2);
+    }
+
+    :root[data-fit="b"] .wide .world-switch svg {
+      display: none;
+    }
+
+    :root[data-fit="b"] .wide .world-switch button {
+      padding: 0 11px;
+    }
+
+    :root[data-fit="b"] .wide .calendar-search {
+      width: clamp(122px, 25vw - 230px, 190px);
+    }
+
+    :root[data-fit="b"] .month-head .calendar-controls {
+      gap: 12px;
+    }
+
+    @media (max-width: 1440px) {
+      :root[data-fit="b"] .wide .month-head {
+        flex-wrap: wrap;
+        row-gap: 12px;
+      }
+
+      :root[data-fit="b"] .month-head .calendar-controls {
+        width: 100%;
+      }
+
+      :root[data-fit="b"] .month-head .calendar-search {
+        flex: 1;
+        width: auto;
+      }
+    }
+
+
+
+    /* GUIDE LINES */
+
+    :root[data-guides] body::before,
+    :root[data-guides] body::after {
+      content: '';
+      position: fixed;
+      z-index: 60;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      border-left: 1px dashed color-mix(in srgb, var(--beak) 70%, transparent);
+      pointer-events: none;
+    }
+
+    :root[data-guides] body::before {
+      left: max(var(--gutter), (100% - 1120px) / 2);
+    }
+
+    :root[data-guides] body::after {
+      right: max(var(--gutter), (100% - 1120px) / 2);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-fit.jsx"></script>
+</body>
+</html>

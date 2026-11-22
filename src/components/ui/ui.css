@@ -122,6 +122,12 @@
   --soft-face: color-mix(in srgb, var(--raised) 75%, var(--zenith));
 }
 
+.soft-button:disabled {
+  --soft-face: var(--raised);
+  color: color-mix(in srgb, var(--frost) 55%, transparent);
+  cursor: default;
+}
+
 
 
 /* REDUCED MOTION */

@@ -6,6 +6,7 @@ import EventIcon from './EventIcon.jsx'
 // SETTINGS
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const LABELS = 2
 const SWIPE = 50
 
 
@@ -50,7 +51,8 @@ function Day({ year, month, day, events, today, selected, narrow, south, active,
         >
           <span className="day-number">{day}</span>
           <span className="day-bars" aria-hidden="true">
-            {events.map(event => <i key={event.id} data-group={event.group} className={event.here ? undefined : 'away'} />)}
+            {events.slice(0, LABELS).map(event => <i key={event.id} data-group={event.group} className={event.here ? undefined : 'away'}><span>{event.tiny}</span></i>)}
+            {events.length > LABELS && <b className="day-more">+{events.length - LABELS}</b>}
           </span>
         </button>
       </li>

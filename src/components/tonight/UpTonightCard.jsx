@@ -7,13 +7,32 @@ import TileLink from './TileLink.jsx'
 
 
 
+// ROW
+
+function Row({ name, object, note, gear, moonAngle }) {
+  return (
+    <li>
+      <IconWell><SkyIcon object={object} moonAngle={moonAngle} /></IconWell>
+      <span className="row-text">
+        <strong>
+          {name}
+          {gear && <span className="level"><span className="visually-hidden">, best with </span>{gear}</span>}
+        </strong>
+        <small>{note}</small>
+      </span>
+    </li>
+  )
+}
+
+
+
 // UP TONIGHT CARD
 
 function UpTonightCard({ sky, place, link, panelClose }) {
   const { picks, total, empty } = upTonight(sky, place.timeZone)
 
   return (
-    <Card labelledBy="up-title">
+    <Card labelledBy="up-title" className="up-card">
       <div className="card-head">
         <IconWell><SparkleIcon /></IconWell>
         <h2 id="up-title">Up tonight</h2>
@@ -25,20 +44,20 @@ function UpTonightCard({ sky, place, link, panelClose }) {
       {empty ? (
         <p className="card-note">{empty}</p>
       ) : (
-        <ul className="up-list">
-          {picks.map(({ key, name, object, note, gear }) => (
-            <li key={key}>
-              <IconWell><SkyIcon object={object} moonAngle={sky.night.moonAngle} /></IconWell>
-              <span className="row-text">
-                <strong>
-                  {name}
-                  {gear && <span className="level"><span className="visually-hidden">, best with </span>{gear}</span>}
-                </strong>
-                <small>{note}</small>
-              </span>
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="up-list">
+            {picks.map(pick => <Row key={pick.key} {...pick} moonAngle={sky.night.moonAngle} />)}
+          </ul>
+
+          <ul className="up-list up-ghosts" aria-hidden="true">
+            {[0, 1, 2].map(index => (
+              <li key={index}>
+                <span className="well" />
+                <span className="ghost-lines"><i /><i /></span>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
     </Card>
   )
