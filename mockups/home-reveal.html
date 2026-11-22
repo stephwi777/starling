@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling home reveal sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PICKER */
+
+    .picker {
+      position: fixed;
+      z-index: 50;
+      left: 16px;
+      bottom: 16px;
+      width: min(340px, calc(100vw - 32px));
+      padding: 14px;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--high) 94%, transparent);
+      box-shadow: 0 12px 30px color-mix(in srgb, var(--zenith) 70%, transparent);
+      font-size: 0.92rem;
+    }
+
+    .picker fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .picker legend {
+      margin-bottom: 6px;
+      font-weight: 900;
+    }
+
+    .picker label {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 8px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+
+    .picker label:has(input:checked) {
+      background: var(--raised);
+    }
+
+    .picker input {
+      margin-top: 4px;
+      accent-color: var(--beak);
+    }
+
+    .picker strong {
+      display: block;
+    }
+
+    .picker small {
+      color: var(--mist);
+    }
+
+    .picker button {
+      width: 100%;
+      min-height: 44px;
+      margin-top: 8px;
+      border: 0;
+      border-radius: 14px;
+      background: var(--raised);
+      color: var(--frost);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+
+
+    /* SHARED */
+
+    :root:is([data-reveal="a"], [data-reveal="b"], [data-reveal="c"]) :is(.home-cards, .doors):not(.seen) > * {
+      opacity: 0;
+    }
+
+    :root[data-reveal] .home-cards > *,
+    :root[data-reveal] .doors > * {
+      animation-delay: calc(var(--i) * 110ms);
+    }
+
+
+
+    /* A · RISE */
+
+    :root[data-reveal="a"] .seen > * {
+      animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+      animation-delay: calc(var(--i) * 110ms);
+    }
+
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(32px);
+      }
+    }
+
+
+
+    /* B · EYES ADJUSTING */
+
+    :root[data-reveal="b"] .seen > * {
+      animation: adjust 1.2s ease-out backwards;
+      animation-delay: calc(var(--i) * 140ms);
+    }
+
+    @keyframes adjust {
+      from {
+        opacity: 0.1;
+        filter: blur(10px) brightness(0.4);
+        transform: scale(0.97);
+      }
+
+      60% {
+        opacity: 1;
+        filter: blur(1px) brightness(0.9);
+      }
+    }
+
+
+
+    /* C · STARS COME OUT */
+
+    :root[data-reveal="c"] .seen > * {
+      animation: shell 0.5s ease-out backwards;
+    }
+
+    :root[data-reveal="c"] :is(.home-cards, .doors):not(.seen) [data-bit] {
+      opacity: 0;
+    }
+
+    :root[data-reveal="c"] .seen [data-bit] {
+      animation: bit 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
+      animation-delay: calc(250ms + var(--b) * 70ms);
+    }
+
+    @keyframes shell {
+      from {
+        opacity: 0;
+      }
+    }
+
+    @keyframes bit {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+    }
+
+
+
+    /* D · OVER THE HORIZON */
+
+    @supports (animation-timeline: view()) {
+      :root[data-reveal="d"] :is(.home-cards, .doors) > * {
+        animation: horizon linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 90%;
+      }
+    }
+
+    @supports (animation-timeline: view()) {
+      :root[data-reveal="e"] :is(.home-cards, .doors) > * {
+        animation: scroll-rise linear both;
+        animation-timeline: view();
+        animation-range: entry calc(var(--i) * 14%) entry calc(75% + var(--i) * 14%);
+      }
+    }
+
+    @keyframes scroll-rise {
+      from {
+        opacity: 0;
+        transform: translateY(36px);
+      }
+    }
+
+    @keyframes horizon {
+      from {
+        opacity: 0;
+        transform: translateY(70px) scale(0.96);
+      }
+    }
+
+
+
+    /* REDUCED MOTION */
+
+    @media (prefers-reduced-motion: reduce) {
+      :root[data-reveal] :is(.home-cards, .doors):not(.seen) > *,
+      :root[data-reveal] :is(.home-cards, .doors):not(.seen) [data-bit] {
+        opacity: 1;
+      }
+
+      :root[data-reveal] * {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./home-reveal.jsx"></script>
+</body>
+</html>

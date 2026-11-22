@@ -22,7 +22,7 @@ import './Calendar.css'
 // SETTINGS
 
 const NARROW = '(max-width: 900px)'
-const SIDEBAR = '(max-width: 1180px)'
+const SIDEBAR = '(max-width: 1279px)'
 
 
 
@@ -150,7 +150,7 @@ function Calendar() {
       <WorldSwitch world={settings.world} setWorld={settings.setWorld} />
 
       {!wide && (
-        <button type="button" className="calendar-choose press-soft" aria-expanded={choosing} aria-controls="kind-list" onClick={() => setChoosing(open => !open)}>
+        <button type="button" className="calendar-choose soft-button" aria-expanded={choosing} aria-controls="kind-list" onClick={() => setChoosing(open => !open)}>
           Choose events
         </button>
       )}

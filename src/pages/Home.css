@@ -170,8 +170,14 @@
   gap: 18px;
 }
 
-.home-door {
+.doors > li {
   display: flex;
+}
+
+.home-door {
+  position: relative;
+  display: flex;
+  flex: 1;
   align-items: center;
   gap: 16px;
   min-height: 88px;
@@ -187,9 +193,20 @@
   transition: background 0.2s;
 }
 
+.home-door::after {
+  content: '';
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 0;
+}
+
 .home-door:hover {
   background: var(--raised);
   translate: 0 -3px;
+}
+
+.home-door:hover::after {
+  height: 3px;
 }
 
 .home-door:hover .well {
@@ -208,6 +225,36 @@
 
 .still .home-door:hover {
   translate: none;
+}
+
+
+
+/* REVEAL */
+
+.home-cards > :nth-child(2),
+.doors > :nth-child(2) {
+  --i: 1;
+}
+
+.doors > :nth-child(3) {
+  --i: 2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    :root:not(.still) :is(.home-cards, .doors) > * {
+      animation: card-rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 14%) entry calc(75% + var(--i, 0) * 14%);
+    }
+  }
+}
+
+@keyframes card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
 }
 
 
@@ -233,6 +280,11 @@
   .home-cards,
   .doors {
     grid-template-columns: 1fr;
+  }
+
+  .home-cards > :nth-child(n),
+  .doors > :nth-child(n) {
+    --i: 0;
   }
 }
 

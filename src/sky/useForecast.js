@@ -3,10 +3,26 @@ import { fetchWeather } from './weather.js'
 
 
 
+// MEMORY
+
+const remembered = new Map()
+
+
+
 // FAILURE
 
 export function afterFailure(previous, key) {
   return previous.key === key && previous.raw ? previous : { key, raw: null, status: 'failed' }
+}
+
+
+
+// SHOWN
+
+export function shownForecast(forecast, saved, key) {
+  if (saved) return { key, raw: saved.raw, status: 'ready' }
+
+  return forecast.key === key ? forecast : { raw: null, status: 'loading' }
 }
 
 
@@ -18,10 +34,15 @@ export function useForecast(place, refresh = 0) {
   const [forecast, setForecast] = useState({ key: '', raw: null, status: 'loading' })
 
   useEffect(() => {
+    if (remembered.get(key)?.refresh === refresh) return
+
     const controller = new AbortController()
 
     fetchWeather(place, controller.signal)
-      .then(raw => setForecast({ key, raw, status: 'ready' }))
+      .then(raw => {
+        remembered.set(key, { raw, refresh })
+        setForecast({ key, raw, status: 'ready' })
+      })
       .catch(() => {
         if (!controller.signal.aborted) setForecast(previous => afterFailure(previous, key))
       })
@@ -29,5 +50,5 @@ export function useForecast(place, refresh = 0) {
     return () => controller.abort()
   }, [place, key, refresh])
 
-  return forecast.key === key ? forecast : { raw: null, status: 'loading' }
+  return shownForecast(forecast, remembered.get(key), key)
 }

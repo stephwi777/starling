@@ -53,16 +53,20 @@ function Doors({ now, place }) {
   ]
 
   return (
-    <nav className="doors" aria-label="Explore Starling">
-      {doors.map(({ to, icon, title, note }) => (
-        <Link key={to} className="home-door" to={to}>
-          <IconWell>{icon}</IconWell>
-          <span>
-            <strong>{title}</strong>
-            <small>{note}</small>
-          </span>
-        </Link>
-      ))}
+    <nav aria-label="Explore Starling">
+      <ul className="doors">
+        {doors.map(({ to, icon, title, note }) => (
+          <li key={to}>
+            <Link className="home-door" to={to}>
+              <IconWell>{icon}</IconWell>
+              <span>
+                <strong>{title}</strong>
+                <small>{note}</small>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </nav>
   )
 }

@@ -1,7 +1,3 @@
-import { useState } from 'react'
-
-
-
 // ICONS
 
 function Pin() {
@@ -29,19 +25,10 @@ function Globe() {
 // WORLD SWITCH
 
 function WorldSwitch({ world, setWorld }) {
-  const [moved, setMoved] = useState(false)
-
-  function choose(next) {
-    if (next === world) return
-
-    setMoved(true)
-    setWorld(next)
-  }
-
   return (
-    <div className={['world-switch', world && 'world', moved && 'moved'].filter(Boolean).join(' ')} role="group" aria-label="Which events to show">
-      <button type="button" aria-pressed={!world} onClick={() => choose(false)}><Pin />Visible from here</button>
-      <button type="button" aria-pressed={world} onClick={() => choose(true)}><Globe />Worldwide</button>
+    <div className={world ? 'world-switch world' : 'world-switch'} role="group" aria-label="Which events to show">
+      <button type="button" aria-pressed={!world} onClick={() => setWorld(false)}><Pin />Visible from here</button>
+      <button type="button" aria-pressed={world} onClick={() => setWorld(true)}><Globe />Worldwide</button>
     </div>
   )
 }

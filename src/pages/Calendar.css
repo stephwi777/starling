@@ -147,7 +147,7 @@
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
   padding: 4px;
-  border-radius: 999px;
+  border-radius: 14px;
   background: color-mix(in srgb, var(--zenith) 45%, var(--high));
   font-size: 0.92rem;
   font-weight: 800;
@@ -158,8 +158,8 @@
   position: absolute;
   inset: 4px auto 4px 4px;
   width: calc(50% - 4px);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--raised) 80%, var(--high));
+  border-radius: 10px;
+  background: var(--raised);
 }
 
 .world-switch.world::before {
@@ -175,7 +175,7 @@
   min-height: 40px;
   padding: 0 16px;
   border: 0;
-  border-radius: 999px;
+  border-radius: 10px;
   background: none;
   color: color-mix(in srgb, var(--mist) 85%, transparent);
   font: inherit;
@@ -212,7 +212,7 @@
 }
 
 .calendar-choose[aria-expanded="true"] {
-  --press-face: color-mix(in srgb, var(--raised) 70%, var(--snow-shade));
+  --soft-face: color-mix(in srgb, var(--raised) 70%, var(--snow-shade));
 }
 
 .calendar-sheet {
@@ -319,7 +319,7 @@
 }
 
 .wide .calendar-search {
-  width: clamp(122px, 13vw - 60px, 230px);
+  width: clamp(122px, 70vw - 780px, 300px);
 }
 
 .wide .chip {
@@ -360,7 +360,6 @@
 
 .kind-reset {
   min-height: 34px;
-  margin-bottom: 2px;
   padding: 0 12px;
   border-radius: 11px;
   font: inherit;
@@ -529,14 +528,13 @@
 }
 
 .kind-option:hover .kind-box {
-  border-color: var(--frost);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 18%, transparent);
+  border-color: var(--c);
 }
 
 .kind-option:hover input:checked + .kind-box,
 .kind-option:hover input:indeterminate + .kind-box {
-  border-color: color-mix(in srgb, var(--c) 82%, var(--zenith));
-  background: color-mix(in srgb, var(--c) 82%, var(--zenith));
+  border-color: color-mix(in srgb, var(--c) 80%, var(--frost));
+  background: color-mix(in srgb, var(--c) 80%, var(--frost));
 }
 
 .kind-option input:focus-visible + .kind-box {
@@ -575,10 +573,6 @@
   display: flex;
   gap: 6px;
   margin-left: auto;
-}
-
-.month-nav {
-  padding-bottom: 2px;
 }
 
 .month-nav button {
@@ -904,12 +898,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 16px;
-  padding-bottom: 4px;
 }
 
 .year-actions button {
   min-height: 42px;
-  margin-bottom: 2px;
   padding: 0 16px;
   border-radius: 14px;
   font: inherit;
@@ -1106,7 +1098,7 @@
 }
 
 .kind-box {
-  transition: box-shadow 140ms ease-out;
+  transition: background-color 90ms ease-out, border-color 90ms ease-out;
 }
 
 .kind-tick {
@@ -1115,20 +1107,16 @@
 
 @media (prefers-reduced-motion: no-preference) {
   :root:not(.still) .kind-box {
-    transition: box-shadow 140ms ease-out, scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+    transition: background-color 90ms ease-out, border-color 90ms ease-out, scale 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
   }
 
   :root:not(.still) .kind-option:active .kind-box {
     scale: 0.84;
-    transition-duration: 140ms, 0.06s;
+    transition-duration: 90ms, 90ms, 0.06s;
   }
 
-  :root:not(.still) .world-switch.moved::before {
-    animation: knob-back 0.46s cubic-bezier(0.3, 1.15, 0.45, 1);
-  }
-
-  :root:not(.still) .world-switch.moved.world::before {
-    animation-name: knob-over;
+  :root:not(.still) .world-switch::before {
+    transition: translate 110ms cubic-bezier(0.7, 0, 0.3, 1);
   }
 
   :root:not(.still) .month-days.slide-next {
@@ -1137,26 +1125,6 @@
 
   :root:not(.still) .month-days.slide-prev {
     animation: month-prev 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
-  }
-}
-
-@keyframes knob-over {
-  0% {
-    translate: 0 0;
-  }
-
-  40% {
-    scale: 1.08 0.94;
-  }
-}
-
-@keyframes knob-back {
-  0% {
-    translate: 100% 0;
-  }
-
-  40% {
-    scale: 1.08 0.94;
   }
 }
 
@@ -1192,7 +1160,7 @@
 
 /* MEDIUM SCREENS */
 
-@media (max-width: 1180px) {
+@media (max-width: 1279px) {
   .calendar-body {
     grid-template-columns: minmax(0, 1fr);
   }

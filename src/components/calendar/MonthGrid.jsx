@@ -167,9 +167,9 @@ function MonthGrid({ year, month, events, today, selected, narrow, south, tools,
         {tools}
 
         <div className="month-nav">
-          <button type="button" className="month-today press-soft" onClick={onToday}>Today</button>
-          <button type="button" className="press-soft" aria-label="Previous month" onClick={() => onMonth(-1)}><Chevron path="M10 3 L5 8 L10 13" /></button>
-          <button type="button" className="press-soft" aria-label="Next month" onClick={() => onMonth(1)}><Chevron path="M6 3 L11 8 L6 13" /></button>
+          <button type="button" className="month-today soft-button" onClick={onToday}>Today</button>
+          <button type="button" className="soft-button" aria-label="Previous month" onClick={() => onMonth(-1)}><Chevron path="M10 3 L5 8 L10 13" /></button>
+          <button type="button" className="soft-button" aria-label="Next month" onClick={() => onMonth(1)}><Chevron path="M6 3 L11 8 L6 13" /></button>
         </div>
       </div>
 

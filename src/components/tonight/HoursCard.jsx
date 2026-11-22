@@ -45,7 +45,7 @@ function Arrow({ side, shown, onClick }) {
   return (
     <button type="button" className={`hours-arrow ${side}`} onClick={onClick} disabled={!shown} tabIndex={-1} aria-hidden="true">
       <svg viewBox="0 0 14 28">
-        <path d={side === 'left' ? 'M11 2 L3 14 L11 26' : 'M3 2 L11 14 L3 26'} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={side === 'left' ? 'M11 2 L3 14 L11 26' : 'M3 2 L11 14 L3 26'} fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
   )

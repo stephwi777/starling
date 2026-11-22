@@ -101,28 +101,25 @@
   transform: none;
 }
 
-.press-soft {
-  --press-face: var(--raised);
-  --press-edge: color-mix(in srgb, var(--raised) 65%, #000);
+
+
+/* SOFT BUTTON */
+
+.soft-button {
+  --soft-face: var(--raised);
   border: 0;
-  background: var(--press-face);
+  background: var(--soft-face);
   color: var(--frost);
-  box-shadow: 0 2px 0 var(--press-edge);
   cursor: pointer;
-  transition: transform 0.1s, box-shadow 0.1s, background-color 90ms ease-out;
+  transition: background-color 90ms ease-out;
 }
 
-.press-soft:hover {
-  --press-face: color-mix(in srgb, var(--raised) 90%, var(--snow-shade));
+.soft-button:hover {
+  --soft-face: color-mix(in srgb, var(--raised) 85%, var(--snow-shade));
 }
 
-.press-soft:active {
-  transform: translateY(2px);
-  box-shadow: 0 0 0 var(--press-edge);
-}
-
-.still .press-soft:active {
-  transform: none;
+.soft-button:active {
+  --soft-face: color-mix(in srgb, var(--raised) 75%, var(--zenith));
 }
 
 
@@ -134,8 +131,7 @@
     transition: none;
   }
 
-  .press:active,
-  .press-soft:active {
+  .press:active {
     transform: none;
   }
 }
