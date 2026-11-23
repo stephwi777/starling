@@ -3,7 +3,7 @@ import { GROUPS } from '../../sky/calendar/kinds.js'
 import { calendarFile, fileName } from '../../sky/calendar/ics.js'
 import { favoredSubjects } from '../../sky/calendar/favorites.js'
 import { popoverPlace } from '../panel/popoverPlace.js'
-import { eventDate } from './dates.js'
+import { shortDate } from './dates.js'
 import { download, eventLink } from './download.js'
 import EventIcon from './EventIcon.jsx'
 import CardMenu from './CardMenu.jsx'
@@ -21,6 +21,7 @@ const PHONE = '(max-width: 700px)'
 const WEEK = 7
 const DAY = 24 * 60 * 60 * 1000
 const COPIED = 2000
+const LIST = new Intl.ListFormat('en', { type: 'conjunction' })
 const STAR = 'M8 0.8 L10.1 5.4 L15.1 5.9 L11.3 9.2 L12.4 14.2 L8 11.6 L3.6 14.2 L4.7 9.2 L0.9 5.9 L5.9 5.4 Z'
 
 
@@ -162,7 +163,7 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
 
           <div className="event-card-tools">
             {main && (
-              <button type="button" className="event-card-star" aria-pressed={starred} aria-label={`Favorite ${main.label}`} onClick={() => onFavorite?.(main.key)}>
+              <button type="button" className="event-card-star" aria-pressed={starred} aria-label={`Favorite ${main.label}`} title={`Favorite ${main.label}`} onClick={() => onFavorite?.(main.key)}>
                 <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path d={STAR} /></svg>
               </button>
             )}
@@ -182,15 +183,12 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
           </div>
         </div>
 
-        {main && (
-          <p className="event-card-favorite">
-            {favored.length ? `In your favorites: ${favored.map(subject => subject.label).join(' and ')}.` : `Tap the star to favorite ${main.label}.`}
-          </p>
+        {favored.length > 0 && (
+          <p className="event-card-favorite">In your favorites: {LIST.format(favored.map(subject => subject.label))}.</p>
         )}
 
         <div className="event-card-when">
-          <p>{eventDate(event)}</p>
-          <p>{event.time}</p>
+          <p>{shortDate(event, today)}{event.time && <> · <span className="event-card-time">{event.time}</span></>}</p>
         </div>
 
         <p className="event-card-copied" role="status">{copied ? 'Link copied' : ''}</p>

@@ -43,7 +43,7 @@ Success: someone stars the Geminids once and, from then on, every Geminids peak 
 
 - **What a favorite covers: the same subject, every time.** Favoriting the Geminids marks every Geminids peak, but not the Ursids. Jupiter at its best marks Jupiter each year, not Saturn. Moon near Antares marks every Moon–Antares pass, not Spica. Events that are already one subject (Full Moon, solar eclipse) mark every one of them.
 - **The mark is C · yellow edge.** Big chips get an inset 3px `--beak` stripe on the left (padding nudged so text doesn't touch it). Phone labels get the same stripe. Rows in the month-by-month list get a 4px stripe. No star.
-- **The card keeps a star button.** It sits in the card's top tools, left of the ⋯ menu, 36px round like the others. Off: outlined star in `--mist`. On: filled star in `--beak`. It is a toggle (`aria-pressed`) labelled "Favorite every Geminids peak". A line under the title says what it covers: "Tap the star to favorite every Geminids peak." / "In your favorites: every Geminids peak."
+- **The card keeps a star button.** It sits in the card's top tools, left of the ⋯ menu, 36px round like the others. Off: outlined star in `--mist`. On: filled star in `--beak`. It is a toggle (`aria-pressed`) labelled "Favorite every Geminids peak". Its tooltip says what it covers ("Favorite every Geminids peak"). Only when something is favorited does a line under the title say "In your favorites: every Geminids peak." (The "Tap the star…" prompt was removed 2026-11-23: too busy.)
 - **Each event says its own subject** (not a shared rule that guesses from names).
 
 

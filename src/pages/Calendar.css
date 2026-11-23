@@ -682,6 +682,7 @@
 }
 
 .month-days li {
+  container: day / inline-size;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1211,8 +1212,9 @@
   font-weight: 800;
 }
 
-.event-card-when p + p {
-  font-weight: 700;
+.event-card-time {
+  color: var(--frost);
+  font-weight: 900;
 }
 
 .event-card-copied {
@@ -1430,6 +1432,24 @@
 @media (max-width: 1279px) {
   .calendar-body {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+
+
+/* NARROW DAYS */
+
+@container day (max-width: 110px) {
+  .chip {
+    gap: 4px;
+    padding: 4px 5px;
+    font-size: 0.68rem;
+    letter-spacing: -0.01em;
+  }
+
+  .chip svg {
+    width: 13px;
+    height: 13px;
   }
 }
 

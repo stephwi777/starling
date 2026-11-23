@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling card time</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 100px;
+    }
+
+    .sheet > p,
+    .sheet section > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet section {
+      margin-top: 48px;
+    }
+
+    .sheet section > h2 {
+      font-size: 1.5rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 352px);
+      gap: 20px;
+      align-items: start;
+      margin-top: 16px;
+    }
+
+    .mock-card {
+      width: 352px;
+      padding-bottom: 8px;
+      border-radius: var(--radius-card);
+      background: var(--high);
+    }
+
+    .mock-card .popover-rows {
+      padding-bottom: 12px;
+    }
+
+
+
+    /* OPTIONS */
+
+    .when-time {
+      color: var(--frost);
+      font-weight: 900;
+    }
+
+    .event-card-when p.when-time {
+      font-weight: 900;
+    }
+
+    .when-first .when-time {
+      font-size: 1.05rem;
+    }
+
+    .when-first p + p {
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./card-time.jsx"></script>
+</body>
+</html>
