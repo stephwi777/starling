@@ -6,6 +6,8 @@
   --raised: #1f2350;
   --horizon: #241f53;
   --far-hills: #31296a;
+  --wing: #3d3590;
+  --lilac: #8f86d6;
   --snow: #b9ade4;
   --snow-shade: #a093d4;
   --ink: #1a1645;
@@ -13,8 +15,10 @@
   --mist: #b4b6dc;
   --teal: #55bcab;
   --bronze: #d6a866;
+  --bronze-shade: #c48f4c;
   --beak: #f1cd57;
   --moon: #f6ead0;
+  --crater: #ecdcba;
   --berry: #6e1645;
   --moon-dark: #302c60;
   --moon-shadow: #5a5494;
@@ -97,6 +101,8 @@
   --mars-mid: #c4704c;
   --neptune-dark: #4f73d0;
   --neptune-light: #8fb0f0;
+  --earth-sea: #4f78b8;
+  --earth-land: #9cc94a;
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Nunito', system-ui, sans-serif;
@@ -144,6 +150,8 @@
 
   --horizon: #260806;
   --far-hills: #340b08;
+  --wing: #5a160f;
+  --lilac: #c94a35;
   --snow: #d8503a;
   --snow-shade: #b8402c;
   --ink: #0b0202;
@@ -151,8 +159,10 @@
   --mist: #e8553c;
   --teal: #f0583e;
   --bronze: #e0603e;
+  --bronze-shade: #b84a2e;
   --beak: #ff7a5c;
   --moon: #ff8a6c;
+  --crater: #e8705a;
   --berry: #4f1610;
   --moon-dark: #3a0c08;
   --moon-shadow: #6b1c12;
@@ -197,6 +207,8 @@
   --mars-mid: #b8402c;
   --neptune-dark: #8f2f20;
   --neptune-light: #e0603e;
+  --earth-sea: #8f2f20;
+  --earth-land: #e0603e;
 }
 
 

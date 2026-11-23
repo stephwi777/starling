@@ -2,11 +2,14 @@ import { litSide } from '../../sky/moonFacts.js'
 import { DEEP_SKY } from '../../sky/catalog/deepSky.js'
 import { STARS } from '../../sky/catalog/stars.js'
 import {
+  CometIcon,
   FullMoonIcon,
   HalfMoonIcon,
   LunarEclipseIcon,
   MilkyWayIcon,
-  MoonIcon,
+  MoonCloseIcon,
+  MoonFarIcon,
+  MoonNodeIcon,
   NewMoonIcon,
   ParadeIcon,
   SeasonIcon,
@@ -22,12 +25,13 @@ import SkyIcon from '../sky-icons/SkyIcon.jsx'
 const ICONS = {
   'full-moon': () => <FullMoonIcon />,
   'new-moon': () => <NewMoonIcon />,
-  'moon-close': () => <MoonIcon />,
-  'moon-far': () => <MoonIcon />,
-  'moon-node': () => <MoonIcon />,
+  'moon-close': () => <MoonCloseIcon />,
+  'moon-far': () => <MoonFarIcon />,
+  'moon-node': () => <MoonNodeIcon />,
   'solar-eclipse': () => <SolarEclipseIcon />,
   'lunar-eclipse': () => <LunarEclipseIcon />,
   'transit': () => <TransitIcon />,
+  'comet': () => <CometIcon />,
   'season': () => <SeasonIcon />,
   'parade': () => <ParadeIcon />,
   'milky-way': () => <MilkyWayIcon />,

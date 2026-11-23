@@ -30,6 +30,10 @@
   --c: var(--beak);
 }
 
+[data-group="comet"] {
+  --c: var(--star-icy);
+}
+
 .calendar-note {
   margin-top: 10px;
   color: var(--mist);
@@ -447,6 +451,14 @@
   transition: background-color 90ms ease-out;
 }
 
+.kind-note {
+  margin: -2px 0 6px 34px;
+  color: var(--mist);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
 .kind-group-head:hover {
   background: color-mix(in srgb, var(--raised) 70%, transparent);
 }
@@ -770,6 +782,39 @@
 .event-row:focus-visible {
   outline: 3px solid var(--beak);
   outline-offset: 2px;
+}
+
+
+
+/* FAVORITES */
+
+.chip.fav {
+  padding-left: 9px;
+  box-shadow: inset 3px 0 0 var(--beak);
+}
+
+.day-bars i.fav {
+  padding-left: 4px;
+  box-shadow: inset 3px 0 0 var(--beak);
+}
+
+.day-bars i.away.fav {
+  box-shadow: inset 3px 0 0 var(--beak), inset 0 0 0 1px color-mix(in srgb, var(--c) 70%, transparent);
+}
+
+.event-row.fav {
+  position: relative;
+}
+
+.event-row.fav::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: -3px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--beak);
 }
 
 
@@ -1107,6 +1152,51 @@
 .event-card-tools {
   display: flex;
   gap: 2px;
+}
+
+.event-card-star {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--mist);
+  cursor: pointer;
+  transition: background-color 90ms ease-out;
+}
+
+.event-card-star:hover {
+  background: var(--raised);
+  color: var(--frost);
+}
+
+.event-card-star:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}
+
+.event-card-star path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.event-card-star[aria-pressed="true"] {
+  color: var(--beak);
+}
+
+.event-card-star[aria-pressed="true"] path {
+  fill: currentColor;
+}
+
+.event-card-favorite {
+  padding: 2px 20px 0;
+  color: var(--mist);
+  font-size: 0.85rem;
+  font-weight: 700;
 }
 
 .event-card-title .event-tags {

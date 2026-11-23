@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { GROUPS } from '../../sky/calendar/kinds.js'
 import { calendarFile, fileName } from '../../sky/calendar/ics.js'
+import { favoredSubjects } from '../../sky/calendar/favorites.js'
 import { popoverPlace } from '../panel/popoverPlace.js'
 import { eventDate } from './dates.js'
 import { download, eventLink } from './download.js'
@@ -20,6 +21,7 @@ const PHONE = '(max-width: 700px)'
 const WEEK = 7
 const DAY = 24 * 60 * 60 * 1000
 const COPIED = 2000
+const STAR = 'M8 0.8 L10.1 5.4 L15.1 5.9 L11.3 9.2 L12.4 14.2 L8 11.6 L3.6 14.2 L4.7 9.2 L0.9 5.9 L5.9 5.4 Z'
 
 
 
@@ -40,7 +42,7 @@ function daysAhead(event, today) {
 
 // EVENT CARD
 
-function EventCard({ event, anchor, place, today, south, onClose }) {
+function EventCard({ event, anchor, place, today, south, onClose, favorites = [], onFavorite }) {
   const card = useRef(null)
   const scroller = useRef(null)
   const closeButton = useRef(null)
@@ -51,11 +53,18 @@ function EventCard({ event, anchor, place, today, south, onClose }) {
   const group = GROUPS.find(item => item.id === event.group)
   const ahead = daysAhead(event, today)
   const soon = ahead >= 0 && ahead < WEEK && event.here
+  const [main, ...extras] = event.subjects ?? []
+  const favored = favoredSubjects(event, favorites)
+  const starred = Boolean(main) && favorites.includes(main.key)
 
   const options = [
     { label: 'Add to calendar', onSelect: addToCalendar },
     { label: 'Copy link', onSelect: copyLink },
     soon && { label: ahead === 0 ? 'See tonight’s conditions' : 'See the forecast', to: '/tonight' },
+    ...extras.map(subject => ({
+      label: favorites.includes(subject.key) ? `Remove ${subject.label} from favorites` : `Favorite ${subject.label}`,
+      onSelect: () => onFavorite?.(subject.key),
+    })),
   ].filter(Boolean)
 
   function addToCalendar() {
@@ -152,6 +161,11 @@ function EventCard({ event, anchor, place, today, south, onClose }) {
           <p className="event-card-group">{group?.name}</p>
 
           <div className="event-card-tools">
+            {main && (
+              <button type="button" className="event-card-star" aria-pressed={starred} aria-label={`Favorite ${main.label}`} onClick={() => onFavorite?.(main.key)}>
+                <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path d={STAR} /></svg>
+              </button>
+            )}
             <CardMenu items={options} />
             <button ref={closeButton} type="button" className="popover-close" aria-label="Close" onClick={close}>
               <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3 3 L13 13 M13 3 L3 13" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
@@ -167,6 +181,12 @@ function EventCard({ event, anchor, place, today, south, onClose }) {
             <Tags tags={event.tags} />
           </div>
         </div>
+
+        {main && (
+          <p className="event-card-favorite">
+            {favored.length ? `In your favorites: ${favored.map(subject => subject.label).join(' and ')}.` : `Tap the star to favorite ${main.label}.`}
+          </p>
+        )}
 
         <div className="event-card-when">
           <p>{eventDate(event)}</p>

@@ -12,6 +12,13 @@ const SUPER_KM = 361900
 const MICRO_KM = 405000
 const HARVEST_REACH = 20 * DAY
 
+const FULL_LABELS = {
+  'full-moon': 'every Full Moon',
+  supermoon: 'every supermoon',
+  micromoon: 'every micromoon',
+  'blue-moon': 'every Blue Moon',
+}
+
 const NAMES = ['Wolf', 'Snow', 'Worm', 'Pink', 'Flower', 'Strawberry', 'Buck', 'Sturgeon', 'Corn', 'Hunter’s', 'Beaver', 'Cold']
 
 
@@ -95,6 +102,7 @@ function fullEvent(date, previous, place, observer) {
   ].filter(Boolean)
 
   return base(kinds, date, place, {
+    subjects: kinds.map(kind => ({ key: kind, label: FULL_LABELS[kind] })),
     icon: 'full-moon',
     short,
     tiny: blue ? 'Blue Moon' : 'Full Moon',
@@ -113,6 +121,7 @@ function newEvent(date, previous, place) {
   const black = previous && sameMonth(previous, date, place.timeZone)
 
   return base(['new-moon', black && 'black-moon'].filter(Boolean), date, place, {
+    subjects: [{ key: 'new-moon', label: 'every New Moon' }, black && { key: 'black-moon', label: 'every Black Moon' }].filter(Boolean),
     icon: 'new-moon',
     short: black ? 'Black Moon' : 'New Moon',
     tiny: black ? 'Black Moon' : 'New Moon',
@@ -125,6 +134,7 @@ function newEvent(date, previous, place) {
 
 function quarterEvent(date, first, place) {
   return base(['quarter-moon'], date, place, {
+    subjects: [{ key: 'quarter-moon', label: 'every first and last quarter Moon' }],
     icon: first ? 'first-quarter' : 'last-quarter',
     short: first ? 'First quarter' : 'Last quarter',
     tiny: first ? 'First quarter' : 'Last quarter',
@@ -170,6 +180,7 @@ function distanceEvents(start, end, place) {
     const close = apsis.kind === 0
 
     events.push(base(['moon-distance'], apsis.time.date, place, {
+      subjects: [close ? { key: 'moon-closest', label: 'every time the Moon is closest' } : { key: 'moon-farthest', label: 'every time the Moon is farthest' }],
       icon: close ? 'moon-close' : 'moon-far',
       short: close ? 'Moon closest' : 'Moon farthest',
       tiny: close ? 'Moon closest' : 'Moon farthest',
@@ -194,6 +205,7 @@ function nodeEvents(start, end, place) {
 
   while (node.time.date < end) {
     events.push(base(['moon-node'], node.time.date, place, {
+      subjects: [{ key: 'moon-node', label: 'every time the Moon crosses the Sun’s path' }],
       icon: 'moon-node',
       short: 'Moon crosses Sun’s path',
       tiny: 'Moon node',

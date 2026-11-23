@@ -46,7 +46,7 @@ function UpTonightCard({ sky, place, link, panelClose }) {
       ) : (
         <>
           <ul className="up-list">
-            {picks.map(pick => <Row key={pick.key} {...pick} moonAngle={sky.night.moonAngle} />)}
+            {picks.map(({ key, ...pick }) => <Row key={key} {...pick} moonAngle={sky.night.moonAngle} />)}
           </ul>
 
           <ul className="up-list up-ghosts" aria-hidden="true">

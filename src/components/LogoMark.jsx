@@ -9,7 +9,7 @@ function LogoMark() {
         <path d="M14 31 L5.5 35.5 Q6 38 9 38 L15.5 35 Z" fill="var(--ink)" stroke="var(--ink)" strokeWidth="1.5" strokeLinejoin="round" />
         <circle cx="21" cy="31" r="10" fill="var(--ink)" />
         <circle cx="27.5" cy="21" r="7" fill="var(--ink)" />
-        <ellipse cx="18.5" cy="31" rx="7" ry="4.6" transform="rotate(-25 18.5 31)" fill="#3d3590" />
+        <ellipse cx="18.5" cy="31" rx="7" ry="4.6" transform="rotate(-25 18.5 31)" fill="var(--wing)" />
 
         <g fill="var(--snow)">
           <circle cx="27.5" cy="28.5" r="0.9" />

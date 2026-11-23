@@ -20,8 +20,8 @@ function Mercury() {
 function Venus() {
   return (
     <Clipped shape={<circle r="7.6" />}>
-      <rect x="-8" y="-8" width="16" height="16" fill="var(--moon)" />
-      <path d="M-8 -2.6 Q-3 -4.2 2 -2.8 Q5 -2 8 -3 V-1.4 Q4 -0.4 0 -1.2 Q-4 -2 -8 -0.8 Z M-8 3 Q-2 1.6 3 3 Q6 3.8 8 3.2 V4.8 Q3 5.6 -2 4.6 Q-6 4 -8 4.8 Z" fill="var(--star-warm)" />
+      <rect x="-8" y="-8" width="16" height="16" fill="var(--meteor-gold)" />
+      <path d="M-8 -2.6 Q-3 -4.2 2 -2.8 Q5 -2 8 -3 V-1.4 Q4 -0.4 0 -1.2 Q-4 -2 -8 -0.8 Z M-8 3 Q-2 1.6 3 3 Q6 3.8 8 3.2 V4.8 Q3 5.6 -2 4.6 Q-6 4 -8 4.8 Z" fill="var(--star-cream)" opacity="0.8" />
     </Clipped>
   )
 }

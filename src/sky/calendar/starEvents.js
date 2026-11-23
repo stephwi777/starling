@@ -115,6 +115,7 @@ function moonStarEvents(start, end, place, observer) {
 
     return base(['moon-star'], 'moon', date, place, {
       icon: `sky:${target.id}`,
+      subjects: [{ key: `moon-star:${target.id}`, label: `every time the Moon passes ${target.label}` }],
       short: `Moon near ${target.short}`,
       tiny: target.short,
       name: `Moon near ${target.label}`,
@@ -144,6 +145,7 @@ function planetStarEvents(start, end, place, observer) {
 
     return base(['planet-star'], 'planet', date, place, {
       icon: `planet:${planet}`,
+      subjects: [{ key: `planet-star:${planet}+${target.id}`, label: `every time ${planet} passes ${target.label}` }],
       short: `${words} ${target.short}`,
       tiny: `${planet} & ${target.short}`,
       name: `${words} ${target.label}`,
@@ -206,6 +208,7 @@ function seasonEvent(night, starts, place, observer) {
 
   return base(['milky-way'], 'sun', best, place, {
     icon: 'milky-way',
+    subjects: [{ key: 'milky-way', label: 'every Milky Way season' }],
     short: starts ? 'Milky Way season begins' : 'Milky Way season ends',
     tiny: 'Milky Way',
     name: starts ? 'Milky Way season begins' : 'Milky Way season ends',

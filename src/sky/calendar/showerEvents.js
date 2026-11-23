@@ -71,6 +71,7 @@ function showerEvent(shower, year, place, observer) {
     tags: [],
     where: here ? null : `Best seen from the ${shower.dec < 0 ? 'Southern' : 'Northern'} Hemisphere.`,
     icon: 'shower',
+    subjects: [{ key: `shower:${shower.name}`, label: `every ${shower.name} peak` }],
     short: `${shower.name} peak`,
     tiny: shower.name.replace('Northern ', 'N. ').replace('Southern ', 'S. '),
     name: `${shower.name} peak`,

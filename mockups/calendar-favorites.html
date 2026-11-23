@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling favorite events</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    :root {
+      --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 0.8 L10.1 5.4 L15.1 5.9 L11.3 9.2 L12.4 14.2 L8 11.6 L3.6 14.2 L4.7 9.2 L0.9 5.9 L5.9 5.4 Z'/%3E%3C/svg%3E");
+    }
+
+    .sheet {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 100px;
+    }
+
+    .sheet > p,
+    .sheet > section > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet > section {
+      margin-top: 56px;
+    }
+
+    .sheet > section > h2 {
+      margin-bottom: 4px;
+      font-size: 1.5rem;
+    }
+
+    .sheet .month {
+      margin-top: 18px;
+    }
+
+    .pair {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 24px;
+    }
+
+    .phone {
+      container-type: inline-size;
+    }
+
+    .mock-rows {
+      padding: 4px 12px;
+      border-radius: var(--radius-tile);
+      background: var(--high);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+
+
+    /* A · STAR AFTER THE NAME */
+
+    .vA .chip.fav::after,
+    .vA .event-row.fav .row-text strong::after {
+      content: '';
+      flex: none;
+      width: 12px;
+      height: 12px;
+      margin-left: auto;
+      background: var(--beak);
+      mask: var(--star) center / contain no-repeat;
+    }
+
+    .vA .event-row.fav .row-text strong::after {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      margin-left: 6px;
+      vertical-align: -1px;
+    }
+
+    .vA .day-bars i.fav span::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 2px;
+      background: var(--beak);
+      mask: var(--star) center / contain no-repeat;
+      vertical-align: -0.5px;
+    }
+
+
+
+    /* B · STAR ON THE CORNER */
+
+    .vB .chip.fav,
+    .vB .day-bars i.fav,
+    .vB .event-row.fav .well {
+      position: relative;
+      overflow: visible;
+    }
+
+    .vB .chip.fav::after,
+    .vB .day-bars i.fav::after,
+    .vB .event-row.fav .well::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      right: -4px;
+      width: 13px;
+      height: 13px;
+      background: var(--beak);
+      mask: var(--star) center / contain no-repeat;
+    }
+
+    .vB .day-bars i.fav::after {
+      top: -4px;
+      right: -3px;
+      width: 9px;
+      height: 9px;
+    }
+
+    .vB .event-row.fav .well::after {
+      width: 15px;
+      height: 15px;
+    }
+
+
+
+    /* C · YELLOW EDGE */
+
+    .vC .chip.fav,
+    .vC .day-bars i.fav {
+      box-shadow: inset 3px 0 0 var(--beak);
+      padding-left: 9px;
+    }
+
+    .vC .day-bars i.fav {
+      padding-left: 5px;
+    }
+
+    .vC .event-row.fav {
+      box-shadow: inset 4px 0 0 var(--beak);
+    }
+
+
+
+    /* CARD */
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 380px));
+      gap: 20px;
+      margin-top: 18px;
+    }
+
+    .mock-card {
+      padding: 16px 18px 20px;
+      border-radius: var(--radius-tile);
+      background: var(--high);
+    }
+
+    .mock-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .mock-tools {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mock-round,
+    .star-button {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: var(--raised);
+      color: var(--mist);
+      font-weight: 900;
+    }
+
+    .star-button svg path {
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      stroke-linejoin: round;
+    }
+
+    .star-button.on {
+      color: var(--beak);
+    }
+
+    .star-button.on svg path {
+      fill: currentColor;
+    }
+
+    .mock-card-head {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .mock-card-icon svg {
+      width: 48px;
+      height: 48px;
+    }
+
+    .mock-card-head h3 {
+      font-size: 1.35rem;
+    }
+
+    .fav-pill {
+      display: block;
+      width: 100%;
+      margin-top: 16px;
+      padding: 11px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--raised);
+      color: var(--frost);
+      font: inherit;
+      font-weight: 800;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .fav-pill.on {
+      box-shadow: inset 4px 0 0 var(--beak);
+      padding-left: 18px;
+      background: color-mix(in srgb, var(--beak) 12%, var(--raised));
+    }
+
+    .mock-fav-line {
+      margin-top: 14px;
+      color: var(--mist);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-favorites.jsx"></script>
+</body>
+</html>

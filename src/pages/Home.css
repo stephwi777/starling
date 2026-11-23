@@ -145,6 +145,21 @@
   background: color-mix(in srgb, var(--raised) 60%, transparent);
 }
 
+.coming-row.fav {
+  position: relative;
+}
+
+.coming-row.fav::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  bottom: 12px;
+  left: 0;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--beak);
+}
+
 .coming-row:focus-visible {
   outline: 3px solid var(--beak);
   outline-offset: 2px;

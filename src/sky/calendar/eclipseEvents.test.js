@@ -9,6 +9,7 @@ import { monthBounds } from './skyTools.js'
 
 const KC = { name: 'Kansas City', latitude: 39.1, longitude: -94.58, timeZone: 'America/Chicago', country: 'US' }
 const MADRID = { name: 'Madrid', latitude: 40.4, longitude: -3.7, timeZone: 'Europe/Madrid', country: 'ES' }
+const LONDON = { name: 'London', latitude: 51.5, longitude: -0.12, timeZone: 'Europe/London', country: 'GB' }
 
 function month(year, number, place = KC) {
   const { start, end } = monthBounds(year, number, place.timeZone)
@@ -37,6 +38,26 @@ test('a lunar eclipse that starts before moonrise says when the Moon rises', () 
   expect(row(eclipse, 'Moon')).toBe('Rises at 6:01pm, partway through')
 })
 
+test('a lunar eclipse that runs into sunrise says when the Sun rises', () => {
+  const [eclipse] = month(2026, 3).filter(event => event.kinds.includes('lunar-eclipse'))
+
+  expect(row(eclipse, 'Sun')).toBe('Rises at 6:48am, partway through')
+})
+
+test('totality after sunrise is marked as not seen from here', () => {
+  const [eclipse] = month(2025, 3, LONDON).filter(event => event.kinds.includes('lunar-eclipse'))
+
+  expect(eclipse).toMatchObject({ name: 'Total lunar eclipse', here: true })
+  expect(row(eclipse, 'Totality')).toMatch(/, not seen from here$/)
+  expect(row(eclipse, 'Sun')).toBe('Rises at 6:16am, partway through')
+})
+
+test('a lunar eclipse with the Moon up only in daylight is not visible from here', () => {
+  const [eclipse] = month(2031, 6).filter(event => event.kinds.includes('lunar-eclipse'))
+
+  expect(eclipse.here).toBe(false)
+})
+
 
 
 // SOLAR
@@ -59,6 +80,18 @@ test('a nearly total partial eclipse never rounds up to 100%', () => {
   const [eclipse] = month(2026, 8, MADRID).filter(event => event.kinds.includes('solar-eclipse'))
 
   expect(row(eclipse, 'Greatest')).toBe('8:32pm, 99.9% of the Sun covered')
+})
+
+test('a solar eclipse that runs past sunset says when the Sun sets', () => {
+  const [eclipse] = month(2026, 8, MADRID).filter(event => event.kinds.includes('solar-eclipse'))
+
+  expect(row(eclipse, 'Sun')).toBe('Sets at 9:16pm, partway through')
+})
+
+test('a solar eclipse with the Sun up throughout has no Sun line', () => {
+  const [eclipse] = month(2024, 4).filter(event => event.kinds.includes('solar-eclipse'))
+
+  expect(row(eclipse, 'Sun')).toBeUndefined()
 })
 
 

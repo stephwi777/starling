@@ -7,7 +7,7 @@ import './Meteors.css'
 // COLORS
 
 const palettes = [
-  { head: 'var(--teal)', tail: '#8f86d6' },
+  { head: 'var(--teal)', tail: 'var(--lilac)' },
   { head: 'var(--beak)', tail: 'var(--bronze)' },
   { head: 'var(--snow)', tail: 'var(--teal)' },
   { head: 'var(--moon)', tail: 'var(--snow)' },

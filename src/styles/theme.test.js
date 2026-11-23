@@ -81,3 +81,16 @@ test('text stays readable over every cloud shade in both themes', () => {
     }
   }
 })
+
+test('the logo and decorations use theme colors so red light can recolor them', () => {
+  const files = ['../components/LogoMark.jsx', '../components/Meteors.jsx', '../components/Aurora.jsx', '../pages/Credits.jsx']
+
+  for (const file of files) {
+    expect(readFileSync(new URL(file, import.meta.url), 'utf8'), file).not.toMatch(/#[0-9a-f]{3,6}\b/i)
+  }
+
+  for (const name of ['wing', 'lilac', 'bronze-shade', 'crater']) {
+    expect(normal[name], name).toMatch(/^#/)
+    expect(red[name], name).not.toBe(normal[name])
+  }
+})

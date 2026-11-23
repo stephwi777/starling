@@ -53,8 +53,8 @@ function Aurora() {
       <svg viewBox="0 0 4320 200" preserveAspectRatio="none">
         <defs>
           <linearGradient id="violet-glow" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#8f86d6" stopOpacity="0" />
-            <stop offset="1" stopColor="#8f86d6" stopOpacity="0.3" />
+            <stop offset="0" stopColor="var(--lilac)" stopOpacity="0" />
+            <stop offset="1" stopColor="var(--lilac)" stopOpacity="0.3" />
           </linearGradient>
         </defs>
         <path d={violet.shape} fill="url(#violet-glow)" />

@@ -6,6 +6,7 @@ export const GROUPS = [
   { id: 'planet', name: 'Planets' },
   { id: 'meteor', name: 'Meteor showers' },
   { id: 'sun', name: 'Sun and seasons' },
+  { id: 'comet', name: 'Comets' },
 ]
 
 
@@ -45,6 +46,9 @@ export const KINDS = [
   { id: 'season', group: 'sun', name: 'Equinoxes and solstices', on: true },
   { id: 'milky-way', group: 'sun', name: 'Milky Way season', on: true },
   { id: 'earth-distance', group: 'sun', name: 'Earth closest and farthest', on: false },
+
+  { id: 'comet', group: 'comet', name: 'Eyes and binoculars', on: true },
+  { id: 'telescope-comet', group: 'comet', name: 'Telescope comets', on: false },
 ]
 
 export const DEFAULT_KINDS = KINDS.filter(kind => kind.on).map(kind => kind.id)

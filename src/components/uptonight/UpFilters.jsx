@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import GearGlyph from '../sky-icons/GearGlyph.jsx'
+import SearchGlyph from '../ui/SearchGlyph.jsx'
 
 
 
@@ -124,7 +125,7 @@ function UpFilters({ gear, type, query, onGear, onType, onQuery }) {
       <GearSwitch gear={gear} onGear={onGear} />
       <TypeChips type={type} onType={onType} />
       <label className="up-search">
-        <svg viewBox="-12 -12 24 24" width="16" height="16" aria-hidden="true"><circle cx="-2" cy="-2" r="7" fill="none" stroke="currentColor" strokeWidth="2.4" /><path d="M3 3 L9 9" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg>
+        <SearchGlyph />
         <span className="visually-hidden">Find an object</span>
         <input type="search" value={query} placeholder="Find a star, planet or nebula" onChange={event => onQuery(event.target.value)} />
       </label>

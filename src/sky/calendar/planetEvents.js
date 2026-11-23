@@ -61,6 +61,12 @@ function base(kinds, date, place, extra) {
   }
 }
 
+function pairSubject(a, b) {
+  const [first, second] = [a, b].sort()
+
+  return { key: `pair:${first}+${second}`, label: `every time ${first} and ${second} meet` }
+}
+
 function distance(au, country) {
   const miles = country === 'US'
 
@@ -81,6 +87,7 @@ function oppositionEvents(start, end, place, observer) {
     const view = viewed([body], date, place, observer, 'Too low in your sky after dark.')
 
     return [base(['opposition'], date, place, {
+      subjects: [{ key: `best:${body}`, label: `every time ${body} is at its best` }],
       icon: `planet:${body}`,
       short: `${body} at its best`,
       tiny: body,
@@ -110,6 +117,7 @@ function elongationEvents(start, end, place, observer) {
       const view = viewed([body], found.time.date, place, observer, 'Too low in your sky after dark.')
 
       events.push(base(['opposition'], found.time.date, place, {
+        subjects: [{ key: `best:${body}`, label: `every time ${body} is at its best` }],
         icon: `planet:${body}`,
         short: `${body} at its best`,
         tiny: body,
@@ -142,6 +150,7 @@ function venusEvents(start, end, place, observer) {
     const view = viewed(['Venus'], peak.time.date, place, observer, 'Too low in your sky after dark.')
 
     events.push(base(['venus-brightest'], peak.time.date, place, {
+      subjects: [{ key: 'venus-brightest', label: 'every time Venus is at its brightest' }],
       icon: 'planet:Venus',
       short: 'Venus at its brightest',
       tiny: 'Bright Venus',
@@ -174,6 +183,7 @@ function marsEvents(start, end, place, observer) {
   const view = viewed(['Mars'], closest.date, place, observer, 'Too low in your sky after dark.')
 
   return [base(['mars-closest'], closest.date, place, {
+    subjects: [{ key: 'mars-closest', label: 'every time Mars is closest' }],
     icon: 'planet:Mars',
     short: 'Mars closest to Earth',
     tiny: 'Mars closest',
@@ -208,6 +218,7 @@ function pairEvents(start, end, place, observer) {
         const view = viewed([a, b], date, place, observer, 'Below your horizon after dark.')
 
         return base(['planet-pair'], date, place, {
+          subjects: [pairSubject(a, b)],
           icon: `planet:${a}`,
           short: `${a} meets ${b}`,
           tiny: `${a} & ${b}`,
@@ -236,6 +247,7 @@ function moonPlanetEvents(start, end, place, observer) {
         const close = value < 1.5
 
         return base(['moon-planet'], date, place, {
+          subjects: [{ key: `moon-planet:${body}`, label: `every time the Moon passes ${body}` }],
           icon: `planet:${body}`,
           short: close ? `Moon meets ${body}` : `Moon near ${body}`,
           tiny: `Moon & ${body}`,
@@ -296,6 +308,7 @@ function paradeEvents(start, end, place, observer) {
       const through = run.to > run.from ? new Intl.DateTimeFormat('en-US', { timeZone: place.timeZone, month: 'short', day: 'numeric' }).format(run.to) : null
 
       return base(['parade'], run.from, place, {
+        subjects: [{ key: 'parade', label: 'every planet parade' }],
         id: `parade-${session}-${run.from.getTime()}`,
         icon: 'parade',
         time: session === 'evening' ? 'Evening' : 'Before dawn',
@@ -347,6 +360,7 @@ function stationEvents(start, end, place) {
 
         if (date >= start && date < end) {
           events.push(base(['station'], date, place, {
+            subjects: [{ key: `station:${body}`, label: `every time ${body} turns around` }],
             icon: `planet:${body}`,
             time: 'All day',
             short: `${body} turns around`,
@@ -385,6 +399,7 @@ function conjunctionEvents(start, end, place) {
     const later = front || !['Mercury', 'Venus'].includes(body) ? 'morning' : 'evening'
 
     return [base(['solar-conjunction'], date, place, {
+      subjects: [{ key: `sun-pass:${body}`, label: `every time ${body} lines up with the Sun` }],
       icon: `planet:${body}`,
       short: front ? `${body} passes the Sun` : `${body} behind the Sun`,
       tiny: `${body} & Sun`,
@@ -407,6 +422,7 @@ function apsisEvents(start, end, place) {
     const close = apsis.kind === 0
 
     return [base(['planet-distance'], apsis.time.date, place, {
+      subjects: [{ key: `sun-distance:${body}`, label: `every time ${body} is closest or farthest from the Sun` }],
       icon: `planet:${body}`,
       short: `${body} ${close ? 'closest to' : 'farthest from'} Sun`,
       tiny: `${body} ${close ? 'close' : 'far'}`,

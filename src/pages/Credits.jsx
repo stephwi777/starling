@@ -14,7 +14,7 @@ const planets = {
       </clipPath>
       <ellipse cx="50" cy="60" rx="61" ry="13" transform="rotate(-12 50 60)" fill="none" stroke="var(--mist)" strokeWidth="4.5" />
       <circle cx="50" cy="50" r="50" fill="var(--bronze)" />
-      <g clipPath="url(#ringed-clip)" stroke="#c48f4c" strokeWidth="6">
+      <g clipPath="url(#ringed-clip)" stroke="var(--bronze-shade)" strokeWidth="6">
         <path d="M0 12 H100" />
         <path d="M0 88 H100" />
       </g>
@@ -39,14 +39,14 @@ const planets = {
       <clipPath id="aurora-clip">
         <circle cx="50" cy="50" r="50" />
       </clipPath>
-      <circle cx="50" cy="50" r="50" fill="#3d3590" />
+      <circle cx="50" cy="50" r="50" fill="var(--wing)" />
       <path clipPath="url(#aurora-clip)" d="M0 0 H100 V14 Q90 9 82 15 Q72 22 62 14 Q52 7 42 15 Q32 22 22 14 Q12 8 0 14 Z" fill="var(--teal)" />
     </svg>
   ),
   moon: (
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <circle cx="50" cy="50" r="50" fill="var(--moon)" />
-      <g fill="#ecdcba">
+      <g fill="var(--crater)">
         <circle cx="24" cy="22" r="7" />
         <circle cx="80" cy="72" r="5" />
         <circle cx="30" cy="84" r="4" />

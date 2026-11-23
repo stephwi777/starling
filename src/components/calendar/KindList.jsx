@@ -1,17 +1,18 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { GROUPS, KINDS } from '../../sky/calendar/kinds.js'
 
 
 
 // CHECKBOX
 
-function Box({ checked, mixed = false, label, onChange }) {
+function Box({ checked, mixed = false, label, describedBy, onChange }) {
   return (
     <>
       <input
         type="checkbox"
         checked={checked}
         aria-label={label}
+        aria-describedby={describedBy}
         ref={box => {
           if (box) box.indeterminate = mixed
         }}
@@ -31,7 +32,7 @@ function Box({ checked, mixed = false, label, onChange }) {
 
 // GROUP
 
-function Group({ group, kinds, toggleKind, setGroup }) {
+function Group({ group, kinds, note, kindNotes, toggleKind, setGroup }) {
   const [open, setOpen] = useState(false)
   const items = KINDS.filter(kind => kind.group === group.id)
   const shown = items.filter(kind => kinds.includes(kind.id)).length
@@ -56,13 +57,19 @@ function Group({ group, kinds, toggleKind, setGroup }) {
         </button>
       </div>
 
+      {note && <p className="kind-note">{note}</p>}
+
       {open && (
         <div className="kind-items" id={listId}>
           {items.map(kind => (
-            <label key={kind.id} className="kind-option">
-              <Box checked={kinds.includes(kind.id)} onChange={() => toggleKind(kind.id)} />
-              {kind.name}
-            </label>
+            <Fragment key={kind.id}>
+              <label className="kind-option">
+                <Box checked={kinds.includes(kind.id)} describedBy={kindNotes[kind.id] ? `note-${kind.id}` : undefined} onChange={() => toggleKind(kind.id)} />
+                {kind.name}
+              </label>
+
+              {kindNotes[kind.id] && <p className="kind-note" id={`note-${kind.id}`}>{kindNotes[kind.id]}</p>}
+            </Fragment>
           ))}
         </div>
       )}
@@ -74,7 +81,7 @@ function Group({ group, kinds, toggleKind, setGroup }) {
 
 // KIND LIST
 
-function KindList({ id, kinds, toggleKind, setGroup, suggest }) {
+function KindList({ id, kinds, groupNotes = {}, kindNotes = {}, toggleKind, setGroup, suggest }) {
   const total = KINDS.filter(kind => kinds.includes(kind.id)).length
 
   return (
@@ -86,7 +93,7 @@ function KindList({ id, kinds, toggleKind, setGroup, suggest }) {
 
       <p className="kind-count">{total} of {KINDS.length} kinds of events</p>
 
-      {GROUPS.map(group => <Group key={group.id} group={group} kinds={kinds} toggleKind={toggleKind} setGroup={setGroup} />)}
+      {GROUPS.map(group => <Group key={group.id} group={group} kinds={kinds} note={groupNotes[group.id]} kindNotes={kindNotes} toggleKind={toggleKind} setGroup={setGroup} />)}
     </div>
   )
 }

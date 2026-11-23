@@ -49,30 +49,23 @@ function Trapezium() {
   )
 }
 
-export function DoubleIcon({ object }) {
-  if (object.name === 'Trapezium') return <Trapezium />
-  if (object.name === 'Double Double') return DOUBLE_DOUBLE.map(([x, y]) => <Dot key={`${x}${y}`} x={x} y={y} r={2.1} fill="var(--frost)" />)
-
-  if (!object.colors) {
-    return (
-      <>
-        <Dot x={-2.5} r={2} fill="var(--star-warm)" />
-        <Dot x={3} y={-1} r={1.5} fill="var(--star-blue)" />
-      </>
-    )
-  }
-
-  const words = object.colors.split(' and ').map(word => word.trim())
-  const [first, second] = words.length > 1 ? words : [words[0], words[0]]
-  const gap = object.apart > 200 ? 13 : object.apart > 20 ? 9.5 : 6.4
-  const left = -gap / 2 - 0.6
-  const right = gap / 2 + 0.8
+function Pair({ object }) {
+  const words = object.colors ? object.colors.split(' and ').map(word => word.trim()) : []
+  const partner = WORDS[words[1] ?? words[0]] ?? TINTS[object.tint] ?? 'var(--frost)'
 
   return (
     <>
-      <Dot x={left} y={1.2} r={6.2} fill={WORDS[first] ?? 'var(--frost)'} opacity={0.18} />
-      <Dot x={left} y={1.2} r={3.8} fill={WORDS[first] ?? 'var(--frost)'} />
-      <Dot x={right} y={-1.4} r={2.6} fill={WORDS[second] ?? 'var(--frost)'} />
+      <g transform="translate(-2.6 2.4) scale(0.82)">
+        <StarIcon tint={object.tint} mag={object.mag} />
+      </g>
+      <Spark x={7.4} y={-6.6} s={0.34} fill={partner} />
     </>
   )
+}
+
+export function DoubleIcon({ object }) {
+  if (object.name === 'Trapezium') return <Trapezium />
+  if (object.name === 'Double Double') return DOUBLE_DOUBLE.map(([x, y]) => <Spark key={`${x}${y}`} x={x} y={y} s={0.3} fill="var(--frost)" />)
+
+  return <Pair object={object} />
 }

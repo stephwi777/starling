@@ -5,8 +5,12 @@ import { useNow } from '../sky/useNow.js'
 import { localParts } from '../sky/night.js'
 import { dayKey } from '../sky/calendar/skyTools.js'
 import { monthEvents, shownEvents } from '../sky/calendar/monthEvents.js'
+import { isFavorite } from '../sky/calendar/favorites.js'
 import useMedia from '../hooks/useMedia.js'
 import useCalendarSettings from '../components/calendar/useCalendarSettings.js'
+import useFavorites from '../components/calendar/useFavorites.js'
+import useComets from '../sky/calendar/useComets.js'
+import { cometNotes, cometSeason } from '../sky/calendar/cometEvents.js'
 import KindList from '../components/calendar/KindList.jsx'
 import WorldSwitch from '../components/calendar/WorldSwitch.jsx'
 import SearchBox from '../components/calendar/SearchBox.jsx'
@@ -51,7 +55,7 @@ const monthText = ({ year, month }) => `${year}-${String(month).padStart(2, '0')
 function FilterIcon() {
   return (
     <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-      <path d="M2 4 H14 M4.5 8 H11.5 M7 12 H9" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+      <path d="M2 4 H14 M4.5 8 H11.5 M7 12 H9" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
     </svg>
   )
 }
@@ -60,14 +64,14 @@ function FilterIcon() {
 
 // DAY LIST
 
-function DayList({ day, events, south, onPick }) {
+function DayList({ day, events, favorites, south, onPick }) {
   return (
     <section className="day-list" aria-labelledby="day-list-title" aria-live="polite">
       <h2 id="day-list-title">{eventDate({ day })}</h2>
 
       {events.length ? (
         <ul className="event-rows">
-          {events.map(event => <li key={event.id}><EventRow event={event} south={south} onPick={onPick} /></li>)}
+          {events.map(event => <li key={event.id}><EventRow event={event} south={south} favorite={isFavorite(event, favorites)} onPick={onPick} /></li>)}
         </ul>
       ) : (
         <p className="calendar-note">Nothing on this day.</p>
@@ -91,20 +95,28 @@ function Calendar() {
   const wanted = useRef(params.get('event'))
   const [query, setQuery] = useState('')
   const [picked, setPicked] = useState(null)
+  const [kept, setKept] = useState(null)
   const [choosing, setChoosing] = useState(false)
   const [slide, setSlide] = useState(null)
   const settings = useCalendarSettings()
+  const { favorites, toggle } = useFavorites()
   const narrow = useMedia(NARROW)
   const wide = !useMedia(SIDEBAR)
   const roomy = useMedia(ROOMY)
   const chooser = useRef(null)
   const south = place.latitude < 0
 
-  const all = useMemo(() => monthEvents(place, shown.year, shown.month), [place, shown.year, shown.month])
-  const filters = { kinds: settings.kinds, world: settings.world, query }
+  const comets = useComets()
+  const all = useMemo(() => monthEvents(place, shown.year, shown.month, comets), [place, shown.year, shown.month, comets])
+  const cometInfo = useMemo(() => {
+    const { comets: list, status, now } = comets
+
+    return cometNotes(status, status === 'ready' ? cometSeason(list, place, now) : [], settings.kinds)
+  }, [place, comets, settings.kinds])
+  const pickedId = picked?.event.id
+  const filters = { kinds: settings.kinds, world: settings.world, query, favorites, keep: pickedId ?? kept }
   const events = shownEvents(all, filters)
   const dayEvents = events.filter(event => event.day === selected)
-  const pickedId = picked?.event.id
 
   useEffect(() => {
     setParams(old => {
@@ -123,18 +135,22 @@ function Calendar() {
 
     const event = all.find(item => item.id === wanted.current)
 
+    if (!event && wanted.current.startsWith('comet-') && comets.status === 'loading') return
+
     wanted.current = null
 
     if (!event) return
 
     setSelected(event.day)
+    setKept(event.id)
     setPicked({ event, anchor: document.querySelector(`[data-event="${CSS.escape(event.id)}"]`) })
-  }, [all])
+  }, [all, comets.status])
 
   function move(delta) {
     const next = shift(shown, delta)
 
     setShown(next)
+    setKept(null)
     setSlide(delta > 0 ? 'next' : 'prev')
     setSelected(`${next.year}-${String(next.month).padStart(2, '0')}-01`)
   }
@@ -143,6 +159,7 @@ function Calendar() {
     const away = (shown.year - current.year) * 12 + shown.month - current.month
 
     setShown({ year: current.year, month: current.month })
+    setKept(null)
     setSlide(away > 0 ? 'prev' : away < 0 ? 'next' : null)
     setSelected(today)
   }
@@ -170,9 +187,12 @@ function Calendar() {
     }
   }, [choosing, roomy, narrow])
 
-  const pick = (event, anchor) => setPicked({ event, anchor })
+  const pick = (event, anchor) => {
+    setKept(event.id)
+    setPicked({ event, anchor })
+  }
 
-  const list = <KindList id="kind-list" kinds={settings.kinds} toggleKind={settings.toggleKind} setGroup={settings.setGroup} suggest={settings.suggest} />
+  const list = <KindList id="kind-list" kinds={settings.kinds} toggleKind={settings.toggleKind} setGroup={settings.setGroup} suggest={settings.suggest} groupNotes={{ comet: cometInfo.group }} kindNotes={cometInfo.kinds} />
 
   const heading = (
     <div className="calendar-title">
@@ -229,6 +249,7 @@ function Calendar() {
               year={shown.year}
               month={shown.month}
               events={events}
+              favorites={favorites}
               today={today}
               selected={selected}
               narrow={narrow}
@@ -243,7 +264,7 @@ function Calendar() {
 
             {query && <p className="calendar-note" role="status">{events.length ? `${events.length} ${events.length === 1 ? 'match' : 'matches'} this month.` : 'No matches this month. The list below covers the whole year.'}</p>}
 
-            {narrow && <DayList day={selected} events={dayEvents} south={south} onPick={pick} />}
+            {narrow && <DayList day={selected} events={dayEvents} favorites={favorites} south={south} onPick={pick} />}
           </div>
         </div>
 
@@ -262,6 +283,8 @@ function Calendar() {
           place={place}
           today={today}
           south={south}
+          favorites={favorites}
+          onFavorite={toggle}
           onClose={() => setPicked(null)}
         />
       )}

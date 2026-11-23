@@ -38,24 +38,31 @@ function minutesFrom(date, minutes) {
   return new Date(date.getTime() + minutes * MINUTE)
 }
 
-function upDuring(body, from, to, observer) {
+function whenever(from, to, check) {
   for (let time = from.getTime(); time <= to.getTime(); time += SCAN) {
-    if (horizon(body, new Date(time), observer).alt > 0) return true
+    if (check(new Date(time))) return true
   }
 
   return false
 }
 
-function moonDuring(from, to, observer, time) {
-  const up = date => horizon('Moon', date, observer).alt > 0
-  const rise = Astronomy.SearchRiseSet('Moon', observer, 1, from, (to - from) / DAY)
-  const set = Astronomy.SearchRiseSet('Moon', observer, -1, from, (to - from) / DAY)
+function upDuring(body, from, to, observer) {
+  return whenever(from, to, date => horizon(body, date, observer).alt > 0)
+}
 
-  if (up(from) && up(to) && !set) return 'Up the whole time'
-  if (!up(from) && rise) return `Rises at ${time(rise.date)}, partway through`
+function moonInDark(from, to, observer) {
+  return whenever(from, to, date => horizon('Moon', date, observer).alt > 0 && horizon('Sun', date, observer).alt < 0)
+}
+
+function crossing(body, from, to, observer, time) {
+  const days = (to - from) / DAY
+  const rise = Astronomy.SearchRiseSet(body, observer, 1, from, days)
+  const set = Astronomy.SearchRiseSet(body, observer, -1, from, days)
+
+  if (rise && !(set && set.date < rise.date)) return `Rises at ${time(rise.date)}, partway through`
   if (set) return `Sets at ${time(set.date)}, partway through`
 
-  return 'Up the whole time'
+  return null
 }
 
 function covered(fraction) {
@@ -85,22 +92,30 @@ function base(kind, date, place, extra) {
 function lunarEvent(eclipse, place, observer) {
   const peak = eclipse.peak.date
   const shadow = eclipse.kind === 'penumbral' ? eclipse.sd_penum : eclipse.sd_partial
-  const here = upDuring('Moon', minutesFrom(peak, -shadow), minutesFrom(peak, shadow), observer)
+  const from = minutesFrom(peak, -shadow)
+  const to = minutesFrom(peak, shadow)
+  const here = moonInDark(from, to, observer)
   const under = underBody('Moon', peak)
   const time = date => clock(date, place.timeZone)
   const words = LUNAR[eclipse.kind]
+  const totalFrom = minutesFrom(peak, -eclipse.sd_total)
+  const totalTo = minutesFrom(peak, eclipse.sd_total)
+  const missed = here && eclipse.sd_total > 0 && !moonInDark(totalFrom, totalTo, observer)
+  const sun = here && crossing('Sun', from, to, observer, time)
 
   const rows = [
     ['Begins', time(minutesFrom(peak, -eclipse.sd_penum))],
     eclipse.sd_partial > 0 && ['Shadow bite begins', time(minutesFrom(peak, -eclipse.sd_partial))],
-    eclipse.sd_total > 0 && ['Totality', `${time(minutesFrom(peak, -eclipse.sd_total))}–${time(minutesFrom(peak, eclipse.sd_total))}`],
+    eclipse.sd_total > 0 && ['Totality', `${time(totalFrom)}–${time(totalTo)}${missed ? ', not seen from here' : ''}`],
     ['Greatest', time(peak)],
     ['Ends', time(minutesFrom(peak, eclipse.sd_penum))],
-    here && ['Moon', moonDuring(minutesFrom(peak, -shadow), minutesFrom(peak, shadow), observer, time)],
+    here && ['Moon', crossing('Moon', from, to, observer, time) ?? 'Up the whole time'],
+    sun && ['Sun', sun],
   ].filter(Boolean)
 
   return base('lunar-eclipse', peak, place, {
     span: { from: minutesFrom(peak, -eclipse.sd_penum), to: minutesFrom(peak, eclipse.sd_penum) },
+    subjects: [{ key: 'lunar-eclipse', label: 'every lunar eclipse' }],
     icon: 'lunar-eclipse',
     short: words.name.replace(' eclipse', ''),
     tiny: 'Lunar eclipse',
@@ -142,6 +157,7 @@ function solarEvent(eclipse, place, observer) {
   const time = date => clock(date, place.timeZone)
   const center = eclipse.latitude === undefined ? null : regionOf(eclipse.latitude, eclipse.longitude)
   const kind = local ? local.kind : eclipse.kind
+  const sun = local && crossing('Sun', local.partial_begin.time.date, local.partial_end.time.date, observer, time)
   const elsewhere = local && local.kind !== eclipse.kind && center ? ` ${SOLAR[eclipse.kind].replace(' solar eclipse', '')} near ${center}.` : ''
 
   const rows = local ? [
@@ -149,6 +165,7 @@ function solarEvent(eclipse, place, observer) {
     local.total_begin && [kind === 'annular' ? 'Ring of Sun' : 'Totality', `${time(local.total_begin.time.date)}–${time(local.total_end.time.date)}`],
     ['Greatest', `${time(local.peak.time.date)}, ${covered(local.obscuration)}`],
     ['Ends', time(local.partial_end.time.date)],
+    sun && ['Sun', sun],
   ].filter(Boolean) : [
     ['Greatest', time(peak)],
     ['Where', center ? `Centered over ${center}` : 'Near the poles'],
@@ -156,6 +173,7 @@ function solarEvent(eclipse, place, observer) {
 
   return base('solar-eclipse', local ? local.peak.time.date : peak, place, {
     span: local ? { from: local.partial_begin.time.date, to: local.partial_end.time.date } : null,
+    subjects: [{ key: 'solar-eclipse', label: 'every solar eclipse' }],
     icon: 'solar-eclipse',
     short: SOLAR[kind].replace(' solar eclipse', ' eclipse'),
     tiny: 'Solar eclipse',
@@ -195,6 +213,7 @@ function transitEvents(start, end, place, observer) {
 
       events.push(base('transit', transit.peak.date, place, {
         span: { from: transit.start.date, to: transit.finish.date },
+        subjects: [{ key: `transit:${body}`, label: `every ${body} transit` }],
         icon: 'transit',
         short: `${body} crosses the Sun`,
         tiny: `${body} transit`,

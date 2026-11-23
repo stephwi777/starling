@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling Earth options</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .sheet > p,
+    .sheet section > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet section {
+      margin-top: 44px;
+    }
+
+    .sheet h2 {
+      font-size: 1.5rem;
+    }
+
+
+
+    /* OPTIONS */
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .option {
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      padding: 20px 16px;
+      border-radius: var(--radius-tile);
+      background: var(--high);
+      text-align: center;
+    }
+
+    .option.now {
+      background: color-mix(in srgb, var(--high) 60%, var(--zenith));
+    }
+
+    .sizes {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .huge {
+      width: 150px;
+      height: 150px;
+    }
+
+    .uses {
+      display: flex;
+      gap: 10px;
+    }
+
+    .big svg {
+      width: 76px;
+      height: 76px;
+    }
+
+    .option strong {
+      font-weight: 900;
+    }
+
+    .option small {
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./earth-options.jsx"></script>
+</body>
+</html>

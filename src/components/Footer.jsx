@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
 import MotionToggle from './MotionToggle.jsx'
+import RedLightSwitch from './RedLightSwitch.jsx'
 import './Footer.css'
 
 
@@ -57,7 +58,11 @@ function Footer() {
 
         <div className="footer-base">
           <p>© 2026 Stephanie Wilson. All rights reserved.</p>
-          <MotionToggle />
+
+          <div className="footer-switches">
+            <MotionToggle />
+            <RedLightSwitch />
+          </div>
           {/* TO DO */}
         </div>
       </div>

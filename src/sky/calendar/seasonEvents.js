@@ -57,6 +57,7 @@ function seasonEvents(start, end, place) {
       .filter(({ date }) => date >= start && date < end)
       .map(({ season, date }) => base('season', date, place, {
         icon: 'season',
+        subjects: [{ key: `season:${season.key}`, label: `every ${season.name}` }],
         short: season.name,
         tiny: season.name.includes('equinox') ? 'Equinox' : 'Solstice',
         name: season.name,
@@ -79,6 +80,7 @@ function earthEvents(start, end, place) {
 
     events.push(base('earth-distance', apsis.time.date, place, {
       icon: 'season',
+      subjects: [close ? { key: 'earth-closest', label: 'every time Earth is closest to the Sun' } : { key: 'earth-farthest', label: 'every time Earth is farthest from the Sun' }],
       short: close ? 'Earth closest to Sun' : 'Earth farthest from Sun',
       tiny: close ? 'Earth closest' : 'Earth farthest',
       name: close ? 'Earth at its closest to the Sun' : 'Earth at its farthest from the Sun',

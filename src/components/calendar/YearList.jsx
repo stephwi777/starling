@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { monthEvents, monthsFrom, shownEvents } from '../../sky/calendar/monthEvents.js'
+import { isFavorite } from '../../sky/calendar/favorites.js'
 import { calendarFile } from '../../sky/calendar/ics.js'
 import { download, eventLink } from './download.js'
 import EventRow from './EventRow.jsx'
+import useComets from '../../sky/calendar/useComets.js'
 
 
 
@@ -36,6 +38,7 @@ function YearList({ place, start, filters, south, onPick }) {
   const [open, setOpen] = useState(false)
   const [months, setMonths] = useState([])
   const loaded = useRef('')
+  const { version } = useComets()
   const [stuck, setStuck] = useState(false)
   const cap = useRef(null)
 
@@ -62,7 +65,7 @@ function YearList({ place, start, filters, south, onPick }) {
   }, [])
 
   useEffect(() => {
-    const key = `${place.latitude},${place.longitude},${place.timeZone}|${start.year}-${start.month}`
+    const key = `${place.latitude},${place.longitude},${place.timeZone}|${start.year}-${start.month}|c${version}`
 
     if (!open || loaded.current === key) return
 
@@ -83,7 +86,7 @@ function YearList({ place, start, filters, south, onPick }) {
     timer = setTimeout(step, 0)
 
     return () => clearTimeout(timer)
-  }, [open, place, start.year, start.month])
+  }, [open, place, start.year, start.month, version])
 
   const working = open && months.length < MONTHS
   const everything = months.flatMap(({ events }) => shownEvents(events, filters))
@@ -117,7 +120,7 @@ function YearList({ place, start, filters, south, onPick }) {
 
             {shown.length ? (
               <ul className="event-rows">
-                {shown.map(event => <li key={event.id}><EventRow event={event} south={south} dated onPick={onPick} /></li>)}
+                {shown.map(event => <li key={event.id}><EventRow event={event} south={south} dated favorite={isFavorite(event, filters.favorites ?? [])} onPick={onPick} /></li>)}
               </ul>
             ) : (
               <p className="calendar-note">Nothing that matches this month.</p>
