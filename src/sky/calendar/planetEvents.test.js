@@ -33,7 +33,7 @@ test('the 2020 Great Conjunction of Jupiter and Saturn shows as a close pair', (
   const [pair] = kind(month(2020, 12), 'planet-pair')
 
   expect(pair).toMatchObject({ day: '2020-12-21', time: 'Evening', name: 'Jupiter and Saturn together', here: true })
-  expect(pair.note).toBe('Only 0.1° apart. So close they may look like one bright star.')
+  expect(pair.note).toBe('Only 0.1° apart, so close they may look like one bright star.')
 })
 
 test('a pre-dawn pairing sits on its morning date', () => {
@@ -52,20 +52,21 @@ test('Jupiter is at its best all night on February 10, 2027', () => {
 test('the Moon passing Jupiter is found with its distance apart', () => {
   const [pass] = kind(month(2026, 12), 'moon-planet').filter(event => event.short.includes('Jupiter'))
 
-  expect(pass).toMatchObject({ day: '2026-12-26', short: 'Moon meets Jupiter' })
-  expect(pass.note).toMatch(/^The Moon and Jupiter are 1\.4° apart/)
+  expect(pass).toMatchObject({ day: '2026-12-26', short: 'Moon & Jupiter', name: 'Moon meets Jupiter' })
+  expect(pass.note).toMatch(/^The Moon and Jupiter come within 1\.4° of each other/)
 })
 
 test('Mercury and Venus at their best say which part of the sky to look in', () => {
   const [venus] = kind(month(2027, 1), 'opposition').filter(event => event.short.startsWith('Venus'))
 
   expect(venus).toMatchObject({ short: 'Venus at its best', time: 'Before dawn' })
-  expect(venus.note).toMatch(/morning sky, 47° away\. Look low in the east before sunrise\.$/)
+  expect(venus.note).toBe('Venus swings 47° from the Sun, its easiest time to spot before sunrise.')
+  expect(venus.rows.find(([label]) => label === 'Look')[1]).toMatch(/east/)
 })
 
 test('Venus at its brightest and Mars closest to Earth are found', () => {
   expect(kind(month(2026, 11), 'venus-brightest')).toHaveLength(1)
-  expect(kind(month(2027, 2), 'mars-closest')[0].note).toMatch(/^Mars comes within 63\.0 million mi of Earth/)
+  expect(kind(month(2027, 2), 'mars-closest')[0].note).toMatch(/^Mars comes within 63 million mi of Earth/)
 })
 
 test('several nights with four planets up become one parade', () => {

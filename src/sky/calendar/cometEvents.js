@@ -1,8 +1,8 @@
 import * as Astronomy from 'astronomy-engine'
 import { localNoon, localParts, observerFor } from '../night.js'
-import { clock, where } from '../words.js'
+import { clock } from '../words.js'
 import { cometMagnitude, cometPlace } from './cometOrbit.js'
-import { HOUR, MINUTE, brightness, dayKey, horizon, monthKey, moonLit, nightKey, timeWord, windowWords } from './skyTools.js'
+import { HOUR, MINUTE, dayKey, horizon, look, monthKey, moonLit, nightKey, spelled, timeWord, windowWords } from './skyTools.js'
 
 
 
@@ -137,10 +137,10 @@ function looks(mag) {
 }
 
 function lead(phase, name) {
-  if (phase === 'arrives') return `Comet ${name} is now bright enough to find from here.`
-  if (phase === 'last') return `Your last good look at Comet ${name} before it fades or sets.`
+  if (phase === 'arrives') return `Comet ${name} is now bright enough to find from here`
+  if (phase === 'last') return `Your last good look at Comet ${name} before it fades or sets`
 
-  return `Comet ${name} is predicted to be at its brightest.`
+  return `Comet ${name} should be at its brightest`
 }
 
 function title(phase, name) {
@@ -148,6 +148,13 @@ function title(phase, name) {
   if (phase === 'last') return `Last look at Comet ${name}`
 
   return `Comet ${name} at its best`
+}
+
+function chip(phase, name) {
+  if (phase === 'arrives') return `${name} arrives`
+  if (phase === 'last') return `${name}: last look`
+
+  return `${name} at its best`
 }
 
 function hemisphere(place, dec) {
@@ -162,7 +169,7 @@ function hemisphere(place, dec) {
 // EVENTS
 
 function cometEvent(comet, label, phase, kind, peak, night, place) {
-  const tags = [peak <= NAKED_EYE && 'Naked eye', kind === 'telescope-comet' && 'Telescope'].filter(Boolean)
+  const tags = [phase === 'best' && peak <= NAKED_EYE && 'Naked eye', kind === 'telescope-comet' && 'Telescope'].filter(Boolean)
   const mag = night.mag
   const base = {
     id: `comet-${comet.id}-${phase}`,
@@ -170,11 +177,11 @@ function cometEvent(comet, label, phase, kind, peak, night, place) {
     group: 'comet',
     icon: 'comet',
     subjects: [{ key: `comet:${comet.id}`, label: `Comet ${label}` }],
-    short: title(phase, label),
+    short: chip(phase, label),
     tiny: comet.name,
     name: title(phase, label),
     tags,
-    note: `${lead(phase, label)} Predicted to reach magnitude ${mag.toFixed(1)}: ${looks(mag)}. Comet forecasts are often off, so it could be brighter or fainter.`,
+    note: `${lead(phase, label)}, ${looks(mag)} (magnitude ${mag.toFixed(1).replace('-', '−')}). Comet forecasts are often off, so it could be brighter or fainter.`,
   }
 
   if (!night.window) {
@@ -182,10 +189,10 @@ function cometEvent(comet, label, phase, kind, peak, night, place) {
       ...base,
       date: night.best.date,
       day: dayKey(night.best.date, place.timeZone),
-      time: clock(night.best.date, place.timeZone),
+      time: '',
       here: false,
       where: hemisphere(place, j2000(night.best).dec),
-      rows: [['Brightness', `${brightness(mag)} (predicted)`]],
+      rows: [],
     }
   }
 
@@ -202,9 +209,8 @@ function cometEvent(comet, label, phase, kind, peak, night, place) {
     window: night.window,
     rows: [
       ['Best seen', windowWords(night.window, place.timeZone)],
-      ['Look', `${where(spot.alt, spot.az)} around ${clock(spot.date, place.timeZone)}`],
-      ['Brightness', `${brightness(mag)} (predicted)`],
-      ['In', Astronomy.Constellation(j2000(spot).ra, j2000(spot).dec).name],
+      ['Look', look(spot)],
+      ['In', spelled(Astronomy.Constellation(j2000(spot).ra, j2000(spot).dec).name)],
       ['Moon', moonLit(spot.date)],
     ],
   }

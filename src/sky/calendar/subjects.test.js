@@ -45,3 +45,15 @@ test('planet pairs use sorted names', () => {
   expect(pair.subjects[0].key.startsWith('pair:')).toBe(true)
   expect(names).toEqual([...names].sort())
 })
+
+test('planet pairs get a two-planet icon', () => {
+  const pair = all2027.find(event => event.kinds.includes('planet-pair'))
+
+  expect(pair.icon.startsWith('pair:')).toBe(true)
+})
+
+test('planet and star notes never trail a comparison after the star’s description', () => {
+  const notes = all2027.filter(event => event.kinds.includes('planet-star')).map(event => event.note)
+
+  expect(notes.filter(note => /\. That’s closer/.test(note))).toEqual([])
+})

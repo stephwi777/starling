@@ -10,8 +10,8 @@ const SCAN = 5 * MINUTE
 
 const LUNAR = {
   total: { name: 'Total lunar eclipse', note: 'Earth’s shadow covers the whole Moon, turning it a coppery red. Safe to watch with your eyes.' },
-  partial: { name: 'Partial lunar eclipse', note: 'Earth’s shadow takes a dark bite out of the Moon. Safe to watch with your eyes.' },
-  penumbral: { name: 'Penumbral lunar eclipse', note: 'A faint, subtle dimming of the Moon that’s easy to miss.' },
+  partial: { name: 'Partial lunar eclipse', note: 'Earth’s shadow darkens part of the Moon. Safe to watch with your eyes.' },
+  penumbral: { name: 'Penumbral lunar eclipse', note: 'A subtle dimming of the Moon that’s easy to miss.' },
 }
 
 const SOLAR = {
@@ -59,8 +59,8 @@ function crossing(body, from, to, observer, time) {
   const rise = Astronomy.SearchRiseSet(body, observer, 1, from, days)
   const set = Astronomy.SearchRiseSet(body, observer, -1, from, days)
 
-  if (rise && !(set && set.date < rise.date)) return `Rises at ${time(rise.date)}, partway through`
-  if (set) return `Sets at ${time(set.date)}, partway through`
+  if (rise && !(set && set.date < rise.date)) return `Rises mid-eclipse at ${time(rise.date)}`
+  if (set) return `Sets mid-eclipse at ${time(set.date)}`
 
   return null
 }
@@ -68,7 +68,7 @@ function crossing(body, from, to, observer, time) {
 function covered(fraction) {
   const percent = fraction * 100
 
-  return `${percent > 99 && percent < 100 ? Math.floor(percent * 10) / 10 : Math.round(percent)}% of the Sun covered`
+  return `${percent > 99 && percent < 100 ? Math.floor(percent * 10) / 10 : Math.round(percent)}% of the Sun`
 }
 
 function base(kind, date, place, extra) {
@@ -103,12 +103,13 @@ function lunarEvent(eclipse, place, observer) {
   const missed = here && eclipse.sd_total > 0 && !moonInDark(totalFrom, totalTo, observer)
   const sun = here && crossing('Sun', from, to, observer, time)
 
+  const faint = !(eclipse.sd_partial > 0)
+
   const rows = [
-    ['Begins', time(minutesFrom(peak, -eclipse.sd_penum))],
-    eclipse.sd_partial > 0 && ['Shadow bite begins', time(minutesFrom(peak, -eclipse.sd_partial))],
+    faint && ['Begins', time(minutesFrom(peak, -eclipse.sd_penum))],
+    faint && ['Ends', time(minutesFrom(peak, eclipse.sd_penum))],
+    !faint && ['Partial', `${time(minutesFrom(peak, -eclipse.sd_partial))}–${time(minutesFrom(peak, eclipse.sd_partial))}`],
     eclipse.sd_total > 0 && ['Totality', `${time(totalFrom)}–${time(totalTo)}${missed ? ', not seen from here' : ''}`],
-    ['Greatest', time(peak)],
-    ['Ends', time(minutesFrom(peak, eclipse.sd_penum))],
     here && ['Moon', crossing('Moon', from, to, observer, time) ?? 'Up the whole time'],
     sun && ['Sun', sun],
   ].filter(Boolean)
@@ -117,8 +118,8 @@ function lunarEvent(eclipse, place, observer) {
     span: { from: minutesFrom(peak, -eclipse.sd_penum), to: minutesFrom(peak, eclipse.sd_penum) },
     subjects: [{ key: 'lunar-eclipse', label: 'every lunar eclipse' }],
     icon: 'lunar-eclipse',
-    short: words.name.replace(' eclipse', ''),
-    tiny: 'Lunar eclipse',
+    short: faint ? 'Faint lunar' : words.name.replace(' eclipse', ''),
+    tiny: eclipse.kind === 'total' ? 'Total eclipse' : 'Lunar eclipse',
     name: words.name,
     note: words.note,
     here,
@@ -158,18 +159,15 @@ function solarEvent(eclipse, place, observer) {
   const center = eclipse.latitude === undefined ? null : regionOf(eclipse.latitude, eclipse.longitude)
   const kind = local ? local.kind : eclipse.kind
   const sun = local && crossing('Sun', local.partial_begin.time.date, local.partial_end.time.date, observer, time)
-  const elsewhere = local && local.kind !== eclipse.kind && center ? ` ${SOLAR[eclipse.kind].replace(' solar eclipse', '')} near ${center}.` : ''
+  const elsewhere = local && local.kind !== eclipse.kind && center ? ` It’s ${SOLAR[eclipse.kind].replace(' solar eclipse', '').toLowerCase()} near ${center}.` : ''
 
   const rows = local ? [
     ['Begins', time(local.partial_begin.time.date)],
     local.total_begin && [kind === 'annular' ? 'Ring of Sun' : 'Totality', `${time(local.total_begin.time.date)}–${time(local.total_end.time.date)}`],
-    ['Greatest', `${time(local.peak.time.date)}, ${covered(local.obscuration)}`],
+    ['Covered', covered(local.obscuration)],
     ['Ends', time(local.partial_end.time.date)],
     sun && ['Sun', sun],
-  ].filter(Boolean) : [
-    ['Greatest', time(peak)],
-    ['Where', center ? `Centered over ${center}` : 'Near the poles'],
-  ]
+  ].filter(Boolean) : []
 
   return base('solar-eclipse', local ? local.peak.time.date : peak, place, {
     span: local ? { from: local.partial_begin.time.date, to: local.partial_end.time.date } : null,
@@ -215,13 +213,13 @@ function transitEvents(start, end, place, observer) {
         span: { from: transit.start.date, to: transit.finish.date },
         subjects: [{ key: `transit:${body}`, label: `every ${body} transit` }],
         icon: 'transit',
-        short: `${body} crosses the Sun`,
+        short: `${body} transit`,
         tiny: `${body} transit`,
         name: `${body} crosses the Sun`,
         note: `${body} passes in front of the Sun as a small black dot. Watch only through a telescope with a proper solar filter.`,
         here,
         where: here ? null : `Seen where the Sun is up, centered over ${regionOf(sun.lat, sun.lon)}.`,
-        rows: [['Begins', time(transit.start.date)], ['Middle', time(transit.peak.date)], ['Ends', time(transit.finish.date)]],
+        rows: [['Begins', time(transit.start.date)], ['Ends', time(transit.finish.date)]],
       }))
 
       transit = Astronomy.NextTransit(body, transit.finish)

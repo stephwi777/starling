@@ -28,7 +28,7 @@ test('December 2026 has a New Moon and a full Cold supermoon', () => {
   const [fresh] = find(events, 'new-moon')
 
   expect(fresh).toMatchObject({ day: '2026-12-08', time: '6:53pm', name: 'New Moon' })
-  expect(full).toMatchObject({ day: '2026-12-23', time: '7:29pm', short: 'Full Cold Moon', name: 'Full Cold Moon', tags: ['Supermoon'] })
+  expect(full).toMatchObject({ day: '2026-12-23', time: '7:29pm', short: 'Cold Moon', name: 'Full Cold Moon', tags: ['Supermoon'] })
   expect(full.kinds).toEqual(['full-moon', 'supermoon'])
   expect(full.here).toBe(true)
 })
@@ -59,4 +59,25 @@ test('the full Moon nearest the September equinox is the Harvest Moon, then the 
 
 test('southern places get no northern Moon names', () => {
   expect(find(month(2026, 12, SYDNEY), 'full-moon')[0].short).toBe('Full Moon')
+})
+
+
+
+// CARD WORDING
+
+const year2027 = Array.from({ length: 12 }, (_, i) => month(2027, i + 1)).flat()
+
+test('phase times are not repeated in the rows', () => {
+  const labels = new Set(year2027.flatMap(event => event.rows.map(([label]) => label)))
+
+  expect(labels.has('Full at')).toBe(false)
+  expect(labels.has('New at')).toBe(false)
+  expect(labels.has('Exact at')).toBe(false)
+})
+
+test('a supermoon says so on phones and drops Full from its chip', () => {
+  const superFull = year2027.find(event => event.kinds.includes('supermoon') && !event.kinds.includes('blue-moon'))
+
+  expect(superFull.tiny).toBe('Supermoon')
+  expect(superFull.short).toBe(superFull.name.replace('Full ', ''))
 })

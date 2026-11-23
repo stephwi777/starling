@@ -102,14 +102,14 @@ test('coming up lists the next few events from today, in order', () => {
 
   expect(soon[0].day >= '2026-11-13').toBe(true)
   expect(soon.map(event => event.day)).toEqual([...soon.map(event => event.day)].sort())
-  expect(soon.map(event => event.short)).toContain('Leonids peak')
+  expect(soon.map(event => event.name)).toContain('Leonids peak')
   expect(soon.every(event => event.day <= '2026-12-13')).toBe(true)
 })
 
 test('coming up follows the chosen kinds', () => {
   const soon = upcoming(KC, new Date('2026-11-13T20:00:00Z'), { kinds: ['full-moon'], count: 10 })
 
-  expect(soon.map(event => event.short)).toEqual(['Full Beaver Moon'])
+  expect(soon.map(event => event.name)).toEqual(['Full Beaver Moon'])
 })
 
 test('coming up keeps date order and its count with favorites', () => {

@@ -11,7 +11,7 @@ export const HINTS = {
   Betelgeuse: 'Orion’s orange-red shoulder.',
   Altair: 'The southern corner of the Summer Triangle.',
   Aldebaran: 'The orange eye of Taurus the bull.',
-  Spica: 'A blue-white star of spring evenings.',
+  Spica: 'A bright blue-white star in Virgo.',
   Antares: 'The red heart of the scorpion.',
   Pollux: 'The brighter twin of Gemini.',
   Fomalhaut: 'A lonely bright star low in the autumn south.',

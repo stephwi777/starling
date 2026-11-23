@@ -3,7 +3,7 @@ import { DEEP_SKY } from '../catalog/deepSky.js'
 import { HINTS } from '../catalog/hints.js'
 import { STARS } from '../catalog/stars.js'
 import { localNoon, localParts } from '../night.js'
-import { clock, where } from '../words.js'
+import { clock } from '../words.js'
 import {
   DAY,
   HOUR,
@@ -12,6 +12,7 @@ import {
   dayKey,
   degrees,
   horizon,
+  look,
   minima,
   moonLit,
   nightKey,
@@ -98,13 +99,18 @@ function passes(body, target, start, end, step, limit, clear) {
 
 // MOON NEAR A STAR
 
+function besides(target) {
+  const hint = HINTS[target.id]
+
+  return hint ? `${target.label}, ${hint[0].toLowerCase()}${hint.slice(1)}` : `${target.label}.`
+}
+
 function moonNote(target, value, date) {
   const washed = target.cluster && Astronomy.Illumination('Moon', date).phase_fraction > 0.5
 
   return [
-    `The Moon passes ${degrees(value)} from ${target.label}.`,
-    HINTS[target.id],
-    washed && 'The bright Moon can drown out the fainter stars, so try binoculars.',
+    `The Moon passes ${degrees(value)} from ${besides(target)}`,
+    washed && 'The bright Moon can drown out fainter stars, so try binoculars.',
   ].filter(Boolean).join(' ')
 }
 
@@ -116,7 +122,7 @@ function moonStarEvents(start, end, place, observer) {
     return base(['moon-star'], 'moon', date, place, {
       icon: `sky:${target.id}`,
       subjects: [{ key: `moon-star:${target.id}`, label: `every time the Moon passes ${target.label}` }],
-      short: `Moon near ${target.short}`,
+      short: `Moon & ${target.short}`,
       tiny: target.short,
       name: `Moon near ${target.label}`,
       note: moonNote(target, value, date),
@@ -132,9 +138,12 @@ function moonStarEvents(start, end, place, observer) {
 
 function planetNote(planet, target, value) {
   if (target.cluster && value < INSIDE) return `${planet} sits among the stars of ${target.label}, ${degrees(value)} from its center. Binoculars show it best.`
-  if (value < INSIDE) return `${planet} passes only ${degrees(value)} from ${target.label}. They fit together in binoculars.`
+  if (value < INSIDE) return `${planet} passes only ${degrees(value)} from ${target.label}, so they fit together in binoculars.`
 
-  return `${planet} passes ${degrees(value)} from ${target.label}, closer than a finger held at arm’s length. ${HINTS[target.id] ?? ''}`.trim()
+  const hint = HINTS[target.id]
+  const about = hint ? ` ${target.label[0].toUpperCase()}${target.label.slice(1)} ${target.id === 'M45' ? 'are' : 'is'} ${hint[0].toLowerCase()}${hint.slice(1)}` : ''
+
+  return `${planet} passes ${degrees(value)} from ${target.label}, closer than a finger held at arm’s length.${about}`
 }
 
 function planetStarEvents(start, end, place, observer) {
@@ -146,7 +155,7 @@ function planetStarEvents(start, end, place, observer) {
     return base(['planet-star'], 'planet', date, place, {
       icon: `planet:${planet}`,
       subjects: [{ key: `planet-star:${planet}+${target.id}`, label: `every time ${planet} passes ${target.label}` }],
-      short: `${words} ${target.short}`,
+      short: `${planet} & ${target.short}`,
       tiny: `${planet} & ${target.short}`,
       name: `${words} ${target.label}`,
       note: planetNote(planet, target, value),
@@ -209,7 +218,7 @@ function seasonEvent(night, starts, place, observer) {
   return base(['milky-way'], 'sun', best, place, {
     icon: 'milky-way',
     subjects: [{ key: 'milky-way', label: 'every Milky Way season' }],
-    short: starts ? 'Milky Way season begins' : 'Milky Way season ends',
+    short: starts ? 'Milky Way returns' : 'Milky Way ends',
     tiny: 'Milky Way',
     name: starts ? 'Milky Way season begins' : 'Milky Way season ends',
     note: starts
@@ -220,7 +229,7 @@ function seasonEvent(night, starts, place, observer) {
     window: night,
     rows: [
       ['Best seen', windowWords(night, place.timeZone)],
-      ['Look', `${where(spot.alt, spot.az)} around ${clock(best, place.timeZone)}`],
+      ['Look', look(spot)],
       ['In', 'Sagittarius'],
       ['Moon', moonLit(best)],
     ],

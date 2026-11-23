@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling calendar entry review</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 100px;
+    }
+
+    .sheet > p {
+      max-width: 75ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet .summary {
+      color: var(--frost);
+      font-weight: 900;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+
+
+    /* FILTERS */
+
+    .filters {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin: 20px -8px 0;
+      padding: 10px 8px;
+      background: var(--zenith);
+    }
+
+    .filters button {
+      padding: 8px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--high);
+      color: var(--mist);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .filters button.on {
+      background: var(--raised);
+      color: var(--frost);
+    }
+
+    .filters label {
+      margin-left: 8px;
+      color: var(--mist);
+      font-weight: 800;
+    }
+
+
+
+    /* ENTRIES */
+
+    .entries {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 1fr 352px;
+      grid-template-areas:
+        "head card"
+        "flags card"
+        "pieces card"
+        "row card"
+        ". card";
+      align-content: start;
+      gap: 14px 28px;
+      padding: 20px;
+      border-radius: var(--radius-tile);
+      background: color-mix(in srgb, var(--high) 55%, var(--zenith));
+    }
+
+    .entry header {
+      grid-area: head;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .entry header h2 {
+      font-size: 1.6rem;
+    }
+
+    .entry header p {
+      color: var(--mist);
+      font-weight: 800;
+    }
+
+    .flags {
+      grid-area: flags;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .flags li {
+      padding: 4px 10px;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--beak) 34%, var(--high));
+      color: var(--frost);
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .pieces {
+      grid-area: pieces;
+      display: flex;
+      align-items: flex-start;
+      gap: 22px;
+    }
+
+    .piece {
+      display: grid;
+      justify-items: start;
+      gap: 6px;
+    }
+
+    .piece small,
+    .list-row small {
+      color: var(--mist);
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .cell {
+      container: day / inline-size;
+      padding: 6px 5px;
+      border-radius: 8px;
+      background: var(--high);
+    }
+
+    .day-bars {
+      padding: 4px 2px;
+      border-radius: 6px;
+      background: var(--high);
+    }
+
+    .list-row {
+      grid-area: row;
+      display: grid;
+      gap: 6px;
+      width: 343px;
+    }
+
+    .list-row .event-rows {
+      padding: 0 8px;
+      border-radius: 16px;
+      background: var(--high);
+    }
+
+    .sheet-card {
+      grid-area: card;
+      width: 352px;
+      padding-bottom: 8px;
+      border-radius: var(--radius-card);
+      background: var(--high);
+    }
+
+    .sheet-card .popover-rows {
+      padding-bottom: 12px;
+    }
+
+    @media (max-width: 860px) {
+      .entry {
+        grid-template-columns: 1fr;
+        grid-template-areas: "head" "flags" "pieces" "row" "card";
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./event-sheet.jsx"></script>
+</body>
+</html>

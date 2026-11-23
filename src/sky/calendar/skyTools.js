@@ -1,6 +1,6 @@
 import * as Astronomy from 'astronomy-engine'
 import { localNoon, localParts } from '../night.js'
-import { clock, where } from '../words.js'
+import { clock, height, wideCompass } from '../words.js'
 
 
 
@@ -149,7 +149,7 @@ export function refine(around, value, span = 3 * HOUR, step = 10 * MINUTE) {
 }
 
 export function degrees(value) {
-  return `${value < 1 ? value.toFixed(1) : Math.round(value * 10) / 10}°`
+  return `${Number(value.toFixed(1))}°`
 }
 
 
@@ -198,23 +198,44 @@ export function viewed(bodies, around, place, observer, why) {
 // FACTS
 
 export function brightness(mag) {
-  if (mag <= -3) return 'Brighter than anything but the Moon'
+  if (mag <= -3) return 'Brightest after the Moon'
   if (mag <= -1.5) return 'Brighter than any star'
-  if (mag <= 0.5) return 'As bright as the brightest stars'
+  if (mag <= 0.5) return 'Very bright'
   if (mag <= 2.5) return 'Easy to see by eye'
-  if (mag <= 6) return 'Faint; look from a dark place'
+  if (mag <= 6) return 'Faint; find a dark place'
+  if (mag <= 8) return 'Needs binoculars'
 
-  return 'Needs binoculars or a telescope'
+  return 'Needs a telescope'
+}
+
+const SPELLINGS = { Bootes: 'Boötes' }
+
+export function spelled(name) {
+  return SPELLINGS[name] ?? name
 }
 
 export function constellation(body, date, observer) {
   const { ra, dec } = horizon(body, date, observer)
 
-  return Astronomy.Constellation(ra, dec).name
+  return spelled(Astronomy.Constellation(ra, dec).name)
 }
 
 export function moonLit(date) {
   return `${Math.round(Astronomy.Illumination('Moon', date).phase_fraction * 100)}% lit`
+}
+
+export function skyWords({ alt, az }) {
+  if (alt >= 75) return 'nearly overhead'
+
+  const word = alt < 10 ? 'very low' : alt >= 25 && alt < 55 ? 'midway up' : height(alt)
+
+  return `${word} ${wideCompass(az)}`
+}
+
+export function look(spot) {
+  const words = skyWords(spot)
+
+  return `${words[0].toUpperCase()}${words.slice(1)}`
 }
 
 export function bodyRows(body, window, observer, timeZone) {
@@ -223,7 +244,7 @@ export function bodyRows(body, window, observer, timeZone) {
 
   return [
     ['Best seen', windowWords(window, timeZone)],
-    ['Look', `${where(spot.alt, spot.az)} around ${clock(best, timeZone)}`],
+    ['Look', look(spot)],
     ['Brightness', brightness(Astronomy.Illumination(body, best).mag)],
     ['In', constellation(body, best, observer)],
     ['Moon', moonLit(best)],

@@ -85,7 +85,7 @@ test('there is no Milky Way season where the core never clears the horizon', () 
 
 test('the Alpha Capricornids peak with the Southern Delta Aquariids at the end of July', () => {
   const { start, end } = monthBounds(2027, 7, KC.timeZone)
-  const peaks = showerEvents(start, end, KC, observerFor(KC)).map(event => [event.short, event.day])
+  const peaks = showerEvents(start, end, KC, observerFor(KC)).map(event => [event.name, event.day])
 
   expect(peaks).toContainEqual(['Alpha Capricornids peak', '2027-07-30'])
 })

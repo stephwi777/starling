@@ -46,6 +46,8 @@ function base(kind, date, place, extra) {
 
 // SEASONS
 
+const lower = text => `${text[0].toLowerCase()}${text.slice(1)}`
+
 function seasonEvents(start, end, place) {
   const years = [...new Set([start.getUTCFullYear(), end.getUTCFullYear()])]
 
@@ -58,11 +60,11 @@ function seasonEvents(start, end, place) {
       .map(({ season, date }) => base('season', date, place, {
         icon: 'season',
         subjects: [{ key: `season:${season.key}`, label: `every ${season.name}` }],
-        short: season.name,
+        short: season.name.includes('equinox') ? 'Equinox' : 'Solstice',
         tiny: season.name.includes('equinox') ? 'Equinox' : 'Solstice',
         name: season.name,
-        note: `${place.latitude >= 0 ? season.north : season.south}. ${season.note}`,
-        rows: [['Exact at', clock(date, place.timeZone)]],
+        note: `The ${lower(place.latitude >= 0 ? season.north : season.south)}, when ${lower(season.note)}`,
+        rows: [],
       }))
   })
 }
@@ -81,7 +83,7 @@ function earthEvents(start, end, place) {
     events.push(base('earth-distance', apsis.time.date, place, {
       icon: 'season',
       subjects: [close ? { key: 'earth-closest', label: 'every time Earth is closest to the Sun' } : { key: 'earth-farthest', label: 'every time Earth is farthest from the Sun' }],
-      short: close ? 'Earth closest to Sun' : 'Earth farthest from Sun',
+      short: close ? 'Earth closest' : 'Earth farthest',
       tiny: close ? 'Earth closest' : 'Earth farthest',
       name: close ? 'Earth at its closest to the Sun' : 'Earth at its farthest from the Sun',
       note: close ? 'Earth reaches perihelion, the nearest point of its orbit. Seasons come from Earth’s tilt, not its distance.' : 'Earth reaches aphelion, the farthest point of its orbit. Seasons come from Earth’s tilt, not its distance.',

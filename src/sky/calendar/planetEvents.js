@@ -34,11 +34,11 @@ const PARADE_STEP = 20 * MINUTE
 const MILES_PER_AU = 92955807
 
 const OPPOSITION_NOTES = {
-  Mars: 'Opposite the Sun: up all night and at its biggest and brightest of the year.',
-  Jupiter: 'Opposite the Sun: up all night and at its biggest and brightest of the year.',
-  Saturn: 'Opposite the Sun: up all night and at its biggest and brightest of the year. Its rings show in any small telescope.',
-  Uranus: 'Opposite the Sun and at its best. Faint: look with binoculars from a dark place.',
-  Neptune: 'Opposite the Sun and at its best. Too faint for eyes; you’ll need a telescope.',
+  Mars: 'Mars is opposite the Sun, so it’s up all night and at its biggest and brightest of the year.',
+  Jupiter: 'Jupiter is opposite the Sun, so it’s up all night and at its biggest and brightest of the year.',
+  Saturn: 'Saturn is opposite the Sun, so it’s up all night and at its biggest and brightest of the year. Its rings show in any small telescope.',
+  Uranus: 'Uranus is opposite the Sun and at its best. It’s faint, so use binoculars from a dark place.',
+  Neptune: 'Neptune is opposite the Sun and at its best. It’s too faint for eyes, so you’ll need a telescope.',
 }
 
 
@@ -70,7 +70,7 @@ function pairSubject(a, b) {
 function distance(au, country) {
   const miles = country === 'US'
 
-  return `${((au * (miles ? MILES_PER_AU : Astronomy.KM_PER_AU)) / 1e6).toFixed(1)} million ${miles ? 'mi' : 'km'}`
+  return `${Number(((au * (miles ? MILES_PER_AU : Astronomy.KM_PER_AU)) / 1e6).toFixed(1))} million ${miles ? 'mi' : 'km'}`
 }
 
 
@@ -122,7 +122,9 @@ function elongationEvents(start, end, place, observer) {
         short: `${body} at its best`,
         tiny: body,
         name: `${body} at its best`,
-        note: `Farthest from the Sun in the ${evening ? 'evening' : 'morning'} sky, ${Math.round(found.elongation)}° away. Look low in the ${evening ? 'west after sunset' : 'east before sunrise'}.`,
+        note: view.here
+          ? `${body} swings ${Math.round(found.elongation)}° from the Sun, its easiest time to spot ${evening ? 'after sunset' : 'before sunrise'}.`
+          : `${body} swings ${Math.round(found.elongation)}° from the Sun in the ${evening ? 'evening' : 'morning'} sky.`,
         ...view,
         rows: view.window ? bodyRows(body, view.window, observer, place.timeZone) : [],
       }))
@@ -155,9 +157,9 @@ function venusEvents(start, end, place, observer) {
       short: 'Venus at its brightest',
       tiny: 'Bright Venus',
       name: 'Venus at its brightest',
-      note: `Shining at magnitude ${peak.mag.toFixed(1).replace('-', '−')}: brighter than anything in the night sky except the Moon.`,
+      note: `Venus outshines everything in the night sky except the Moon (magnitude ${peak.mag.toFixed(1).replace('-', '−')}).`,
       ...view,
-      rows: view.window ? bodyRows('Venus', view.window, observer, place.timeZone) : [],
+      rows: view.window ? bodyRows('Venus', view.window, observer, place.timeZone).filter(([label]) => label !== 'Brightness') : [],
     }))
 
     cursor = new Date(peak.time.date.getTime() + 30 * DAY)
@@ -185,7 +187,7 @@ function marsEvents(start, end, place, observer) {
   return [base(['mars-closest'], closest.date, place, {
     subjects: [{ key: 'mars-closest', label: 'every time Mars is closest' }],
     icon: 'planet:Mars',
-    short: 'Mars closest to Earth',
+    short: 'Mars closest',
     tiny: 'Mars closest',
     name: 'Mars closest to Earth',
     note: `Mars comes within ${distance(closest.value, place.country)} of Earth, its closest for about two years.`,
@@ -199,10 +201,10 @@ function marsEvents(start, end, place, observer) {
 // CLOSE PAIRS
 
 function closeness(apart) {
-  if (apart < 0.5) return 'So close they may look like one bright star.'
-  if (apart < 1) return 'They fit together in binoculars.'
+  if (apart < 0.5) return 'so close they may look like one bright star.'
+  if (apart < 1) return 'so they fit together in binoculars.'
 
-  return 'Closer than a finger held at arm’s length.'
+  return 'closer than a finger held at arm’s length.'
 }
 
 function pairEvents(start, end, place, observer) {
@@ -219,11 +221,11 @@ function pairEvents(start, end, place, observer) {
 
         return base(['planet-pair'], date, place, {
           subjects: [pairSubject(a, b)],
-          icon: `planet:${a}`,
-          short: `${a} meets ${b}`,
+          icon: `pair:${a}+${b}`,
+          short: `${a} & ${b}`,
           tiny: `${a} & ${b}`,
           name: `${a} and ${b} together`,
-          note: `Only ${degrees(value)} apart. ${closeness(value)}`,
+          note: `Only ${degrees(value)} apart, ${closeness(value)}`,
           ...view,
           rows: view.window ? [['Best seen', windowWords(view.window, place.timeZone)], ...bodyRows(a, view.window, observer, place.timeZone).slice(1, 2)] : [],
         })
@@ -249,10 +251,10 @@ function moonPlanetEvents(start, end, place, observer) {
         return base(['moon-planet'], date, place, {
           subjects: [{ key: `moon-planet:${body}`, label: `every time the Moon passes ${body}` }],
           icon: `planet:${body}`,
-          short: close ? `Moon meets ${body}` : `Moon near ${body}`,
+          short: `Moon & ${body}`,
           tiny: `Moon & ${body}`,
           name: close ? `Moon meets ${body}` : `Moon near ${body}`,
-          note: `The Moon and ${body} are ${degrees(value)} apart at their closest. ${value < 2 ? 'A lovely pair for eyes or binoculars.' : 'Easy to find: look beside the Moon.'}`,
+          note: value < 2 ? `The Moon and ${body} come within ${degrees(value)} of each other, a lovely pair for eyes or binoculars.` : `The Moon and ${body} come within ${degrees(value)} of each other, so look just beside the Moon.`,
           ...view,
           rows: view.window ? bodyRows(body, view.window, observer, place.timeZone) : [],
         })
@@ -312,11 +314,11 @@ function paradeEvents(start, end, place, observer) {
         id: `parade-${session}-${run.from.getTime()}`,
         icon: 'parade',
         time: session === 'evening' ? 'Evening' : 'Before dawn',
-        short: `${run.planets.length} planets ${session === 'evening' ? 'after dusk' : 'before dawn'}`,
+        short: 'Planet parade',
         tiny: `${run.planets.length} planets`,
         name: `Planet parade: ${run.planets.length} planets`,
         note: `${list} are all up in the ${session === 'evening' ? 'evening sky after dusk' : 'morning sky before dawn'}${through ? `, each night through ${through}` : ''}.`,
-        rows: [['Planets', list], ['When', session === 'evening' ? 'About an hour after sunset' : 'About an hour before sunrise']],
+        rows: [['When', session === 'evening' ? 'About an hour after sunset' : 'About an hour before sunrise']],
       })
     })
   })
@@ -367,7 +369,7 @@ function stationEvents(start, end, place) {
             tiny: `${body} turns`,
             name: backward ? `${body} starts moving backward` : `${body} moves forward again`,
             note: backward
-              ? `${body} pauses and begins drifting west against the stars (retrograde). It’s an illusion from Earth passing it, or it passing us.`
+              ? `${body} pauses and begins drifting west against the stars (retrograde). It’s an illusion from ${['Mercury', 'Venus'].includes(body) ? `${body} overtaking Earth` : `Earth overtaking ${body}`}.`
               : `${body} pauses and resumes its usual eastward drift against the stars.`,
           }))
         }
@@ -401,7 +403,7 @@ function conjunctionEvents(start, end, place) {
     return [base(['solar-conjunction'], date, place, {
       subjects: [{ key: `sun-pass:${body}`, label: `every time ${body} lines up with the Sun` }],
       icon: `planet:${body}`,
-      short: front ? `${body} passes the Sun` : `${body} behind the Sun`,
+      short: `${body} & Sun`,
       tiny: `${body} & Sun`,
       name: front ? `${body} passes between Earth and the Sun` : `${body} behind the Sun`,
       note: `${body} is lost in the Sun’s glare for a while. It will reappear in the ${later} sky.`,
@@ -424,7 +426,7 @@ function apsisEvents(start, end, place) {
     return [base(['planet-distance'], apsis.time.date, place, {
       subjects: [{ key: `sun-distance:${body}`, label: `every time ${body} is closest or farthest from the Sun` }],
       icon: `planet:${body}`,
-      short: `${body} ${close ? 'closest to' : 'farthest from'} Sun`,
+      short: `${body} ${close ? 'near' : 'far from'} Sun`,
       tiny: `${body} ${close ? 'close' : 'far'}`,
       name: `${body} ${close ? 'closest to' : 'farthest from'} the Sun`,
       note: `${body} reaches the ${close ? 'nearest' : 'farthest'} point of its orbit, ${distance(apsis.dist_au, place.country)} from the Sun.`,

@@ -19,7 +19,7 @@ function EventRow({ event, south, dated, favorite, onPick }) {
         <strong>{favorite && <span className="visually-hidden">Favorite, </span>}{event.name} <Tags tags={event.tags} /></strong>
         <small>
           {dated && <span className="visually-hidden">{weekday} {day}, </span>}
-          {event.time}{event.here ? '' : ' · Not visible from here'}
+          {[event.time, !event.here && 'Not visible from here'].filter(Boolean).join(' · ')}
         </small>
       </span>
     </button>

@@ -26,8 +26,8 @@ test('Comet Lemmon in autumn 2025 arrives, peaks as naked eye and fades', () => 
   expect(best.group).toBe('comet')
   expect(best.tiny).toBe('Lemmon')
   expect(best.id).toBe('comet-CK25A060-best')
-  expect(best.note).toMatch(/predict/i)
-  expect(best.rows.find(([label]) => label === 'Brightness')[1]).toMatch(/\(predicted\)$/)
+  expect(best.note).toMatch(/forecasts are often off/)
+  expect(best.rows.some(([label]) => label === 'Brightness')).toBe(false)
 })
 
 test('a faint comet is a telescope comet', () => {

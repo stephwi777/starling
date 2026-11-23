@@ -91,26 +91,25 @@ function fullEvent(date, previous, place, observer) {
   const blue = previous && sameMonth(previous, date, place.timeZone)
   const tags = [km < SUPER_KM && 'Supermoon', km > MICRO_KM && 'Micromoon', blue && 'Blue Moon'].filter(Boolean)
   const kinds = ['full-moon', km < SUPER_KM && 'supermoon', km > MICRO_KM && 'micromoon', blue && 'blue-moon'].filter(Boolean)
-  const short = name ? `Full ${name} Moon` : 'Full Moon'
+  const title = name ? `Full ${name} Moon` : 'Full Moon'
   const rise = moonrise(date, observer)
 
   const notes = [
     'Rises around sunset and shines all night.',
-    km < SUPER_KM && 'A supermoon: the Moon is near its closest, so it looks a little bigger and brighter than usual.',
-    km > MICRO_KM && 'A micromoon: the Moon is near its farthest, so it looks a little smaller than usual.',
+    km < SUPER_KM && 'A supermoon: the Moon is close to Earth, so it looks a little bigger and brighter than usual.',
+    km > MICRO_KM && 'A micromoon: the Moon is far from Earth, so it looks a little smaller than usual.',
     blue && 'A Blue Moon: the second full Moon this month.',
   ].filter(Boolean)
 
   return base(kinds, date, place, {
     subjects: kinds.map(kind => ({ key: kind, label: FULL_LABELS[kind] })),
     icon: 'full-moon',
-    short,
-    tiny: blue ? 'Blue Moon' : 'Full Moon',
-    name: short,
+    short: name ? `${name} Moon` : 'Full Moon',
+    tiny: blue ? 'Blue Moon' : km < SUPER_KM ? 'Supermoon' : 'Full Moon',
+    name: title,
     tags,
     note: notes.join(' '),
     rows: [
-      ['Full at', `${clock(date, place.timeZone)}`],
       ['Moonrise', rise ? clock(rise, place.timeZone) : 'No moonrise'],
       ['Distance', distanceWords(km, place.country)],
     ],
@@ -128,7 +127,7 @@ function newEvent(date, previous, place) {
     name: 'New Moon',
     tags: black ? ['Black Moon'] : [],
     note: `The Moon is lost in the Sun’s glare, so the nights are at their darkest. Great for faint galaxies and the Milky Way.${black ? ' A Black Moon: the second new Moon this month.' : ''}`,
-    rows: [['New at', clock(date, place.timeZone)]],
+    rows: [],
   })
 }
 
@@ -140,7 +139,7 @@ function quarterEvent(date, first, place) {
     tiny: first ? 'First quarter' : 'Last quarter',
     name: first ? 'First quarter Moon' : 'Last quarter Moon',
     note: first ? 'Half lit and high in the evening sky. Craters stand out along the edge of the shadow.' : 'Half lit, rising around midnight and high at dawn.',
-    rows: [['Exact at', clock(date, place.timeZone)]],
+    rows: [],
   })
 }
 
@@ -207,10 +206,10 @@ function nodeEvents(start, end, place) {
     events.push(base(['moon-node'], node.time.date, place, {
       subjects: [{ key: 'moon-node', label: 'every time the Moon crosses the Sun’s path' }],
       icon: 'moon-node',
-      short: 'Moon crosses Sun’s path',
-      tiny: 'Moon node',
+      short: 'Moon on Sun’s path',
+      tiny: 'Sun’s path',
       name: 'Moon crosses the Sun’s path',
-      note: `The Moon crosses the ecliptic heading ${node.kind > 0 ? 'north' : 'south'}. Eclipses can only happen when a new or full Moon falls near one of these crossings.`,
+      note: `The Moon crosses the ecliptic (the Sun’s path) heading ${node.kind > 0 ? 'north' : 'south'}. Eclipses can only happen when a new or full Moon falls near one of these crossings.`,
       rows: [],
     }))
 
