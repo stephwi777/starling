@@ -7,7 +7,7 @@ import { SHAPES } from './cloudShapes.js'
 // TESTS
 
 test('every cloud uses one of the five shapes and a known shade', () => {
-  const clouds = [LAYOUTS[1].desktop, LAYOUTS[1].phone, LAYOUTS[2].desktop, LAYOUTS[2].phone, LAYOUTS[3].canvas].flat()
+  const clouds = [LAYOUTS[1].desktop, LAYOUTS[1].phone, LAYOUTS[2].desktop, LAYOUTS[2].phone, LAYOUTS[3].desktop, LAYOUTS[3].phone].flat()
 
   for (const cloud of clouds) {
     expect(Object.keys(SHAPES)).toContain(cloud.shape)
@@ -30,17 +30,17 @@ test('patchy on phones is the top-right cluster with no Moon cloud', () => {
   expect(LAYOUTS[2].desktop.find(cloud => cloud.moon)).toMatchObject({ shape: 'wide', moon: { right: -64, top: -16 }, w: 34 })
 })
 
-test('cloudy nights are four huge clouds', () => {
-  expect(LAYOUTS[3].canvas.map(cloud => cloud.shape)).toEqual(['tall', 'wide', 'long', 'hump'])
+test('cloudy nights are four huge clouds on desktop and on phones', () => {
+  expect(LAYOUTS[3].desktop.map(cloud => cloud.shape)).toEqual(['tall', 'wide', 'long', 'hump'])
+  expect(LAYOUTS[3].phone).toHaveLength(4)
 })
 
-test('cloudy clouds always reach down behind the hills', () => {
-  const band = 420
-  const ground = 130
+test('cloudy clouds sit on the hills, and the front ones reach below their lowest edge', () => {
+  const lowestEdge = 0.6
 
-  for (const cloud of LAYOUTS[3].canvas) {
-    expect(cloud.bottom, cloud.shape).toBeDefined()
+  for (const cloud of [...LAYOUTS[3].desktop, ...LAYOUTS[3].phone]) {
+    expect(cloud.ground, cloud.shape).toBeGreaterThan(0)
     expect(cloud.y, cloud.shape).toBeUndefined()
-    expect((cloud.bottom / 100) * band, cloud.shape).toBeLessThan(ground)
+    if (cloud.front) expect(cloud.ground, cloud.shape).toBeLessThan(lowestEdge)
   }
 })

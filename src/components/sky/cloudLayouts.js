@@ -26,11 +26,17 @@ export const LAYOUTS = {
     ],
   },
   3: {
-    canvas: [
-      { shape: 'tall', x: -12, bottom: 26.9, w: 64, shade: 1 },
-      { shape: 'wide', x: 42, bottom: 26.1, w: 70, shade: 1, flip: true },
-      { shape: 'long', x: -6, bottom: 11, w: 66, shade: 2, flip: true },
-      { shape: 'hump', x: 52, bottom: 19.7, w: 58, shade: 2 },
+    desktop: [
+      { shape: 'tall', x: -12, ground: 0.87, w: 64, shade: 1 },
+      { shape: 'wide', x: 42, ground: 0.84, w: 70, shade: 1, flip: true },
+      { shape: 'long', x: -6, ground: 0.3, w: 66, shade: 2, flip: true, front: true },
+      { shape: 'hump', x: 52, ground: 0.55, w: 58, shade: 2, front: true },
+    ],
+    phone: [
+      { shape: 'tall', at: 22, ground: 0.8, tall: 190, shade: 1 },
+      { shape: 'wide', at: 82, ground: 0.8, tall: 180, shade: 1, flip: true },
+      { shape: 'long', at: 18, ground: 0.3, tall: 120, shade: 2, flip: true, front: true },
+      { shape: 'hump', at: 75, ground: 0.55, tall: 110, shade: 2, front: true },
     ],
   },
 }

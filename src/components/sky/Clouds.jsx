@@ -7,26 +7,23 @@ import './Clouds.css'
 // CLOUD
 
 function placeOf(cloud) {
-  if (cloud.moon) return undefined
-  if (cloud.bottom !== undefined) return { left: `${cloud.x}%`, bottom: `${cloud.bottom}%`, width: `${cloud.w}%` }
+  if (cloud.moon) return { right: `${cloud.moon.right}px`, top: `${cloud.moon.top}px`, width: `${cloud.w}cqw` }
+  if (cloud.at !== undefined) return { left: `${cloud.at}%`, bottom: `calc(var(--ground) * ${cloud.ground})`, width: `${cloud.tall}cqh`, translate: '-50% 0' }
+  if (cloud.ground !== undefined) return { left: `${cloud.x}%`, bottom: `calc(var(--ground) * ${cloud.ground})`, width: `${cloud.w}%` }
 
   return { left: `${cloud.x}%`, top: `${cloud.y}%`, width: `${cloud.w}%` }
 }
 
 function Cloud({ cloud }) {
-  const svg = (
-    <svg className={cloud.flip ? 'cloud flip' : 'cloud'} viewBox="0 0 200 72" style={placeOf(cloud)}>
-      <path d={CLOUD_PATHS[cloud.shape]} style={{ fill: `var(--shade-${cloud.shade})` }} />
-    </svg>
-  )
-
-  if (!cloud.moon) return svg
-
-  return (
-    <div className="moon-spot">
-      <div style={{ right: `${cloud.moon.right}px`, top: `${cloud.moon.top}px`, width: `${cloud.w}cqw` }}>{svg}</div>
+  const box = (
+    <div className="cloud-box" style={placeOf(cloud)}>
+      <svg className={cloud.flip ? 'cloud flip' : 'cloud'} viewBox="0 0 200 72">
+        <path d={CLOUD_PATHS[cloud.shape]} style={{ fill: `var(--shade-${cloud.shade})` }} />
+      </svg>
     </div>
   )
+
+  return cloud.moon ? <div className="moon-spot">{box}</div> : box
 }
 
 function Group({ clouds, size }) {
@@ -48,7 +45,8 @@ function Clouds({ level }) {
     return (
       <div className="clouds level-3" aria-hidden="true">
         <div className="canvas">
-          <Group clouds={LAYOUTS[3].canvas} size="all" />
+          <Group clouds={LAYOUTS[3].desktop} size="desktop" />
+          <Group clouds={LAYOUTS[3].phone} size="phone" />
         </div>
       </div>
     )

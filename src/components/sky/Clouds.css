@@ -14,8 +14,13 @@
   pointer-events: none;
 }
 
-.clouds .cloud {
+.clouds .cloud-box {
   position: absolute;
+}
+
+.clouds .cloud {
+  display: block;
+  width: 100%;
   height: auto;
   overflow: visible;
 }
@@ -24,8 +29,7 @@
   scale: -1 1;
 }
 
-.clouds .desktop,
-.clouds .all {
+.clouds .desktop {
   display: contents;
 }
 
@@ -43,16 +47,6 @@
   right: 12%;
   width: 54px;
   height: 54px;
-}
-
-.moon-spot > div {
-  position: absolute;
-}
-
-.moon-spot .cloud {
-  position: static;
-  display: block;
-  width: 100%;
 }
 
 
@@ -103,6 +97,12 @@
 
   .clouds .phone {
     display: contents;
+  }
+
+  .clouds .canvas {
+    left: 0;
+    width: 100%;
+    translate: none;
   }
 
   .moon-spot {
