@@ -34,7 +34,7 @@ function SkyScene({ look, size, decor, children }) {
       {decor}
       {look.sun && <Sun />}
       {look.moon && <Moon className={day ? 'moon pale' : 'moon'} angle={look.moon.angle} south={look.moon.south} halo={look.moon.halo && !day} pale={day} />}
-      <Clouds level={look.clouds} day={day} />
+      <Clouds level={look.clouds} />
       <div className="sky-content">{children}</div>
       <Ground size={size} snow={look.snow} />
     </section>

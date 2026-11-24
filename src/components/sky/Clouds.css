@@ -1,24 +1,95 @@
 /* CLOUDS */
 
 .clouds {
+  --shade-0: var(--cloud-1);
+  --shade-1: var(--cloud-2);
+  --shade-2: var(--cloud-3);
+  --shade-3: var(--cloud-4);
+  --shade-4: var(--cloud-front);
+  --shade-5: var(--cloud-3);
+  --shade-6: var(--cloud-2);
   position: absolute;
-  inset: 0 0 18%;
+  inset: 0;
+  container-type: size;
   pointer-events: none;
 }
 
-.clouds svg {
+.clouds .cloud {
   position: absolute;
-  animation: drift linear infinite alternate;
+  height: auto;
+  overflow: visible;
 }
 
-@keyframes drift {
-  from {
-    transform: translateX(-30px);
-  }
+.clouds .flip {
+  scale: -1 1;
+}
 
-  to {
-    transform: translateX(30px);
-  }
+.clouds .desktop,
+.clouds .all {
+  display: contents;
+}
+
+.clouds .phone {
+  display: none;
+}
+
+
+
+/* NEXT TO THE MOON */
+
+.moon-spot {
+  position: absolute;
+  top: 96px;
+  right: 12%;
+  width: 54px;
+  height: 54px;
+}
+
+.moon-spot > div {
+  position: absolute;
+}
+
+.moon-spot .cloud {
+  position: static;
+  display: block;
+  width: 100%;
+}
+
+
+
+/* CLOUDY */
+
+.clouds .canvas {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: max(100cqw, 100cqh * 1132 / 420);
+  aspect-ratio: 1132 / 420;
+  translate: -50% 0;
+}
+
+
+
+/* TWILIGHT */
+
+.sky-scene.dusk .clouds {
+  --shade-0: var(--twilight-cloud-1);
+  --shade-1: var(--twilight-cloud-2);
+  --shade-2: var(--twilight-cloud-3);
+  --shade-3: var(--twilight-cloud-4);
+  --shade-5: var(--twilight-cloud-deep);
+  --shade-6: var(--twilight-cloud-low);
+}
+
+.sky-scene.dusk .clouds.level-3 {
+  --shade-1: var(--twilight-cloudy-back);
+}
+
+.sky-scene.dusk .clouds.level-3::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 45%, color-mix(in srgb, var(--sky-low) 55%, transparent));
 }
 
 
@@ -26,18 +97,18 @@
 /* SMALL SCREENS */
 
 @media (max-width: 700px) {
-  .tall .clouds.level-1,
-  .tall .clouds.level-2 {
-    top: 52%;
+  .clouds .desktop {
+    display: none;
   }
-}
 
+  .clouds .phone {
+    display: contents;
+  }
 
-
-/* REDUCED MOTION */
-
-@media (prefers-reduced-motion: reduce) {
-  .clouds svg {
-    animation: none;
+  .moon-spot {
+    top: auto;
+    bottom: calc(var(--ground) + 12px);
+    width: 40px;
+    height: 40px;
   }
 }
