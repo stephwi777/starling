@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling rain and snow skies</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .sheet > p {
+      max-width: 68ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .option {
+      margin-top: 48px;
+    }
+
+    .option h2 {
+      font-size: 1.4rem;
+    }
+
+    .option > p {
+      max-width: 68ch;
+      margin-top: 6px;
+      color: var(--mist);
+    }
+
+    .pair {
+      display: grid;
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    .pair h3 {
+      margin-bottom: 8px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .frame {
+      --header-height: 36px;
+      --gutter: 20px;
+      overflow: hidden;
+      border-radius: 26px;
+    }
+
+
+
+
+    /* FALLING */
+
+    .frame .sky-content {
+      z-index: 2;
+    }
+
+    .falling {
+      position: absolute;
+      z-index: 1;
+      inset: 0 0 calc(var(--ground) - 6px);
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .falling > span {
+      position: absolute;
+      top: -12px;
+      animation: fall linear infinite;
+    }
+
+    .falling svg {
+      display: block;
+    }
+
+    .falling.short > span {
+      animation-name: fall-short;
+    }
+
+    .falling .dot {
+      display: block;
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      background: var(--frost);
+      opacity: 0.85;
+      animation: sway 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes fall {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(var(--drop, 420px));
+      }
+    }
+
+    @keyframes fall-short {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+
+      15% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(var(--drop, 120px));
+        opacity: 0;
+      }
+    }
+
+    @keyframes sway {
+      from {
+        translate: -6px 0;
+      }
+
+      to {
+        translate: 6px 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .falling > span,
+      .falling .dot {
+        animation: none;
+      }
+    }
+
+
+
+    /* GROUND */
+
+    .frame.wet .ground path:last-of-type {
+      fill: var(--snow-overcast);
+    }
+
+    .sheen {
+      position: absolute;
+      inset: auto 0 0;
+      height: calc(var(--ground) * 0.55);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./rain-snow.jsx"></script>
+</body>
+</html>

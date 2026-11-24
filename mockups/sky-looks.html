@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling Tonight sky looks</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .sheet > p {
+      max-width: 72ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+
+
+    /* SWITCHES */
+
+    .switches {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px -24px 0;
+      padding: 12px 24px;
+      background: var(--zenith);
+    }
+
+    .switches button {
+      min-height: 44px;
+      padding: 0 16px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--raised);
+      color: var(--mist);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .switches button[aria-pressed="true"] {
+      background: var(--teal);
+      color: var(--ink);
+    }
+
+
+
+    /* GROUPS */
+
+    .group {
+      margin-top: 40px;
+    }
+
+    .group > h2 {
+      font-size: 1.5rem;
+    }
+
+    .looks {
+      display: grid;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .phone-mode .looks {
+      grid-template-columns: repeat(auto-fill, 375px);
+      gap: 28px 24px;
+    }
+
+    .look h3 {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .look h3 span {
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .look > p {
+      max-width: 72ch;
+      margin: 4px 0 10px;
+      color: var(--mist);
+      font-size: 0.92rem;
+    }
+
+    .frame {
+      overflow: hidden;
+      border-radius: 26px;
+    }
+
+    .phone-frame {
+      display: block;
+      width: 375px;
+      height: 520px;
+      border: 0;
+      border-radius: 26px;
+    }
+
+    .bare .frame {
+      border-radius: 0;
+    }
+
+
+
+    .look h3 em {
+      margin-left: 10px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: var(--raised);
+      color: var(--teal);
+      font-size: 0.8rem;
+      font-style: normal;
+    }
+
+
+
+    /* NEW COLORS */
+
+    :root:not([data-light="red"]) {
+      --moonlit-top: #0c1030;
+      --moonlit-middle: #171c48;
+      --moonlit-low: #312d6c;
+      --snow-moonlit: #bdb2e8;
+      --overcast-top: #141631;
+      --overcast-middle: #22244a;
+      --overcast-low: #3b3670;
+      --cloud-1: #24234f;
+      --cloud-2: #2c2a5c;
+      --cloud-3: #34316a;
+      --cloud-4: #3c3874;
+      --cloud-front: #44407e;
+      --dawn-top: #15173f;
+      --dawn-middle: #45397f;
+      --dawn-low: #bb8592;
+      --snow-dawn: #cbb5dc;
+    }
+
+    :root[data-light="red"] {
+      --moonlit-top: #120403;
+      --moonlit-middle: #1e0705;
+      --moonlit-low: #350d08;
+      --snow-moonlit: #e2513a;
+      --overcast-top: #120403;
+      --overcast-low: #340d08;
+      --cloud-1: #2a0a06;
+      --cloud-2: #330c08;
+      --cloud-3: #3c0f0a;
+      --cloud-4: #45110b;
+      --cloud-front: #4e140d;
+      --dawn-top: #1c0604;
+      --dawn-middle: #3e100a;
+      --dawn-low: #661a10;
+      --snow-dawn: #cf4d37;
+    }
+
+    :root[data-light="red"] .look-dusk .sheet-clouds {
+      --cloud-deep: #1c0604;
+      --cloud-low: #2a0a07;
+      --cloud-1: #4a120c;
+      --cloud-2: #52150e;
+      --cloud-3: #260906;
+      --cloud-4: #2a0a07;
+    }
+
+    .sheet-clouds {
+      --cloud-deep: var(--cloud-3);
+      --cloud-low: var(--cloud-2);
+    }
+
+    .look-dusk .sheet-clouds {
+      --cloud-deep: #1b1745;
+      --cloud-1: #4a4088;
+      --cloud-2: #50458f;
+      --cloud-3: #29235b;
+      --cloud-4: #2d2762;
+    }
+
+
+
+    /* CLOUDS */
+
+    .sheet-clouds {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .sheet-clouds > div {
+      position: absolute;
+    }
+
+    .sheet-clouds svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .frame .sky-scene {
+      container-type: inline-size;
+    }
+
+    .placed {
+      top: var(--y);
+      left: var(--x);
+      width: var(--w);
+    }
+
+    .phone-only {
+      display: none;
+    }
+
+    .trio {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .phone-frame.small {
+      width: 340px;
+      height: 440px;
+    }
+
+    html:has(.bare) {
+      overflow: hidden;
+    }
+
+    .group-note {
+      max-width: 72ch;
+      margin-top: 6px;
+      color: var(--mist);
+    }
+
+    .moon-anchor {
+      position: absolute;
+      top: 96px;
+      right: 12%;
+      width: 54px;
+      height: 54px;
+    }
+
+    .moon-anchor > div {
+      position: absolute;
+      top: var(--dy);
+      right: var(--dx);
+      width: var(--w);
+    }
+
+    .canvas {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: max(100%, calc(var(--scene-h, 420px) * 1132 / 420));
+      aspect-ratio: 1132 / 420;
+      translate: -50% 0;
+    }
+
+    .canvas > div {
+      position: absolute;
+    }
+
+    @media (max-width: 700px) {
+      .variant .desk-only {
+        display: none;
+      }
+
+      .variant .phone-only {
+        display: block;
+      }
+
+      .placed {
+        --fill: var(--pfill);
+        top: var(--py);
+        left: var(--px);
+        width: var(--pw);
+      }
+
+      .moon-anchor {
+        top: auto;
+        bottom: calc(var(--ground) + 12px);
+        width: 40px;
+        height: 40px;
+      }
+
+      .moon-anchor > div {
+        --fill: var(--pfill);
+        top: var(--pdy);
+        right: var(--pdx);
+        width: var(--pw);
+      }
+    }
+
+    .look-dusk .sheet-clouds.level-3 {
+      --cloud-2: #463c82;
+    }
+
+    .look-dusk .sheet-clouds.level-3::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 45%, color-mix(in srgb, var(--sky-low) 55%, transparent));
+    }
+
+    .deck {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .bank {
+      position: absolute;
+      inset: auto 0 0;
+    }
+
+    .bank.front {
+      z-index: 1;
+    }
+
+    .bank svg {
+      position: absolute;
+      bottom: calc(100% - 1px);
+      left: 0;
+      width: 100%;
+      height: auto;
+    }
+
+
+
+    /* FALLING */
+
+    .frame .sky-content {
+      z-index: 2;
+    }
+
+    .frame .ground {
+      z-index: 1;
+    }
+
+    .falling {
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      mask-image:
+        radial-gradient(ellipse var(--text-w, 260px) var(--text-h, 80px) at var(--text-x, 50%) var(--text-y, 45%), transparent 45%, black 100%),
+        linear-gradient(black calc(100% - var(--ground) - 10px), transparent calc(100% - var(--ground) + 45px));
+      mask-composite: intersect;
+    }
+
+    .falling > span {
+      position: absolute;
+      top: -12px;
+      animation: fall linear infinite;
+    }
+
+    .falling svg {
+      display: block;
+    }
+
+    .falling .sway {
+      display: block;
+    }
+
+    .falling .flake {
+      animation: sway 3s ease-in-out infinite alternate, spin 11s linear infinite;
+    }
+
+    @keyframes fall {
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(var(--drop, 440px));
+      }
+    }
+
+    @keyframes sway {
+      from {
+        translate: -6px 0;
+      }
+
+      to {
+        translate: 6px 0;
+      }
+    }
+
+    @keyframes spin {
+      to {
+        rotate: 60deg;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .falling > span,
+      .falling .flake {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./sky-looks.jsx"></script>
+</body>
+</html>

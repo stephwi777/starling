@@ -17,6 +17,9 @@ const event = icon => () => <EventIcon icon={icon} />
 
 const PLANETS = ['Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune']
 
+const BRIGHT = PLANETS.slice(0, 5)
+const PAIRS = BRIGHT.flatMap((a, i) => BRIGHT.slice(i + 1).map(b => [a, b]))
+
 const ALL_SKY = [...SKY_STARS, ...SKY_DEEP, ...SKY_SHAPES]
 const sky = id => () => <SkyIcon object={ALL_SKY.find(object => object.id === id)} />
 
@@ -43,6 +46,7 @@ const GROUPS = [
       ['Lunar eclipse', event('lunar-eclipse'), ''],
       ['Transit', event('transit'), 'Mercury or Venus crossing the Sun'],
       ...PLANETS.map(name => [name, event(`planet:${name}`), 'At its best, pairs, Moon near a planet, turning points']),
+      ...PAIRS.map(([a, b]) => [`${a} & ${b}`, event(`pair:${a}+${b}`), 'Two planets close together']),
       ['Planet parade', event('parade'), ''],
       ['Meteor shower', event('shower'), 'Every shower peak'],
       ['Pleiades', event('sky:M45'), 'Moon or a planet near the Pleiades'],
