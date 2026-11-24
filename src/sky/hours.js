@@ -184,14 +184,19 @@ function extraSentence({ night, moon, showers, timeZone }) {
   return null
 }
 
-export function fallSentence(night, falls, timeZone) {
+export function wetHours(night, falls) {
   const hours = wholeHours(night)
   const wet = hours.filter(({ hour }) => falls?.[hour])
+  const kinds = new Set(wet.map(({ hour }) => falls[hour]))
+
+  return { hours, wet, word: wet.length ? FALLS[kinds.size > 1 ? 'both' : [...kinds][0]] : null }
+}
+
+export function fallSentence(night, falls, timeZone) {
+  const { hours, wet, word } = wetHours(night, falls)
 
   if (!wet.length) return null
 
-  const kinds = new Set(wet.map(({ hour }) => falls[hour]))
-  const word = FALLS[kinds.size > 1 ? 'both' : [...kinds][0]]
   const first = wet[0]
   const last = wet.at(-1)
   const end = new Date(last.time.getTime() + HOUR)

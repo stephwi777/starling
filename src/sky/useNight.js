@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { buildNight, observerFor } from './night.js'
 import { trackObject } from './tracks.js'
 import { activeShowers } from './meteors.js'
+import { bandLine } from './bandLine.js'
 import { bestWindow, shortVerdict, verdict } from './best.js'
 import { nightWeather } from './weather.js'
 import { MOON, PLANETS } from './catalog/planets.js'
@@ -70,6 +71,7 @@ export function useNight(place, index, forecast, now) {
       best,
       verdict: verdict({ night: sky.night, clouds, best, planets: sky.planets, timeZone: place.timeZone }),
       summary: shortVerdict({ night: sky.night, clouds, best, timeZone: place.timeZone }),
+      band: bandLine({ night: sky.night, clouds, falls: weather?.falls ?? null, best, timeZone: place.timeZone }),
     }
   }, [sky, forecast, place.timeZone])
 }
