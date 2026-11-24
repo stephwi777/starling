@@ -21,6 +21,22 @@
   min-height: clamp(330px, 46vw, 420px);
 }
 
+.sky-layer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-middle) 55%, var(--sky-low));
+}
+
+.sky-layer.leaving {
+  animation: sky-leave 2s ease forwards;
+}
+
+@keyframes sky-leave {
+  to {
+    opacity: 0;
+  }
+}
+
 .sky-content {
   position: relative;
 }

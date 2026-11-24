@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { PRESETS, nightLook, skyLook } from './skyLook.js'
+import { PRESETS, lookKey, nightLook, skyLook } from './skyLook.js'
 
 
 
@@ -109,4 +109,13 @@ test('nights that never get fully dark stay in evening twilight', () => {
 
 test('the Moon is flipped in the south', () => {
   expect(skyLook({ ...night, isHome: false, moonAlt: 20, moonLit: 0.5, south: true }).moon.south).toBe(true)
+})
+
+test('a new look is a new name, cloud level, rain or snow, or the Moon coming or going', () => {
+  const base = skyLook({ ...night, isHome: false, moonAlt: 20, moonLit: 0.4 })
+  expect(lookKey(skyLook({ ...night, isHome: false, moonAlt: 25, moonLit: 0.41, moonAngle: 80 }))).toBe(lookKey(base))
+  expect(lookKey(skyLook({ ...night, isHome: false, moonAlt: -5, moonLit: 0.4 }))).not.toBe(lookKey(base))
+  expect(lookKey(skyLook({ ...night, isHome: false, moonAlt: 20, moonLit: 0.4, cloudCover: 30 }))).not.toBe(lookKey(base))
+  expect(lookKey(skyLook({ ...night, isHome: false, moonAlt: 20, moonLit: 0.4, fall: 'rain' }))).not.toBe(lookKey(skyLook({ ...night, isHome: false, moonAlt: 20, moonLit: 0.4, fall: 'snow' })))
+  expect(lookKey(skyLook({ ...night, isHome: false, sunAlt: -8, morning: true }))).not.toBe(lookKey(base))
 })

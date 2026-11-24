@@ -72,7 +72,7 @@
 
 /* TWILIGHT */
 
-.sky-scene.dusk .clouds {
+.sky-layer.dusk .clouds {
   --shade-0: var(--twilight-cloud-1);
   --shade-1: var(--twilight-cloud-2);
   --shade-2: var(--twilight-cloud-3);
@@ -81,11 +81,11 @@
   --shade-6: var(--twilight-cloud-low);
 }
 
-.sky-scene.dusk .clouds.level-3 {
+.sky-layer.dusk .clouds.level-3 {
   --shade-1: var(--twilight-cloudy-back);
 }
 
-.sky-scene.dusk .clouds.level-3::after {
+.sky-layer.dusk .clouds.level-3::after {
   content: '';
   position: absolute;
   inset: 0;

@@ -86,6 +86,14 @@ export function skyLook({ sunAlt, moonAlt, moonLit, moonAngle, cloudCover, isHom
 
 
 
+// LOOK KEY
+
+export function lookKey({ name, clouds, fall, moon }) {
+  return [name, clouds, fall ?? 'dry', moon ? 'moon' : 'no-moon'].join(' ')
+}
+
+
+
 // HOME NIGHT
 
 export function phaseAngle(lit) {
