@@ -44,7 +44,17 @@ function dateOnly(key, extra = 0) {
 
 // EVENT
 
-function eventLines(event, { place, url, now }) {
+function alarmLines(event, timed) {
+  return [
+    'BEGIN:VALARM',
+    `TRIGGER:${timed ? '-PT1H' : '-PT6H'}`,
+    'ACTION:DISPLAY',
+    `DESCRIPTION:${plain(event.name)}`,
+    'END:VALARM',
+  ]
+}
+
+function eventLines(event, { place, url, now, remind }) {
   const span = event.span ?? event.window
   const end = span && (span.to > span.from ? span.to : new Date(span.from.getTime() + HALF_HOUR))
 
@@ -67,6 +77,7 @@ function eventLines(event, { place, url, now }) {
     `LOCATION:${plain(place.name)}`,
     url && `URL:${url}`,
     'TRANSP:TRANSPARENT',
+    ...(remind ? alarmLines(event, Boolean(span)) : []),
     'END:VEVENT',
   ].filter(Boolean)
 }
@@ -75,7 +86,7 @@ function eventLines(event, { place, url, now }) {
 
 // CALENDAR FILE
 
-export function calendarFile(events, { place, linkFor = () => null, now = new Date() }) {
+export function calendarFile(events, { place, linkFor = () => null, now = new Date(), remind = () => true }) {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
@@ -83,7 +94,7 @@ export function calendarFile(events, { place, linkFor = () => null, now = new Da
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     `X-WR-CALNAME:${plain(`Starling sky events, ${place.name}`)}`,
-    ...events.flatMap(event => eventLines(event, { place, url: linkFor(event), now })),
+    ...events.flatMap(event => eventLines(event, { place, url: linkFor(event), now, remind: remind(event) })),
     'END:VCALENDAR',
   ]
 

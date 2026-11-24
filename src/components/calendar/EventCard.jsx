@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { GROUPS } from '../../sky/calendar/kinds.js'
 import { calendarFile, fileName } from '../../sky/calendar/ics.js'
-import { favoredSubjects } from '../../sky/calendar/favorites.js'
+import { favoriteNote } from '../../sky/calendar/favorites.js'
 import { popoverPlace } from '../panel/popoverPlace.js'
 import { shortDate } from './dates.js'
 import { download, eventLink } from './download.js'
@@ -20,8 +20,7 @@ const HEIGHT = 640
 const PHONE = '(max-width: 700px)'
 const WEEK = 7
 const DAY = 24 * 60 * 60 * 1000
-const COPIED = 2000
-const LIST = new Intl.ListFormat('en', { type: 'conjunction' })
+const NOTE = 2000
 const STAR = 'M8 0.8 L10.1 5.4 L15.1 5.9 L11.3 9.2 L12.4 14.2 L8 11.6 L3.6 14.2 L4.7 9.2 L0.9 5.9 L5.9 5.4 Z'
 
 
@@ -50,12 +49,13 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
   const closing = useRef(false)
   const [spot, setSpot] = useState(null)
   const [leaving, setLeaving] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const [note, setNote] = useState('')
+  const [noting, setNoting] = useState(0)
+  const closeTimer = useRef(null)
   const group = GROUPS.find(item => item.id === event.group)
   const ahead = daysAhead(event, today)
   const soon = ahead >= 0 && ahead < WEEK && event.here
   const [main, ...extras] = event.subjects ?? []
-  const favored = favoredSubjects(event, favorites)
   const starred = Boolean(main) && favorites.includes(main.key)
 
   const options = [
@@ -64,7 +64,7 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
     soon && { label: ahead === 0 ? 'See tonight’s conditions' : 'See the forecast', to: '/tonight' },
     ...extras.map(subject => ({
       label: favorites.includes(subject.key) ? `Remove ${subject.label} from favorites` : `Favorite ${subject.label}`,
-      onSelect: () => onFavorite?.(subject.key),
+      onSelect: () => toggle(subject),
     })),
   ].filter(Boolean)
 
@@ -72,22 +72,41 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
     download(fileName(event.name), calendarFile([event], { place, linkFor: eventLink }))
   }
 
+  function say(text) {
+    setNote(text)
+    setNoting(count => count + 1)
+  }
+
+  function toggle(subject) {
+    say(favoriteNote(subject, !favorites.includes(subject.key)))
+    onFavorite?.(subject.key)
+  }
+
   async function copyLink() {
     try {
       await navigator.clipboard.writeText(eventLink(event))
-      setCopied(true)
-      setTimeout(() => setCopied(false), COPIED)
+      say('Link copied')
     } catch {
-      setCopied(false)
+      setNoting(0)
     }
   }
+
+  useEffect(() => {
+    if (!noting) return undefined
+
+    const timer = setTimeout(() => setNoting(0), NOTE)
+
+    return () => clearTimeout(timer)
+  }, [noting])
+
+  useEffect(() => () => clearTimeout(closeTimer.current), [])
 
   function close() {
     if (closing.current) return
 
     closing.current = true
     setLeaving(true)
-    setTimeout(onClose, motionOff() ? 0 : LEAVE)
+    closeTimer.current = setTimeout(onClose, motionOff() ? 0 : LEAVE)
   }
 
   useLayoutEffect(() => {
@@ -163,7 +182,7 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
 
           <div className="event-card-tools">
             {main && (
-              <button type="button" className="event-card-star" aria-pressed={starred} aria-label={`Favorite ${main.label}`} title={`Favorite ${main.label}`} onClick={() => onFavorite?.(main.key)}>
+              <button type="button" className="event-card-star" aria-pressed={starred} aria-label={`Favorite ${main.label}`} title={`Favorite ${main.label}`} onClick={() => toggle(main)}>
                 <svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><path d={STAR} /></svg>
               </button>
             )}
@@ -183,15 +202,12 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
           </div>
         </div>
 
-        {favored.length > 0 && (
-          <p className="event-card-favorite">In your favorites: {LIST.format(favored.map(subject => subject.label))}.</p>
-        )}
 
         <div className="event-card-when">
           <p>{shortDate(event, today)}{event.time && <> · <span className="event-card-time">{event.time}</span></>}</p>
         </div>
 
-        <p className="event-card-copied" role="status">{copied ? 'Link copied' : ''}</p>
+        <div className={noting ? 'event-card-status shown' : 'event-card-status'}><p role="status">{note}</p></div>
 
         {!event.here && (
           <p className="event-card-away"><strong>Not visible from {place.name}.</strong> {event.where}</p>

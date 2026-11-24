@@ -1,6 +1,9 @@
-import { useRef, useState } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { isFavorite } from '../../sky/calendar/favorites.js'
+import Chevron from '../ui/Chevron.jsx'
 import EventIcon from './EventIcon.jsx'
+import MonthPicker from './MonthPicker.jsx'
+import useExit from '../ui/useExit.js'
 
 
 
@@ -18,14 +21,6 @@ const pad = number => String(number).padStart(2, '0')
 
 function longDay(year, month, day) {
   return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', weekday: 'long', month: 'long', day: 'numeric' }).format(Date.UTC(year, month - 1, day))
-}
-
-function Chevron({ path }) {
-  return (
-    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-      <path d={path} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
 }
 
 
@@ -93,8 +88,12 @@ function Day({ year, month, day, events, favorites, today, selected, narrow, sou
 
 // MONTH GRID
 
-function MonthGrid({ year, month, events, favorites = [], today, selected, narrow, south, tools, slide, onMonth, onToday, onDay, onPick }) {
+function MonthGrid({ year, month, events, favorites = [], today, selected, narrow, south, tools, slide, onMonth, onToday, onDay, onPick, onJump }) {
   const touch = useRef(null)
+  const titleButton = useRef(null)
+  const [picking, setPicking] = useState(false)
+  const pickerShown = useExit(picking)
+  const closePicker = useCallback(() => setPicking(false), [])
   const [focused, setFocused] = useState(null)
 
   const title = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(Date.UTC(year, month - 1, 15))
@@ -168,14 +167,37 @@ function MonthGrid({ year, month, events, favorites = [], today, selected, narro
   return (
     <section className="month" aria-labelledby="month-title">
       <div className="month-head">
-        <h2 id="month-title" aria-live="polite">{title}</h2>
+        <h2 id="month-title" aria-live="polite">
+          {onJump ? (
+            <button ref={titleButton} type="button" className="month-title-button" aria-haspopup="dialog" aria-expanded={picking} onClick={() => setPicking(now => !now)}>
+              {title}
+              <Chevron />
+            </button>
+          ) : title}
+        </h2>
+
+        {pickerShown.shown && (
+          <MonthPicker
+            leaving={pickerShown.leaving}
+            year={year}
+            month={month}
+            current={{ year: Number(today.slice(0, 4)), month: Number(today.slice(5, 7)) }}
+            anchor={titleButton}
+            onClose={closePicker}
+            onPick={(pickedYear, pickedMonth) => {
+              setPicking(false)
+              onJump(pickedYear, pickedMonth)
+              titleButton.current.focus()
+            }}
+          />
+        )}
 
         {tools}
 
         <div className="month-nav">
           <button type="button" className="month-today soft-button" onClick={onToday}>Today</button>
-          <button type="button" className="soft-button" aria-label="Previous month" onClick={() => onMonth(-1)}><Chevron path="M10 3 L5 8 L10 13" /></button>
-          <button type="button" className="soft-button" aria-label="Next month" onClick={() => onMonth(1)}><Chevron path="M6 3 L11 8 L6 13" /></button>
+          <button type="button" className="soft-button" aria-label="Previous month" onClick={() => onMonth(-1)}><Chevron left /></button>
+          <button type="button" className="soft-button" aria-label="Next month" onClick={() => onMonth(1)}><Chevron /></button>
         </div>
       </div>
 

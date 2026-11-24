@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import '../src/styles/reset.css'
 import '../src/styles/theme.css'
@@ -205,7 +205,7 @@ function Sheet() {
   const [group, setGroup] = useState('all')
   const [onlyFlagged, setOnlyFlagged] = useState(false)
   const [counts, setCounts] = useState({})
-  const record = useRef((number, count) => setCounts(current => (current[number] === count ? current : { ...current, [number]: count }))).current
+  const record = useCallback((number, count) => setCounts(current => (current[number] === count ? current : { ...current, [number]: count })), [])
   const flagged = Object.values(counts).filter(Boolean).length
 
   return (

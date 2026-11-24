@@ -1,16 +1,18 @@
 import { Fragment, useState } from 'react'
 import { GROUPS, KINDS } from '../../sky/calendar/kinds.js'
+import Chevron from '../ui/Chevron.jsx'
 
 
 
 // CHECKBOX
 
-function Box({ checked, mixed = false, label, describedBy, onChange }) {
+function Box({ checked, mixed = false, label, describedBy, disabled = false, onChange }) {
   return (
     <>
       <input
         type="checkbox"
         checked={checked}
+        disabled={disabled}
         aria-label={label}
         aria-describedby={describedBy}
         ref={box => {
@@ -53,7 +55,7 @@ function Group({ group, kinds, note, kindNotes, toggleKind, setGroup }) {
         <button type="button" className="kind-toggle" aria-expanded={open} aria-controls={listId} onClick={() => setOpen(now => !now)}>
           <span className="kind-name">{group.name}</span>
           <small><span aria-hidden="true">{shown}/{items.length}</span><span className="visually-hidden">, {shown} of {items.length} shown</span></small>
-          <span className="kind-chevron" aria-hidden="true">›</span>
+          <Chevron className="kind-chevron" />
         </button>
       </div>
 
@@ -81,19 +83,40 @@ function Group({ group, kinds, note, kindNotes, toggleKind, setGroup }) {
 
 // KIND LIST
 
-function KindList({ id, kinds, groupNotes = {}, kindNotes = {}, toggleKind, setGroup, suggest }) {
+function FavoritesOnly({ on, count, onChange }) {
+  const none = count === 0
+
+  return (
+    <div className="fav-only">
+      <label className={none ? 'kind-option fav-option disabled' : 'kind-option fav-option'}>
+        <Box checked={on && !none} disabled={none} describedBy={none ? 'fav-only-note' : undefined} onChange={event => onChange(event.target.checked)} />
+        Only my favorites
+        {!none && <small>{count === 1 ? '1 favorite' : `${count} favorites`}</small>}
+      </label>
+
+      {none && <p className="kind-note" id="fav-only-note">Star events to build your favorites.</p>}
+    </div>
+  )
+}
+
+function KindList({ id, kinds, groupNotes = {}, kindNotes = {}, favoritesOnly = false, favoriteCount = 0, toggleKind, setGroup, setFavoritesOnly, suggest }) {
   const total = KINDS.filter(kind => kinds.includes(kind.id)).length
+  const muted = favoritesOnly && favoriteCount > 0
 
   return (
     <div className="kind-list" id={id}>
-      <div className="kind-head">
-        <h2>Show on calendar</h2>
-        <button type="button" className="kind-reset soft-button" onClick={suggest}>Suggested</button>
+      {setFavoritesOnly && <FavoritesOnly on={favoritesOnly} count={favoriteCount} onChange={setFavoritesOnly} />}
+
+      <div className={muted ? 'kind-types muted' : 'kind-types'}>
+        <div className="kind-head">
+          <h2>Show on calendar</h2>
+          <button type="button" className="kind-reset soft-button" onClick={suggest}>Suggested</button>
+        </div>
+
+        <p className="kind-count">{muted ? 'Paused while Only my favorites is on' : `${total} of ${KINDS.length} kinds of events`}</p>
+
+        {GROUPS.map(group => <Group key={group.id} group={group} kinds={kinds} note={groupNotes[group.id]} kindNotes={kindNotes} toggleKind={toggleKind} setGroup={setGroup} />)}
       </div>
-
-      <p className="kind-count">{total} of {KINDS.length} kinds of events</p>
-
-      {GROUPS.map(group => <Group key={group.id} group={group} kinds={kinds} note={groupNotes[group.id]} kindNotes={kindNotes} toggleKind={toggleKind} setGroup={setGroup} />)}
     </div>
   )
 }

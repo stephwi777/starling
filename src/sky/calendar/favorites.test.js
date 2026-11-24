@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import { favoredSubjects, isFavorite } from './favorites.js'
+import { favoredSubjects, favoriteNote, isFavorite } from './favorites.js'
 
 
 
@@ -21,4 +21,9 @@ test('an event is a favorite when any of its subjects is', () => {
 test('favored subjects come back in the event’s own order', () => {
   expect(favoredSubjects(superFull, ['supermoon', 'full-moon'])).toEqual([FULL, SUPER])
   expect(favoredSubjects(superFull, ['supermoon'])).toEqual([SUPER])
+})
+
+test('starring says briefly what was added or removed', () => {
+  expect(favoriteNote(FULL, true)).toBe('Added every Full Moon')
+  expect(favoriteNote(FULL, false)).toBe('Removed every Full Moon')
 })

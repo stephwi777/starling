@@ -1,6 +1,5 @@
 import * as Astronomy from 'astronomy-engine'
 import { localNoon, localParts, observerFor } from '../night.js'
-import { clock } from '../words.js'
 import { cometMagnitude, cometPlace } from './cometOrbit.js'
 import { HOUR, MINUTE, dayKey, horizon, look, monthKey, moonLit, nightKey, spelled, timeWord, windowWords } from './skyTools.js'
 

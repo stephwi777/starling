@@ -130,6 +130,23 @@
 
 
 
+/* CHEVRON */
+
+.chevron {
+  display: inline-block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  background: currentColor;
+  mask: var(--chevron) center / contain no-repeat;
+}
+
+.chevron.left {
+  rotate: 180deg;
+}
+
+
+
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {

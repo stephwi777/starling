@@ -1,11 +1,12 @@
 import { useEffect, useRef } from 'react'
 import SearchGlyph from '../ui/SearchGlyph.jsx'
+import { submits } from './searchKeys.js'
 
 
 
 // SEARCH BOX
 
-function SearchBox({ query, setQuery }) {
+function SearchBox({ query, setQuery, onSubmit }) {
   const input = useRef(null)
 
   useEffect(() => {
@@ -27,6 +28,11 @@ function SearchBox({ query, setQuery }) {
     if (event.key === 'Escape' && query) {
       event.preventDefault()
       setQuery('')
+    }
+
+    if (submits(event.nativeEvent, query)) {
+      event.preventDefault()
+      onSubmit?.()
     }
   }
 

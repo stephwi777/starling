@@ -60,17 +60,24 @@ export function monthEvents(place, year, month, comets = cometState()) {
 
 // FILTER
 
-export function shownEvents(events, { kinds, world, query, favorites = [], keep = null }) {
+export function shownEvents(events, { kinds, world, query, favorites = [], keep = null, favoritesOnly = false }) {
   const words = query.trim().toLowerCase()
   const loved = event => isFavorite(event, favorites)
+  const onlyLoved = favoritesOnly && favorites.length > 0
 
   return events
     .filter(event => (
-      (event.kinds.some(kind => kinds.includes(kind)) || loved(event) || event.id === keep)
+      ((onlyLoved ? loved(event) : event.kinds.some(kind => kinds.includes(kind)) || loved(event)) || event.id === keep)
       && (world || event.here)
       && (!words || `${event.name} ${event.tags.join(' ')} ${event.note}`.toLowerCase().includes(words))
     ))
     .sort((a, b) => (a.day === b.day ? loved(b) - loved(a) : a.day < b.day ? -1 : 1))
+}
+
+
+
+export function leavesOnClose(event, events, filters) {
+  return !shownEvents(events, { ...filters, keep: null }).some(item => item.id === event.id)
 }
 
 

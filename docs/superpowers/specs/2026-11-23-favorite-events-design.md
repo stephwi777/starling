@@ -43,7 +43,7 @@ Success: someone stars the Geminids once and, from then on, every Geminids peak 
 
 - **What a favorite covers: the same subject, every time.** Favoriting the Geminids marks every Geminids peak, but not the Ursids. Jupiter at its best marks Jupiter each year, not Saturn. Moon near Antares marks every Moon–Antares pass, not Spica. Events that are already one subject (Full Moon, solar eclipse) mark every one of them.
 - **The mark is C · yellow edge.** Big chips get an inset 3px `--beak` stripe on the left (padding nudged so text doesn't touch it). Phone labels get the same stripe. Rows in the month-by-month list get a 4px stripe. No star.
-- **The card keeps a star button.** It sits in the card's top tools, left of the ⋯ menu, 36px round like the others. Off: outlined star in `--mist`. On: filled star in `--beak`. It is a toggle (`aria-pressed`) labelled "Favorite every Geminids peak". Its tooltip says what it covers ("Favorite every Geminids peak"). Only when something is favorited does a line under the title say "In your favorites: every Geminids peak." (The "Tap the star…" prompt was removed 2026-11-23: too busy.)
+- **The card keeps a star button.** It sits in the card's top tools, left of the ⋯ menu, 36px round like the others. Off: outlined star in `--mist`. On: filled star in `--beak`. It is a toggle (`aria-pressed`) labelled "Favorite every Geminids peak". Its tooltip says what it covers ("Favorite every Geminids peak"). Tapping it shows a two-second confirmation, "Added every Geminids peak" or "Removed every Geminids peak", in the card's status line. (A permanent "In your favorites" line and a "Tap the star…" prompt were both removed 2026-11-23 as too cluttered.)
 - **Each event says its own subject** (not a shared rule that guesses from names).
 
 
@@ -99,7 +99,7 @@ A small hook (like `useCalendarSettings`) exposes `favorites`, `isFavorite(event
 
 ### Calls made after the builder check (Claude's calls; the user can overrule)
 
-- **Card when only an extra subject is favorited.** The star always means the main subject. The line under the title names every favorited subject of this event, for example "In your favorites: every supermoon." If none is favorited it says "Tap the star to favorite every Full Moon." Extra subjects are added and removed only from the ⋯ menu.
+- **Card when only an extra subject is favorited.** The star always means the main subject. Extra subjects are added and removed only from the ⋯ menu, whose item reads "Favorite every supermoon" or "Remove every supermoon from favorites", and the same brief confirmation appears.
 - **Favorites first within a day.** Within each day, favorited events sort ahead of the rest, on every screen size, so the phone grid's two labels show a favorite before falling back to "+N". Keyboard order follows the same order.
 - **Un-favoriting while the card is open.** An event that is only on screen because it is a favorite stays shown until its card closes, so focus can return to it. It disappears after that.
 - **No note in Choose events** explaining that favorites always show; the yellow edge is the explanation. Revisit if it confuses people.

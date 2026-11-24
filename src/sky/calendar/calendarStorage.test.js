@@ -30,7 +30,7 @@ test('choices are saved and loaded back', () => {
 
   saveCalendar({ kinds: ['full-moon', 'station'], world: true }, storage)
 
-  expect(loadCalendar(storage)).toEqual({ kinds: ['full-moon', 'station'], world: true })
+  expect(loadCalendar(storage)).toEqual({ kinds: ['full-moon', 'station'], world: true, favoritesOnly: false })
 })
 
 test('kinds added after a save start in their suggested state', () => {
@@ -43,4 +43,17 @@ test('unknown kinds and broken saves are ignored', () => {
   expect(loadCalendar(memory(JSON.stringify({ version: 1, known: [], kinds: ['nope'], world: 'yes' }))).world).toBe(false)
   expect(loadCalendar(memory('{broken'))).toEqual(DEFAULT_CALENDAR)
   expect(loadCalendar({ getItem: () => { throw new Error('blocked') } })).toEqual(DEFAULT_CALENDAR)
+})
+
+test('only my favorites is saved and loaded back', () => {
+  const storage = memory()
+
+  saveCalendar({ kinds: ['full-moon'], world: false, favoritesOnly: true }, storage)
+
+  expect(loadCalendar(storage).favoritesOnly).toBe(true)
+})
+
+test('an old or odd save leaves only my favorites off', () => {
+  expect(loadCalendar(memory(JSON.stringify({ version: 1, known: [], kinds: [], world: false }))).favoritesOnly).toBe(false)
+  expect(loadCalendar(memory(JSON.stringify({ version: 1, known: [], kinds: [], world: false, favoritesOnly: 'yes' }))).favoritesOnly).toBe(false)
 })

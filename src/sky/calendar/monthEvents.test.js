@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 import { DEFAULT_KINDS, KINDS } from './kinds.js'
-import { monthEvents, monthsFrom, shownEvents, upcoming } from './monthEvents.js'
+import { leavesOnClose, monthEvents, monthsFrom, shownEvents, upcoming } from './monthEvents.js'
 import { cometSeason } from './cometEvents.js'
 import { SAMPLE_COMETS } from './cometSample.js'
 import { setCometState } from './cometStore.js'
@@ -83,6 +83,30 @@ test('favorites come first within their day', () => {
 
   expect(loved(favored.filter(event => event.day === day)[0])).toBe(true)
   expect(favored.filter(event => !loved(event)).map(event => event.id)).toEqual(plain.filter(event => !loved(event)).map(event => event.id))
+})
+
+test('only my favorites shows just the favorites', () => {
+  const jupiter = february.find(event => event.short === 'Jupiter at its best')
+  const key = jupiter.subjects[0].key
+  const shown = shownEvents(february, { kinds: ALL, world: true, query: '', favorites: [key], favoritesOnly: true })
+
+  expect(shown.length).toBeGreaterThan(0)
+  expect(shown.every(event => event.subjects.some(subject => subject.key === key))).toBe(true)
+})
+
+test('only my favorites does nothing while there are no favorites', () => {
+  const filters = { kinds: DEFAULT_KINDS, world: false, query: '' }
+
+  expect(shownEvents(february, { ...filters, favorites: [], favoritesOnly: true })).toEqual(shownEvents(february, filters))
+})
+
+test('an event un-starred while its card was open leaves once the card closes', () => {
+  const jupiter = february.find(event => event.short === 'Jupiter at its best')
+  const others = february.find(event => event !== jupiter && event.kinds.includes('full-moon'))
+  const filters = { kinds: ALL, world: true, query: '', favorites: [others.subjects[0].key], favoritesOnly: true, keep: jupiter.id }
+
+  expect(leavesOnClose(jupiter, february, filters)).toBe(true)
+  expect(leavesOnClose(others, february, filters)).toBe(false)
 })
 
 test('months roll over into the next year', () => {

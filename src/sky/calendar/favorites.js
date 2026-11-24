@@ -7,3 +7,7 @@ export function favoredSubjects(event, favorites) {
 export function isFavorite(event, favorites) {
   return favoredSubjects(event, favorites).length > 0
 }
+
+export function favoriteNote(subject, adding) {
+  return `${adding ? 'Added' : 'Removed'} ${subject.label}`
+}

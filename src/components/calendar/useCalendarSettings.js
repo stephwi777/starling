@@ -33,6 +33,7 @@ function useCalendarSettings() {
     setGroup,
     suggest: () => setCalendar(current => ({ ...current, kinds: DEFAULT_KINDS })),
     setWorld: world => setCalendar(current => ({ ...current, world })),
+    setFavoritesOnly: favoritesOnly => setCalendar(current => ({ ...current, favoritesOnly })),
   }
 }
 

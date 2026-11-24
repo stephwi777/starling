@@ -66,3 +66,32 @@ test('long lines fold at 75 bytes', () => {
 test('file names are tidy', () => {
   expect(fileName('Geminids peak, 2026')).toBe('geminids-peak-2026.ics')
 })
+
+
+
+// REMINDERS
+
+test('a timed event reminds you an hour before it starts', () => {
+  const text = file([timed])
+
+  expect(text).toContain('BEGIN:VALARM')
+  expect(text).toContain('TRIGGER:-PT1H')
+  expect(text).toContain('ACTION:DISPLAY')
+  expect(text).toContain('END:VALARM')
+})
+
+test('an all-day event reminds you at 6pm the evening before', () => {
+  expect(file([allDay])).toContain('TRIGGER:-PT6H')
+})
+
+test('reminders can be left out', () => {
+  expect(file([timed, allDay], { remind: () => false })).not.toContain('VALARM')
+})
+
+test('only the chosen events get reminders', () => {
+  const text = file([timed, allDay], { remind: event => event.id === timed.id })
+
+  expect(text.match(/BEGIN:VALARM/g)).toHaveLength(1)
+  expect(text).toContain('TRIGGER:-PT1H')
+  expect(text).not.toContain('TRIGGER:-PT6H')
+})

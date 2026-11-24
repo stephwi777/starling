@@ -92,7 +92,7 @@ function YearList({ place, start, filters, south, onPick }) {
   const everything = months.flatMap(({ events }) => shownEvents(events, filters))
 
   function addAll() {
-    download('starling-sky-events.ics', calendarFile(everything, { place, linkFor: eventLink }))
+    download('starling-sky-events.ics', calendarFile(everything, { place, linkFor: eventLink, remind: event => isFavorite(event, filters.favorites ?? []) }))
   }
 
   return (

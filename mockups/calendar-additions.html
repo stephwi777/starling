@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling calendar additions</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* PAGE */
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 100px;
+    }
+
+    .sheet > p,
+    .sheet section > p {
+      max-width: 72ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .sheet section {
+      margin-top: 52px;
+    }
+
+    .sheet section > h2 {
+      font-size: 1.5rem;
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    figcaption,
+    .notes small {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--mist);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+
+
+    /* PICKER */
+
+    .picker-frame {
+      position: relative;
+      max-width: 1120px;
+      margin-top: 18px;
+    }
+
+    .picker-frame #month-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 2px 10px;
+      border-radius: 12px;
+      background: var(--raised);
+      cursor: pointer;
+    }
+
+    .picker-frame #month-title::after {
+      content: '';
+      width: 9px;
+      height: 9px;
+      margin-top: -4px;
+      border-right: 2.4px solid var(--mist);
+      border-bottom: 2.4px solid var(--mist);
+      transform: rotate(45deg);
+    }
+
+    .picker {
+      position: absolute;
+      top: 63px;
+      left: 220px;
+      z-index: 5;
+      width: 300px;
+      padding: 14px;
+      border-radius: 20px;
+      background: var(--raised);
+      box-shadow: 0 16px 36px color-mix(in srgb, var(--zenith) 75%, transparent);
+    }
+
+    .picker-year {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .picker-year strong {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+    }
+
+    .picker-year .soft-button {
+      width: 40px;
+      height: 40px;
+      background: var(--high);
+      font-size: 1.3rem;
+      font-weight: 900;
+    }
+
+    .picker-months {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .picker-month {
+      height: 40px;
+      border: 0;
+      border-radius: 12px;
+      background: var(--high);
+      color: var(--frost);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .picker-month.this-month {
+      box-shadow: inset 0 0 0 2px var(--teal);
+    }
+
+    .picker-month.current {
+      background: var(--frost);
+      color: var(--ink);
+    }
+
+
+
+    /* NOTES */
+
+    .notes {
+      display: grid;
+      gap: 18px;
+      max-width: 1120px;
+      margin-top: 18px;
+    }
+
+    .notes .calendar-note {
+      margin-top: 0;
+    }
+
+    .next-match {
+      margin-left: 6px;
+      padding: 4px 10px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--raised);
+      color: var(--frost);
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+
+
+    /* FAVORITES */
+
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 320px);
+      gap: 24px;
+      margin-top: 18px;
+    }
+
+    .panel {
+      padding: 20px 18px;
+      border-radius: var(--radius-tile);
+      background: var(--high);
+    }
+
+    .fav-only {
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--raised);
+    }
+
+    .fav-option {
+      --c: var(--beak);
+      position: relative;
+      font-weight: 900;
+    }
+
+    .fav-option small {
+      margin-left: auto;
+      color: var(--mist);
+      font-weight: 700;
+    }
+
+    .fav-option.disabled {
+      opacity: 0.5;
+    }
+
+    
+    .favs-on .kind-list {
+      opacity: 0.45;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-additions.jsx"></script>
+</body>
+</html>

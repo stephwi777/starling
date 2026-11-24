@@ -40,30 +40,21 @@ test('an unstarred event offers its main subject', () => {
   expect(markup).not.toContain('event-card-favorite')
 })
 
-test('a starred event says what it covers', () => {
+test('a starred event shows a filled star and no extra line', () => {
   const markup = draw(['full-moon'])
 
   expect(markup).toContain('aria-pressed="true"')
-  expect(markup).toContain('In your favorites: every Full Moon.')
+  expect(markup).not.toContain('In your favorites')
 })
 
-test('an extra subject alone leaves the star off but is named', () => {
+test('an extra subject alone leaves the star off', () => {
   const markup = draw(['supermoon'])
 
   expect(markup).toContain('aria-pressed="false"')
-  expect(markup).toContain('In your favorites: every supermoon.')
+  expect(markup).not.toContain('In your favorites')
 })
 
-test('both subjects are named together', () => {
-  expect(draw(['full-moon', 'supermoon'])).toContain('In your favorites: every Full Moon and every supermoon.')
-})
 
-test('three favorites read as a list', () => {
-  const blue = { ...EVENT, subjects: [...EVENT.subjects, { key: 'blue-moon', label: 'every Blue Moon' }] }
-  const markup = renderToStaticMarkup(<EventCard event={blue} anchor={null} place={KC} today="2026-12-01" south={false} onClose={() => {}} favorites={['full-moon', 'supermoon', 'blue-moon']} onFavorite={() => {}} />)
-
-  expect(markup).toContain('In your favorites: every Full Moon, every supermoon, and every Blue Moon.')
-})
 
 test('the date and time share one line, with the time stressed', () => {
   expect(draw([])).toContain('<p>Wed, Dec 23 · <span class="event-card-time">7:29pm</span></p>')
@@ -79,4 +70,8 @@ test('an event with no time shows the date alone', () => {
   const quiet = renderToStaticMarkup(<EventCard event={{ ...EVENT, time: '' }} anchor={null} place={KC} today="2026-12-01" south={false} onClose={() => {}} favorites={[]} onFavorite={() => {}} />)
 
   expect(quiet).toContain('<p>Wed, Dec 23</p>')
+})
+
+test('the status line starts closed but stays in place for screen readers', () => {
+  expect(draw([])).toContain('<div class="event-card-status"><p role="status"></p></div>')
 })

@@ -41,6 +41,27 @@
   font-weight: 700;
 }
 
+.next-match {
+  margin-left: 4px;
+  padding: 4px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--raised);
+  color: var(--frost);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.next-match:hover {
+  background: color-mix(in srgb, var(--raised) 70%, var(--frost));
+}
+
+.next-match:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}
+
 
 
 /* TITLE */
@@ -431,6 +452,32 @@
   font-weight: 800;
 }
 
+.fav-only {
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--raised);
+}
+
+.fav-option {
+  --c: var(--beak);
+  font-weight: 900;
+}
+
+.fav-option small {
+  margin-left: auto;
+  color: var(--mist);
+  font-weight: 700;
+}
+
+.fav-option.disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.kind-types.muted {
+  opacity: 0.7;
+}
+
 .kind-count {
   margin-top: 2px;
   color: var(--mist);
@@ -505,8 +552,6 @@
 
 .kind-chevron {
   color: var(--mist);
-  font-size: 1.4rem;
-  line-height: 1;
   transition: rotate 0.2s;
 }
 
@@ -626,6 +671,7 @@
 }
 
 .month-head {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -636,6 +682,97 @@
 .month-head > h2 {
   font-size: 1.6rem;
   white-space: nowrap;
+}
+
+.month-title-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 10px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--raised);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.month-title-button .chevron {
+  color: var(--mist);
+  rotate: 90deg;
+}
+
+.month-title-button:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
+}
+
+.picker {
+  position: absolute;
+  z-index: 6;
+  width: min(300px, calc(100vw - 32px));
+  padding: 14px;
+  border-radius: 20px;
+  background: var(--raised);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--zenith) 75%, transparent);
+}
+
+.picker-year {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.picker-year strong {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+}
+
+.picker-year .soft-button {
+  --soft-face: var(--high);
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.picker-year .soft-button[aria-disabled="true"] {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.picker-months {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.picker-month {
+  height: 40px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--high);
+  color: var(--frost);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.picker-month.this-month {
+  box-shadow: inset 0 0 0 3px var(--teal);
+}
+
+.picker-month[aria-pressed="true"] {
+  background: var(--frost);
+  color: var(--ink);
+}
+
+.picker-month:focus-visible,
+.picker-year .soft-button:focus-visible {
+  outline: 3px solid var(--beak);
+  outline-offset: 2px;
 }
 
 .month-nav {
@@ -999,11 +1136,13 @@
 }
 
 .year-list summary::after {
-  content: '›';
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
   margin-left: auto;
-  color: var(--mist);
-  font-size: 1.65rem;
-  line-height: 1;
+  background: var(--mist);
+  mask: var(--chevron) center / contain no-repeat;
   transition: rotate 0.2s;
 }
 
@@ -1193,13 +1332,6 @@
   fill: currentColor;
 }
 
-.event-card-favorite {
-  padding: 2px 20px 0;
-  color: var(--mist);
-  font-size: 0.85rem;
-  font-weight: 700;
-}
-
 .event-card-title .event-tags {
   display: flex;
   margin-top: 6px;
@@ -1217,16 +1349,24 @@
   font-weight: 900;
 }
 
-.event-card-copied {
-  min-height: 0;
+.event-card-status {
+  display: grid;
+  grid-template-rows: 0fr;
   padding: 0 20px;
   color: var(--teal);
   font-size: 0.85rem;
   font-weight: 800;
+  opacity: 0;
 }
 
-.event-card-copied:empty {
-  display: none;
+.event-card-status p {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.event-card-status.shown {
+  grid-template-rows: 1fr;
+  opacity: 1;
 }
 
 .event-card-away {
@@ -1271,6 +1411,12 @@
 .card-menu-button[aria-expanded="true"] {
   background: var(--raised);
   color: var(--frost);
+}
+
+.card-menu-list.leaving,
+.picker.leaving,
+.choose-panel.leaving {
+  pointer-events: none;
 }
 
 .card-menu-list {
@@ -1337,6 +1483,39 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .card-menu-list {
+    transform-origin: top right;
+    animation: pop-in 90ms ease-out both;
+  }
+
+  :root:not(.still) .picker,
+  :root:not(.still) .choose-panel {
+    transform-origin: top left;
+    animation: pop-in 90ms ease-out both;
+  }
+
+  :root:not(.still) .picker .year-next {
+    animation: year-next 140ms ease-out;
+  }
+
+  :root:not(.still) .picker .year-prev {
+    animation: year-prev 140ms ease-out;
+  }
+
+  :root:not(.still) .card-menu-list.leaving,
+  :root:not(.still) .picker.leaving,
+  :root:not(.still) .choose-panel.leaving {
+    animation: pop-out 80ms ease-in forwards;
+  }
+
+  :root:not(.still) .event-card-status {
+    transition: opacity 150ms ease-in, grid-template-rows 200ms ease-in-out 150ms;
+  }
+
+  :root:not(.still) .event-card-status.shown {
+    transition: grid-template-rows 200ms ease-in-out, opacity 150ms ease-out 100ms;
+  }
+
   :root:not(.still) .year-list::details-content {
     block-size: 0;
     overflow-y: clip;
@@ -1386,6 +1565,56 @@
 
   :root:not(.still) .month-days.slide-prev {
     animation: month-prev 0.3s cubic-bezier(0.2, 0.8, 0.3, 1);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 900px) {
+  :root:not(.still) .choose-panel {
+    animation-name: pop-fade;
+  }
+
+  :root:not(.still) .choose-panel.leaving {
+    animation-name: pop-fade-out;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0.7;
+    transform: translateY(-2px) scale(0.985);
+  }
+}
+
+@keyframes pop-fade {
+  from {
+    opacity: 0.7;
+  }
+}
+
+@keyframes year-next {
+  from {
+    opacity: 0.3;
+    translate: 10px 0;
+  }
+}
+
+@keyframes year-prev {
+  from {
+    opacity: 0.3;
+    translate: -10px 0;
+  }
+}
+
+@keyframes pop-out {
+  to {
+    opacity: 0;
+    transform: translateY(-2px) scale(0.985);
+  }
+}
+
+@keyframes pop-fade-out {
+  to {
+    opacity: 0;
   }
 }
 

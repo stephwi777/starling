@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router'
+import useExit from '../ui/useExit.js'
 
 
 
@@ -7,6 +8,7 @@ import { Link } from 'react-router'
 
 function CardMenu({ items }) {
   const [open, setOpen] = useState(false)
+  const { shown, leaving } = useExit(open)
   const button = useRef(null)
   const menu = useRef(null)
 
@@ -76,8 +78,8 @@ function CardMenu({ items }) {
         </svg>
       </button>
 
-      {open && (
-        <div ref={menu} className="card-menu-list" role="menu" aria-label="More options" onKeyDown={keyDown}>
+      {shown && (
+        <div ref={menu} className={leaving ? 'card-menu-list leaving' : 'card-menu-list'} role="menu" aria-label="More options" onKeyDown={keyDown}>
           {items.map(item => (item.to
             ? <Link key={item.label} role="menuitem" tabIndex={-1} to={item.to} onClick={() => setOpen(false)}>{item.label}</Link>
             : <button key={item.label} type="button" role="menuitem" tabIndex={-1} onClick={() => choose(item)}>{item.label}</button>

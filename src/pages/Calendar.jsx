@@ -4,11 +4,13 @@ import { usePlace } from '../place/usePlace.js'
 import { useNow } from '../sky/useNow.js'
 import { localParts } from '../sky/night.js'
 import { dayKey } from '../sky/calendar/skyTools.js'
-import { monthEvents, shownEvents } from '../sky/calendar/monthEvents.js'
+import { leavesOnClose, monthEvents, shownEvents } from '../sky/calendar/monthEvents.js'
 import { isFavorite } from '../sky/calendar/favorites.js'
 import useMedia from '../hooks/useMedia.js'
 import useCalendarSettings from '../components/calendar/useCalendarSettings.js'
 import useFavorites from '../components/calendar/useFavorites.js'
+import useNextMatch from '../components/calendar/useNextMatch.js'
+import useExit from '../components/ui/useExit.js'
 import useComets from '../sky/calendar/useComets.js'
 import { cometNotes, cometSeason } from '../sky/calendar/cometEvents.js'
 import KindList from '../components/calendar/KindList.jsx'
@@ -17,7 +19,7 @@ import SearchBox from '../components/calendar/SearchBox.jsx'
 import MonthGrid from '../components/calendar/MonthGrid.jsx'
 import EventRow from '../components/calendar/EventRow.jsx'
 import EventCard from '../components/calendar/EventCard.jsx'
-import { eventDate } from '../components/calendar/dates.js'
+import { eventDate, shortDate } from '../components/calendar/dates.js'
 import YearList from '../components/calendar/YearList.jsx'
 import './Calendar.css'
 
@@ -95,8 +97,8 @@ function Calendar() {
   const wanted = useRef(params.get('event'))
   const [query, setQuery] = useState('')
   const [picked, setPicked] = useState(null)
-  const [kept, setKept] = useState(null)
   const [choosing, setChoosing] = useState(false)
+  const panel = useExit(choosing)
   const [slide, setSlide] = useState(null)
   const settings = useCalendarSettings()
   const { favorites, toggle } = useFavorites()
@@ -114,9 +116,34 @@ function Calendar() {
     return cometNotes(status, status === 'ready' ? cometSeason(list, place, now) : [], settings.kinds)
   }, [place, comets, settings.kinds])
   const pickedId = picked?.event.id
-  const filters = { kinds: settings.kinds, world: settings.world, query, favorites, keep: pickedId ?? kept }
+  const refocus = useRef(false)
+
+  useEffect(() => {
+    if (picked || !refocus.current) return
+
+    refocus.current = false
+
+    if (document.activeElement && document.activeElement !== document.body) return
+
+    const spot = document.querySelector('.month-days [tabindex="0"]') ?? document.querySelector('.month-title-button')
+
+    spot?.focus({ preventScroll: true })
+  }, [picked])
+  const filters = { kinds: settings.kinds, world: settings.world, query, favorites, favoritesOnly: settings.favoritesOnly, keep: pickedId }
   const events = shownEvents(all, filters)
   const dayEvents = events.filter(event => event.day === selected)
+  const next = useNextMatch({ place, query, shown, current: { year: current.year, month: current.month }, today, filters, comets })
+  const count = events.length
+  const lead = count ? `${count} ${count === 1 ? 'match' : 'matches'} this month.` : next.status === 'none' ? 'No matches in the next three years.' : 'No matches this month.'
+  const matchNote = query ? (
+    <p className="calendar-note" role="status">
+      {lead}
+      {next.status === 'looking' && ' Looking further ahead…'}
+      {next.status === 'found' && (
+        <> <button type="button" className="next-match" onClick={goToMatch}>{count ? 'Next after this month' : 'Next'}: {next.match.name} · {shortDate(next.match, today)} <span aria-hidden="true">→</span></button></>
+      )}
+    </p>
+  ) : null
 
   useEffect(() => {
     setParams(old => {
@@ -142,7 +169,6 @@ function Calendar() {
     if (!event) return
 
     setSelected(event.day)
-    setKept(event.id)
     setPicked({ event, anchor: document.querySelector(`[data-event="${CSS.escape(event.id)}"]`) })
   }, [all, comets.status])
 
@@ -150,16 +176,38 @@ function Calendar() {
     const next = shift(shown, delta)
 
     setShown(next)
-    setKept(null)
     setSlide(delta > 0 ? 'next' : 'prev')
     setSelected(`${next.year}-${String(next.month).padStart(2, '0')}-01`)
+  }
+
+  function goToMatch() {
+    if (!next.match) return
+
+    const [year, month] = next.match.day.split('-').map(Number)
+
+    wanted.current = next.match.id
+    setShown({ year, month })
+    setSlide(null)
+  }
+
+  function closeCard() {
+    const leaving = picked?.event
+
+    setPicked(null)
+
+    refocus.current = Boolean(leaving) && leavesOnClose(leaving, all, filters)
+  }
+
+  function jump(year, month) {
+    setShown({ year, month })
+    setSlide(null)
+    setSelected(`${year}-${String(month).padStart(2, '0')}-01`)
   }
 
   function goToday() {
     const away = (shown.year - current.year) * 12 + shown.month - current.month
 
     setShown({ year: current.year, month: current.month })
-    setKept(null)
     setSlide(away > 0 ? 'prev' : away < 0 ? 'next' : null)
     setSelected(today)
   }
@@ -188,11 +236,10 @@ function Calendar() {
   }, [choosing, roomy, narrow])
 
   const pick = (event, anchor) => {
-    setKept(event.id)
     setPicked({ event, anchor })
   }
 
-  const list = <KindList id="kind-list" kinds={settings.kinds} toggleKind={settings.toggleKind} setGroup={settings.setGroup} suggest={settings.suggest} groupNotes={{ comet: cometInfo.group }} kindNotes={cometInfo.kinds} />
+  const list = <KindList id="kind-list" kinds={settings.kinds} favoritesOnly={settings.favoritesOnly} favoriteCount={favorites.length} toggleKind={settings.toggleKind} setGroup={settings.setGroup} setFavoritesOnly={settings.setFavoritesOnly} suggest={settings.suggest} groupNotes={{ comet: cometInfo.group }} kindNotes={cometInfo.kinds} />
 
   const heading = (
     <div className="calendar-title">
@@ -207,7 +254,7 @@ function Calendar() {
         <FilterIcon />Choose events
       </button>
 
-      {choosing && <div className="choose-panel">{list}</div>}
+      {panel.shown && <div className={panel.leaving ? 'choose-panel leaving' : 'choose-panel'}>{list}</div>}
     </div>
   )
 
@@ -215,7 +262,7 @@ function Calendar() {
     <div className="calendar-controls">
       {!roomy && choose}
 
-      <SearchBox query={query} setQuery={setQuery} />
+      <SearchBox query={query} setQuery={setQuery} onSubmit={goToMatch} />
 
       <WorldSwitch world={settings.world} setWorld={settings.setWorld} />
     </div>
@@ -258,15 +305,18 @@ function Calendar() {
               slide={slide}
               onMonth={move}
               onToday={goToday}
+              onJump={jump}
               onDay={setSelected}
               onPick={pick}
             />
 
-            {query && <p className="calendar-note" role="status">{events.length ? `${events.length} ${events.length === 1 ? 'match' : 'matches'} this month.` : 'No matches this month. The list below covers the whole year.'}</p>}
+            {!wide && matchNote}
 
             {narrow && <DayList day={selected} events={dayEvents} favorites={favorites} south={south} onPick={pick} />}
           </div>
         </div>
+
+        {wide && matchNote}
 
 
 
@@ -285,7 +335,7 @@ function Calendar() {
           south={south}
           favorites={favorites}
           onFavorite={toggle}
-          onClose={() => setPicked(null)}
+          onClose={closeCard}
         />
       )}
     </main>
