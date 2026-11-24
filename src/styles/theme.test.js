@@ -47,6 +47,12 @@ function mix(a, b, t) {
   return '#' + [1, 3, 5].map(i => Math.round(part(a, i) + (part(b, i) - part(a, i)) * t).toString(16).padStart(2, '0')).join('')
 }
 
+function paint(value, theme) {
+  const names = [...value.matchAll(/var\(--([\w-]+)\)/g)].map(([, name]) => theme[name])
+
+  return names.length === 2 ? mix(names[0], names[1], 0.5) : resolve(value, theme)
+}
+
 
 
 // TESTS
@@ -55,9 +61,9 @@ test('sky looks use theme colors so red light can recolor them', () => {
   for (const preset of Object.values(PRESETS)) {
     const look = skyLook(preset)
     for (const value of [...Object.values(look.colors), look.snow]) {
-      expect(value).toMatch(/^var\(--[\w-]+\)$/)
-      expect(resolve(value, normal)).toMatch(/^#/)
-      expect(resolve(value, red)).toMatch(/^#/)
+      expect(value).toMatch(/^(var\(--[\w-]+\)|color-mix\(in srgb, var\(--[\w-]+\), var\(--[\w-]+\)\))$/)
+      expect(paint(value, normal)).toMatch(/^#/)
+      expect(paint(value, red)).toMatch(/^#/)
     }
   }
 })
@@ -66,7 +72,7 @@ test('intro text stays readable on every sky in both themes', () => {
   for (const theme of [normal, red]) {
     for (const preset of Object.values(PRESETS)) {
       const { colors, phase } = skyLook(preset)
-      const behind = mix(resolve(colors.top, theme), resolve(colors.middle, theme), 0.45)
+      const behind = mix(paint(colors.top, theme), paint(colors.middle, theme), 0.45)
       const text = phase === 'day' ? theme.frost : theme.mist
       expect(contrast(text, behind)).toBeGreaterThanOrEqual(4.5)
     }
