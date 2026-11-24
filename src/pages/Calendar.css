@@ -1026,6 +1026,22 @@
 
 
 
+/* RANGE */
+
+.month-days li.in-range {
+  background: color-mix(in srgb, var(--c) 12%, var(--high));
+}
+
+.month-days li.range-day {
+  background: color-mix(in srgb, var(--c) 22%, var(--high));
+}
+
+.month-days li.selected.in-range {
+  background: color-mix(in srgb, var(--c) 22%, var(--raised));
+}
+
+
+
 /* EVENT ROWS */
 
 .event-rows li + li {
@@ -1475,6 +1491,10 @@
 .event-row,
 .kind-option {
   transition: background-color 90ms ease-out;
+}
+
+.month-days li {
+  transition: background-color 120ms ease-out;
 }
 
 .kind-box {

@@ -31,6 +31,19 @@ export function nightKey(date, timeZone) {
   return dayKey(new Date(date.getTime() - 12 * HOUR), timeZone)
 }
 
+function shortDay(key) {
+  const [year, month, day] = key.split('-').map(Number)
+
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'short', day: 'numeric' }).format(Date.UTC(year, month - 1, day, 12))
+}
+
+export function dayRange({ from, to }) {
+  const [fromMonth, fromDay] = shortDay(from).split(' ')
+  const [toMonth, toDay] = shortDay(to).split(' ')
+
+  return fromMonth === toMonth ? `${fromMonth} ${fromDay}–${toDay}` : `${fromMonth} ${fromDay}–${toMonth} ${toDay}`
+}
+
 export function monthKey(year, month) {
   return `${year}-${pad(month)}`
 }

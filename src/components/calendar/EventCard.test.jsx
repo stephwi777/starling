@@ -75,3 +75,17 @@ test('an event with no time shows the date alone', () => {
 test('the status line starts closed but stays in place for screen readers', () => {
   expect(draw([])).toContain('<div class="event-card-status"><p role="status"></p></div>')
 })
+
+
+
+// RANGE
+
+test('a card with a range tells screen readers which days are shaded', () => {
+  const markup = renderToStaticMarkup(<EventCard event={{ ...EVENT, range: { from: '2027-07-17', to: '2027-08-24' } }} anchor={null} place={KC} today="2026-12-01" south={false} onClose={() => {}} favorites={[]} onFavorite={() => {}} />)
+
+  expect(markup).toContain('<p class="visually-hidden">Jul 17–Aug 24 is shaded on the calendar.</p>')
+})
+
+test('a card without a range says nothing about shading', () => {
+  expect(draw([])).not.toContain('shaded on the calendar')
+})

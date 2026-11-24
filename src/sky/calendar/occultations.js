@@ -105,14 +105,14 @@ function noteFor(label, hint, cluster, minutes, sight) {
 
 const UNSEEN = { low: 'Moon too low to see', bright: 'Sky too bright' }
 
-export function occultationEvent({ id, short, label, hint, cluster = false, cover, sight, place, observer }) {
+export function occultationEvent({ id, short, label, hint, cluster = false, planet = false, cover, sight, place, observer }) {
   const minutes = Math.max(1, Math.round((cover.to - cover.from) / MINUTE))
   const seenAt = SEEN.includes(sight.from) ? cover.from : cover.to
   const when = (date, state) => UNSEEN[state] ?? clock(date, place.timeZone)
 
   return {
     id: `occultation-${cover.from.getTime()}-${id}`,
-    kinds: ['occultation'],
+    kinds: [planet ? 'occultation' : 'star-occultation'],
     group: 'moon',
     date: cover.middle,
     day: dayKey(seenAt, place.timeZone),
@@ -120,7 +120,7 @@ export function occultationEvent({ id, short, label, hint, cluster = false, cove
     here: true,
     where: null,
     window: { from: cover.from, to: cover.to },
-    tags: sight.light === 'day' ? ['Rare', 'Daytime'] : ['Rare'],
+    tags: [planet && 'Rare', sight.light === 'day' && 'Daytime'].filter(Boolean),
     icon: 'occultation',
     subjects: [{ key: `occultation:${id}`, label: `every time the Moon covers ${label}` }],
     short: `Moon covers ${short}`,

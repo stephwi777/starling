@@ -253,7 +253,7 @@ function moonPlanetEvents(start, end, place, observer) {
         const cover = value < COVER_CHECK ? findCover(body, date, observer) : null
         const sight = cover && coverSight(cover, observer, DAYTIME_PLANETS.includes(body))
 
-        if (sight) return occultationEvent({ id: body, short: body, label: body, cover, sight, place, observer })
+        if (sight) return occultationEvent({ id: body, short: body, label: body, planet: true, cover, sight, place, observer })
 
         const view = viewed(['Moon', body], date, place, observer, 'Below your horizon after dark.')
         const close = value < 1.5

@@ -20,6 +20,7 @@ import MonthGrid from '../components/calendar/MonthGrid.jsx'
 import EventRow from '../components/calendar/EventRow.jsx'
 import EventCard from '../components/calendar/EventCard.jsx'
 import { eventDate, shortDate } from '../components/calendar/dates.js'
+import { shadedRange } from '../components/calendar/shadedRange.js'
 import YearList from '../components/calendar/YearList.jsx'
 import './Calendar.css'
 
@@ -301,6 +302,7 @@ function Calendar() {
               selected={selected}
               narrow={narrow}
               south={south}
+              range={shadedRange({ picked: picked?.event, dayEvents, narrow })}
               tools={tools}
               slide={slide}
               onMonth={move}

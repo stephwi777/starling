@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { GROUPS } from '../../sky/calendar/kinds.js'
 import { calendarFile, fileName } from '../../sky/calendar/ics.js'
 import { favoriteNote } from '../../sky/calendar/favorites.js'
+import { dayRange } from '../../sky/calendar/skyTools.js'
 import { popoverPlace } from '../panel/popoverPlace.js'
 import { shortDate } from './dates.js'
 import { download, eventLink } from './download.js'
@@ -220,6 +221,8 @@ function EventCard({ event, anchor, place, today, south, onClose, favorites = []
             {event.rows.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}
           </dl>
         )}
+
+        {event.range && <p className="visually-hidden">{dayRange(event.range)} is shaded on the calendar.</p>}
       </div>
     </div>
   )

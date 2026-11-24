@@ -13,7 +13,7 @@ Agreed in conversation 2026-11-23.
 
 ## Goals
 
-- **New event type** "Moon covers a star or planet" in the Moon group, **on by default**.
+- **Two new event types** in the Moon group: "Moon covers a planet", **on by default**, and "Moon covers a bright star", **off by default**. Star occultations come in runs lasting years (the Pleiades about 2–3 times a year from one place through 2029), so they'd crowd the calendar if they were on by default.
   - **Targets:** the same bright stars as "Moon near a bright star" (Pleiades, Beehive, Aldebaran, Regulus, Spica, Antares), plus Mercury, Venus, Mars, Jupiter and Saturn.
   - **Only events seen from your place.** The Moon and the target must both be up. Worldwide adds nothing for this type, because one happens somewhere almost every month.
 - **When they're visible:**
@@ -27,7 +27,7 @@ Agreed in conversation 2026-11-23.
   - a Mercury or Venus transit
   - Mars at its closest
   - a planet pair closer than 0.5°
-  - an occultation
+  - an occultation of a planet. Star and cluster occultations repeat for years at a time, so they don't get it.
 
   Blue Moons and Black Moons keep their own tags and don't get "Rare". Eclipses seen only elsewhere don't get it either.
 

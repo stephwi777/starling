@@ -1,7 +1,7 @@
 import * as Astronomy from 'astronomy-engine'
 import { localNoon, localParts, observerFor } from '../night.js'
 import { cometMagnitude, cometPlace } from './cometOrbit.js'
-import { HOUR, MINUTE, dayKey, horizon, look, monthKey, moonLit, nightKey, spelled, timeWord, windowWords } from './skyTools.js'
+import { HOUR, MINUTE, dayKey, dayRange, horizon, look, monthKey, moonLit, nightKey, spelled, timeWord, windowWords } from './skyTools.js'
 
 
 
@@ -167,7 +167,11 @@ function hemisphere(place, dec) {
 
 // EVENTS
 
-function cometEvent(comet, label, phase, kind, peak, night, place) {
+function dayOf(night, place) {
+  return timeWord(night.window, place.timeZone) === 'Before dawn' ? dayKey(night.window.from, place.timeZone) : nightKey(night.window.from, place.timeZone)
+}
+
+function cometEvent(comet, label, phase, kind, peak, night, place, range) {
   const tags = [phase === 'best' && peak <= NAKED_EYE && 'Naked eye', kind === 'telescope-comet' && 'Telescope'].filter(Boolean)
   const mag = night.mag
   const base = {
@@ -201,12 +205,14 @@ function cometEvent(comet, label, phase, kind, peak, night, place) {
   return {
     ...base,
     date: spot.date,
-    day: time === 'Before dawn' ? dayKey(night.window.from, place.timeZone) : nightKey(night.window.from, place.timeZone),
+    day: dayOf(night, place),
     time,
     here: true,
     where: null,
     window: night.window,
+    range,
     rows: [
+      ['Visible', dayRange(range)],
       ['Best seen', windowWords(night.window, place.timeZone)],
       ['Look', look(spot)],
       ['In', spelled(Astronomy.Constellation(j2000(spot).ra, j2000(spot).dec).name)],
@@ -236,13 +242,14 @@ function seasonOf(comet, sky, place, observer) {
   const best = shown.reduce((top, next) => (next.night.mag < top.night.mag ? next : top))
   const first = shown[0]
   const last = shown.at(-1)
+  const range = { from: dayOf(first.night, place), to: dayOf(last.night, place) }
   const phases = [
     first.index > 0 && first !== best && ['arrives', first],
     ['best', best],
     last.index < seen.length - 1 && last !== best && ['last', last],
   ].filter(Boolean)
 
-  return phases.map(([phase, { night }]) => cometEvent(comet, label, phase, kind, best.night.mag, night, place))
+  return phases.map(([phase, { night }]) => cometEvent(comet, label, phase, kind, best.night.mag, night, place, range))
 }
 
 

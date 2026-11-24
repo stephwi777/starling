@@ -27,12 +27,13 @@ function longDay(year, month, day) {
 
 // DAY
 
-function Day({ year, month, day, events, favorites, today, selected, narrow, south, active, onActive, onDay, onPick }) {
+function Day({ year, month, day, events, favorites, today, selected, narrow, south, range, active, onActive, onDay, onPick }) {
   const key = `${year}-${pad(month)}-${pad(day)}`
   const loved = event => isFavorite(event, favorites)
   const count = events.filter(loved).length
   const label = `${longDay(year, month, day)}${events.length ? `, ${events.length} ${events.length === 1 ? 'event' : 'events'}` : ''}${count ? `, ${count} ${count === 1 ? 'favorite' : 'favorites'}` : ''}`
-  const classes = ['day', key === today && 'today', key < today && 'past', narrow && key === selected && 'selected'].filter(Boolean).join(' ')
+  const inRange = range && key >= range.from && key <= range.to
+  const classes = ['day', key === today && 'today', key < today && 'past', inRange && 'in-range', inRange && key === range.day && 'range-day', narrow && key === selected && 'selected'].filter(Boolean).join(' ')
 
   if (narrow) {
     return (
@@ -88,7 +89,7 @@ function Day({ year, month, day, events, favorites, today, selected, narrow, sou
 
 // MONTH GRID
 
-function MonthGrid({ year, month, events, favorites = [], today, selected, narrow, south, tools, slide, onMonth, onToday, onDay, onPick, onJump }) {
+function MonthGrid({ year, month, events, favorites = [], today, selected, narrow, south, range = null, tools, slide, onMonth, onToday, onDay, onPick, onJump }) {
   const touch = useRef(null)
   const titleButton = useRef(null)
   const [picking, setPicking] = useState(false)
@@ -208,6 +209,7 @@ function MonthGrid({ year, month, events, favorites = [], today, selected, narro
       <ol
         key={`${year}-${month}`}
         className={`month-days${slide ? ` slide-${slide}` : ''}`}
+        data-group={range?.group}
         aria-label={`${title}. Use the arrow keys to move between ${narrow ? 'days' : 'events'}.`}
         onTouchStart={touchStart}
         onTouchEnd={touchEnd}
@@ -215,7 +217,7 @@ function MonthGrid({ year, month, events, favorites = [], today, selected, narro
       >
         {days.map((day, i) => (day === null
           ? <li key={`blank-${i}`} className="blank" aria-hidden="true" />
-          : <Day key={day} year={year} month={month} day={day} events={on(day)} favorites={favorites} today={today} selected={selected} narrow={narrow} south={south} active={active} onActive={setFocused} onDay={onDay} onPick={onPick} />
+          : <Day key={day} year={year} month={month} day={day} events={on(day)} favorites={favorites} today={today} selected={selected} narrow={narrow} south={south} range={range} active={active} onActive={setFocused} onDay={onDay} onPick={onPick} />
         ))}
       </ol>
     </section>

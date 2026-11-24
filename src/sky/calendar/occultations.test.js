@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 import * as Astronomy from 'astronomy-engine'
 import { observerFor } from '../night.js'
+import { KINDS } from './kinds.js'
 import { monthEvents } from './monthEvents.js'
 import { findCover, isCovered, occultationEvent } from './occultations.js'
 
@@ -12,7 +13,8 @@ const KC = { name: 'Kansas City', latitude: 39.1, longitude: -94.58, timeZone: '
 const SYDNEY = { name: 'Sydney', latitude: -33.87, longitude: 151.21, timeZone: 'Australia/Sydney', country: 'AU' }
 const NONE = { comets: [], version: 'test', now: new Date('2026-11-23T12:00:00Z') }
 
-const covers = (place, year, month) => monthEvents(place, year, month, NONE).filter(event => event.kinds.includes('occultation'))
+const COVERS = ['occultation', 'star-occultation']
+const covers = (place, year, month) => monthEvents(place, year, month, NONE).filter(event => COVERS.includes(event.kinds[0]))
 
 
 
@@ -23,14 +25,16 @@ test('the Moon covers the Pleiades over Kansas City on September 21, 2027', () =
   const near = monthEvents(KC, 2027, 9, NONE).filter(event => event.kinds.includes('moon-star') && event.name.includes('Pleiades') && Math.abs(event.date - pleiades.date) < 86400000)
 
   expect(['2027-09-20', '2027-09-21']).toContain(pleiades.day)
-  expect(pleiades.tags).toContain('Rare')
-  expect(pleiades.tags).not.toContain('Daytime')
+  expect(pleiades.tags).toEqual([])
+  expect(pleiades.kinds).toEqual(['star-occultation'])
   expect(near).toEqual([])
 }, 30000)
 
 test('Sydney sees the Moon cover Antares in March and June 2027', () => {
-  expect(covers(SYDNEY, 2027, 3).map(event => event.name)).toContain('Moon covers Antares')
-  expect(covers(SYDNEY, 2027, 6).map(event => event.name)).toContain('Moon covers Antares')
+  const antares = [...covers(SYDNEY, 2027, 3), ...covers(SYDNEY, 2027, 6)].filter(event => event.name === 'Moon covers Antares')
+
+  expect(antares).toHaveLength(2)
+  expect(antares.every(event => !event.tags.includes('Rare'))).toBe(true)
 }, 30000)
 
 test('a star covered in daylight is left out', () => {
@@ -41,6 +45,7 @@ test('Jupiter covered in daylight shows with a Daytime tag', () => {
   const jupiter = covers(SYDNEY, 2026, 11).find(event => event.name === 'Moon covers Jupiter')
 
   expect(jupiter.tags).toEqual(['Rare', 'Daytime'])
+  expect(jupiter.kinds).toEqual(['occultation'])
   expect(jupiter.note).toMatch(/binoculars or a telescope/)
 }, 30000)
 
@@ -104,8 +109,15 @@ test('a graze under a minute says so plainly', () => {
   expect(quick({ from: 'dark', to: 'dark', light: 'dark' }).note).toMatch(/for about a minute\./)
 })
 
+test('only a planet occultation is Rare, since stars repeat for years at a time', () => {
+  const dark = { from: 'dark', to: 'dark', light: 'dark' }
+
+  expect(quick(dark).tags).toEqual([])
+  expect(quick(dark, { planet: true }).tags).toEqual(['Rare'])
+})
+
 test('a twilight occultation says twilight, not daylight, and has no Daytime tag', () => {
-  const twilight = quick({ from: 'twilight', to: 'dark', light: 'twilight' })
+  const twilight = quick({ from: 'twilight', to: 'dark', light: 'twilight' }, { planet: true })
 
   expect(twilight.note).toMatch(/twilight/)
   expect(twilight.note).not.toMatch(/daylight/)
@@ -116,4 +128,13 @@ test('a star cluster is reached and left, never fully hidden', () => {
   const cluster = quick({ from: 'dark', to: 'dark', light: 'dark' }, { cluster: true })
 
   expect(cluster.rows.map(([label]) => label).slice(0, 2)).toEqual(['Moon arrives', 'Moon leaves'])
+})
+
+
+
+// CHOOSING
+
+test('planet occultations start on and star ones start off', () => {
+  expect(KINDS.find(kind => kind.id === 'occultation')).toMatchObject({ name: 'Moon covers a planet', on: true })
+  expect(KINDS.find(kind => kind.id === 'star-occultation')).toMatchObject({ group: 'moon', name: 'Moon covers a bright star', on: false })
 })
