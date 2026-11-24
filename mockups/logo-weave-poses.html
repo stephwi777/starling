@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling Weave poses</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .og {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .og img {
+      width: 100%;
+      border-radius: 18px;
+    }
+
+
+
+    /* NUMBERED SHEETS */
+
+    .numbered {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .numbered img {
+      display: block;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .numbered + .numbered {
+      margin-top: 16px;
+    }
+
+    .on-light {
+      background: #e8e8ec;
+    }
+
+    .night {
+      background: #0d0f28;
+    }
+
+    .labels {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .labels li {
+      padding: 12px;
+    }
+
+    .labels span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 40px;
+      height: 32px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-weight: 800;
+    }
+
+    @media (max-width: 700px) {
+      .og {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Weave poses from the OG</h1>
+    <p>This time the AI started from a picture of the OG itself (plus your pose picture), instead of from a written description. These are pictures, not SVG yet: if you like one, I'll trace it faithfully, the way I traced the OG.</p>
+
+    <section class="og">
+      <img src="logo-concepts/og-weave-ref.png" alt="The OG starling">
+      <div>
+        <h2>OG</h2>
+        <p>The picture Weave was given.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>About page: curious tilt</h2>
+      <div class="numbered"><img src="logo-concepts/weave-tilt.png" alt="Weave's curious tilt starling"></div>
+    </section>
+
+    <section>
+      <h2>Lost in space: asleep on the Moon</h2>
+      <div class="numbered"><img src="logo-concepts/weave-moon.png" alt="Weave's sleeping starling on the Moon"></div>
+    </section>
+  </main>
+</body>
+</html>

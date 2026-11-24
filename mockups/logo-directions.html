@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling logo directions</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* COLORS */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --ink: #1a1645;
+      --beak: #f1cd57;
+      --body: #8f86d6;
+      --wing: #5d54b0;
+    }
+
+    .red {
+      --zenith: #070101;
+      --high: #2d0704;
+      --raised: #430a07;
+      --frost: #ff8f70;
+      --mist: #ff8f70;
+      --ink: #2b0604;
+      --beak: #ff765c;
+      --body: #d44130;
+      --wing: #8f1d14;
+    }
+
+    .flat {
+      --body: var(--frost);
+      --wing: var(--frost);
+      --beak: var(--frost);
+      --ink: var(--high);
+    }
+
+    .flat .frost-dots {
+      fill: var(--high);
+    }
+
+
+
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2,
+    .wordmark {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.75rem;
+    }
+
+    p {
+      max-width: 68ch;
+      color: var(--mist);
+    }
+
+    svg {
+      display: block;
+      overflow: visible;
+    }
+
+    .direction {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: var(--high);
+    }
+
+    .direction > p {
+      margin: 6px 0 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .hero {
+      display: grid;
+      place-items: center;
+      height: 260px;
+      border-radius: 26px;
+      background: var(--zenith);
+    }
+
+    .uses {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .uses figure {
+      margin: 0;
+    }
+
+    .uses figcaption {
+      margin-top: 8px;
+      color: var(--mist);
+      font-size: 0.8125rem;
+    }
+
+    .tile {
+      display: grid;
+      place-items: center;
+      min-height: 76px;
+      padding: 0 20px;
+      border-radius: 18px;
+      background: var(--zenith);
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.6rem;
+    }
+
+    .phone .wordmark {
+      gap: 8px;
+      font-size: 1.45rem;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 10px 10px 0 0;
+      background: #dfe1ea;
+      color: #222;
+      font-size: 0.8125rem;
+    }
+
+    .tab.dark {
+      background: #35363a;
+      color: #e8e8e8;
+    }
+
+    .homescreen {
+      display: grid;
+      place-items: center;
+      width: 76px;
+      height: 76px;
+      border-radius: 18px;
+      background: var(--raised);
+    }
+
+    @media (max-width: 760px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Starling logo directions</h1>
+    <p>Four first sketches. Each bird is one solid shape with a cut that shows the wing, a long yellow beak, a short square tail, and white speckles drawn as tiny stars. Each one is shown big, in the header, as a browser tab icon, as one flat color, and in red light. These are rough: pick what you like and what you don't, and I'll polish from there.</p>
+
+    <div id="directions"></div>
+  </main>
+
+  <script>
+const star = (x, y, r, a = 0) => `<path transform="translate(${x} ${y}) rotate(${a}) scale(${r})" d="M0 -1 Q0.18 -0.18 1 0 Q0.18 0.18 0 1 Q-0.18 0.18 -1 0 Q-0.18 -0.18 0 -1Z"/>`
+const cut = (id, d, w = 2) => `<mask id="${id}" maskUnits="userSpaceOnUse" x="-40" y="-40" width="150" height="150"><rect x="-40" y="-40" width="150" height="150" fill="white"/><path d="${d}" fill="none" stroke="black" stroke-width="${w}" stroke-linecap="round"/></mask>`
+const clip = (id, d) => `<clipPath id="${id}"><path d="${d}"/></clipPath>`
+const eye = (x, y, r = 2.5) => `<circle cx="${x}" cy="${y}" r="${r}" fill="var(--ink)"/><circle cx="${x + r * 0.36}" cy="${y - r * 0.36}" r="${r * 0.34}" fill="var(--frost)"/>`
+
+const P = {
+  body: "M30 13.5 C33 10.5 37 9.5 41 10 C44.5 10.4 47 12 49 14 L50.5 21.5 C52.5 27 52 35 47 41 C42 47 33 50 26 49 L15 56.5 C13.6 57.3 12 56.8 11.2 55.6 L8.6 51.6 C8 50.6 8.3 49.4 9.3 48.8 L18.5 41 C19 31 23 19 30 13.5 Z",
+  wing: "M23.5 20.5 C36 19 42.5 28 40 35.5 C37 42.5 28 46.5 12 52.5 L0 52 L6 18 Z",
+  edge: "M22 20.8 C36 19 42.5 28 40 35.5 C37 42.5 28 46.5 15.5 51.3",
+  beak: "M48.4 13.6 C53 15.3 57.5 17.3 61.6 19.2 C62.4 19.6 62.3 20.6 61.5 20.8 C57.2 21.6 53 22 48.4 22.2 Z",
+  legs: "M33 49.5 L32 55 M38 48 L38.5 54",
+}
+
+const perched = id => `${clip(id + 'c', P.body)}${cut(id + 'm', P.edge)}
+<g mask="url(#${id}m)"><path fill="var(--body)" d="${P.body}"/><path fill="var(--wing)" clip-path="url(#${id}c)" d="${P.wing}"/>
+<path d="${P.legs}" stroke="var(--body)" stroke-width="2.4" stroke-linecap="round"/></g>
+<path fill="var(--beak)" d="${P.beak}"/>${eye(40.5, 16.5)}
+<g class="frost-dots" fill="var(--frost)">${star(46.5,29,1.7)}${star(43.5,37,1.3)}${star(48.5,36.5,1.05)}</g>`
+
+const R = {
+  body: "M4.5 44 C9 40.5 11.5 37.5 13 34 C15 28.5 19 24 26 21.5 C26.5 13.5 32.5 8.5 40 9 C44 9.3 47 11.2 49 13.8 L50.5 21.5 C52.5 25.5 53 30 52 34 C50 46 41 54 30 54 C22.5 54 16.5 51 13.5 46.5 L6.8 47.8 C4.6 48.2 3.2 45.8 4.5 44 Z",
+  wing: "M21 30 C31 27 39.5 33 37.5 41 C35.5 48 25 50.5 13.5 47.5 L0 50 L4 28 Z",
+  edge: "M19.5 30.6 C31 27 39.5 33 37.5 41 C35.5 48 25 50.5 15 48",
+  beak: "M48.4 13.4 C52.6 15 56.7 16.9 60.5 18.8 C61.3 19.2 61.2 20.2 60.4 20.4 C56.4 21.2 52.4 21.7 48.4 22 Z",
+}
+const round = id => `${clip(id + 'c', R.body)}${cut(id + 'm', R.edge)}
+<g mask="url(#${id}m)"><path fill="var(--body)" d="${R.body}"/><path fill="var(--wing)" clip-path="url(#${id}c)" d="${R.wing}"/>
+<path d="M27 53 L26.5 58.5 M33 53 L33.5 58.5" stroke="var(--body)" stroke-width="2.4" stroke-linecap="round"/></g>
+<path fill="var(--beak)" d="${R.beak}"/>${eye(40, 16.8, 2.7)}
+<g class="frost-dots" fill="var(--frost)">${star(46,30,1.8)}${star(43,39,1.35)}${star(48,40,1.1)}</g>`
+
+const L = {
+  body: "M27 21 C26.5 13 32 8 38.5 8.2 C41.5 8.3 44 9.6 46 11.6 L51 17.6 C53.5 24 53 35 47 41 C42 47 33 50 26 49 L15 56.5 C13.6 57.3 12 56.8 11.2 55.6 L8.6 51.6 C8 50.6 8.3 49.4 9.3 48.8 L18.5 41 C19 33 22 25.5 27 21 Z",
+  beak: "M45.2 10.6 L57.4 3.8 C58.3 3.3 59.2 4.2 58.7 5.1 L51.6 18 Z",
+}
+const lookup = id => `<g transform="translate(0 4)">${clip(id + 'c', L.body)}${cut(id + 'm', P.edge)}
+<g mask="url(#${id}m)"><path fill="var(--body)" d="${L.body}"/><path fill="var(--wing)" clip-path="url(#${id}c)" d="${P.wing}"/>
+<path d="${P.legs}" stroke="var(--body)" stroke-width="2.4" stroke-linecap="round"/></g>
+<path fill="var(--beak)" d="${L.beak}"/>${eye(39, 14.5)}
+<g class="frost-dots" fill="var(--frost)">${star(46.5,29,1.7)}${star(43.5,37,1.3)}${star(48.5,36.5,1.05)}</g></g>
+<g fill="var(--beak)">${star(60.5,1.5,3.2)}</g>`
+
+const birds = {
+A: perched('a'),
+B: lookup('b'),
+C: `<g transform="translate(30 34) rotate(-28)">
+<path fill="var(--body)" d="M-21 -4 Q-8 -4.5 -5.4 -26.6 C-5.2 -28.4 -3.1 -28.6 -2.6 -26.8 Q1.5 -9.5 9.2 -6.4 C11 -10.5 18 -11 21 -4.8 L21.6 3.6 C18.5 8.5 12 8 9.2 5.2 Q1.5 8.5 -2.6 26 C-3.1 27.8 -5.2 27.6 -5.4 25.8 Q-8 4.5 -21 4 C-22.2 4 -23 3.2 -23 2 L-23 -2 C-23 -3.2 -22.2 -4 -21 -4 Z"/>
+<path fill="var(--beak)" d="M20.6 -5 C24.6 -3.6 28.6 -2 32.4 -0.6 C33.2 -0.3 33.2 0.7 32.4 1 C28.6 2 24.6 3 20.6 3.8 Z"/>
+${eye(14.5, -3, 2.3)}
+<g class="frost-dots" fill="var(--frost)">${star(2,0.5,1.5)}${star(-4.5,-1.5,1.1)}${star(-5,3.5,0.9)}</g></g>`,
+D: round('d'),
+}
+
+
+    const list = [
+      { key: 'A', name: '1. Perched', text: 'A calm, classic side view. The most "logo-like" and the easiest to recognize as a real starling.' },
+      { key: 'B', name: '2. Look up', text: 'The same starling tipping its head back to gaze at a star. Curious, and it says what the site is for: just look up!' },
+      { key: 'D', name: '3. Little round', text: 'The chubbiest and cutest, closest to Finch. A round body with a tiny tail. Still has the long starling beak and star speckles.' },
+      { key: 'C', name: '4. Star flight', text: 'A starling in flight seen from below. Its pointed wings, beak and tail make a four-point star: a star-ling. The roughest of the four.' },
+    ]
+
+    const svg = (key, size, id) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true">${birds[key].replaceAll(`'${key.toLowerCase()}`, `'${id}`)}</svg>`
+
+    const mark = (key, size) => svg(key, size, key.toLowerCase())
+
+    for (const d of list) {
+      const section = document.createElement('section')
+      section.className = 'direction'
+      section.innerHTML = `
+        <h2>${d.name}</h2>
+        <p>${d.text}</p>
+        <div class="grid">
+          <div class="hero">${mark(d.key, 220)}</div>
+          <div class="uses">
+            <figure><div class="tile"><div class="wordmark">${mark(d.key, 40)}Starling</div></div><figcaption>Wide header</figcaption></figure>
+            <figure class="phone"><div class="tile"><div class="wordmark">${mark(d.key, 36)}Starling</div></div><figcaption>Phone header</figcaption></figure>
+            <figure><div class="tab">${mark(d.key, 16)}Tonight</div><figcaption>Tab, 16px</figcaption></figure>
+            <figure><div class="tab dark">${mark(d.key, 16)}Tonight</div><figcaption>Dark tab</figcaption></figure>
+            <figure><div class="homescreen">${mark(d.key, 58)}</div><figcaption>Phone icon</figcaption></figure>
+            <figure class="flat"><div class="tile">${mark(d.key, 64)}</div><figcaption>One color</figcaption></figure>
+            <figure class="flat"><div class="tile">${mark(d.key, 24)}</div><figcaption>One color, 24px</figcaption></figure>
+            <figure class="red"><div class="tile"><div class="wordmark" style="color: var(--frost)">${mark(d.key, 40)}Starling</div></div><figcaption>Red light</figcaption></figure>
+          </div>
+        </div>`
+      directions.append(section)
+    }
+  </script>
+</body>
+</html>

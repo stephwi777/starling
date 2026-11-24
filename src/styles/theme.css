@@ -36,6 +36,15 @@
   --star-red: #f08c74;
   --leaf: #a8e0b8;
 
+  --logo-body: #ae8ede;
+  --logo-belly: #c2a4ec;
+  --logo-wing: #323186;
+  --logo-thigh: #9679cf;
+  --logo-leg: #e07baf;
+  --logo-gold: #fecc49;
+  --logo-eye: #030201;
+  --logo-white: #fdfcfe;
+
   --panel: var(--high);
   --panel-raised: var(--raised);
   --rule: var(--raised);
@@ -205,6 +214,15 @@
   --star-orange: #fa6c53;
   --star-red: #e8533f;
   --leaf: #ff785d;
+
+  --logo-body: #e64f3b;
+  --logo-belly: #f6644d;
+  --logo-wing: #74150e;
+  --logo-thigh: #c23a2a;
+  --logo-leg: #ec5843;
+  --logo-gold: #ff765c;
+  --logo-eye: #070101;
+  --logo-white: #ff8f70;
 
   --sky-day: #a4251a;
   --sky-civil: #7d1710;

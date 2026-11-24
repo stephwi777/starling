@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling OG edits</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2,
+    .wordmark {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .three {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .three figure {
+      margin: 0;
+    }
+
+    .three img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 392 / 474;
+      padding: 16px;
+      box-sizing: border-box;
+      border-radius: 18px;
+      background: #e8e8ec;
+    }
+
+    .three.night img {
+      background: #0d0f28;
+    }
+
+    figcaption {
+      margin-top: 8px;
+      color: #b4b6dc;
+      font-size: 0.875rem;
+    }
+
+    figcaption strong {
+      color: #eef0fb;
+    }
+
+    .uses {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .tile {
+      display: flex;
+      align-items: center;
+      min-height: 80px;
+      padding: 0 20px;
+      border-radius: 18px;
+      background: #0d0f28;
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.6rem;
+    }
+
+    .phone .wordmark {
+      font-size: 1.45rem;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 10px 10px 0 0;
+      background: #dfe1ea;
+      color: #222;
+      font-size: 0.8125rem;
+    }
+
+    .tab.dark {
+      background: #35363a;
+      color: #e8e8e8;
+    }
+
+    .label {
+      width: 120px;
+      color: #eef0fb;
+      font-weight: 800;
+    }
+
+    @media (max-width: 760px) {
+      .three {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>OG with a bigger star and head</h1>
+    <p>The OG is untouched and saved as its own file. Edits A and B are copies. In each, the head grows from the neck up, the eye and beak move with it, and the star gets bigger while keeping the same little gap from the beak tip. Nothing else changes.</p>
+
+    <section>
+      <h2>Side by side</h2>
+      <div class="three">
+        <figure><img src="logo-concepts/og-same-frame.svg" alt="OG starling"><figcaption><strong>OG</strong>, unchanged</figcaption></figure>
+        <figure><img src="logo-og-edit-a.svg" alt="Edit A"><figcaption><strong>Edit A</strong>: head 10% bigger, star 30% bigger</figcaption></figure>
+        <figure><img src="logo-og-edit-b.svg" alt="Edit B"><figcaption><strong>Edit B</strong>: head 17% bigger, star 50% bigger</figcaption></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>On the night sky</h2>
+      <div class="three night">
+        <figure><img src="logo-concepts/og-same-frame.svg" alt="OG starling on the night sky"><figcaption><strong>OG</strong></figcaption></figure>
+        <figure><img src="logo-og-edit-a.svg" alt="Edit A on the night sky"><figcaption><strong>Edit A</strong></figcaption></figure>
+        <figure><img src="logo-og-edit-b.svg" alt="Edit B on the night sky"><figcaption><strong>Edit B</strong></figcaption></figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>In the header and tab</h2>
+      <div class="uses">
+        <div class="row"><span class="label">OG</span>
+          <div class="tile"><div class="wordmark"><img src="logo-concepts/og-same-frame.svg" height="50" alt="">Starling</div></div>
+          <div class="tile phone"><div class="wordmark"><img src="logo-concepts/og-same-frame.svg" height="44" alt="">Starling</div></div>
+          <div class="tab"><img src="logo-concepts/og-same-frame.svg" height="16" alt="">Tonight</div>
+          <div class="tab dark"><img src="logo-concepts/og-same-frame.svg" height="16" alt="">Tonight</div>
+        </div>
+        <div class="row"><span class="label">Edit A</span>
+          <div class="tile"><div class="wordmark"><img src="logo-og-edit-a.svg" height="50" alt="">Starling</div></div>
+          <div class="tile phone"><div class="wordmark"><img src="logo-og-edit-a.svg" height="44" alt="">Starling</div></div>
+          <div class="tab"><img src="logo-og-edit-a.svg" height="16" alt="">Tonight</div>
+          <div class="tab dark"><img src="logo-og-edit-a.svg" height="16" alt="">Tonight</div>
+        </div>
+        <div class="row"><span class="label">Edit B</span>
+          <div class="tile"><div class="wordmark"><img src="logo-og-edit-b.svg" height="50" alt="">Starling</div></div>
+          <div class="tile phone"><div class="wordmark"><img src="logo-og-edit-b.svg" height="44" alt="">Starling</div></div>
+          <div class="tab"><img src="logo-og-edit-b.svg" height="16" alt="">Tonight</div>
+          <div class="tab dark"><img src="logo-og-edit-b.svg" height="16" alt="">Tonight</div>
+        </div>
+      </div>
+      <p>The tab icon is still small in all three. Once you pick, I'll make a separate favicon version for it.</p>
+    </section>
+  </main>
+</body>
+</html>

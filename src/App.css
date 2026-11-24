@@ -48,6 +48,17 @@ section {
 
 
 
+/* REVEAL */
+
+@keyframes page-rise {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+
+
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
@@ -62,7 +73,7 @@ section {
 
 .sky {
   position: relative;
-  overflow: hidden;
+  overflow: clip;
 }
 
 

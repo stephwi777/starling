@@ -74,6 +74,20 @@
 
 
 
+/* REVEAL */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    :root:not(.still) .about-body .inner > * {
+      animation: page-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 140px;
+    }
+  }
+}
+
+
+
 /* SMALL SCREENS */
 
 @media (max-width: 720px) {

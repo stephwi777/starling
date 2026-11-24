@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling logo concepts</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    section img {
+      display: block;
+      width: 100%;
+      border-radius: 18px;
+    }
+
+    .light {
+      background: #e4e4ea;
+    }
+
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .pair {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Starling logo concepts from Figma AI</h1>
+    <p>Idea pictures to react to, not finished logos. The final logo will still be drawn by hand as clean SVG, using whatever you point to here: a pose, a color mix, a beak, legs, a level of detail.</p>
+
+    <section>
+      <h2>1. Illustrated starlings</h2>
+      <p>The most "real starling" of the set: iridescent violet and teal, star-shaped speckles, pink legs with proper feet. Too detailed for a logo as is, but good for which features make it a starling.</p>
+      <img src="logo-concepts/c1.jpg" alt="Six illustrated starlings with star speckles on navy tiles">
+    </section>
+
+    <section>
+      <h2>2. Dark and lavender mixed</h2>
+      <p>Your idea of both colors in one bird: a dark starling back and head over a lavender belly, with white star speckles. The image came out with a messy see-through background, so look at the birds, not the smudges around them.</p>
+      <img class="light" src="logo-concepts/c2.png" alt="Six simple starlings, some dark with lavender bellies, some all lavender">
+    </section>
+
+    <section>
+      <h2>3. One-color emblems</h2>
+      <p>Single lavender silhouettes with the wing cut in as lines, like a stamp. Includes a look-up pose, flight, a crescent Moon perch, singing, and a fluffed winter bird.</p>
+      <img src="logo-concepts/c3.jpg" alt="Six lavender starling silhouettes: perched, looking up at a star, flying, on a crescent Moon, singing, fluffed">
+    </section>
+
+    <section>
+      <h2>4. Figma vector marks</h2>
+      <p>These two came out as editable vector shapes in Figma, so they're closest to a usable logo, though the shapes are plain.</p>
+      <div class="pair">
+        <img class="light" src="logo-concepts/v1.png" alt="Dark starling with a purple wing, star speckles and pink legs">
+        <img class="light" src="logo-concepts/v2.png" alt="Lavender starling looking up at a yellow star">
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -139,6 +139,26 @@
 
 
 
+/* REVEAL */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    :root:not(.still) .sources > li {
+      animation: float 8s ease-in-out var(--delay) infinite, page-rise linear both;
+      animation-timeline: auto, view();
+      animation-range: normal, entry 0% entry 140px;
+    }
+
+    :root:not(.still) .built-with {
+      animation: page-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 140px;
+    }
+  }
+}
+
+
+
 /* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling bird poses</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .og {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .og img {
+      width: 100%;
+      border-radius: 18px;
+    }
+
+
+
+    /* NUMBERED SHEETS */
+
+    .numbered {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .numbered img {
+      display: block;
+      width: 100%;
+    }
+
+    .numbered + .numbered {
+      margin-top: 16px;
+    }
+
+    .on-light {
+      background: #e8e8ec;
+    }
+
+    .night {
+      background: #0d0f28;
+    }
+
+    .labels {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .labels li {
+      padding: 12px;
+    }
+
+    .labels span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 40px;
+      height: 32px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-weight: 800;
+    }
+
+    @media (max-width: 700px) {
+      .og {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Our starling in new poses</h1>
+    <p>Figma drew our OG starling in new poses for the lost-in-space page and the About page. It can't copy the OG perfectly, so some came out a bit rounder or with extra speckles. When you pick one, I'll trace it into SVG and match it back to the OG's colors, eye, beak and star. Pick by number, like "L4".</p>
+
+    <section class="og">
+      <img src="logo-concepts/chosen.png" alt="The OG starling" style="background:#e8e8ec">
+      <div>
+        <h2>OG</h2>
+        <p>Our logo, for comparison.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>P. Everyday poses</h2>
+      <p>P1 sitting down resting. P2 facing left, gazing up at the star. P3 wings spread wide. P4 head tilted curiously toward you. P5 holding the star in its beak. P6 a happy hop with wings raised.</p>
+      <div class="numbered">
+        <img src="logo-concepts/poses-p1.jpg" alt="Six everyday poses of the starling">
+        <ol class="labels"><li><span>P1</span></li><li><span>P2</span></li><li><span>P3</span></li><li><span>P4</span></li><li><span>P5</span></li><li><span>P6</span></li></ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>L. Lost in space</h2>
+      <p>For the page people land on when a link is broken. L1 floating upside down, puzzled. L2 drifting under a question mark made of stars. L3 in a round space helmet. L4 asleep on the crescent Moon. L5 peeking out with a little star lantern. L6 tumbling, with dizzy stars circling its head.</p>
+      <div class="numbered">
+        <img src="logo-concepts/poses-p2.jpg" alt="Six lost-in-space poses of the starling on a night sky">
+        <ol class="labels"><li><span>L1</span></li><li><span>L2</span></li><li><span>L3</span></li><li><span>L4</span></li><li><span>L5</span></li><li><span>L6</span></li></ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>A. About page</h2>
+      <p>A1 flying toward the star with its legs tucked back, like the flying starling photo. A2 gliding. A3 a little flock of three, a nod to murmurations. A4 waving hello. A5 peeking through a brass telescope. A6 perched on a branch, looking up at the star.</p>
+      <div class="numbered">
+        <img src="logo-concepts/poses-p3.jpg" alt="Six About-page poses: flying, gliding, a flock, waving, telescope, on a branch">
+        <ol class="labels"><li><span>A1</span></li><li><span>A2</span></li><li><span>A3</span></li><li><span>A4</span></li><li><span>A5</span></li><li><span>A6</span></li></ol>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

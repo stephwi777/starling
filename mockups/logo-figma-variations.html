@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling logo Figma variations</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .og {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .og img {
+      width: 100%;
+      border-radius: 18px;
+    }
+
+
+
+    /* NUMBERED SHEETS */
+
+    .numbered {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .numbered img {
+      display: block;
+      width: 100%;
+    }
+
+    .labels {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .labels li {
+      padding: 12px;
+    }
+
+    .labels span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 40px;
+      height: 32px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-weight: 800;
+    }
+
+    @media (max-width: 700px) {
+      .og {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Figma variations of your starling</h1>
+    <p>Figma AI made these from a description of your OG bird. It can't copy a picture exactly, so each one is a little different. Pick any tile by its number (like "B2"), or mix parts ("B2's colors on C2's pose"), and I'll trace it into SVG the same way as the OG.</p>
+
+    <section class="og">
+      <img src="logo-concepts/chosen.png" alt="The OG starling">
+      <div>
+        <h2>OG</h2>
+        <p>Your original, for comparison.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>A. Real starling colors, detailed</h2>
+      <p>Glossy blue-black with teal and violet sheen, bronze-edged wing feathers and white star speckles. A2, A4 and A6 have the light lavender outline. These have more detail than your OG: feather edges and soft shading.</p>
+      <div class="numbered">
+        <img src="logo-concepts/d1.jpg" alt="Six detailed starlings in real starling colors">
+        <ol class="labels"><li><span>A1</span></li><li><span>A2</span></li><li><span>A3</span></li><li><span>A4</span></li><li><span>A5</span></li><li><span>A6</span></li></ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>B. Starling colors, flat like the OG</h2>
+      <p>The same simple flat shapes as your OG, in starling teal, violet, blue-black and lavender. B4 has the light lavender outline, and B5 has a bronze tail tip.</p>
+      <div class="numbered">
+        <img src="logo-concepts/d2.jpg" alt="Six flat starlings in teal, violet, blue-black and lavender">
+        <ol class="labels"><li><span>B1</span></li><li><span>B2</span></li><li><span>B3</span></li><li><span>B4</span></li><li><span>B5</span></li><li><span>B6</span></li></ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>C. Poses and speckles</h2>
+      <p>C1 is bold and simple for tiny sizes. C2 is resting with its legs tucked under, gazing up at the star, with no nest. C3 has a constellation of speckles. C4 is speckled all over like a starry sky. C5 blends the resting pose with a constellation. C6, the wildcard, hops up to touch the star with its beak. These came out rounder and more sparrow-like than your OG, so they'd need the OG's slimmer starling shape.</p>
+      <div class="numbered">
+        <img src="logo-concepts/d3.jpg" alt="Six lavender birds: bold, resting, constellation chest, starry all over, resting with constellation, hopping to the star">
+        <ol class="labels"><li><span>C1</span></li><li><span>C2</span></li><li><span>C3</span></li><li><span>C4</span></li><li><span>C5</span></li><li><span>C6</span></li></ol>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

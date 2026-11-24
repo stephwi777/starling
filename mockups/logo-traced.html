@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling logo traced</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2,
+    .wordmark {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .pair figure {
+      margin: 0;
+    }
+
+    .pair img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      border-radius: 18px;
+      background: #e8e8ec;
+    }
+
+    .pair .fit {
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    figcaption {
+      margin-top: 8px;
+      color: #b4b6dc;
+      font-size: 0.875rem;
+    }
+
+    .uses {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .uses figure {
+      margin: 0;
+    }
+
+    .tile {
+      display: grid;
+      place-items: center;
+      min-height: 76px;
+      padding: 0 20px;
+      border-radius: 18px;
+      background: #0d0f28;
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.6rem;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 10px 10px 0 0;
+      background: #dfe1ea;
+      color: #222;
+      font-size: 0.8125rem;
+    }
+
+    .tab.dark {
+      background: #35363a;
+      color: #e8e8e8;
+    }
+
+    @media (max-width: 700px) {
+      .pair {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Your starling, traced as SVG</h1>
+    <p>Left is the AI picture you chose. Right is the new SVG. The shapes, colors and positions are traced from the picture's pixels. The eye, the stars and the beak are redrawn as exact circles, symmetric stars and straight lines, measured from the picture, so they stay crisp at any size.</p>
+
+    <section>
+      <h2>Side by side</h2>
+      <div class="pair">
+        <figure>
+          <img src="logo-concepts/chosen.png" alt="The original AI picture of the starling">
+          <figcaption>Original picture (PNG, made of pixels)</figcaption>
+        </figure>
+        <figure>
+          <img src="logo-concepts/traced-frame.svg" alt="The traced SVG starling">
+          <figcaption>Traced SVG (shapes, sharp at any size)</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section>
+      <h2>A first look on the site</h2>
+      <p>Just a preview of the traced bird as it is today. Nothing on the site has changed yet.</p>
+      <div class="uses">
+        <figure><div class="tile"><div class="wordmark"><img src="logo-traced.svg" height="46" alt="">Starling</div></div><figcaption>Wide header</figcaption></figure>
+        <figure><div class="tab"><img src="logo-traced.svg" height="16" alt="">Tonight</div><figcaption>Tab, 16px</figcaption></figure>
+        <figure><div class="tab dark"><img src="logo-traced.svg" height="16" alt="">Tonight</div><figcaption>Dark tab</figcaption></figure>
+        <figure><div class="tile"><img src="logo-traced.svg" height="200" alt=""></div><figcaption>Big, on the night sky</figcaption></figure>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

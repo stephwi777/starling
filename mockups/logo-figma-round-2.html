@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling logo Figma round 2</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .og {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .og img {
+      width: 100%;
+      border-radius: 18px;
+    }
+
+
+
+    /* NUMBERED SHEETS */
+
+    .numbered {
+      position: relative;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .numbered img {
+      display: block;
+      width: 100%;
+    }
+
+    .numbered + .numbered {
+      margin-top: 16px;
+    }
+
+    .on-light {
+      background: #e8e8ec;
+    }
+
+    .night {
+      background: #0d0f28;
+    }
+
+    .labels {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .labels li {
+      padding: 12px;
+    }
+
+    .labels span {
+      display: inline-grid;
+      place-items: center;
+      min-width: 40px;
+      height: 32px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-weight: 800;
+    }
+
+    @media (max-width: 700px) {
+      .og {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Figma round 2: night starling colors</h1>
+    <p>Logo-style birds, not realistic ones, in the colors you picked: navy blue-black, teal and violet wing bands, white star speckles, and sometimes the light lavender outline. D and E use the OG pose with a bigger star and a slightly bigger head. F uses the A6 pose. Pick a tile by its number (like "D4"), or mix parts, and I'll trace it into SVG.</p>
+
+    <section class="og">
+      <img src="logo-concepts/chosen.png" alt="The OG starling" style="background:#e8e8ec">
+      <div>
+        <h2>OG</h2>
+        <p>Your original, for comparison.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>D. OG pose, bold logo style</h2>
+      <p>D1 as asked. D2 and D4 have the lavender outline. D3 has a lavender belly, D4 a teal belly. D5 has fewer, bigger speckles for small sizes. D6 is the simplest, like an app icon. The first copy is on light grey, the second is on Starling's night sky, so you can see which ones stay readable on the site.</p>
+      <div class="numbered">
+        <img class="on-light" src="logo-concepts/e1.png" alt="Six bold navy, teal and violet starlings looking up at a big star, on light grey">
+        <ol class="labels"><li><span>D1</span></li><li><span>D2</span></li><li><span>D3</span></li><li><span>D4</span></li><li><span>D5</span></li><li><span>D6</span></li></ol>
+      </div>
+      <div class="numbered night">
+        <img src="logo-concepts/e1.png" alt="The same six starlings on the dark night-sky color">
+        <ol class="labels"><li><span>D1</span></li><li><span>D2</span></li><li><span>D3</span></li><li><span>D4</span></li><li><span>D5</span></li><li><span>D6</span></li></ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>E. Made for the dark header</h2>
+      <p>All six have the lavender outline so the dark bird stands out on a dark background, like a sticker. Figma made their background patchy and see-through, so it may show faint smudges; ignore those.</p>
+      <div class="numbered night">
+        <img src="logo-concepts/e2.png" alt="Six outlined navy, teal and violet starlings looking up at a star">
+        <ol class="labels"><li><span>E1</span></li><li><span>E2</span></li><li><span>E3</span></li><li><span>E4</span></li><li><span>E5</span></li><li><span>E6</span></li></ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>F. The A6 pose</h2>
+      <p>Standing taller with the head only slightly raised, beak pointing at a small star. Closer to a real starling, with the teal and violet sheen on the head and neck. F1 and F5 have the lavender outline.</p>
+      <div class="numbered">
+        <img src="logo-concepts/e3.jpg" alt="Six starlings in the A6 pose with teal and violet sheen and star speckles">
+        <ol class="labels"><li><span>F1</span></li><li><span>F2</span></li><li><span>F3</span></li><li><span>F4</span></li><li><span>F5</span></li><li><span>F6</span></li></ol>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

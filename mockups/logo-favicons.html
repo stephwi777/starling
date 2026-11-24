@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling favicon options</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0 0 4px;
+      font-size: 1.75rem;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 1.125rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+    .styles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .style {
+      padding: 20px;
+      border-radius: 22px;
+      background: #0d0f28;
+    }
+
+    .big {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 14px;
+      background: #0d0f28;
+    }
+
+    .sizes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 10px 10px 0 0;
+      background: #dfe1ea;
+      color: #222;
+      font-size: 0.8125rem;
+    }
+
+    .tab.dark {
+      background: #35363a;
+      color: #e8e8e8;
+    }
+
+    .tab img {
+      width: 16px;
+      height: 16px;
+    }
+
+    .small {
+      display: flex;
+      gap: 12px;
+      align-items: end;
+      color: #b4b6dc;
+      font-size: 0.8125rem;
+    }
+
+    .small img {
+      display: block;
+    }
+
+    .home {
+      border-radius: 22%;
+    }
+
+    @media (max-width: 900px) {
+      .styles {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Favicon options</h1>
+    <p>Four ways to fit the starling into a tiny browser tab, for the OG and both edits. "Whole bird" is the full logo. "Bust" cuts the body off at the bottom so the head, eye, beak and star can be much bigger. The "tile" versions sit on a rounded Starling-blue square, like an app icon, so the shape stays clear on both light and dark browser tabs. Each one is shown big, in light and dark tabs at 16px, at 32px, and as a phone home-screen icon.</p>
+
+    <div id="birds"></div>
+  </main>
+
+  <script>
+    const birds = [
+      { key: 'og', name: 'OG' },
+      { key: 'a', name: 'Edit A', text: 'Head 10% bigger, star 30% bigger.' },
+      { key: 'b', name: 'Edit B', text: 'Head 17% bigger, star 50% bigger.' },
+    ]
+
+    const styles = [
+      { key: 'whole', name: 'Whole bird' },
+      { key: 'bust', name: 'Bust' },
+      { key: 'bust-tile', name: 'Bust on a tile' },
+      { key: 'head-tile', name: 'Close-up on a tile' },
+    ]
+
+    for (const bird of birds) {
+      const section = document.createElement('section')
+      section.innerHTML = `
+        <h2>${bird.name}</h2>
+        <p>${bird.text ?? 'Your original, unchanged.'}</p>
+        <div class="styles">
+          ${styles.map(style => {
+            const src = `logo-favicons/${bird.key}-${style.key}.svg`
+            return `
+              <div class="style">
+                <h3>${style.name}</h3>
+                <img class="big" src="${src}" alt="">
+                <div class="sizes">
+                  <div class="tab"><img src="${src}" alt="">Tonight</div>
+                  <div class="tab dark"><img src="${src}" alt="">Tonight</div>
+                  <div class="small">
+                    <img src="${src}" width="32" height="32" alt="">
+                    <img class="home" src="${src}" width="60" height="60" alt="" style="background: #1f2350">
+                  </div>
+                </div>
+              </div>`
+          }).join('')}
+        </div>`
+      document.getElementById('birds').append(section)
+    }
+  </script>
+</body>
+</html>

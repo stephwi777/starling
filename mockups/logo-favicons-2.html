@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling favicon round 2</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: #0d0f28;
+      color: #eef0fb;
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2,
+    h3,
+    .wordmark {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 1.5rem;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 1.125rem;
+    }
+
+    p {
+      max-width: 70ch;
+      color: #b4b6dc;
+    }
+
+    section {
+      margin-top: 40px;
+      padding: 32px;
+      border-radius: 30px;
+      background: #171a40;
+    }
+
+
+
+    /* BROWSER STRIP */
+
+    .browser {
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .browser + .browser {
+      margin-top: 16px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 2px;
+      padding: 8px 8px 0;
+      background: #c9ccd6;
+    }
+
+    .browser.dark .tabs {
+      background: #202124;
+    }
+
+    .tabs div {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      padding: 9px 12px;
+      border-radius: 10px 10px 0 0;
+      background: #dfe1ea;
+      color: #222;
+      font-size: 0.8125rem;
+      white-space: nowrap;
+    }
+
+    .browser.dark .tabs div {
+      background: #35363a;
+      color: #e8e8e8;
+    }
+
+    .tabs img {
+      flex: none;
+      width: 16px;
+      height: 16px;
+    }
+
+    .page {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 18px 24px;
+      background: #0d0f28;
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.6rem;
+    }
+
+
+
+    /* OPTIONS */
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .option {
+      padding: 20px;
+      border-radius: 22px;
+      background: #0d0f28;
+    }
+
+    .option > p {
+      margin: 0 0 12px;
+      font-size: 0.9375rem;
+    }
+
+    .big {
+      display: block;
+      width: 100%;
+      max-width: 220px;
+      aspect-ratio: 1;
+    }
+
+    .small {
+      display: flex;
+      gap: 14px;
+      align-items: end;
+      margin-top: 16px;
+      color: #b4b6dc;
+      font-size: 0.8125rem;
+    }
+
+    .small img {
+      display: block;
+    }
+
+    .pad {
+      padding: 6px;
+      border-radius: 6px;
+      background: #dfe1ea;
+    }
+
+    .pad.dark {
+      background: #35363a;
+    }
+
+    @media (max-width: 900px) {
+      .options {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="sheet">
+    <h1>Favicon round 2</h1>
+    <p>The header keeps the OG next to "Starling". These are options for the little icon in the browser tab: a yellow star on a purple tile, the star with a starling feather, and Edit B's bust on a tile for comparison. The star is the exact same star shape as in the OG logo.</p>
+
+    <section>
+      <h2>In real browser tabs</h2>
+      <div class="browser">
+        <div class="tabs" id="light-tabs"></div>
+        <div class="page"><div class="wordmark"><img src="logo-traced.svg" height="50" alt="">Starling</div></div>
+      </div>
+      <div class="browser dark">
+        <div class="tabs" id="dark-tabs"></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Each option</h2>
+      <div class="options" id="options"></div>
+    </section>
+  </main>
+
+  <script>
+    const options = [
+      { key: 'star-indigo', name: '1. Star, indigo tile', text: 'The OG star on the OG wing’s indigo.' },
+      { key: 'star-night', name: '2. Star, night tile', text: 'The same star on Starling’s night blue.' },
+      { key: 'star-feather-behind', name: '3. Star over a feather', text: 'A lavender starling feather behind the star.' },
+      { key: 'star-feather-tip', name: '4. Feather reaching for the star', text: 'The feather points up at the star, like the OG bird’s beak.' },
+      { key: 'star-feather-night', name: '5. Feather and star, night tile', text: 'Option 4 on Starling’s night blue.' },
+      { key: 'b-bust-tile', name: 'Edit B bust (closest so far)', text: 'From the last round, for comparison.' },
+    ]
+
+    const src = key => `logo-favicons/${key}.svg`
+
+    for (const id of ['light-tabs', 'dark-tabs']) {
+      document.getElementById(id).innerHTML = options.map((option, i) => `<div><img src="${src(option.key)}" alt="">Option ${i < 5 ? i + 1 : 'B'}</div>`).join('')
+    }
+
+    document.getElementById('options').innerHTML = options.map(option => `
+      <div class="option">
+        <h3>${option.name}</h3>
+        <p>${option.text}</p>
+        <img class="big" src="${src(option.key)}" alt="">
+        <div class="small">
+          <img class="pad" src="${src(option.key)}" width="16" height="16" alt="">
+          <img class="pad dark" src="${src(option.key)}" width="16" height="16" alt="">
+          <img src="${src(option.key)}" width="32" height="32" alt="">
+          <img src="${src(option.key)}" width="60" height="60" alt="">
+        </div>
+      </div>`).join('')
+  </script>
+</body>
+</html>

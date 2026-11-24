@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling logo today</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* COLORS */
+
+    :root {
+      --zenith: #0d0f28;
+      --high: #171a40;
+      --raised: #1f2350;
+      --far-hills: #31296a;
+      --wing: #3d3590;
+      --snow: #b9ade4;
+      --ink: #1a1645;
+      --frost: #eef0fb;
+      --mist: #b4b6dc;
+      --beak: #f1cd57;
+    }
+
+    .red {
+      --zenith: #070101;
+      --high: #2d0704;
+      --far-hills: #5a0f0a;
+      --wing: #78160f;
+      --snow: #f15e48;
+      --ink: #2b0604;
+      --frost: #ff8f70;
+      --mist: #ff8f70;
+      --beak: #ff765c;
+    }
+
+    .bare .disc {
+      display: none;
+    }
+
+    .solid {
+      --far-hills: var(--frost);
+      --wing: var(--frost);
+      --snow: var(--frost);
+      --ink: var(--frost);
+      --beak: var(--frost);
+    }
+
+
+
+    /* SHEET */
+
+    body {
+      margin: 0;
+      background: var(--zenith);
+      color: var(--frost);
+      font-family: 'Nunito', system-ui, sans-serif;
+      line-height: 1.5;
+    }
+
+    .sheet {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-weight: 600;
+    }
+
+    h2 {
+      margin-top: 56px;
+      font-size: 1.5rem;
+    }
+
+    p,
+    li {
+      max-width: 68ch;
+      color: var(--mist);
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 32px;
+      padding: 32px;
+      border-radius: 26px;
+      background: var(--high);
+    }
+
+    .row figure {
+      margin: 0;
+      text-align: center;
+    }
+
+    .row figcaption {
+      margin-top: 8px;
+      color: var(--mist);
+      font-size: 0.875rem;
+    }
+
+    .row svg {
+      display: block;
+      overflow: visible;
+    }
+
+    .wordmark {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Fraunces', Georgia, serif;
+      font-variation-settings: 'SOFT' 100;
+      font-size: 1.6rem;
+      font-weight: 600;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 10px 10px 0 0;
+      background: #dfe1ea;
+      color: #222;
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position: absolute">
+    <symbol id="mark" viewBox="0 0 48 48">
+      <circle class="disc" cx="24" cy="26" r="20" fill="var(--far-hills)" />
+      <path d="M14 31 L5.5 35.5 Q6 38 9 38 L15.5 35 Z" fill="var(--ink)" stroke="var(--ink)" stroke-width="1.5" stroke-linejoin="round" />
+      <circle cx="21" cy="31" r="10" fill="var(--ink)" />
+      <circle cx="27.5" cy="21" r="7" fill="var(--ink)" />
+      <ellipse cx="18.5" cy="31" rx="7" ry="4.6" transform="rotate(-25 18.5 31)" fill="var(--wing)" />
+      <g fill="var(--snow)">
+        <circle cx="27.5" cy="28.5" r="0.9" />
+        <circle cx="25" cy="32.5" r="0.9" />
+        <circle cx="28.5" cy="33" r="0.9" />
+      </g>
+      <path d="M33.4 19.9 L40.6 17.3 L33.8 22.1 Z" fill="var(--beak)" stroke="var(--beak)" stroke-width="0.6" stroke-linejoin="round" />
+      <circle cx="29.6" cy="19.8" r="1.5" fill="var(--frost)" />
+      <path d="M40 1.5 Q41.2 6.8 46.5 8 Q41.2 9.2 40 14.5 Q38.8 9.2 33.5 8 Q38.8 6.8 40 1.5 Z" fill="var(--beak)" />
+    </symbol>
+  </svg>
+
+  <main class="sheet">
+    <h1>The Starling logo today</h1>
+    <p>Nothing here is a new design yet. This page shows the current logo the way a logo gets tested: big, at its real sizes, as one flat color, and in red light.</p>
+
+    <h2>1. Big, so the shapes show</h2>
+    <div class="row">
+      <figure>
+        <svg width="320" height="320"><use href="#mark" /></svg>
+        <figcaption>Header logo, 320px</figcaption>
+      </figure>
+      <figure>
+        <img src="../public/favicon.svg" width="280" alt="">
+        <figcaption>Favicon, 280px</figcaption>
+      </figure>
+    </div>
+
+    <h2>2. Real sizes</h2>
+    <div class="row">
+      <figure>
+        <div class="wordmark"><svg width="38" height="38"><use href="#mark" /></svg>Starling</div>
+        <figcaption>Wide header, 38px</figcaption>
+      </figure>
+      <figure>
+        <div class="wordmark" style="font-size: 1.45rem; gap: 8px"><svg width="34" height="34"><use href="#mark" /></svg>Starling</div>
+        <figcaption>Phone header, 34px</figcaption>
+      </figure>
+      <figure>
+        <div class="tab"><img src="../public/favicon.svg" width="16" alt="">Tonight · Starling</div>
+        <figcaption>Browser tab, 16px</figcaption>
+      </figure>
+      <figure>
+        <img src="../public/favicon.svg" width="32" alt="">
+        <figcaption>32px</figcaption>
+      </figure>
+      <figure>
+        <img src="../public/apple-touch-icon.png" width="90" alt="" style="border-radius: 20px">
+        <figcaption>Phone home screen</figcaption>
+      </figure>
+    </div>
+
+    <h2>3. One flat color</h2>
+    <p>A strong logo still reads when every part is the same color. This one turns into a blob with a spike and a star.</p>
+    <div class="row solid">
+      <figure>
+        <svg width="160" height="160"><use href="#mark" /></svg>
+        <figcaption>160px</figcaption>
+      </figure>
+      <figure>
+        <svg width="48" height="48"><use href="#mark" /></svg>
+        <figcaption>48px</figcaption>
+      </figure>
+      <figure>
+        <svg width="24" height="24"><use href="#mark" /></svg>
+        <figcaption>24px</figcaption>
+      </figure>
+      <figure class="bare">
+        <svg width="160" height="160"><use href="#mark" /></svg>
+        <figcaption>Bird alone, 160px</figcaption>
+      </figure>
+      <figure class="bare">
+        <svg width="32" height="32"><use href="#mark" /></svg>
+        <figcaption>Bird alone, 32px</figcaption>
+      </figure>
+    </div>
+
+    <h2>4. Red light</h2>
+    <div class="row red">
+      <figure>
+        <svg width="160" height="160"><use href="#mark" /></svg>
+        <figcaption>160px</figcaption>
+      </figure>
+      <figure>
+        <div class="wordmark" style="color: var(--frost)"><svg width="38" height="38"><use href="#mark" /></svg>Starling</div>
+        <figcaption>Wide header</figcaption>
+      </figure>
+    </div>
+  </main>
+</body>
+</html>
