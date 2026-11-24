@@ -33,3 +33,14 @@ test('patchy on phones is the top-right cluster with no Moon cloud', () => {
 test('cloudy nights are four huge clouds', () => {
   expect(LAYOUTS[3].canvas.map(cloud => cloud.shape)).toEqual(['tall', 'wide', 'long', 'hump'])
 })
+
+test('cloudy clouds always reach down behind the hills', () => {
+  const band = 420
+  const ground = 130
+
+  for (const cloud of LAYOUTS[3].canvas) {
+    expect(cloud.bottom, cloud.shape).toBeDefined()
+    expect(cloud.y, cloud.shape).toBeUndefined()
+    expect((cloud.bottom / 100) * band, cloud.shape).toBeLessThan(ground)
+  }
+})

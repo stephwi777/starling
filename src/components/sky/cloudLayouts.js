@@ -27,10 +27,10 @@ export const LAYOUTS = {
   },
   3: {
     canvas: [
-      { shape: 'tall', x: -12, y: 11, w: 64, shade: 1 },
-      { shape: 'wide', x: 42, y: 6, w: 70, shade: 1, flip: true },
-      { shape: 'long', x: -6, y: 25, w: 66, shade: 2, flip: true },
-      { shape: 'hump', x: 52, y: 24, w: 58, shade: 2 },
+      { shape: 'tall', x: -12, bottom: 26.9, w: 64, shade: 1 },
+      { shape: 'wide', x: 42, bottom: 26.1, w: 70, shade: 1, flip: true },
+      { shape: 'long', x: -6, bottom: 11, w: 66, shade: 2, flip: true },
+      { shape: 'hump', x: 52, bottom: 19.7, w: 58, shade: 2 },
     ],
   },
 }

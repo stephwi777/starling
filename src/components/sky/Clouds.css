@@ -64,7 +64,7 @@
   bottom: 0;
   left: 50%;
   width: max(100cqw, 100cqh * 1132 / 420);
-  aspect-ratio: 1132 / 420;
+  height: 100%;
   translate: -50% 0;
 }
 

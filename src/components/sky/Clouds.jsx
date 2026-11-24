@@ -6,9 +6,16 @@ import './Clouds.css'
 
 // CLOUD
 
+function placeOf(cloud) {
+  if (cloud.moon) return undefined
+  if (cloud.bottom !== undefined) return { left: `${cloud.x}%`, bottom: `${cloud.bottom}%`, width: `${cloud.w}%` }
+
+  return { left: `${cloud.x}%`, top: `${cloud.y}%`, width: `${cloud.w}%` }
+}
+
 function Cloud({ cloud }) {
   const svg = (
-    <svg className={cloud.flip ? 'cloud flip' : 'cloud'} viewBox="0 0 200 72" style={cloud.moon ? undefined : { left: `${cloud.x}%`, top: `${cloud.y}%`, width: `${cloud.w}%` }}>
+    <svg className={cloud.flip ? 'cloud flip' : 'cloud'} viewBox="0 0 200 72" style={placeOf(cloud)}>
       <path d={CLOUD_PATHS[cloud.shape]} style={{ fill: `var(--shade-${cloud.shade})` }} />
     </svg>
   )
