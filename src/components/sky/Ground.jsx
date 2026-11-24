@@ -58,7 +58,7 @@ function BandHills({ snow }) {
   return (
     <svg className="hills" viewBox="0 0 1440 130" preserveAspectRatio="none">
       <path d="M0 52 C 200 20, 420 40, 640 46 S 1100 22, 1440 44 L 1440 130 L 0 130 Z" fill="var(--far-hills)" />
-      <path d="M0 92 C 300 70, 700 80, 1000 88 S 1300 76, 1440 82 L 1440 130 L 0 130 Z" fill={snow} />
+      <path d="M0 92 C 300 70, 700 80, 1000 88 S 1300 76, 1440 82 L 1440 130 L 0 130 Z" style={{ fill: snow }} />
     </svg>
   )
 }

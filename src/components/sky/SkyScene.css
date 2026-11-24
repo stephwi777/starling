@@ -89,6 +89,14 @@
   translate: -50% 0;
 }
 
+.band .hills path {
+  transition: fill 2s ease;
+}
+
+.still .band .hills path {
+  transition: none;
+}
+
 
 
 /* SMALL SCREENS */
@@ -105,5 +113,15 @@
 @media (max-width: 480px) {
   .tall .moon {
     translate: 0 -16px;
+  }
+}
+
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .band .hills path {
+    transition: none;
   }
 }
