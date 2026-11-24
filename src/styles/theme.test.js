@@ -119,3 +119,21 @@ test('red light keeps text readable and in the same order of brightness', () => 
 
   expect(order(red)).toEqual(order(normal))
 })
+
+test('the living sky has every new color in both modes', () => {
+  const names = ['cloud-front', 'dawn-top', 'dawn-middle', 'dawn-low', 'snow-dawn', 'twilight-cloud-1', 'twilight-cloud-2', 'twilight-cloud-3', 'twilight-cloud-4', 'twilight-cloud-deep', 'twilight-cloud-low', 'twilight-cloudy-back']
+
+  for (const theme of [normal, red]) {
+    for (const name of names) expect(theme[name], name).toMatch(/^#/)
+  }
+
+  expect(normal['moonlit-top']).toBe('#0c1030')
+  expect(normal['twilight-cloudy-back']).toBe('#463c82')
+  expect(red['dawn-low']).toBe('#661a10')
+})
+
+test('the date stays readable over the cloudy twilight sky', () => {
+  for (const theme of [normal, red]) {
+    expect(contrast(theme.mist, theme['twilight-cloudy-back'])).toBeGreaterThanOrEqual(4.5)
+  }
+})
