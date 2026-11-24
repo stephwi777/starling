@@ -1,0 +1,1 @@
+import"./ui-BG8KcCvU.js";import{t as e}from"./jsx-runtime-DyZJNswf.js";var t=e();function n({left:e=!1,className:n=``}){let r=[`chevron`,e&&`left`,n].filter(Boolean).join(` `);return(0,t.jsx)(`span`,{className:r,"aria-hidden":`true`})}export{n as t};

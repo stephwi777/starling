@@ -1,0 +1,1 @@
+import{i as e,n as t}from"./jsx-runtime-DyZJNswf.js";var n=e(t(),1);function r(){let[e,t]=(0,n.useState)(!0);return{"data-ring":e?void 0:`off`,onFocus(e){e.target===e.currentTarget&&t(e.target.matches(`:focus-visible`))}}}export{r as t};

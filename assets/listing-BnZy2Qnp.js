@@ -1,0 +1,1 @@
+function e(e){return e.gear*4+e.mag-e.track[e.bestIndex].alt/40}function t(t){return[...t].sort((t,n)=>e(t)-e(n))}export{t};
