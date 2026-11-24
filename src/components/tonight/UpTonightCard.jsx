@@ -1,4 +1,5 @@
 import Card from '../ui/Card.jsx'
+import Chevron from '../ui/Chevron.jsx'
 import IconWell from '../ui/IconWell.jsx'
 import { upTonight } from '../../sky/upTonight.js'
 import { SparkleIcon } from '../ui/icons.jsx'
@@ -36,7 +37,7 @@ function UpTonightCard({ sky, place, link, panelClose }) {
       <div className="card-head">
         <IconWell><SparkleIcon /></IconWell>
         <h2 id="up-title">Up tonight</h2>
-        {total > 0 && <span className="up-count" aria-hidden="true">See all {total}<i>›</i></span>}
+        {total > 0 && <span className="up-count" aria-hidden="true">See all {total}<Chevron /></span>}
       </div>
 
       <TileLink id="up-title" to="up" link={link} panelClose={panelClose} />

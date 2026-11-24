@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef } from 'react'
 import SkyIcon from '../sky-icons/SkyIcon.jsx'
 import GearGlyph from '../sky-icons/GearGlyph.jsx'
+import Chevron from '../ui/Chevron.jsx'
 
 
 
@@ -56,7 +57,7 @@ function UpGroup({ title, when, rows, open, shown, moonAngle, onToggle, onShown 
   return (
     <div className={`up-group${open ? ' open' : ''}`}>
       <button type="button" className="up-group-head" aria-expanded={open} aria-controls={body} onClick={onToggle}>
-        <svg className="up-chevron" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M5 3 L10 8 L5 13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        <Chevron className="up-chevron" />
         <strong>{title}</strong>
         <span>{rows.length} · {when}</span>
       </button>

@@ -304,10 +304,13 @@
 }
 
 .tile h2::after {
-  content: '›' / '';
+  content: '';
+  flex: none;
+  width: 16px;
+  height: 16px;
   margin-left: auto;
-  font-size: 1.65rem;
-  line-height: 0.8;
+  background: currentColor;
+  mask: var(--chevron) center / contain no-repeat;
 }
 
 .tile.still h2::after {
@@ -542,13 +545,6 @@
   color: var(--mist);
   font-size: 0.9rem;
   font-weight: 700;
-}
-
-.up-count i {
-  font-size: 1.65rem;
-  font-style: normal;
-  font-weight: 800;
-  line-height: 0.8;
 }
 
 .up-list li {

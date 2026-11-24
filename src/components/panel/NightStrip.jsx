@@ -1,3 +1,4 @@
+import Chevron from '../ui/Chevron.jsx'
 import './NightStrip.css'
 
 
@@ -12,10 +13,10 @@ function dateWords(date, timeZone, options) {
 
 // ARROW
 
-function StepArrow({ label, path, off, onClick }) {
+function StepArrow({ label, left = false, off, onClick }) {
   return (
     <button type="button" className="night-arrow" aria-label={label} aria-disabled={off} onClick={() => !off && onClick()}>
-      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d={path} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      <Chevron left={left} />
     </button>
   )
 }
@@ -47,11 +48,11 @@ function NightStrip({ nights, tonight, chosen, timeZone, onPick }) {
       </div>
 
       <div className="night-date">
-        <StepArrow label="Night before" path="M10 3 L5 8 L10 13" off={chosen === 0} onClick={() => onPick(chosen - 1)} />
+        <StepArrow label="Night before" left off={chosen === 0} onClick={() => onPick(chosen - 1)} />
         <strong className={chosen === tonight ? 'tonight' : undefined} aria-live="polite">
           {dateWords(night.noon, timeZone, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
         </strong>
-        <StepArrow label="Night after" path="M6 3 L11 8 L6 13" off={chosen === nights.length - 1} onClick={() => onPick(chosen + 1)} />
+        <StepArrow label="Night after" off={chosen === nights.length - 1} onClick={() => onPick(chosen + 1)} />
       </div>
     </div>
   )

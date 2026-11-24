@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import GearGlyph from '../sky-icons/GearGlyph.jsx'
+import Chevron from '../ui/Chevron.jsx'
 import SearchGlyph from '../ui/SearchGlyph.jsx'
 
 
@@ -20,8 +21,6 @@ const TYPES = [
   { value: 'deep', label: 'Deep sky' },
   { value: 'meteor', label: 'Meteors' },
 ]
-
-const CHEVRON = <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M5 3 L10 8 L5 13" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
 
 function smooth() {
   return matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('still') ? 'auto' : 'smooth'
@@ -104,13 +103,13 @@ function TypeChips({ type, onType }) {
 
   return (
     <div className={['up-types', edges.left && 'can-left', edges.right && 'can-right'].filter(Boolean).join(' ')}>
-      <button type="button" className="up-nudge left" aria-hidden="true" tabIndex={-1} onClick={() => nudge(-1)}>{CHEVRON}</button>
+      <button type="button" className="up-nudge left" aria-hidden="true" tabIndex={-1} onClick={() => nudge(-1)}><Chevron left /></button>
       <div className="up-chips" ref={strip} role="group" aria-label="Type">
         {TYPES.map(({ value, label }) => (
           <button key={value} type="button" aria-pressed={type === value} onClick={event => choose(event, value)}>{label}</button>
         ))}
       </div>
-      <button type="button" className="up-nudge right" aria-hidden="true" tabIndex={-1} onClick={() => nudge(1)}>{CHEVRON}</button>
+      <button type="button" className="up-nudge right" aria-hidden="true" tabIndex={-1} onClick={() => nudge(1)}><Chevron /></button>
     </div>
   )
 }

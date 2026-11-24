@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { monthMoons } from '../../sky/moonNights.js'
+import Chevron from '../ui/Chevron.jsx'
 import { PhaseMoon } from '../ui/icons.jsx'
 
 
@@ -7,18 +8,6 @@ import { PhaseMoon } from '../ui/icons.jsx'
 // SETTINGS
 
 const WEEKDAYS = ['S', 'M', 'T', 'W', 'T', 'F', 'S']
-
-
-
-// CHEVRONS
-
-function Chevron({ path }) {
-  return (
-    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
-      <path d={path} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
 
 
 
@@ -36,11 +25,11 @@ function MoonCalendar({ nights, year, month, first, last, selectedNight, tonight
     <div className="moon-calendar" role="group" aria-label="Calendar">
       <div className="moon-calendar-head">
         <button type="button" className="moon-month" aria-label="Previous month" aria-disabled={atFirst} onClick={() => atFirst || onMonth(-1)}>
-          <Chevron path="M10 3 L5 8 L10 13" />
+          <Chevron left />
         </button>
         <strong aria-live="polite">{title}</strong>
         <button type="button" className="moon-month" aria-label="Next month" aria-disabled={atLast} onClick={() => atLast || onMonth(1)}>
-          <Chevron path="M6 3 L11 8 L6 13" />
+          <Chevron />
         </button>
       </div>
 

@@ -136,10 +136,6 @@
   left: 6px;
 }
 
-.up-nudge.left svg {
-  rotate: 180deg;
-}
-
 .up-nudge.right {
   right: 6px;
 }
