@@ -71,3 +71,9 @@ test('rain on and off uses the hours card wording', () => {
   const falls = hours(h => (h === 2 || h === 5 ? 'rain' : null))
   expect(line(falls)).toBe('Rain on and off 7pm–11pm.')
 })
+
+test('a clear stretch that starts after dark is not called clear from dusk', () => {
+  const falls = hours(h => (h >= 7 ? 'rain' : null))
+  const clouds = hours(h => (h <= 4 ? 90 : 5))
+  expect(line(falls, clouds)).toBe(fallSentence(NIGHT, falls, ZONE))
+})

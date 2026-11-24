@@ -31,7 +31,7 @@ export function bandLine({ night, clouds, falls, best, timeZone }) {
     return `${word} likely until ${clock(end, timeZone)}, then clear and dark until ${clock(windowEdges(night, clear).to, timeZone)}.`
   }
 
-  if (clear && last === hours.at(-1) && clear.to + 1 >= first.hour * PER_HOUR) {
+  if (clear && last === hours.at(-1) && clear.to + 1 >= first.hour * PER_HOUR && windowEdges(night, clear).atDusk) {
     return `Clear and dark until ${clock(first.time, timeZone)}, then ${word.toLowerCase()} likely.`
   }
 
