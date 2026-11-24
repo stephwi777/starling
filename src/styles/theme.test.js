@@ -94,3 +94,28 @@ test('the logo and decorations use theme colors so red light can recolor them', 
     expect(red[name], name).not.toBe(normal[name])
   }
 })
+
+test('red light keeps every surface step of the normal theme', () => {
+  const steps = [['zenith', 'high'], ['high', 'raised'], ['zenith', 'ink'], ['ink', 'far-hills'], ['raised', 'far-hills']]
+
+  for (const [a, b] of steps) {
+    expect(contrast(red[a], red[b]) - 1, `${a} / ${b}`).toBeGreaterThanOrEqual((contrast(normal[a], normal[b]) - 1) * 0.9)
+  }
+})
+
+test('red light keeps text readable and in the same order of brightness', () => {
+  const texts = ['frost', 'moon', 'beak', 'mist', 'snow', 'bronze', 'teal']
+  const order = theme => [...texts].sort((a, b) => contrast(theme[b], theme.high) - contrast(theme[a], theme.high))
+
+  for (const text of texts) {
+    for (const surface of ['zenith', 'high', 'ink']) {
+      expect(contrast(red[text], red[surface]), `${text} on ${surface}`).toBeGreaterThanOrEqual(4.5)
+    }
+  }
+
+  for (const text of ['frost', 'mist']) {
+    expect(contrast(red[text], red.raised), `${text} on raised`).toBeGreaterThanOrEqual(4.5)
+  }
+
+  expect(order(red)).toEqual(order(normal))
+})

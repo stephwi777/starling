@@ -38,6 +38,7 @@ const GROUPS = [
       ['Moon closest', event('moon-close'), ''],
       ['Moon farthest', event('moon-far'), ''],
       ['Moon crosses the Sun’s path', event('moon-node'), ''],
+      ['Moon covers a star or planet', event('occultation'), 'Occultations'],
       ['Solar eclipse', event('solar-eclipse'), ''],
       ['Lunar eclipse', event('lunar-eclipse'), ''],
       ['Transit', event('transit'), 'Mercury or Venus crossing the Sun'],

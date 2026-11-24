@@ -16,6 +16,7 @@ import {
   viewed,
   windowWords,
 } from './skyTools.js'
+import { coverSight, findCover, occultationEvent } from './occultations.js'
 
 
 
@@ -29,6 +30,8 @@ const PAIR_LIMIT = 2
 const MOON_LIMIT = 3
 const SUN_CLEAR = 15
 const MOON_SUN_CLEAR = 12
+const COVER_CHECK = 2
+const DAYTIME_PLANETS = ['Venus', 'Jupiter']
 const PARADE_SIZE = 4
 const PARADE_STEP = 20 * MINUTE
 const MILES_PER_AU = 92955807
@@ -192,6 +195,7 @@ function marsEvents(start, end, place, observer) {
     name: 'Mars closest to Earth',
     note: `Mars comes within ${distance(closest.value, place.country)} of Earth, its closest for about two years.`,
     ...view,
+    tags: view.here ? ['Rare'] : [],
     rows: view.window ? bodyRows('Mars', view.window, observer, place.timeZone) : [],
   })]
 }
@@ -226,6 +230,7 @@ function pairEvents(start, end, place, observer) {
           tiny: `${a} & ${b}`,
           name: `${a} and ${b} together`,
           note: `Only ${degrees(value)} apart, ${closeness(value)}`,
+          tags: Number(value.toFixed(1)) < 0.5 && view.here ? ['Rare'] : [],
           ...view,
           rows: view.window ? [['Best seen', windowWords(view.window, place.timeZone)], ...bodyRows(a, view.window, observer, place.timeZone).slice(1, 2)] : [],
         })
@@ -245,6 +250,11 @@ function moonPlanetEvents(start, end, place, observer) {
       .map(rough => refine(rough, apart, 2 * HOUR))
       .filter(({ date }) => sunDistance(body, date) > MOON_SUN_CLEAR)
       .map(({ date, value }) => {
+        const cover = value < COVER_CHECK ? findCover(body, date, observer) : null
+        const sight = cover && coverSight(cover, observer, DAYTIME_PLANETS.includes(body))
+
+        if (sight) return occultationEvent({ id: body, short: body, label: body, cover, sight, place, observer })
+
         const view = viewed(['Moon', body], date, place, observer, 'Below your horizon after dark.')
         const close = value < 1.5
 

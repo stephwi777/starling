@@ -113,9 +113,9 @@
 }
 
 :root[data-light="red"] {
-  --zenith: #0b0202;
-  --high: #1a0504;
-  --raised: #200705;
+  --zenith: #070101;
+  --high: #2d0704;
+  --raised: #430a07;
 
   --clear-top: #0d0302;
   --clear-middle: #170504;
@@ -150,67 +150,62 @@
   --day-cloud-3: #3f100a;
   --day-cloud-4: #4f140d;
 
-  --horizon: #260806;
-  --far-hills: #340b08;
-  --wing: #5a160f;
-  --lilac: #c94a35;
-  --snow: #d8503a;
-  --snow-shade: #b8402c;
-  --ink: #0b0202;
-  --frost: #ff6a50;
-  --mist: #e8553c;
-  --teal: #f0583e;
-  --bronze: #e0603e;
-  --bronze-shade: #b84a2e;
-  --beak: #ff7a5c;
-  --moon: #ff8a6c;
-  --crater: #e8705a;
-  --berry: #4f1610;
-  --moon-dark: #3a0c08;
-  --moon-shadow: #6b1c12;
-  --star-blue: #ff6a50;
-  --star-warm: #e8553c;
-  --star-teal: #ff6a50;
-  --star-rose: #e8553c;
-  --meteor-teal: #ff6a50;
-  --meteor-rose: #e8553c;
-  --meteor-lilac: #ff6a50;
-  --meteor-gold: #e8553c;
-  --star-icy: #ff6a50;
-  --star-cream: #ff8a6c;
-  --star-orange: #e8553c;
-  --star-red: #d8503a;
-  --leaf: #e0603e;
+  --horizon: #410a06;
+  --far-hills: #5a0f0a;
+  --wing: #78160f;
+  --lilac: #d44130;
+  --snow: #f15e48;
+  --snow-shade: #df4a38;
+  --ink: #2b0604;
+  --frost: #ff8f70;
+  --mist: #f4624b;
+  --teal: #eb5642;
+  --bronze: #ee5a45;
+  --bronze-shade: #dd4836;
+  --beak: #ff765c;
+  --moon: #ff8a6d;
+  --crater: #ff8064;
+  --berry: #69120c;
+  --moon-dark: #5a0f0a;
+  --moon-shadow: #9b2117;
+  --star-blue: #ff7b60;
+  --star-warm: #ff886a;
+  --star-teal: #ff8a6c;
+  --star-rose: #ff8064;
+  --meteor-teal: #fc7056;
+  --meteor-rose: #f6654e;
+  --meteor-lilac: #f15e48;
+  --meteor-gold: #ff765b;
+  --star-icy: #f8674f;
+  --star-cream: #ff8f70;
+  --star-orange: #fa6c53;
+  --star-red: #e8533f;
+  --leaf: #ff785d;
 
-  --panel: #170504;
-  --panel-raised: #200705;
-  --rule: #3c0f0a;
-  --track: #0b0202;
+  --sky-day: #a4251a;
+  --sky-civil: #7d1710;
+  --sky-nautical: #4f0c08;
+  --sky-astro: #2d0704;
+  --sky-night: #000000;
 
-  --sky-day: #5a160f;
-  --sky-civil: #43110b;
-  --sky-nautical: #2c0b07;
-  --sky-astro: #1a0604;
-  --sky-night: #0d0302;
-
-  --mercury: #d8503a;
-  --venus: #ff8a6c;
-  --mars: #e8553c;
-  --jupiter: #ff7a5c;
-  --saturn: #ff8a6c;
-  --uranus: #d8503a;
-  --neptune: #c0402c;
-  --pluto: #b8402c;
-  --jupiter-zone: #ff8a6c;
-  --jupiter-belt: #b8402c;
-  --jupiter-band: #e8553c;
-  --jupiter-spot: #8f2f20;
-  --mars-dark: #8f2f20;
-  --mars-mid: #b8402c;
-  --neptune-dark: #8f2f20;
-  --neptune-light: #e0603e;
-  --earth-sea: #8f2f20;
-  --earth-land: #e0603e;
+  --mercury: #f4624b;
+  --venus: #ff8568;
+  --mars: #e34d3a;
+  --jupiter: #fe7259;
+  --saturn: #ff785d;
+  --uranus: #fc7057;
+  --neptune: #e14c39;
+  --pluto: #ee5a44;
+  --jupiter-zone: #ff7b60;
+  --jupiter-belt: #dc4735;
+  --jupiter-band: #f05c46;
+  --jupiter-spot: #cb3a2b;
+  --mars-dark: #bd3124;
+  --mars-mid: #cb3a2b;
+  --neptune-dark: #bb3023;
+  --neptune-light: #ee5a44;
+  --earth-sea: #bc3023;
+  --earth-land: #f5634c;
 }
 
 
@@ -258,6 +253,16 @@ button {
   outline: 3px solid var(--beak);
   outline-offset: 4px;
   border-radius: 8px;
+}
+
+
+
+/* SWITCHING LIGHT */
+
+:root.switching :not(.red-switch, .red-switch *),
+:root.switching :not(.red-switch, .red-switch *)::before,
+:root.switching :not(.red-switch, .red-switch *)::after {
+  transition: none !important;
 }
 
 

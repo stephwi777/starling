@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { SettingsContext } from './useSettings.js'
+import { applyLight } from './applyLight.js'
 import { loadSettings, saveSettings } from './settingsStorage.js'
 
 
@@ -10,7 +11,7 @@ export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState(() => loadSettings())
 
   useEffect(() => {
-    document.documentElement.dataset.light = settings.light
+    applyLight(document.documentElement, settings.light)
     saveSettings(settings)
   }, [settings])
 

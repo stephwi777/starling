@@ -19,6 +19,7 @@ export const KINDS = [
   { id: 'supermoon', group: 'moon', name: 'Supermoon', on: true },
   { id: 'blue-moon', group: 'moon', name: 'Blue Moon', on: true },
   { id: 'moon-star', group: 'moon', name: 'Moon near a bright star', on: false },
+  { id: 'occultation', group: 'moon', name: 'Moon covers a star or planet', on: true },
   { id: 'quarter-moon', group: 'moon', name: 'First and last quarter', on: false },
   { id: 'micromoon', group: 'moon', name: 'Micromoon', on: false },
   { id: 'black-moon', group: 'moon', name: 'Black Moon', on: false },

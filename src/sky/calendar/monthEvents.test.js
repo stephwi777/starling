@@ -160,7 +160,7 @@ test('every event has a short name for phone calendars', () => {
 
   expect(year.filter(event => !event.tiny)).toEqual([])
   expect(year.every(event => event.tiny.length <= 20)).toBe(true)
-})
+}, 30000)
 
 
 

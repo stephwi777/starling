@@ -23,6 +23,7 @@ import {
   viewed,
   windowWords,
 } from './skyTools.js'
+import { coverSight, findCover, occultationEvent } from './occultations.js'
 
 
 
@@ -35,6 +36,7 @@ const PLANET_LIMIT = 2
 const INSIDE = 1
 const SUN_CLEAR = 15
 const MOON_SUN_CLEAR = 12
+const COVER_CHECK = 2
 
 const CORE_HIGH = 10
 const CORE_DARK = -18
@@ -116,6 +118,11 @@ function moonNote(target, value, date) {
 
 function moonStarEvents(start, end, place, observer) {
   return TARGETS.flatMap(target => passes('Moon', target, start, end, HOUR, MOON_LIMIT, MOON_SUN_CLEAR).map(({ date, value }) => {
+    const cover = value < COVER_CHECK ? findCover(target.body, date, observer, target.id === 'M45' ? 0.5 : 0) : null
+    const sight = cover && coverSight(cover, observer, false)
+
+    if (sight) return occultationEvent({ id: target.id, short: target.short, label: target.label, hint: HINTS[target.id], cluster: Boolean(target.cluster), cover, sight, place, observer })
+
     const view = viewed(['Moon', target.body], date, place, observer, 'Below your horizon after dark.')
     const rows = view.window ? bodyRows('Moon', view.window, observer, place.timeZone).filter(([label]) => label !== 'Brightness') : []
 

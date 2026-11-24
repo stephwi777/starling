@@ -1,5 +1,5 @@
 import { MoonShape } from '../tonight/Icons.jsx'
-import { Clipped } from '../sky-icons/parts.jsx'
+import { Clipped, Spark } from '../sky-icons/parts.jsx'
 
 
 
@@ -167,6 +167,16 @@ export function MoonFarIcon() {
       <Earth x={-6} y={6} r={5} />
       <Tether to={6.4} />
       <SmallMoon x={9.2} y={-9.2} size={0.3} />
+    </Icon>
+  )
+}
+
+export function OccultationIcon() {
+  return (
+    <Icon>
+      <Spark x={8.4} y={-5.4} s={0.5} fill="var(--frost)" />
+      <circle cx="0.6" cy="0.8" r="9" fill="var(--moon-shadow)" />
+      <path d={CRESCENT} fill="var(--moon)" transform="translate(0.6 0.8) scale(0.9)" />
     </Icon>
   )
 }
@@ -386,10 +396,10 @@ export function CometIcon() {
 }
 
 const MILKY_STARS = [
-  [-9.6, -7.8, 0.7, 0.9],
-  [-5.4, -10.6, 0.35, 0.6],
-  [10.6, 2.6, 0.5, 0.8],
-  [2.8, 10.2, 0.3, 0.55],
+  [-9.6, -7.8, 1.26, 0.9],
+  [-5.4, -10.6, 0.63, 0.6],
+  [10.6, 2.6, 0.9, 0.8],
+  [2.8, 10.2, 0.54, 0.55],
 ]
 
 export function MilkyWayIcon() {

@@ -293,3 +293,48 @@ test('Boötes keeps its accent', () => {
   expect(values(all).filter(value => value === 'Bootes')).toEqual([])
   expect(values(all)).toContain('Boötes')
 })
+
+
+
+// RARE TAG
+
+const rare = event => event.tags.includes('Rare')
+
+test('visible lunar and solar eclipses are rare, the rest are not', () => {
+  const lunar = of('lunar-eclipse')
+  const solar = of('solar-eclipse')
+
+  expect(lunar.every(event => rare(event) === (event.here && !event.name.startsWith('Penumbral')))).toBe(true)
+  expect(solar.every(event => rare(event) === event.here)).toBe(true)
+})
+
+test('Mars closest and very close planet pairs are rare', () => {
+  expect(of('mars-closest').filter(event => event.here).every(rare)).toBe(true)
+  expect(of('planet-pair').every(event => rare(event) === (event.here && /^Only 0\.[0-4]°/.test(event.note)))).toBe(true)
+})
+
+test('Full Moons and unseen transits are never rare', () => {
+  expect(of('full-moon').some(rare)).toBe(false)
+  expect(transits.some(rare)).toBe(false)
+})
+
+test('a transit seen from here is rare', () => {
+  const LONDON = { name: 'London', latitude: 51.51, longitude: -0.13, timeZone: 'Europe/London', country: 'GB' }
+  const seen = monthEvents(LONDON, 2032, 11).filter(event => event.kinds.includes('transit'))
+
+  expect(seen.length).toBe(1)
+  expect(seen[0].here).toBe(true)
+  expect(seen[0].tags).toContain('Rare')
+}, 30000)
+
+test('a Blue Moon keeps its own tag without Rare', () => {
+  const blue = monthEvents(KC, 2026, 5).filter(event => event.kinds.includes('blue-moon'))
+
+  expect(blue.length).toBe(1)
+  expect(blue[0].tags).toContain('Blue Moon')
+  expect(blue[0].tags).not.toContain('Rare')
+})
+
+test('pairs are rare exactly when the note rounds below half a degree', () => {
+  expect(of('planet-pair').every(event => rare(event) === (event.here && /^Only 0\.[0-4]°/.test(event.note)))).toBe(true)
+})

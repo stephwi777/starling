@@ -12,3 +12,11 @@ test('a planet pair draws both planets, one tucked behind the other', () => {
   expect(markup.match(/<g transform="translate/g)).toHaveLength(2)
   expect(markup).not.toBe(renderToStaticMarkup(<EventIcon icon="planet:Venus" />))
 })
+
+test('an occultation draws a faint full Moon with a star at its dark edge', () => {
+  const markup = renderToStaticMarkup(<EventIcon icon="occultation" />)
+
+  expect(markup).toContain('var(--moon-shadow)')
+  expect(markup).toContain('var(--moon)')
+  expect(markup).toContain('var(--frost)')
+})
