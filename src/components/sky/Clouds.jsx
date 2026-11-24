@@ -10,13 +10,14 @@ function placeOf(cloud) {
   if (cloud.moon) return { right: `${cloud.moon.right}px`, top: `${cloud.moon.top}px`, width: `${cloud.w}cqw` }
   if (cloud.at !== undefined) return { left: `${cloud.at}%`, bottom: `calc(var(--ground) * ${cloud.ground})`, width: `${cloud.tall}cqh`, translate: '-50% 0' }
   if (cloud.ground !== undefined) return { left: `${cloud.x}%`, bottom: `calc(var(--ground) * ${cloud.ground})`, width: `${cloud.w}%` }
+  if (cloud.tuck !== undefined) return { left: `${cloud.x}%`, '--top': `${cloud.y}%`, '--tuck': cloud.tuck, width: `${cloud.w}%` }
 
   return { left: `${cloud.x}%`, top: `${cloud.y}%`, width: `${cloud.w}%` }
 }
 
 function Cloud({ cloud }) {
   const box = (
-    <div className="cloud-box" style={placeOf(cloud)}>
+    <div className={cloud.tuck === undefined ? 'cloud-box' : 'cloud-box tuck'} style={placeOf(cloud)}>
       <svg className={cloud.flip ? 'cloud flip' : 'cloud'} viewBox="0 0 200 72">
         <path d={CLOUD_PATHS[cloud.shape]} style={{ fill: `var(--shade-${cloud.shade})` }} />
       </svg>

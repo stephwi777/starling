@@ -44,3 +44,9 @@ test('cloudy clouds sit on the hills, and the front ones reach below their lowes
     if (cloud.front) expect(cloud.ground, cloud.shape).toBeLessThan(lowestEdge)
   }
 })
+
+test('on wide screens the two low patchy clouds tuck behind the hills', () => {
+  const low = LAYOUTS[2].desktop.filter(cloud => cloud.tuck !== undefined)
+  expect(low.map(cloud => cloud.shape)).toEqual(['long', 'small'])
+  for (const cloud of low) expect(cloud.tuck).toBeLessThan(0.6)
+})
