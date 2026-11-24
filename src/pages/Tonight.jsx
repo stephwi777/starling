@@ -5,7 +5,7 @@ import { useForecast } from '../sky/useForecast.js'
 import { useNight } from '../sky/useNight.js'
 import { useNow } from '../sky/useNow.js'
 import useStickyHeads from '../hooks/useStickyHeads.js'
-import { nightLook } from '../sky/skyLook.js'
+import { useTonightSky } from '../sky/useTonightSky.js'
 import { dayName } from '../sky/words.js'
 import SkyScene from '../components/sky/SkyScene.jsx'
 import HoursCard from '../components/tonight/HoursCard.jsx'
@@ -47,7 +47,7 @@ function Tonight() {
   }, [])
   const panel = useMatch('/tonight/:panel')?.params.panel
   const links = { moon: moonLink, clouds: cloudsLink, darkness: darknessLink, seeing: seeingLink, up: upLink }
-  const look = nightLook({ moonAngle: sky.night.moonAngle, moonLit: sky.night.moonLit, south: place.latitude < 0 })
+  const look = useTonightSky({ sky, place, now })
 
   return (
     <main className="tonight">
@@ -64,7 +64,7 @@ function Tonight() {
             <span className="band-title">{place.name}</span>
             <span>{dayName(sky.night.noon, place.timeZone)}{isSample && ' · sample location'}</span>
           </h1>
-          <p className="band-line" aria-live="polite">{sky.summary}</p>
+          <p className="band-line" aria-live="polite">{sky.band}</p>
         </div>
       </SkyScene>
 
