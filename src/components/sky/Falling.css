@@ -1,0 +1,69 @@
+/* FALLING */
+
+.falling {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mask-image:
+    radial-gradient(ellipse var(--words-w, 260px) var(--words-h, 80px) at var(--words-x, 50%) var(--words-y, 45%), transparent 45%, black 100%),
+    linear-gradient(transparent var(--header-height, 92px), black calc(var(--header-height, 92px) + 40px), black calc(100% - var(--ground) - 10px), transparent calc(100% - var(--ground) + 45px));
+  mask-composite: intersect;
+}
+
+.falling > span {
+  position: absolute;
+  top: -12px;
+  height: 100%;
+  animation: fall linear infinite;
+}
+
+.falling svg {
+  display: block;
+}
+
+.falling .flake {
+  animation: sway 3s ease-in-out infinite alternate, spin 11s linear infinite;
+}
+
+.sky-scene:has(.falling) .sky-content {
+  z-index: 2;
+}
+
+
+
+/* MOTION */
+
+@keyframes fall {
+  to {
+    transform: translateY(calc(100% + 12px));
+  }
+}
+
+@keyframes sway {
+  from {
+    translate: -6px 0;
+  }
+
+  to {
+    translate: 6px 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 60deg;
+  }
+}
+
+
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  .falling > span,
+  .falling .flake {
+    animation: none;
+  }
+}

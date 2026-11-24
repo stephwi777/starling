@@ -6,9 +6,9 @@ import { Clipped, Spark } from '../sky-icons/parts.jsx'
 // SHAPES
 
 const TWINKLE = 'M0 -11 Q1.8 -1.8 11 0 Q1.8 1.8 0 11 Q-1.8 1.8 -11 0 Q-1.8 -1.8 0 -11 Z'
-const DROP = 'M0 -4.2 Q3.2 0 3.2 1.6 A3.2 3.2 0 0 1 -3.2 1.6 Q-3.2 0 0 -4.2 Z'
+export const DROP = 'M0 -4.2 Q3.2 0 3.2 1.6 A3.2 3.2 0 0 1 -3.2 1.6 Q-3.2 0 0 -4.2 Z'
 const CRESCENT = 'M0 -10 A10 10 0 1 0 8 6 A8 8 0 1 1 0 -10 Z'
-const FLAKE = 'M0 -3.6 V3.6 M-3.1 -1.8 L3.1 1.8 M-3.1 1.8 L3.1 -1.8'
+export const FLAKE = 'M0 -3.6 V3.6 M-3.1 -1.8 L3.1 1.8 M-3.1 1.8 L3.1 -1.8'
 
 
 
@@ -396,10 +396,10 @@ export function CometIcon() {
 }
 
 const MILKY_STARS = [
-  [-9.6, -7.8, 1.26, 0.9],
-  [-5.4, -10.6, 0.63, 0.6],
-  [10.6, 2.6, 0.9, 0.8],
-  [2.8, 10.2, 0.54, 0.55],
+  [-9.4, -7.6, 1.9, 1],
+  [-4.6, -10.6, 1.1, 0.8],
+  [10.4, 2.8, 1.5, 0.95],
+  [3, 10.2, 1, 0.75],
 ]
 
 export function MilkyWayIcon() {

@@ -1,6 +1,7 @@
 import Stars from '../Stars.jsx'
 import Moon from './Moon.jsx'
 import Clouds from './Clouds.jsx'
+import Falling from './Falling.jsx'
 import Ground from './Ground.jsx'
 import './SkyScene.css'
 
@@ -37,6 +38,7 @@ function SkyScene({ look, size, decor, children }) {
       <Clouds level={look.clouds} />
       <div className="sky-content">{children}</div>
       <Ground size={size} snow={look.snow} />
+      {look.fall && <Falling kind={look.fall} />}
     </section>
   )
 }
