@@ -1,4 +1,5 @@
 import { useLayoutEffect } from 'react'
+import { wordsHole } from './wordsHole.js'
 
 
 
@@ -10,22 +11,15 @@ function measure(layer) {
 
   if (!lines?.length) return
 
-  const box = scene.getBoundingClientRect()
   const rects = [...lines].map(line => {
     const range = document.createRange()
 
     range.selectNodeContents(line)
     return range.getBoundingClientRect()
   })
-  const left = Math.min(...rects.map(rect => rect.left))
-  const right = Math.max(...rects.map(rect => rect.right))
-  const top = Math.min(...rects.map(rect => rect.top))
-  const bottom = Math.max(...rects.map(rect => rect.bottom))
+  const hole = wordsHole(rects, scene.getBoundingClientRect())
 
-  layer.style.setProperty('--words-x', `${(left + right) / 2 - box.left}px`)
-  layer.style.setProperty('--words-y', `${(top + bottom) / 2 - box.top}px`)
-  layer.style.setProperty('--words-w', `${(right - left) / 2 + 40}px`)
-  layer.style.setProperty('--words-h', `${(bottom - top) / 2 + 34}px`)
+  for (const edge of ['left', 'right', 'top', 'bottom']) layer.style.setProperty(`--words-${edge}`, `${hole[edge]}px`)
 }
 
 

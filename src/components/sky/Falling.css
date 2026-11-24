@@ -7,9 +7,12 @@
   overflow: hidden;
   pointer-events: none;
   mask-image:
-    radial-gradient(ellipse var(--words-w, 260px) var(--words-h, 80px) at var(--words-x, 50%) var(--words-y, 45%), transparent 45%, black 100%),
-    linear-gradient(transparent var(--header-height, 92px), black calc(var(--header-height, 92px) + 40px), black calc(100% - var(--ground) - 10px), transparent calc(100% - var(--ground) + 45px));
-  mask-composite: intersect;
+    linear-gradient(transparent var(--header-height, 92px), black calc(var(--header-height, 92px) + 40px), black calc(100% - var(--ground) - 10px), transparent calc(100% - var(--ground) + 45px)),
+    linear-gradient(to right, black calc(var(--words-left, 30%) - 24px), transparent var(--words-left, 30%)),
+    linear-gradient(to right, transparent var(--words-right, 70%), black calc(var(--words-right, 70%) + 24px)),
+    linear-gradient(black calc(var(--words-top, 30%) - 24px), transparent var(--words-top, 30%)),
+    linear-gradient(transparent var(--words-bottom, 60%), black calc(var(--words-bottom, 60%) + 24px));
+  mask-composite: intersect, add, add, add, add;
 }
 
 .falling > span {
@@ -64,6 +67,6 @@
 @media (prefers-reduced-motion: reduce) {
   .falling > span,
   .falling .flake {
-    animation: none;
+    animation-play-state: paused;
   }
 }
