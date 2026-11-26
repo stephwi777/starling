@@ -1,0 +1,171 @@
+/* PAGE */
+
+.tools-page {
+  padding: calc(var(--header-height, 92px) + 28px) var(--gutter) 100px;
+}
+
+.tools-page h1 {
+  color: var(--moon);
+  font-size: clamp(2.2rem, 4.4vw, 3.2rem);
+  font-variation-settings: 'SOFT' 100;
+}
+
+.tools-page .inner > p {
+  margin: 8px 0 28px;
+  color: var(--mist);
+  font-size: 1.15rem;
+}
+
+
+
+/* GROUPS */
+
+.tool-group + .tool-group {
+  margin-top: 44px;
+}
+
+.tool-group h2 {
+  margin-bottom: 16px;
+  font-size: 1.6rem;
+  font-variation-settings: 'SOFT' 100;
+}
+
+
+
+/* GRID */
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 660px) {
+  .tool-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1160px) {
+  .tool-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+
+
+/* TILE */
+
+.tool {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--high);
+}
+
+.tool-text {
+  padding: 18px 24px 24px;
+}
+
+.tool h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-variation-settings: 'SOFT' 100;
+}
+
+.tool p {
+  margin-top: 6px;
+  color: var(--mist);
+  font-weight: 700;
+}
+
+.tool-art {
+  order: -1;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background: var(--raised);
+}
+
+.tool-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tool-art span {
+  color: var(--mist);
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+@media (max-width: 600px) {
+  .tool-art {
+    aspect-ratio: 2 / 1;
+  }
+}
+
+
+
+/* READY TILE */
+
+.tool a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.tool a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.tool a:focus-visible {
+  outline: none;
+}
+
+.tool:has(a):hover {
+  background: color-mix(in srgb, var(--high) 85%, var(--raised));
+}
+
+.tool:has(a:focus-visible) {
+  outline: 3px solid var(--beak);
+  outline-offset: 3px;
+}
+
+
+
+/* MOTION */
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.still) .tool:has(a) {
+    transition: scale 0.35s cubic-bezier(0.3, 1.3, 0.6, 1), background-color 90ms ease-out;
+  }
+
+  :root:not(.still) .tool:has(a):active {
+    scale: 0.985;
+    transition-duration: 0.1s, 90ms;
+  }
+
+  :root:not(.still) .tool-art span {
+    transition: scale 0.35s cubic-bezier(0.3, 1.3, 0.6, 1);
+  }
+
+  :root:not(.still) .tool:not(:has(a)):active .tool-art span {
+    scale: 1.1;
+    transition-duration: 0.1s;
+  }
+
+  @supports (animation-timeline: view()) {
+    :root:not(.still) :is(.tool, .tool-group h2) {
+      animation: page-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 140px;
+    }
+  }
+}

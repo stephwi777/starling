@@ -49,7 +49,7 @@ function Doors({ now, place }) {
       title: constellation ? `Find ${starName(constellation.name)}` : 'Find a constellation',
       note: shape ? "This month's star pattern" : "This month's constellation",
     },
-    { to: '/tools', icon: <TelescopeIcon />, title: 'Sky tools', note: 'Moon phases, sky map and more' },
+    { to: '/tools', icon: <TelescopeIcon />, title: 'Sky tools', note: 'Space station, aurora and more' },
   ]
 
   return (

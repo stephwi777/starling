@@ -16,6 +16,7 @@ const Credits = lazy(() => import('./pages/Credits.jsx'))
 const About = lazy(() => import('./pages/About.jsx'))
 const Tonight = lazy(() => import('./pages/Tonight.jsx'))
 const Calendar = lazy(() => import('./pages/Calendar.jsx'))
+const Tools = lazy(() => import('./pages/Tools.jsx'))
 const MoonPanel = lazy(() => import('./components/moon/MoonPanel.jsx'))
 const CloudsPanel = lazy(() => import('./components/clouds/CloudsPanel.jsx'))
 const DarknessPanel = lazy(() => import('./components/darkness/DarknessPanel.jsx'))
@@ -49,7 +50,7 @@ function App() {
         <Route path="calendar" element={<Calendar />} />
         <Route path="map" element={<Placeholder title="Map" />} />
         <Route path="learn" element={<Placeholder title="Learn" />} />
-        <Route path="tools" element={<Placeholder title="Sky tools" />} />
+        <Route path="tools" element={<Tools />} />
         <Route path="about" element={<About />} />
         <Route path="credits" element={<Credits />} />
         <Route path="contact" element={<Contact />} />
