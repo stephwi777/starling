@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starling back to calendar sheet</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,400..600,0..100&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* SHEET */
+
+    .sheet {
+      padding: 32px 24px 80px;
+    }
+
+    .sheet > p {
+      max-width: 70ch;
+      margin-top: 8px;
+      color: var(--mist);
+    }
+
+    .frames {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 24px;
+    }
+
+    .frames h2 {
+      margin-bottom: 4px;
+      font-size: 1.15rem;
+    }
+
+    .frames small {
+      display: block;
+      max-width: 375px;
+      min-height: 3.6em;
+      margin-bottom: 10px;
+      color: var(--mist);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .frames a {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--frost);
+      font-weight: 800;
+    }
+
+    .frames iframe {
+      display: block;
+      width: 375px;
+      height: 760px;
+      border: 0;
+      border-radius: 28px;
+      background: var(--zenith);
+      box-shadow: 0 0 0 6px var(--high);
+    }
+
+
+
+    /* SHARED */
+
+    .back-up {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: inherit;
+      font-weight: 800;
+    }
+
+    .back-up::before {
+      content: '';
+      width: 14px;
+      height: 14px;
+      background: currentColor;
+      mask: var(--chevron) center / contain no-repeat;
+      rotate: -90deg;
+    }
+
+    .back-up:focus-visible {
+      outline: 3px solid var(--beak);
+      outline-offset: 2px;
+    }
+
+
+
+    /* A · END OF LIST */
+
+    .back-end {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid color-mix(in srgb, var(--mist) 25%, transparent);
+    }
+
+    .back-end .back-up {
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 14px;
+    }
+
+
+
+    /* B · IN THE MONTH BAR */
+
+    .back-bar {
+      position: sticky;
+      top: 12px;
+      z-index: 3;
+      display: flex;
+      justify-content: flex-end;
+      height: 0;
+    }
+
+    .back-bar .back-up {
+      position: relative;
+      height: 34px;
+      margin-top: 11px;
+      padding: 0 12px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+    }
+
+    .back-bar .back-up::after {
+      content: '';
+      position: absolute;
+      inset: -5px 0;
+    }
+
+    .back-bar .back-icon {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 34px;
+      margin-top: 11px;
+      margin-right: -10px;
+      border: 0;
+      border-radius: 12px;
+      background: none;
+      cursor: pointer;
+      transition: background-color 90ms ease-out;
+    }
+
+    .back-bar .back-icon:hover {
+      background: var(--raised);
+    }
+
+    .back-bar .back-icon::before {
+      content: '';
+      width: 18px;
+      height: 18px;
+      background: currentColor;
+    }
+
+    .back-bar .back-icon.up-chevron::before {
+      mask: var(--chevron) center / contain no-repeat;
+      rotate: -90deg;
+    }
+
+    .back-bar .back-icon.up-arrow::before {
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 13.5 V2.8 M3.4 7.3 L8 2.7 L12.6 7.3' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+
+    .back-bar .back-icon::after {
+      content: '';
+      position: absolute;
+      inset: -5px 0;
+    }
+
+    .back-bar .back-icon:focus-visible {
+      outline: 3px solid var(--beak);
+      outline-offset: 2px;
+    }
+
+    @media (min-width: 861px) {
+      .back-bar {
+        top: calc(var(--header-height, 92px) + 12px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="module" src="./calendar-back-up.jsx"></script>
+</body>
+</html>

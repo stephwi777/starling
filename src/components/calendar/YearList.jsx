@@ -32,6 +32,18 @@ function stickLine() {
 
 
 
+// BACK TO THE CALENDAR
+
+function backToCalendar() {
+  const day = document.querySelector('.month [tabindex="0"]')
+  const calm = document.documentElement.classList.contains('still') || matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  window.scrollTo({ top: 0, behavior: calm ? 'instant' : 'smooth' })
+  day?.focus({ preventScroll: true })
+}
+
+
+
 // YEAR LIST
 
 function YearList({ place, start, filters, south, onPick }) {
@@ -108,6 +120,12 @@ function YearList({ place, start, filters, south, onPick }) {
         <div className="year-actions">
           <button type="button" className="soft-button" disabled={working} onClick={addAll}>Add all to your calendar</button>
           <p>Works with Apple, Google and Outlook. Follows your checklist and search.</p>
+        </div>
+      )}
+
+      {months.length > 0 && (
+        <div className="year-top">
+          <button type="button" aria-label="Back to the calendar" title="Back to the calendar" onClick={backToCalendar} />
         </div>
       )}
 
